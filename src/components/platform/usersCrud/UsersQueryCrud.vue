@@ -23,7 +23,7 @@ export default {
     return {
       title: "Usuários",
       url: "users",
-      blockCreateNew: false,
+      blockCreateNew: true,
       blockRemove: false,
       breadcrumbs: [
         {
