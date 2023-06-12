@@ -7,7 +7,7 @@ var baseApiUrlDefinition = ""
 // if (process.env.NODE_ENV && process.env.NODE_ENV == 'development') {
 //     baseApiUrlDefinition = "http://localhost:3334"
 // } else {
-    baseApiUrlDefinition = "https://api.prepara.me:3334"
+    baseApiUrlDefinition = "https://api.preparame.homolog.inf.br"
 // }
 
 export const baseApiUrl = baseApiUrlDefinition
