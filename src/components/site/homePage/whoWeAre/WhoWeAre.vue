@@ -46,11 +46,6 @@ export default {
           img: "preandrea",
         },
         {
-          name: "Lays Jasper",
-          function: "Psicologa e especialista em recrutamento e seleção",
-          img: "prelays",
-        },
-        {
           name: "Raquel Tetti",
           function: "Especialista em carreira",
           img: "preraquel",
@@ -59,11 +54,6 @@ export default {
           name: "Priscila Dietrich",
           function: "Psicologa e especialista em recrutamento e seleção",
           img: "prepriscila",
-        },
-        {
-          name: "Murilo Parangaba",
-          function: "Comercial",
-          img: "premurilo",
         },
       ],
     };

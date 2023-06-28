@@ -4,13 +4,16 @@
       <q-card-section class="col-12 row external-user-welcome-card-header">
         <div class="external-user-welcome-card-info col-9">
           <div class="external-user-welcome-card-first-msg">
-            Olá, {{ userName }}. Seja bem vindo (a)!
+            Olá, {{ userName }}, aqui no Prepara.me, orientação de carreira é pra todo mundo!
           </div>
           <div class="external-user-welcome-card-second-msg q-mt-sm">
-            E não se esqueça de sorrir, pois você está com sorte &#129303;
+            É preciso de um final pra poder recomeçar, como é preciso cair pra poder se levantar. Nem sempre engatar a ré significa voltar. &#128522;
+          </div>
+          <div class="external-user-welcome-card-third-msg q-mt-sm">
+            Trecho da poesia Recomece, do Bráulio Bessa
           </div>
         </div>
-        <div v-show=false 
+        <div v-show=false
           class="row external-user-welcome-card-fortune-cookie-container col-3 q-gutter-x-md"
         >
           <div
@@ -129,6 +132,14 @@ export default {
 .external-user-welcome-card-second-msg {
   font-weight: 700;
   font-size: 1.2rem;
+  font-family: "Nunito";
+  font-style: normal;
+  color: $text-dark-grey;
+}
+
+.external-user-welcome-card-third-msg {
+  font-weight: 500;
+  font-size: 0.8rem;
   font-family: "Nunito";
   font-style: normal;
   color: $text-dark-grey;

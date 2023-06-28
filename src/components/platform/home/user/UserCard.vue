@@ -19,6 +19,21 @@
         </q-banner>
 
         <q-banner
+          rounded
+          class="q-ma-sm text-white bg-prepara-me-pink"
+        >
+          <div class="user-card-banner-content row">
+            <q-btn
+              flat
+              color="white"
+              label="PREENCHER SEUS OBJETIVOS PROFISSIONAIS"
+              class="col-12"
+              @click="goUrl(`survey`)"
+            />
+          </div>
+        </q-banner>
+
+        <q-banner
           v-if="simulator"
           rounded
           class="q-ma-sm text-white bg-prepara-me"
