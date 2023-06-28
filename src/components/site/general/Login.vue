@@ -54,11 +54,25 @@
         </q-card>
       </q-dialog>
 
-      <div class="login-form-signin-in" @click="login()">Entrar</div>
+      <div class="row-buttons">
+        <div class="login-form-signin-in" @click="login()">
+          <p>Entrar</p>
+          <p>Já sou de casa &#128522;</p>
+        </div>
+        <div class="login-form-register" @click="loggingIn = false">
+          Cadastro Rápido
+        </div>
+      </div>
+
       <div class="login-others-links">
+        Esqueceu sua senha?
+        <a @click="resetPasswordDialog = true">Clique aqui!</a>
+      </div>
+
+      <!-- <div class="login-others-links">
         Ainda não tem cadastro?
         <a @click="loggingIn = false">Clique aqui!</a>
-      </div>
+      </div> -->
     </div>
     <div v-else class="login-form-signin">
       <div class="login-modal-title">Cadastre-se em nossa plataforma</div>
@@ -193,7 +207,7 @@ export default {
       passwordValidPercentual: 0,
       forcePassword: "Fraca",
       acceptTerms: false,
-      needLogin: false
+      needLogin: false,
     };
   },
   async beforeCreate() {
@@ -202,8 +216,8 @@ export default {
         return token.status === 200;
       });
 
-      loginControl.isLogged = loggedUser
-      this.needLogin  = !loggedUser
+      loginControl.isLogged = loggedUser;
+      this.needLogin = !loggedUser;
 
       this.token = this.$router.history.current.query.token;
 
@@ -270,7 +284,7 @@ export default {
 
           await this.setUser(user.data);
 
-          loginControl.isLogged = true
+          loginControl.isLogged = true;
         })
         .catch(showError);
 
@@ -478,7 +492,8 @@ export default {
   }
 }
 
-.login-form-signin-in {
+.login-form-signin-in,
+.login-form-register {
   height: 50px;
   width: 220px;
   margin: 15px auto 30px auto;
@@ -495,11 +510,11 @@ export default {
   user-select: none;
 }
 
-.login-form-signin-in:hover {
+/* .login-form-signin-in:hover {
   border: 1px solid #fff;
   color: #fff;
   background-color: #667998;
-}
+} */
 
 .login-form-signin-container-hint-password {
   font-size: 1.5rem;
@@ -530,5 +545,45 @@ export default {
     height: 60px;
     width: 100%;
   }
+}
+
+.row-buttons {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.login-form-signin-in,
+.login-form-register {
+  flex: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.login-form-signin-in {
+  background-color: #f54690;
+  color: #fff;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form-signin-in p {
+  margin: 0px !important;
+  line-height: initial;
+}
+
+/* last p */
+.login-form-signin-in p:last-child {
+  font-size: 9px;
+}
+
+.login-form-register {
+  background-color: #1a27b7;
+  color: #fff;
 }
 </style>

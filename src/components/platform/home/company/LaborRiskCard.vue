@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
     this.laborRiskPercent = this.laborRisk * 10;
-    this.laborRiskShow = (this.laborRisk).toFixed(2)
+    this.laborRiskShow = this.laborRisk.toFixed(2);
   },
 };
 </script>
@@ -103,7 +103,7 @@ export default {
     to right,
     rgb(0, 170, 0) 0%,
     #ffdb3a 45%,
-    #e5405e  100%
+    #e5405e 100%
   );
 }
 

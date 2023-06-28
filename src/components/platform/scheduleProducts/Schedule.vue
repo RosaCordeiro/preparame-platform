@@ -113,17 +113,17 @@ export default {
   created() {
     this.specialistScheduleData = this.specialistSchedule;
 
-    this.specialistScheduleData.forEach(specialistSchedule => {
-      specialistSchedule.hours.forEach(hour => {
+    this.specialistScheduleData.forEach((specialistSchedule) => {
+      specialistSchedule.hours.forEach((hour) => {
         if (hour.dateSchedule) {
           const diffHours = Math.abs(new Date() - hour.dateSchedule) / 36e5;
 
-          if (diffHours < 24) {
-            hour.available = false
+          if (diffHours < 3) {
+            hour.available = false;
           }
         }
-      })
-    })
+      });
+    });
   },
   methods: {
     confirmSchedule: function (daySchedule, hourSchedule, dayIndex, hourIndex) {

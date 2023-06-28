@@ -21,14 +21,15 @@
         <q-banner
           rounded
           class="q-ma-sm text-white bg-prepara-me-pink"
+          v-if="this.productsSchedulables.length > 0"
         >
           <div class="user-card-banner-content row">
             <q-btn
               flat
               color="white"
-              label="PREENCHER SEUS OBJETIVOS PROFISSIONAIS"
+              label="PREENCHA SEUS OBJETIVOS PROFISSIONAIS"
               class="col-12"
-              @click="goUrl(`survey`)"
+              @click="goBlank(`https://forms.gle/jy5ymxH7X6j7Lr5Z7`)"
             />
           </div>
         </q-banner>
@@ -75,10 +76,7 @@
           </div>
         </q-banner>
 
-        <q-banner
-          rounded
-          class="q-ma-sm text-white bg-prepara-me-blue"
-        >
+        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
           <div class="user-card-banner-content row">
             <q-btn
               flat
@@ -154,13 +152,16 @@ export default {
     this.userAvatarUrl = localStorage.getItem("userAvatarUrl");
     this.userName = localStorage.getItem("userName");
     this.companyId = localStorage.getItem("companyId");
-
-    console.log(this.companyId);
   },
   mounted() {
     this.productsSchedulables = this.products.filter((product) => {
       return product.type === "SCHEDULED";
     });
+
+    this.productsSchedulables = this.productsSchedulables.filter(
+      (product, index, self) =>
+        index === self.findIndex((t) => t.id === product.id)
+    );
 
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;
@@ -171,6 +172,9 @@ export default {
   methods: {
     goUrl: function (url) {
       this.$router.push({ path: `/${url}` });
+    },
+    goBlank: function (url) {
+      window.open(url, "_blank");
     },
     laborRiskAlertUpdate: async function () {
       const userUpdate = {

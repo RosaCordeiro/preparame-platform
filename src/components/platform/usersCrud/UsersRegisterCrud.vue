@@ -114,7 +114,6 @@ export default {
                   label: "Empresa",
                   value: "COMPANY_ADMIN",
                 },
-
               ],
             },
             company: {
@@ -200,6 +199,8 @@ export default {
           ":userId",
           data.mainTable.userId
         );
+
+        console.log(url);
 
         const userCreated = await saveCrud(url, data.mainTable);
 
