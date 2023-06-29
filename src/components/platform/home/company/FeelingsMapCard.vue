@@ -7,11 +7,15 @@
         </q-card-section>
       </div>
 
-      <apexchart
-        type="polarArea"
-        :options="chartOptions"
-        :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
-      ></apexchart>
+      <div class="row">
+        <apexchart
+          height="400px"
+          type="polarArea"
+          style="width: 100%; height: 100%"
+          :options="chartOptions"
+          :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
+        ></apexchart>
+      </div>
 
       <!--  {{ feelingsMapDataChartConverted.slice(1).map((c) => c[1]) }}
 
