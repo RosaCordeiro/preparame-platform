@@ -35,17 +35,23 @@
               }"
             >
               <Schedule :homeType="'USER'" />
+              <ExternalUserTalentBank :class="{ 'col-12': true }" />
               <ExternalUserInterviewSimulatorCard :class="{ 'col-12': true }" />
+              <ExternalUserMostCommonQuestions :class="{ 'col-12': true }" />
               <ExternalUserKitRealocationProCard
-                v-if="!kitPro"
-                :class="{ 'col-12': true }"
+              v-if="!kitPro"
+              :class="{ 'col-12': true }"
               />
               <ExternalUserIndividualMentorshipCard
-                v-if="false"
-                :class="{ 'col-12': true }"
+              v-if="false"
+              :class="{ 'col-12': true }"
               />
-
-              <ExternalUserResumeCreatorCard :class="{ 'col-12': true }" />
+              <div class="justify-around q-mb-sm">
+                <q-card class="external-user-card-container q-pa-sm">
+                  <ExternalUserResumeCreatorCard class="col-12" />
+                  <ExternalUserLinkedinCover class="col-12" />
+                </q-card>
+              </div>
             </div>
           </div>
         </div>
@@ -71,6 +77,9 @@ import ExternalUserKitRealocationProCard from "./externalUser/ExternalUserKitRea
 import ExternalUserInterviewSimulatorCard from "./externalUser/ExternalUserInterviewSimulatorCard.vue";
 import ExternalUserResumeCreatorCard from "./externalUser/ExternalUserResumeCreatorCard.vue";
 import ExternalUserIndividualMentorshipCard from "./externalUser/ExternalUserIndividualMentorshipCard.vue";
+import ExternalUserTalentBank from "./externalUser/ExternalUserTalentBank.vue";
+import ExternalUserMostCommonQuestions from "./externalUser/ExternalUserMostCommonQuestions.vue";
+import ExternalUserLinkedinCover from "./externalUser/ExternalUserLinkedinCover.vue";
 import Schedule from "./templates/Schedule.vue";
 import UserCard from "./user/UserCard.vue";
 import axios from "axios";
@@ -103,6 +112,9 @@ export default {
     ExternalUserResumeCreatorCard,
     ExternalUserIndividualMentorshipCard,
     ExternalUserWelcomeCardMobile,
+    ExternalUserTalentBank,
+    ExternalUserMostCommonQuestions,
+    ExternalUserLinkedinCover,
     UserCard,
     Schedule,
   },
@@ -264,5 +276,9 @@ export default {
 .external-user-options {
   display: flex;
   flex-direction: column;
+}
+
+.external-user-card-container {
+  border-radius: 15px;
 }
 </style>

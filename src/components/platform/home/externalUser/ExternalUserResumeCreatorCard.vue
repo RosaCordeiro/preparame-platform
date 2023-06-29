@@ -68,6 +68,9 @@ export default {
 </script>
 
 <style>
+.external-user-resume-creator-card {
+  width: 100%;
+}
 .external-user-resume-creator-card-container {
   border-radius: 15px;
 }
