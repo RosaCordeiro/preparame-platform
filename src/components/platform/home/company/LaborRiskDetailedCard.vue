@@ -16,7 +16,7 @@
         <div
           class="chart-card"
           v-for="(l, index) in laborRiskDataChartConverted.slice(1)"
-          :key="l"
+          :key="index"
         >
           <div class="chart__row-title">
             <div

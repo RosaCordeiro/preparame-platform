@@ -9,8 +9,8 @@
 
       <div class="row">
         <apexchart
-          height="400px"
           type="polarArea"
+          height="400px"
           style="width: 100%; height: 100%"
           :options="chartOptions"
           :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
