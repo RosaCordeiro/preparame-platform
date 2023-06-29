@@ -102,7 +102,7 @@ export default {
       b2cUser: false,
       surveyAnswered: false,
       showSurveySuggestion: false,
-      surveyPopupShowed: false
+      surveyPopupShowed: false,
     };
   },
   components: {
@@ -123,11 +123,13 @@ export default {
 
     this.b2cUser = localStorage.getItem("companyId") ? true : false;
     this.surveyAnswered = localStorage.getItem("surveyAnswered") == "true";
-    this.surveyPopupShowed  = localStorage.getItem('surveyPopupShowed') == 'true';
+    this.surveyPopupShowed =
+      localStorage.getItem("surveyPopupShowed") == "true";
 
-    this.showSurveySuggestion = this.b2cUser && !this.surveyAnswered && !this.surveyPopupShowed;
+    this.showSurveySuggestion =
+      this.b2cUser && !this.surveyAnswered && !this.surveyPopupShowed;
 
-    localStorage.setItem('surveyPopupShowed', true);
+    localStorage.setItem("surveyPopupShowed", true);
 
     const userId = localStorage.getItem("userId");
 
