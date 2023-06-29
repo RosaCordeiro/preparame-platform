@@ -35,7 +35,18 @@
               }%; background: linear-gradient(90deg, #1a27b7 0%, ${
                 l[1] < 5 ? '#34a67c' : '#ff4690'
               } 100%);`"
-            ></div>
+            >
+              <q-tooltip
+                transition-show="scale"
+                transition-hide="scale"
+                class="bg-purple text-body1"
+                :offset="[20, 20]"
+              >
+                <div class="tooltip-text">
+                  Pergunta {{ index + 1 + " - " + l[0] + " - (" + l[1] }})
+                </div>
+              </q-tooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -141,6 +152,10 @@ export default {
   border-radius: 10px;
 }
 
+.chart__row__value:hover {
+  cursor: pointer;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -164,5 +179,13 @@ h6 {
   text-align: left;
   margin: 0;
   margin-left: 10%;
+  font-size: 1.125rem;
+}
+
+.tooltip-text {
+  color: #fff;
+  font-size: 1.125rem;
+  text-align: center;
+  margin: 0;
 }
 </style>

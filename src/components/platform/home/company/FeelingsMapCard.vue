@@ -2,30 +2,41 @@
   <q-card class="home-company-feelings-map-card column q-pb-md q-px-md">
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
-        <q-card-section class="home-company-feelings-map-card-title"
-          >Mapa de Sentimentos</q-card-section
-        >
+        <q-card-section class="home-company-feelings-map-card-title">
+          <h4>Mapa de Sentimentos</h4>
+        </q-card-section>
       </div>
+
+      <apexchart
+        type="polarArea"
+        :options="chartOptions"
+        :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
+      ></apexchart>
+
+      <!--  {{ feelingsMapDataChartConverted.slice(1).map((c) => c[1]) }}
+
       <Column
         v-if="showChart"
         :data="feelingsMapDataChartConverted"
         :height="450"
-      />
+      /> -->
     </div>
   </q-card>
 </template>
 
 <script>
-import Column from "./../../../general/charts/Column.vue";
+//import Column from "./../../../general/charts/Column.vue";
 export default {
-  components: {
+  /*  components: {
     Column,
-  },
+  }, */
   props: ["feelingsMap"],
   data() {
     return {
       feelingsMapDataChartConverted: [],
       showChart: false,
+      series: [],
+      chartOptions: {},
     };
   },
   mounted() {
@@ -34,17 +45,65 @@ export default {
   },
   methods: {
     converDataChart: function () {
-      this.feelingsMapDataChartConverted.push(["Sentimento", "Quantidade", { role: 'style' }]);
+      this.feelingsMapDataChartConverted.push([
+        "Sentimento",
+        "Quantidade",
+        { role: "style" },
+      ]);
 
       this.feelingsMap.forEach((feeling) => {
         this.feelingsMapDataChartConverted.push([
           feeling.feeling,
           feeling.count,
-          'color: #1a27b7'
+          "color: #1a27b7",
         ]);
       });
+      this.chartOptions = {
+        chart: {
+          type: "polarArea",
+        },
+        labels: this.feelingsMapDataChartConverted
+          .slice(1)
+          .map((c) => c[0].toString()),
+        stroke: {
+          colors: ["#fff"],
+        },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shade: "dark",
+            type: "horizontal",
+            shadeIntensity: 0.5,
+            gradientToColors: ["#f54890", "#35a97d", "#1a27b7", "#f54890"],
+            inverseColors: false,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 70, 100],
+            colorStops: [],
+          },
+        },
+        yaxis: {
+          show: false,
+        },
+        legend: {
+          position: "bottom",
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      };
 
-      console.log(this.feelingsMapDataChartConverted)
+      console.log(this.feelingsMapDataChartConverted);
     },
   },
 };
@@ -74,5 +133,14 @@ export default {
     width: 90vw;
     height: 20vh;
   }
+}
+
+h4,
+h6 {
+  color: #b1b1b1;
+  text-align: left;
+  margin: 0;
+  margin-left: 10%;
+  font-size: 1.125rem;
 }
 </style>

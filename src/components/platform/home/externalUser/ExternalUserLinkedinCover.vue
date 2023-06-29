@@ -47,7 +47,8 @@
               <div
                 class="external-user-linkedin-cover-card-info-container-msg q-mb-sm"
               >
-              Tenha um perfil de LinkedIn muito mais bonito e profissional com nossas capas.
+                Tenha um perfil de LinkedIn muito mais bonito e profissional com
+                nossas capas.
               </div>
               <img
                 v-if="mobile"

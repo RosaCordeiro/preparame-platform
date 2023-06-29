@@ -39,17 +39,17 @@
               <ExternalUserInterviewSimulatorCard :class="{ 'col-12': true }" />
               <ExternalUserMostCommonQuestions :class="{ 'col-12': true }" />
               <ExternalUserKitRealocationProCard
-              v-if="!kitPro"
-              :class="{ 'col-12': true }"
+                v-if="!kitPro"
+                :class="{ 'col-12': true }"
               />
               <ExternalUserIndividualMentorshipCard
-              v-if="false"
-              :class="{ 'col-12': true }"
+                v-if="false"
+                :class="{ 'col-12': true }"
               />
               <div class="justify-around q-mb-sm">
-                <q-card class="external-user-card-container q-pa-sm">
-                  <ExternalUserResumeCreatorCard class="col-12" />
-                  <ExternalUserLinkedinCover class="col-12" />
+                <q-card class="external-user-card-container q-pa-sm row">
+                  <ExternalUserResumeCreatorCard class="col-6" />
+                  <ExternalUserLinkedinCover class="col-6" />
                 </q-card>
               </div>
             </div>
