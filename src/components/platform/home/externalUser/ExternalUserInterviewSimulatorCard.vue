@@ -1,104 +1,73 @@
 <template>
-  <div
-    :class="{
-      'external-user-interview-simulator-card': true,
-      'justify-around': true,
-    }"
-  >
-    <q-card class="external-user-interview-simulator-card-container">
-      <q-card-section v-if="expired" class="bg-negative text-white">
-        <div>
-          O uso do Simulador de Entrevista está expirado. Caso necessite
-          contrate mais dias para continuar seu uso.
+  <div>
+    <div v-if="expired" class="bg-negative text-white">
+      <div>
+        O uso do Simulador de Entrevista está expirado. Caso necessite
+        contrate mais dias para continuar seu uso.
+      </div>
+    </div>
+    <div v-else-if="expiring" class="bg-prepara-me-expiring text-white">
+      <div v-if="daysToExpireUse > 0">
+        {{
+          `Faltam ${(daysToExpireUse + 1).toFixed(
+            0
+          )} dia(s) para o uso do seu Simulador de Entrevistas ser interrompido.`
+        }}
+      </div>
+      <div v-else-if="daysToExpirePeriodTest > 0">
+        {{
+          `Faltam ${(daysToExpirePeriodTest + 1).toFixed(
+            0
+          )} dia(s) para o período de teste do seu Simulador de Entrevistas finalizar.`
+        }}
+      </div>
+    </div>
+    <div>
+    <div  class="q-ma-md">
+      <div class="external-user-most-common-questions-card-title">
+        SIMULADOR DE ENTREVISTA
+      </div>
+      <div class="row col-12">
+        <div class="q-mt-sm col-9">
+          Simule uma entrevista com perguntas reais que você encontrará em suas próximas entrevistas.
+          <div>
+          <b><br>Perca o medo e aumente sua confiança!</b>
         </div>
-      </q-card-section>
-      <q-card-section
-        v-else-if="expiring"
-        class="bg-prepara-me-expiring text-white"
-      >
-        <div v-if="daysToExpireUse > 0">
-          {{
-            `Faltam ${(daysToExpireUse + 1).toFixed(
-              0
-            )} dia(s) para o uso do seu Simulador de Entrevistas ser interrompido.`
-          }}
-        </div>
-        <div v-else-if="daysToExpirePeriodTest > 0">
-          {{
-            `Faltam ${(daysToExpirePeriodTest + 1).toFixed(
-              0
-            )} dia(s) para o período de teste do seu Simulador de Entrevistas finalizar.`
-          }}
-        </div>
-      </q-card-section>
-
-      <q-card-section class="external-user-interview-simulator-card-header">
-        <div class="external-user-interview-simulator-card-info space-around">
-          <div
-            :class="{
-              'external-user-interview-simulator-card-info-container': true,
-              'q-mt-md': true,
-              row: true,
-            }"
-          >
-            <div class="col-10">
-              <div class="external-user-interview-simulator-card-title">
-                SIMULADOR DE ENTREVISTA
-              </div>
-              <div
-                class="external-user-interview-simulator-card-info-container-msg q-mb-sm"
-              >
-                Simule uma entrevista com perguntas reais que você encontrará em
-                suas próximas entrevistas.
-              </div>
-              <div
-                :class="{
-                  'external-user-interview-simulator-card-info-container-msg': true,
-                  'q-mb-md': true,
-                }"
-              >
-                <b>Perca o medo e aumente sua confiança!</b>
-              </div>
-              <img
-                v-if="mobile"
-                :class="{
-                  'external-user-interview-simulator-card-img': true,
-                }"
-                src="./../../../../assets/imgs/mentorshipGirl.png"
-              />
-              <div v-if="!mobile && !expired" class="q-mb-sm">
-                <q-btn
-                  color="secondary"
-                  label="ACESSAR SIMULADOR"
-                  @click="goURL()"
-                />
-              </div>
-            </div>
-            <div class="col-2">
-              <img
-                v-if="!mobile"
-                :class="{
-                  'external-user-interview-simulator-card-img': true,
-                  'col-3': true,
-                }"
-                src="./../../../../assets/imgs/mentorshipGirl.png"
-              />
-            </div>
-            <div v-if="mobile && !expired" class="q-my-md">
-              <q-btn
-                color="secondary"
-                label="ACESSAR SIMULADOR"
-                @click="goURL()"
-              />
-            </div>
+          <div v-if="!mobile" class="q-my-sm">
+            <q-btn
+              color="secondary"
+              label="ACESSAR SIMULADOR"
+              @click="goURL()"
+            />
+          </div>
+          <div v-if="mobile" class="q-my-sm">
+            <q-btn
+              color="secondary"
+              label="ACESSAR SIMULADOR"
+              @click="goURL()"
+            />
           </div>
         </div>
-      </q-card-section>
-    </q-card>
+        <img
+          v-if="!mobile"
+          class="external-user-most-common-questions-card-img col-3"
+          src="./../../../../assets/imgs/mentorshipGirl.png"
+        />
+        <img
+          v-if="mobile"
+          class="external-user-most-common-questions-card-img col-3"
+          src="./../../../../assets/imgs/mentorshipGirl.png"
+        />
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
+
+import { saveCrud } from "../../../../components/general/crud/utils/saveCrud";
+
 export default {
   data() {
     return {
@@ -139,20 +108,15 @@ export default {
   methods: {
     goURL: function () {
       this.$router.push({ path: `/interviewSimulatorPresentation` });
+      saveCrud("clicks", {
+        name: "Simulador de entrevistas"
+      })
     },
   },
 };
 </script>
 
 <style>
-.external-user-interview-simulator-card {
-  width: 100%;
-}
-
-.external-user-interview-simulator-card-container {
-  border-radius: 15px;
-}
-
 .external-user-interview-simulator-card-title {
   font-weight: 700;
   font-size: 1.5rem;
@@ -167,15 +131,5 @@ export default {
 
 .external-user-interview-simulator-card-img {
   height: 100px;
-}
-
-.external-user-interview-simulator-card-btn-container {
-  width: 100%;
-  position: relative;
-}
-
-.external-user-interview-simulator-card-btn-know-more {
-  height: 40px;
-  margin: 10px auto;
 }
 </style>

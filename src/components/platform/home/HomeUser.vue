@@ -36,8 +36,12 @@
             >
               <Schedule :homeType="'USER'" />
               <ExternalUserTalentBank :class="{ 'col-12': true }" />
-              <ExternalUserInterviewSimulatorCard :class="{ 'col-12': true }" />
-              <ExternalUserMostCommonQuestions :class="{ 'col-12': true }" />
+              <div class="justify-around q-mb-sm">
+                <q-card class="row external-user-card-container q-pa-sm">
+                  <ExternalUserInterviewSimulatorCard class="col-6" />
+                  <ExternalUserMostCommonQuestions class="col-6" />
+                </q-card>
+              </div>
               <ExternalUserKitRealocationProCard
                 v-if="!kitPro"
                 :class="{ 'col-12': true }"
@@ -47,7 +51,7 @@
                 :class="{ 'col-12': true }"
               />
               <div class="justify-around q-mb-sm">
-                <q-card class="external-user-card-container q-pa-sm row">
+                <q-card class="row external-user-card-container q-pa-sm">
                   <ExternalUserResumeCreatorCard class="col-6" />
                   <ExternalUserLinkedinCover class="col-6" />
                 </q-card>

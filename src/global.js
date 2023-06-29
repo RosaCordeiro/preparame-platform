@@ -5,7 +5,7 @@ export const userKey = "__knowledge_user";
 var baseApiUrlDefinition = "";
 
 // if (process.env.NODE_ENV && process.env.NODE_ENV == 'development') {
-baseApiUrlDefinition = "http://localhost:3334";
+ baseApiUrlDefinition = "https://api.preparame.homolog.inf.br"
 // } else {
 //    baseApiUrlDefinition = "https://api.prepara.me"
 // }

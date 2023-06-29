@@ -6,38 +6,11 @@
     }"
   >
     <q-card class="external-user-talent-bank-card-container">
-      <q-card-section v-if="expired" class="bg-negative text-white">
-        <div>
-          O uso do Simulador de Entrevista está expirado. Caso necessite
-          contrate mais dias para continuar seu uso.
-        </div>
-      </q-card-section>
-      <q-card-section
-        v-else-if="expiring"
-        class="bg-prepara-me-expiring text-white"
-      >
-        <div v-if="daysToExpireUse > 0">
-          {{
-            `Faltam ${(daysToExpireUse + 1).toFixed(
-              0
-            )} dia(s) para o uso do seu Simulador de Entrevistas ser interrompido.`
-          }}
-        </div>
-        <div v-else-if="daysToExpirePeriodTest > 0">
-          {{
-            `Faltam ${(daysToExpirePeriodTest + 1).toFixed(
-              0
-            )} dia(s) para o período de teste do seu Simulador de Entrevistas finalizar.`
-          }}
-        </div>
-      </q-card-section>
-
       <q-card-section class="external-user-talent-bank-card-header">
         <div class="external-user-talent-bank-card-info space-around">
           <div
             :class="{
               'external-user-talent-bank-card-info-container': true,
-              'q-mt-md': true,
               row: true,
             }"
           >
@@ -53,7 +26,7 @@
                 }"
                 src="./../../../../assets/imgs/talent_bank.jpg"
               />
-              <div v-if="!mobile && !expired" class="q-mb-sm">
+              <div v-if="!mobile" class="q-my-sm">
                 <q-btn
                   color="secondary"
                   label="PREENCHER [MENOS DE 3 MIN.]"
@@ -71,7 +44,7 @@
                 src="./../../../../assets/imgs/talent_bank.jpg"
               />
             </div>
-            <div v-if="mobile && !expired" class="q-my-md">
+            <div v-if="mobile" class="q-my-md">
               <q-btn
                 color="secondary"
                 label="PREENCHER [MENOS DE 3 MIN.]"
@@ -90,43 +63,12 @@ export default {
   data() {
     return {
       mobile: false,
-      daysToExpireUse: 0,
-      daysToExpirePeriodTest: 0,
-      expiring: false,
-      expired: false,
     };
   },
   mounted() {
     this.mobile = window.mobileAndTabletCheck();
-
-    this.daysToExpirePeriodTest =
-      ((new Date() - new Date(localStorage.getItem("periodTest"))) /
-        1000 /
-        60 /
-        60 /
-        24) *
-      -1;
-
-    this.daysToExpireUse =
-      ((new Date() - new Date(localStorage.getItem("expiresDate"))) /
-        1000 /
-        60 /
-        60 /
-        24) *
-      -1;
-
-    if (this.daysToExpireUse > 0) {
-      this.expiring = this.daysToExpireUse < 7;
-    } else if (this.daysToExpirePeriodTest > 0) {
-      this.expiring = true;
-    } else {
-      this.expired = true;
-    }
   },
   methods: {
-    goURL: function () {
-      this.$router.push({ path: `/` });
-    },
     goBlank: function (url) {
       window.open(url, "_blank");
     },
@@ -157,15 +99,5 @@ export default {
 
 .external-user-talent-bank-card-img {
   height: 100px;
-}
-
-.external-user-talent-bank-card-btn-container {
-  width: 100%;
-  position: relative;
-}
-
-.external-user-talent-bank-card-btn-know-more {
-  height: 40px;
-  margin: 10px auto;
 }
 </style>
