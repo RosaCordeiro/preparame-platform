@@ -28,6 +28,21 @@
               </q-item-section>
             </q-item>
           </template>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              goBlank(
+                'https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing'
+              )
+            "
+            class="side-nav-menu-item"
+          >
+            <q-item-section avatar>
+              <q-icon name="open_in_new"></q-icon>
+            </q-item-section>
+            <q-item-section>Ver Objetivos dos Clientes</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -145,6 +160,10 @@ export default {
         this.$router.push({ path: `/${url}` });
       }
     },
+    goBlank: function (url) {
+      window.open(url, "_blank");
+    },
+
     toogleMenu() {
       this.drawerController = !this.drawerController;
     },
@@ -204,5 +223,4 @@ export default {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
 </style>
