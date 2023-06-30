@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     downloadFile: function () {
-      downloadFileFromPublic("Capas");
+      downloadFileFromPublic("Capas.zip");
       saveCrud("clicks", {
         name: "Capas de Linkedin",
       });
