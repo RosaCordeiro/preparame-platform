@@ -382,7 +382,8 @@ export default {
         .then(() => {
           this.$q.notify({
             type: "success",
-            message: "Sucesso",
+            message:
+              "Email enviado com sucesso, verifique sua caixa de entrada.",
           });
 
           this.resetPasswordDialog = false;

@@ -1,5 +1,8 @@
 <template>
-  <q-card class="home-company-feelings-map-card column q-pb-md q-px-md">
+  <q-card
+    class="home-company-feelings-map-card column q-pa-md"
+    style="width: 100%"
+  >
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
         <q-card-section class="home-company-feelings-map-card-title">

@@ -1,5 +1,8 @@
 <template>
-  <q-card class="home-company-labor-risk-detailed-card column q-pb-md q-px-md">
+  <q-card
+    class="home-company-labor-risk-detailed-card column q-pa-md"
+    style="width: 100%"
+  >
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
         <q-card-section
@@ -33,7 +36,7 @@
               :style="`width: ${
                 l[1] * 10
               }%; background: linear-gradient(90deg, #1a27b7 0%, ${
-                l[1] < 5 ? '#34a67c' : '#ff4690'
+                l[1] >= 7 ? '#34a67c' : '#ff4690'
               } 100%);`"
             >
               <q-tooltip

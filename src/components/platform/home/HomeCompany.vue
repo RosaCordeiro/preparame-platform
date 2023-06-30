@@ -7,7 +7,7 @@
           'justify-between': true,
         }"
       >
-        <div class="home-company-charts-cards q-gutter-xs">
+        <div class="home-company-charts-cards">
           <NpsCard v-if="dashboardsLoaded" :nps="nps"></NpsCard>
           <EmployeerBrandRiskCard
             v-if="dashboardsLoaded"
@@ -35,7 +35,7 @@
           ></LaborRiskAlertCard>
         </div>
 
-        <div class="home-company-charts-cards justify-around">
+        <div class="charts__row">
           <LaborRiskDetailedCard
             v-if="dashboardsLoaded"
             :laborRisks="laborRiskData"
@@ -45,6 +45,17 @@
             :feelingsMap="feelingsMapData"
           />
         </div>
+
+        <!-- <div class="home-company-charts-cards justify-around">
+          <LaborRiskDetailedCard
+            v-if="dashboardsLoaded"
+            :laborRisks="laborRiskData"
+          />
+          <FeelingsMapCard
+            v-if="dashboardsLoaded"
+            :feelingsMap="feelingsMapData"
+          />
+        </div> -->
       </div>
       <div
         :class="{
@@ -269,5 +280,23 @@ export default {
 .home-company-charts-detailed {
   height: 60vh;
   width: 100vw;
+}
+
+.charts__row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  gap: 32px;
+}
+
+.teste-1 {
+  width: 100%;
+  background-color: black;
+}
+
+.teste-2 {
+  width: 100%;
+  background-color: blue;
 }
 </style>
