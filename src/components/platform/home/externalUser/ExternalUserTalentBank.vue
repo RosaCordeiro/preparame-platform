@@ -19,8 +19,18 @@
                 BANCO DE TALENTOS: INDICAMOS VOCÊ PARA RECRUTADORES
               </div>
 
+              <p>
+                Aumente as chances de ter seu CV selecionado com nosso modelo e
+                dicas para preenchimento
+              </p>
+
+              <p>
+                <b>É fácil. É rápido. É gratuito!</b>
+              </p>
+
               <img
                 v-if="mobile"
+                class="img__card"
                 :class="{
                   'external-user-talent-bank-card-img': true,
                 }"
@@ -34,9 +44,10 @@
                 />
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" style="padding: 10px">
               <img
                 v-if="!mobile"
+                class="img__card"
                 :class="{
                   'external-user-talent-bank-card-img': true,
                   'col-3': true,
@@ -99,5 +110,11 @@ export default {
 
 .external-user-talent-bank-card-img {
   height: 100px;
+}
+
+.img__card {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 </style>
