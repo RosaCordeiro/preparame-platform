@@ -7,31 +7,40 @@
           'justify-between': true,
         }"
       >
-        <div class="home-company-charts-cards">
-          <NpsCard v-if="dashboardsLoaded" :nps="nps"></NpsCard>
+        <div class="home-company-charts-cards row">
+          <NpsCard
+            v-if="dashboardsLoaded"
+            :nps="nps"
+            style="flex: 1 0 200px"
+          ></NpsCard>
           <EmployeerBrandRiskCard
             v-if="dashboardsLoaded"
             :employeerBrandRisk="brandRisk"
+            style="flex: 1 0 200px"
           ></EmployeerBrandRiskCard>
           <LaborRiskCard
             v-if="dashboardsLoaded"
             :laborRisk="laborRisk"
+            style="flex: 1 0 200px"
           ></LaborRiskCard>
           <RealocatedsCard
             v-if="dashboardsLoaded"
             :realocateds="countRealocateds"
             :totalUsers="countUsers"
+            style="flex: 1 0 200px"
           ></RealocatedsCard>
           <RegisteredEmployeesCard
             v-if="dashboardsLoaded"
             :registeredEmployees="countUsers"
             :totalEmployees="countEmployees"
+            style="flex: 1 0 200px"
           >
           </RegisteredEmployeesCard>
           <LaborRiskAlertCard
             v-if="dashboardsLoaded"
             :laborRiskAlerts="countLaborRiskAlerts"
             :totalUsers="countUsers"
+            style="flex: 1 0 200px"
           ></LaborRiskAlertCard>
         </div>
 

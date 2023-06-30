@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="home-company-labor-risk-detailed-card column q-pa-md"
-    style="width: 100%"
+    style="flex: 1"
   >
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
