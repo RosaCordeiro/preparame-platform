@@ -9,19 +9,19 @@
           <div class="external-user-welcome-card-second-msg q-mt-sm">
             E não se esqueça de sorrir, pois você está com sorte &#129303;
           </div>
-          <q-btn v-show=false 
+          <q-btn
+            v-show="false"
             color="accent"
             label="ABRIR BISCOITO DA SORTE"
             class="col self-center q-mt-md"
             size="sm"
           />
         </div>
-        <div v-show=false 
+        <div
+          v-show="false"
           class="column external-user-welcome-card-fortune-cookie-container col-6"
         >
-          <div
-            class="external-user-welcome-card-fortune-cookie-img"
-          ></div>
+          <div class="external-user-welcome-card-fortune-cookie-img"></div>
         </div>
       </q-card-section>
     </q-card>
@@ -124,7 +124,7 @@ export default {
 
 .external-user-welcome-card-second-msg {
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-family: "Nunito";
   font-style: normal;
   color: $text-dark-grey;

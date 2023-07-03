@@ -1,5 +1,5 @@
 <template>
-  <q-card class="crud-register-form q-pa-md">
+  <q-card class="crud-register-form q-pa-md" v-if="tableData.length > 0">
     <q-card-section>
       <q-form class="col crud-register">
         <div
@@ -14,6 +14,7 @@
           />
         </div>
       </q-form>
+
       <div class="row crud-filter-buttons-row">
         <q-space></q-space>
         <q-btn

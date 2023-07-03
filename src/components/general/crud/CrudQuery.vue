@@ -8,7 +8,7 @@
           :blockCreateNew="blockCreateNew"
           :blockRemove="blockRemove"
         />
-        <CrudQueryFilter :rows="rows" />
+        <CrudQueryFilter :rows="rows" v-if="filters.length > 0" />
         <CrudQueryTable
           ref="table"
           :result="{ columns, data }"
@@ -97,7 +97,15 @@ export default {
       }
     },
     filter: async function (filters) {
-      this.data = await filterCrud(filters, this.url, this.columns);
+      const response = await filterCrud(filters, this.url, this.columns);
+
+      if (response.data) {
+        this.data = response.data;
+        console.log(this.data);
+        return;
+      }
+
+      this.data = response;
     },
   },
   created() {

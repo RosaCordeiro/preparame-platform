@@ -18,6 +18,8 @@
             class="col-3"
             :products="products"
             :interviewSimulator="interviewSimulator"
+            @open-mentoring-calendar="showMentoringCalendar = true"
+            @close-mentoring-calendar="showMentoringCalendar = false"
           />
           <div
             :class="{
@@ -35,26 +37,38 @@
               }"
             >
               <Schedule :homeType="'USER'" />
-              <ExternalUserTalentBank :class="{ 'col-12': true }" />
-              <div class="justify-around q-mb-sm">
-                <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserInterviewSimulatorCard class="col-6" />
-                  <ExternalUserMostCommonQuestions class="col-6" />
-                </q-card>
+              <div v-if="showMentoringCalendar">
+                <ExternalUserMentoringSchedule />
               </div>
-              <ExternalUserKitRealocationProCard
-                v-if="!kitPro"
-                :class="{ 'col-12': true }"
-              />
-              <ExternalUserIndividualMentorshipCard
-                v-if="false"
-                :class="{ 'col-12': true }"
-              />
-              <div class="justify-around q-mb-sm">
-                <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserResumeCreatorCard class="col-6" />
-                  <ExternalUserLinkedinCover class="col-6" />
-                </q-card>
+              <div
+                v-else
+                :class="{
+                  'q-col-gutter-md': !mobile,
+                  'q-col-gutter-lg': mobile,
+                  'external-user-options': true,
+                }"
+              >
+                <ExternalUserTalentBank :class="{ 'col-12': true }" />
+                <div class="justify-around q-mb-sm">
+                  <q-card class="row external-user-card-container q-pa-sm">
+                    <ExternalUserInterviewSimulatorCard class="col-6" />
+                    <ExternalUserMostCommonQuestions class="col-6" />
+                  </q-card>
+                </div>
+                <ExternalUserKitRealocationProCard
+                  v-if="!kitPro"
+                  :class="{ 'col-12': true }"
+                />
+                <ExternalUserIndividualMentorshipCard
+                  v-if="false"
+                  :class="{ 'col-12': true }"
+                />
+                <div class="justify-around q-mb-sm">
+                  <q-card class="row external-user-card-container q-pa-sm">
+                    <ExternalUserResumeCreatorCard class="col-6" />
+                    <ExternalUserLinkedinCover class="col-6" />
+                  </q-card>
+                </div>
               </div>
             </div>
           </div>
@@ -84,6 +98,7 @@ import ExternalUserIndividualMentorshipCard from "./externalUser/ExternalUserInd
 import ExternalUserTalentBank from "./externalUser/ExternalUserTalentBank.vue";
 import ExternalUserMostCommonQuestions from "./externalUser/ExternalUserMostCommonQuestions.vue";
 import ExternalUserLinkedinCover from "./externalUser/ExternalUserLinkedinCover.vue";
+import ExternalUserMentoringSchedule from "./externalUser/ExternalUserMentoringSchedule.vue";
 import Schedule from "./templates/Schedule.vue";
 import UserCard from "./user/UserCard.vue";
 import axios from "axios";
@@ -107,6 +122,7 @@ export default {
       surveyAnswered: false,
       showSurveySuggestion: false,
       surveyPopupShowed: false,
+      showMentoringCalendar: false,
     };
   },
   components: {
@@ -119,6 +135,7 @@ export default {
     ExternalUserTalentBank,
     ExternalUserMostCommonQuestions,
     ExternalUserLinkedinCover,
+    ExternalUserMentoringSchedule,
     UserCard,
     Schedule,
   },

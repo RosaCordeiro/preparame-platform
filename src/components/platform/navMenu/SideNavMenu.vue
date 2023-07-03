@@ -107,6 +107,12 @@ const menu = {
         separator: false,
         url: "addProductToUser",
       },
+      {
+        icon: "laptop_mac",
+        label: "Mentorias Coletivas",
+        separator: false,
+        url: "mentoring",
+      },
     ],
   },
   USER: {

@@ -4,9 +4,17 @@
       <Breadcrumbs :breadcrumbs="breadcrumbs" />
       <div class="crud-register-content">
         <CrudRegisterTitle :title="title.mainTable || title" />
+
         <CrudRegisterForm ref="mainTable" :table="forms.mainTable" />
-        <CrudRegisterTitle v-if="registerType==='parentChild'" :title="title.childTable" />
-        <CrudRegisterFormRow v-if="registerType==='parentChild'" ref="childTable" :data="forms.childTable" />
+        <CrudRegisterTitle
+          v-if="registerType === 'parentChild'"
+          :title="title.childTable"
+        />
+        <CrudRegisterFormRow
+          v-if="registerType === 'parentChild'"
+          ref="childTable"
+          :data="forms.childTable"
+        />
         <CrudRegisterButtons />
       </div>
     </q-page>
@@ -57,8 +65,9 @@ export default {
       );
 
       this.forms.childTable.tableColumns =
-        this.tables["childTable"].tableColumns;
-      this.forms.childTable.tableData = this.tables["childTable"].tableData;
+        this.tables["childTable"]?.tableColumns ?? [];
+      this.forms.childTable.tableData =
+        this.tables["childTable"]?.tableData ?? [];
     }
   },
 };

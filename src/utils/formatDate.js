@@ -1,44 +1,64 @@
 function formatDateToString(date) {
-    let newDate = date.substr(0, 10)
+  let newDate = date.substr(0, 10);
 
-    newDate = newDate.split("-");
+  newDate = newDate.split("-");
 
-    newDate = `${newDate[2]}/${newDate[1]}/${newDate[0]}`;
+  newDate = `${newDate[2]}/${newDate[1]}/${newDate[0]}`;
 
-    return newDate
+  return newDate;
 }
 
-function formatDateToStringMasked(date, mask){
-    let dateMasked = mask
-    let dateReference = new Date(date)
-    
-    if (mask.includes('dd')) {
-        let dayDateReference = `0${dateReference.getDate().toString()}`
-        
-        dayDateReference = dayDateReference.substring(dayDateReference.length - 2)
-        
-        dateMasked = dateMasked.replace("dd", dayDateReference);
-    }
-    
-    if (mask.includes('mm')) {
-        let monthDateReference = dateReference.getMonth() + 1
+function formatDateToStringMasked(date, mask) {
+  let dateMasked = mask;
+  let dateReference = new Date(date);
 
-        monthDateReference = `0${monthDateReference.toString()}`
+  if (mask.includes("dd")) {
+    let dayDateReference = `0${dateReference.getDate().toString()}`;
 
-        monthDateReference = monthDateReference.substring(monthDateReference.length - 2)
+    dayDateReference = dayDateReference.substring(dayDateReference.length - 2);
 
-        dateMasked = dateMasked.replace("mm", monthDateReference);
-    }
+    dateMasked = dateMasked.replace("dd", dayDateReference);
+  }
 
-    if (mask.includes('yyyy')) {
-        let yearDateReference = dateReference.getFullYear().toString()
+  if (mask.includes("mm")) {
+    let monthDateReference = dateReference.getMonth() + 1;
 
-        yearDateReference = yearDateReference.substring(yearDateReference.length - 4)
+    monthDateReference = `0${monthDateReference.toString()}`;
 
-        dateMasked = dateMasked.replace("yyyy", yearDateReference);
-    }
+    monthDateReference = monthDateReference.substring(
+      monthDateReference.length - 2
+    );
 
-    return dateMasked
+    dateMasked = dateMasked.replace("mm", monthDateReference);
+  }
+
+  if (mask.includes("yyyy")) {
+    let yearDateReference = dateReference.getFullYear().toString();
+
+    yearDateReference = yearDateReference.substring(
+      yearDateReference.length - 4
+    );
+
+    dateMasked = dateMasked.replace("yyyy", yearDateReference);
+  }
+
+  return dateMasked;
 }
 
-export { formatDateToString, formatDateToStringMasked }
+function formatDateToStringWithHour(date) {
+  const newDate = new Date(date);
+
+  const day = newDate.getDate().toString().padStart(2, "0");
+  const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = newDate.getFullYear().toString().padStart(4, "0");
+  const hour = newDate.getHours().toString().padStart(2, "0");
+  const minute = newDate.getMinutes().toString().padStart(2, "0");
+
+  return `${day}/${month}/${year}, ${hour}:${minute}`;
+}
+
+export {
+  formatDateToString,
+  formatDateToStringMasked,
+  formatDateToStringWithHour,
+};

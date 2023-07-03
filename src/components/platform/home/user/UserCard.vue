@@ -34,6 +34,18 @@
           </div>
         </q-banner>
 
+        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-pink">
+          <div class="user-card-banner-content row">
+            <q-btn
+              flat
+              color="white"
+              label="CALENDÁRIO DE MENTORIAS COLETIVAS"
+              class="col-12"
+              @click="$emit('open-mentoring-calendar')"
+            />
+          </div>
+        </q-banner>
+
         <q-banner
           v-if="simulator"
           rounded
@@ -172,6 +184,7 @@ export default {
   methods: {
     goUrl: function (url) {
       this.$router.push({ path: `/${url}` });
+      this.$emit("close-mentoring-calendar");
     },
     goBlank: function (url) {
       window.open(url, "_blank");

@@ -18,6 +18,7 @@ export default {
   },
   computed: {
     loader() {
+      console.log(this.col.type);
       if (!this.col.type) {
         return null;
       }
@@ -52,7 +53,8 @@ export default {
 </script>
 
 <style scoped>
-.crud-filter .q-mr-sm, .crud-register .q-mr-sm {
+.crud-filter .q-mr-sm,
+.crud-register .q-mr-sm {
   margin-right: unset;
   padding-right: 8px;
 }
