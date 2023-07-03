@@ -28,21 +28,6 @@
               </q-item-section>
             </q-item>
           </template>
-          <q-item
-            clickable
-            v-ripple
-            @click="
-              goBlank(
-                'https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing'
-              )
-            "
-            class="side-nav-menu-item"
-          >
-            <q-item-section avatar>
-              <q-icon name="open_in_new"></q-icon>
-            </q-item-section>
-            <q-item-section>Ver Objetivos dos Clientes</q-item-section>
-          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -113,6 +98,12 @@ const menu = {
         separator: false,
         url: "mentoring",
       },
+      {
+        icon: "open_in_new",
+        label: "Ver Objetivos dos Clientes",
+        separator: false,
+        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+      },
     ],
   },
   USER: {
@@ -162,6 +153,11 @@ export default {
   props: ["sideNavMenuComponent"],
   methods: {
     goUrl: function (url) {
+      if (String(url).startsWith("http")) {
+        this.goBlank(url);
+        return;
+      }
+
       if (this.$router.history.current.path !== `/${url}`) {
         this.$router.push({ path: `/${url}` });
       }
