@@ -4,6 +4,7 @@
       v-for="(s, index) in schedule"
       :key="index"
       class="col-3 q-pa-sm schedule"
+      style="justify-content: space-between"
     >
       <q-img :src="s.image" :ratio="9 / 13" class="schedule-image q-mb-md" />
 

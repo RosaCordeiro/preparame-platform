@@ -8,6 +8,8 @@
       'bg-grey': !eventValid,
       'bg-prepara-me-blue': eventValid && !lessThen1Hour,
       'bg-primary': eventValid && lessThen1Hour,
+      'bg-prepara-me-green':
+        Object.entries(this.schedulesGroup)[0][1][0].type === 'group',
     }"
   >
     <div class="row items-start items-center event-schedule">
@@ -29,15 +31,16 @@
         <div class="event-schedule-hour col-1">
           <div class="text-subtitle1 text-center">{{ hour }}</div>
         </div>
+
         <div class="event-schedule-hour col-2">
           <q-rating
-            v-model="eventSchedule.schedules[0].rating"
+            v-model="rate"
             max="5"
             size="2em"
             color="gold"
             icon="star_border"
             icon-selected="star"
-            :disable="eventValid"
+            :disable="!eventValid"
             @click="rateSpecialist()"
           />
         </div>
@@ -120,6 +123,7 @@ export default {
       moreThen1Hour: false,
       confirm: false,
       eventSchedule: {},
+      rate: 0,
     };
   },
   props: ["schedulesGroup", "userType"],
@@ -148,16 +152,38 @@ export default {
       document.location.reload(true);
     },
     async rateSpecialist() {
-      await saveCrud(
-        `specialists/schedule/${this.eventSchedule.schedules[0].id}`,
-        this.eventSchedule.schedules[0],
-        "put",
-        true
-      );
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "individual") {
+        await saveCrud(
+          `specialists/schedule/${this.eventSchedule.schedules[0].id}`,
+          this.eventSchedule.schedules[0],
+          "put",
+          true
+        );
+      }
+
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "group") {
+        await saveCrud(
+          `mentoring/rate`,
+          {
+            mentoringId: this.eventSchedule.schedules[0].id,
+            rate: this.rate,
+          },
+          "put",
+          true
+        );
+      }
     },
   },
+  watch: {},
   mounted() {
     this.eventSchedule.schedules = Object.entries(this.schedulesGroup)[0][1];
+
+    if (
+      this.eventSchedule.schedules[0].rating === undefined ||
+      this.eventSchedule.schedules[0].rating === null
+    ) {
+      this.eventSchedule.schedules[0].rating = 0;
+    }
 
     let dateSchedule = new Date(this.eventSchedule.schedules[0].dateSchedule);
 
@@ -203,6 +229,7 @@ export default {
     minute = minute.substring(minute.length - 2);
 
     this.hour = `${hour}:${minute}`;
+    this.rate = Object.entries(this.schedulesGroup)[0][1][0].rating;
   },
 };
 </script>
@@ -214,5 +241,9 @@ export default {
 
 .event-schedule-delete-icon {
   cursor: pointer;
+}
+
+.bg-prepara-me-green {
+  background-color: #667998;
 }
 </style>
