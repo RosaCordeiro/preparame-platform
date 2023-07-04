@@ -40,7 +40,7 @@
             color="gold"
             icon="star_border"
             icon-selected="star"
-            :disable="!eventValid"
+            :disable="eventValid"
             @click="rateSpecialist()"
           />
         </div>
