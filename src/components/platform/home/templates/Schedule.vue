@@ -75,7 +75,10 @@ export default {
       },
     ];
 
-    this.schedules = await filterCrud(filters, "specialists/schedule");
+    this.schedules = [
+      ...(await filterCrud(filters, "specialists/schedule")),
+      ...(await filterCrud(filters, "mentoring/schedule-list")),
+    ];
 
     this.schedules.forEach((schedule) => {
       let groupKey = `${schedule["productId"]}${schedule["userId"]}${
