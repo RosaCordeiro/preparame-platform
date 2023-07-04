@@ -130,6 +130,12 @@ const menu = {
         separator: true,
         url: "providesTimetables",
       },
+      {
+        icon: "open_in_new",
+        label: "Ver Objetivos dos Clientes",
+        separator: false,
+        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+      },
     ],
   },
   COMPANY_ADMIN: {
