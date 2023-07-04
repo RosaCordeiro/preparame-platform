@@ -282,8 +282,10 @@ export default {
           answer: -1,
           options: ["Não", "Sim"],
           type: "YesNo",
+          type: "YesNo",
+          laborRiskJSON: true,
           brandRisk: false,
-          category: "NPS",
+          category: "laborRisk",
         },
         {
           index: 2,
