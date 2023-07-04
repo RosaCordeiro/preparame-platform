@@ -9,7 +9,7 @@
     dense
     type="datetime-local"
     :class="`col-${col.size}
-    q-mb-sm q-mr-sm`"
+    q-mb-sm q-mr-sm date`"
   />
 </template>
 
@@ -48,30 +48,11 @@ export default {
 
     this.rules = dateRule;
   },
-  methods: {
-    formatDate(date) {
-      if (date.length === 16) {
-        return date;
-      }
-
-      const newDate = new Date(date);
-
-      const year = newDate.getFullYear();
-      const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
-      const day = newDate.getDate().toString().padStart(2, "0");
-
-      const hour = newDate.getHours().toString().padStart(2, "0");
-      const minutes = newDate.getMinutes().toString().padStart(2, "0");
-
-      return `${year}-${month}-${day}T${hour}:${minutes}`;
-    },
-  },
 
   watch: {
     col: {
       handler(val) {
-        console.log(val.model);
-        this.model = this.formatDate(val.model);
+        this.model = val.model;
       },
       deep: true,
     },
@@ -82,4 +63,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.date .q-field__label.no-pointer-events.absolute.ellipsis {
+  max-width: 133%;
+  transform: translateY(-40%) scale(0.75);
+  transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+    max-width 0.396s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>

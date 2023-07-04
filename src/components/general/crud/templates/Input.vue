@@ -6,6 +6,7 @@
     :label="col.label"
     :rules="col.rules"
     dense
+    :readonly="!editable"
     :class="`col-${col.size} q-mb-sm q-mr-sm`"
   >
   </q-input>
@@ -17,9 +18,11 @@ export default {
   data() {
     return {
       model: "",
+      editable: true,
     };
   },
   created() {
+    if (this.col.editable !== undefined) this.editable = this.col.editable;
     this.model = this.oldValue;
   },
   watch: {

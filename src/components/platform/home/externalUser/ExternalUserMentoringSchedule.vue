@@ -15,7 +15,7 @@
         rounded
         class="text-white bg-prepara-me-blue q-mt-md"
         :class="{
-          disabled: b2b,
+          disabled: !b2b,
         }"
       >
         <div class="user-card-banner-content row">
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       schedule: [],
-      b2b: localStorage.getItem("companyId") != "null",
+      b2b: localStorage.getItem("subscribeToken") !== "",
     };
   },
   methods: {
@@ -76,6 +76,7 @@ export default {
     },
   },
   mounted() {
+    console.log("mounted", localStorage.getItem("subscribeToken"));
     this.listSchedule();
   },
 };

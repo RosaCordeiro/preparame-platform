@@ -6,14 +6,13 @@
         <CrudRegisterTitle :title="title.mainTable || title" />
 
         <CrudRegisterForm ref="mainTable" :table="forms.mainTable" />
-        <CrudRegisterTitle
-          v-if="registerType === 'parentChild'"
-          :title="title.childTable"
-        />
+
         <CrudRegisterFormRow
           v-if="registerType === 'parentChild'"
           ref="childTable"
           :data="forms.childTable"
+          :removeAction="hasAction"
+          :title="title.childTable"
         />
         <CrudRegisterButtons />
       </div>
@@ -38,10 +37,11 @@ export default {
     CrudRegisterButtons,
     Breadcrumbs,
   },
-  props: ["title", "breadcrumbs", "registerType", "tables"],
+  props: ["title", "breadcrumbs", "registerType", "tables", "removeAction"],
   data() {
     return {
       forms: {},
+      hasAction: this.removeAction ?? false,
     };
   },
   created() {

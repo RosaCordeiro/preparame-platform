@@ -1,6 +1,10 @@
 <template>
   <div class="row" :class="`col-${col.size} q-mb-sm q-mr-sm q-mt-sm`">
-    <img :src="model" style="width: 100%; height: 200px; object-fit: contain" />
+    <img
+      :src="model"
+      style="width: 100%; height: 200px; object-fit: contain"
+      v-if="model !== null && model !== ''"
+    />
 
     <q-file
       filled

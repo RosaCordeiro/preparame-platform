@@ -5,6 +5,7 @@
       :title="title"
       :tables="tables"
       :registerType="registerType"
+      :removeAction="true"
     />
   </div>
 </template>
@@ -78,7 +79,65 @@ export default {
               type: "InputFile",
               visible: true,
             },
+            linkMeet: {
+              label: "Link Meet",
+              name: "linkMeet",
+              size: "4",
+              row: 1,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+              editable: false,
+            },
+            users: {
+              label: "Usuários",
+              name: "users",
+              size: "4",
+              row: 1,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+              editable: false,
+            },
+            eventId: {
+              label: "Id do Evento",
+              name: "eventId",
+              size: "4",
+              row: 1,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+              editable: false,
+            },
           },
+        },
+        childTable: {
+          content: "usersMentoring",
+          apiUrl: "/mentoring",
+          removeUrl: "",
+          registerColumns: {},
+          tableColumns: [
+            {
+              name: "id",
+              label: "Id",
+              align: "left",
+              field: "id",
+              sortable: false,
+              visible: false,
+            },
+            {
+              name: "name",
+              label: "Nome",
+              align: "left",
+              field: "name",
+              sortable: false,
+              visible: true,
+            },
+          ],
+          tableData: [],
         },
       },
       breadcrumbs: [
@@ -91,7 +150,10 @@ export default {
           to: "",
         },
       ],
-      title: "Cadastro de Mentorias",
+      title: {
+        mainTable: "Cadastro de Mentorias",
+        childTable: "Usuários",
+      },
     };
   },
   created() {

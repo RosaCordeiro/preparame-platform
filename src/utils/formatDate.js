@@ -45,14 +45,33 @@ function formatDateToStringMasked(date, mask) {
   return dateMasked;
 }
 
+export const dateToString = (date) => {
+  try {
+    const newDate = new Date(date);
+    const formatedDate = new Date(
+      newDate.setMinutes(newDate.getMinutes() - -newDate.getTimezoneOffset())
+    );
+    return `${formatedDate.getDate().toString().padStart(2, "0")}/${(
+      formatedDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${formatedDate.getFullYear()}`;
+  } catch (error) {
+    return date;
+  }
+};
+
 function formatDateToStringWithHour(date) {
   const newDate = new Date(date);
+  const formatedDate = new Date(
+    newDate.setMinutes(newDate.getMinutes() - -newDate.getTimezoneOffset())
+  );
 
-  const day = newDate.getDate().toString().padStart(2, "0");
-  const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
-  const year = newDate.getFullYear().toString().padStart(4, "0");
-  const hour = newDate.getHours().toString().padStart(2, "0");
-  const minute = newDate.getMinutes().toString().padStart(2, "0");
+  const day = formatedDate.getDate().toString().padStart(2, "0");
+  const month = (formatedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = formatedDate.getFullYear().toString().padStart(4, "0");
+  const hour = formatedDate.getHours().toString().padStart(2, "0");
+  const minute = formatedDate.getMinutes().toString().padStart(2, "0");
 
   return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
