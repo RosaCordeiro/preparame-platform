@@ -49,15 +49,20 @@ export default {
               type: "Input",
               visible: true,
             },
-            mentor: {
+            mentorId: {
               label: "Mentor",
-              name: "mentor",
+              name: "mentorId",
               size: "6",
               row: 1,
               col: 1,
               model: "",
-              type: "Input",
+              type: "DialogSelect",
               visible: true,
+              options: {
+                table: "specialists",
+                value: "id",
+                label: "name",
+              },
             },
             date: {
               label: "Data",

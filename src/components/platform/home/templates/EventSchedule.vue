@@ -24,7 +24,9 @@
             {{
               userType === "USER"
                 ? specialistName
-                : eventSchedule.schedules[0].user.name
+                : Object.entries(this.schedulesGroup)[0][1][0].type === "group"
+                ? "Mentoria Coletiva"
+                : getUserName(eventSchedule.schedules)
             }}
           </div>
         </div>
@@ -128,6 +130,13 @@ export default {
   },
   props: ["schedulesGroup", "userType"],
   methods: {
+    getUserName(data) {
+      try {
+        return data[0].user.name;
+      } catch (error) {
+        return "Usuário não encontrado.";
+      }
+    },
     goMeet() {
       if (this.eventSchedule.schedules[0].hangoutLink) {
         window.location.href = this.eventSchedule.schedules[0].hangoutLink;
