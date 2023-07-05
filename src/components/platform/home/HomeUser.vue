@@ -38,8 +38,18 @@
               <ExternalUserTalentBank :class="{ 'col-12': true }" />
               <div class="justify-around q-mb-sm">
                 <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserInterviewSimulatorCard class="col-6" />
-                  <ExternalUserMostCommonQuestions class="col-6" />
+                  <ExternalUserInterviewSimulatorCard
+                    :class="{
+                      'col-6': !mobile,
+                      'col-12': mobile,
+                    }"
+                  />
+                  <ExternalUserMostCommonQuestions
+                    :class="{
+                      'col-6': !mobile,
+                      'col-12': mobile,
+                    }"
+                  />
                 </q-card>
               </div>
               <ExternalUserKitRealocationProCard
@@ -52,8 +62,18 @@
               />
               <div class="justify-around q-mb-sm">
                 <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserResumeCreatorCard class="col-6" />
-                  <ExternalUserLinkedinCover class="col-6" />
+                  <ExternalUserResumeCreatorCard
+                    :class="{
+                      'col-6': !mobile,
+                      'col-12': mobile,
+                    }"
+                  />
+                  <ExternalUserLinkedinCover
+                    :class="{
+                      'col-6': !mobile,
+                      'col-12': mobile,
+                    }"
+                  />
                 </q-card>
               </div>
             </div>
