@@ -119,6 +119,8 @@ export default {
         "yyyy-mm-dd"
       );
 
+      if (this.specialist.id === undefined) return;
+
       const filters = [
         { name: "specialistId", model: this.specialist.id },
         { name: "dateBegin", model: filterDate },
@@ -220,6 +222,9 @@ export default {
       this.loadSchedule(new Date(newQuestion));
       this.adjustHours(newQuestion);
     },
+    specialist() {
+      this.loadSchedule(new Date());
+    },
   },
 };
 </script>
@@ -238,6 +243,6 @@ export default {
 }
 
 .specialist-provides-timetable-timetable-mobile {
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 </style>
