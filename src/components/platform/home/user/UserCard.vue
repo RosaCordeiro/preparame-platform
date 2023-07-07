@@ -34,7 +34,7 @@
           </div>
         </q-banner>
 
-        <!-- <q-banner rounded class="q-ma-sm text-white bg-green-8">
+        <q-banner rounded class="q-ma-sm text-white bg-green-8">
           <div class="user-card-banner-content row">
             <q-btn
               flat
@@ -44,7 +44,7 @@
               @click="$emit('open-mentoring-calendar')"
             />
           </div>
-        </q-banner> -->
+        </q-banner>
 
         <q-banner
           v-if="simulator"
