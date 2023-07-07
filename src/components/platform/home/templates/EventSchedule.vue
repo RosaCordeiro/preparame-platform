@@ -43,7 +43,7 @@
             icon="star_border"
             icon-selected="star"
             :disable="eventValid"
-            @click="rateSpecialist()"
+            @click="!eventValid ? rateSpecialist() : null"
           />
         </div>
         <div class="event-schedule-hour col-2">
