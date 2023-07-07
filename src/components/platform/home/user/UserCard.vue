@@ -58,8 +58,8 @@
             'bg-green': product.scheduled,
             'bg-prepara-me': !product.scheduled,
           }"
-          v-for="product in productsSchedulables"
-          :key="product.id"
+          v-for="(product, index) in productsSchedulables"
+          :key="index"
         >
           <div class="user-card-banner-content row">
             <q-btn
@@ -158,10 +158,10 @@ export default {
       return product.type === "SCHEDULED";
     });
 
-    this.productsSchedulables = this.productsSchedulables.filter(
+    /* this.productsSchedulables = this.productsSchedulables.filter(
       (product, index, self) =>
         index === self.findIndex((t) => t.id === product.id)
-    );
+    ); */
 
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;
