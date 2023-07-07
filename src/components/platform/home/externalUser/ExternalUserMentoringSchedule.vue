@@ -9,7 +9,7 @@
       <q-img :src="s.image" :ratio="9 / 13" class="schedule-image q-mb-md" />
 
       <p class="schedule-title">Tema: {{ s.title }}</p>
-      <p>Quem: {{ s.mentor }}</p>
+      <p>Quem: {{ s.mentor.name }}</p>
       <p>Quando: {{ formatDateToStringWithHour(s.date) }}</p>
 
       <q-banner
@@ -26,6 +26,7 @@
             label="Participar"
             class="col-12"
             @click="participate(s.id)"
+            :disable="!b2b"
           />
         </div>
       </q-banner>
@@ -42,7 +43,9 @@ export default {
   data() {
     return {
       schedule: [],
-      b2b: localStorage.getItem("subscribeToken") !== "",
+      b2b:
+        localStorage.getItem("companyId") !== "" &&
+        localStorage.getItem("companyId") !== null,
     };
   },
   methods: {
