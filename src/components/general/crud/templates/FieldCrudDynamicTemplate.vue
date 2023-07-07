@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import emitter from "../../../../config/event-bus.js";
+
 export default {
   name: "dynamic-link",
   props: ["col"],
@@ -15,6 +17,14 @@ export default {
     return {
       component: null,
     };
+  },
+  watch: {
+    col: {
+      handler: function (val) {
+        emitter.emit("update_model", val);
+      },
+      deep: true,
+    },
   },
   computed: {
     loader() {

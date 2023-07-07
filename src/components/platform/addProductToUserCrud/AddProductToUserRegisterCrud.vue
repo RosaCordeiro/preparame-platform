@@ -5,7 +5,36 @@
       :title="title"
       :tables="tables"
       :registerType="registerType"
-    />
+    >
+      <div v-if="products.length > 0">
+        <q-table
+          class="q-mt-md bg-secondary crud-table"
+          :data="products"
+          :columns="columns"
+          table-class="bg-background"
+          table-header-class="text-white bg-secondary"
+          no-data-label="Sem dados para mostrar."
+          no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa."
+          dense
+          title="Resultado(s) Pesquisa"
+          title-class="text-white bg-secondary crud-query-title"
+          rows-per-page-label="Linhas por página: "
+        >
+          <template v-slot:body-cell-actions="props">
+            <q-td auto-width :props="props">
+              <q-btn-group>
+                <q-btn
+                  color="negative"
+                  icon="mdi-delete"
+                  :disable="props.row.availableQuantity === 0"
+                  @click="deleteProduct(props.row)"
+                ></q-btn>
+              </q-btn-group>
+            </q-td>
+          </template>
+        </q-table>
+      </div>
+    </CrudRegister>
   </div>
 </template>
 
@@ -14,6 +43,9 @@ import CrudRegister from "../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "../../general/crud/utils/saveCrud.js";
 import { showError } from "../../../global.js";
+import emitter from "src/config/event-bus";
+import { filterCrud } from "src/components/general/crud/utils/filterCrud";
+import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 
 export default {
   components: {
@@ -69,7 +101,7 @@ export default {
               visible: true,
             },
           },
-        }
+        },
       },
       breadcrumbs: [
         {
@@ -80,6 +112,39 @@ export default {
       title: {
         mainTable: "Adicionar Produtos Para Usuários",
       },
+      products: [],
+      columns: [
+        {
+          name: "name",
+          label: "Produto",
+          field: "name",
+          align: "left",
+          sortable: true,
+        },
+        /* availableQuantity */
+        {
+          name: "availableQuantity",
+          label: "Quantidade",
+          field: "availableQuantity",
+        },
+
+        {
+          name: "actions",
+          label: "Ações",
+          field: "actions",
+          align: "center",
+        },
+      ],
+      filters: [
+        {
+          name: "userId",
+          model: "",
+        },
+        {
+          name: "productId",
+          model: "",
+        },
+      ],
     };
   },
   created() {
@@ -90,16 +155,41 @@ export default {
   methods: {
     save: async function (data) {
       try {
-        await saveCrud(
-          this.tables.mainTable.apiUrl,
-          data.mainTable
-        );
+        await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);
       } catch (err) {
         showError(err);
 
         return false;
       }
     },
+    deleteProduct: async function (data) {
+      removeCrud("", `products/${data.id}/users`).then((data) => {
+        console.log(data);
+        this.listProducts();
+      });
+
+      //this.listProducts();
+    },
+    listProducts: async function () {
+      console.log(this.filters);
+      const newFilter = this.filters.filter((filter) => {
+        return filter.model !== "";
+      });
+      filterCrud(newFilter, "products/listProductByUser").then((res) => {
+        this.products = res;
+      });
+    },
+  },
+  mounted() {
+    emitter.on("update_model", (data) => {
+      if (data.label === "Usuário") {
+        this.filters[0].model = data.model.value;
+      }
+      if (data.label === "Produto") {
+        this.filters[1].model = data.model.value;
+      }
+      this.listProducts();
+    });
   },
 };
 </script>

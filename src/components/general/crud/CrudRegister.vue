@@ -15,6 +15,7 @@
           :title="title.childTable"
         />
         <CrudRegisterButtons />
+        <slot></slot>
       </div>
     </q-page>
   </div>
