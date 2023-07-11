@@ -44,8 +44,8 @@ export default {
     return {
       schedule: [],
       b2b:
-        localStorage.getItem("subscribeToken") !== "" &&
-        localStorage.getItem("subscribeToken") !== null,
+        localStorage.getItem("companyId") !== "" &&
+        localStorage.getItem("companyId") !== null,
     };
   },
   methods: {
