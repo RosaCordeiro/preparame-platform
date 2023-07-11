@@ -51,7 +51,8 @@ export default {
       schedule: [],
       b2b:
         localStorage.getItem("companyId") !== "" &&
-        localStorage.getItem("companyId") !== null,
+        localStorage.getItem("companyId") !== null &&
+        localStorage.getItem("companyId") !== "null",
     };
   },
   methods: {
@@ -105,7 +106,6 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted", localStorage.getItem("subscribeToken"));
     this.listSchedule();
   },
 };
