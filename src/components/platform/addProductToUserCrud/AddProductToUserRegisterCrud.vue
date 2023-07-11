@@ -175,6 +175,16 @@ export default {
       const newFilter = this.filters.filter((filter) => {
         return filter.model !== "";
       });
+
+      /* verify if has userId */
+      if (newFilter.length === 0) {
+        return;
+      }
+
+      if (newFilter.filter((filter) => filter.name === "userId").length === 0) {
+        return;
+      }
+
       filterCrud(newFilter, "products/listProductByUser").then((res) => {
         this.products = res;
       });

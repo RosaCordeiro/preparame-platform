@@ -34,7 +34,11 @@
           </div>
         </q-banner>
 
-        <q-banner rounded class="q-ma-sm text-white bg-green-8">
+        <q-banner
+          rounded
+          class="q-ma-sm text-white"
+          style="background-color: #15aa7c"
+        >
           <div class="user-card-banner-content row">
             <q-btn
               flat
