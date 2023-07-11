@@ -9,7 +9,8 @@
       'bg-prepara-me-blue': eventValid && !lessThen1Hour,
       'bg-primary': eventValid && lessThen1Hour,
       'bg-prepara-me-green':
-        Object.entries(this.schedulesGroup)[0][1][0].type === 'group',
+        Object.entries(this.schedulesGroup)[0][1][0].type === 'group' &&
+        eventValid,
     }"
   >
     <div class="row items-start items-center event-schedule">
@@ -27,6 +28,11 @@
                 : Object.entries(this.schedulesGroup)[0][1][0].type === "group"
                 ? "Mentoria Coletiva"
                 : getUserName(eventSchedule.schedules)
+            }}
+            {{
+              Object.entries(this.schedulesGroup)[0][1][0].type === "group"
+                ? "- Mentoria Coletiva"
+                : ""
             }}
           </div>
         </div>
@@ -253,6 +259,6 @@ export default {
 }
 
 .bg-prepara-me-green {
-  background-color: #667998;
+  background-color: #15aa7c;
 }
 </style>

@@ -6,10 +6,10 @@ var baseApiUrlDefinition = "";
 
 // if (process.env.NODE_ENV && process.env.NODE_ENV == 'development') {
 //baseApiUrlDefinition = "https://api.preparame.homolog.inf.br";
-baseApiUrlDefinition = "http://localhost:3334";
 // } else {
 //baseApiUrlDefinition = "https://api.prepara.me";
 // }
+baseApiUrlDefinition = process.env.API;
 
 export const baseApiUrl = baseApiUrlDefinition;
 

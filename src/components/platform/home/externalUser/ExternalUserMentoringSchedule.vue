@@ -16,7 +16,7 @@
         rounded
         class="text-white bg-prepara-me-blue q-mt-md"
         :class="{
-          disabled: !b2b,
+          disabled: !b2b || !s.available,
         }"
       >
         <div class="user-card-banner-content row">
@@ -44,8 +44,8 @@ export default {
     return {
       schedule: [],
       b2b:
-        localStorage.getItem("companyId") !== "" &&
-        localStorage.getItem("companyId") !== null,
+        localStorage.getItem("subscribeToken") !== "" &&
+        localStorage.getItem("subscribeToken") !== null,
     };
   },
   methods: {
@@ -76,7 +76,23 @@ export default {
     formatDateToStringWithHour,
     listSchedule: async function () {
       const response = await filterCrud([], "mentoring");
-      this.schedule = response.data;
+      console.log("response", response);
+      this.schedule = response.data.map((s) => {
+        const eventDate = new Date(s.date).setHours(
+          new Date(s.date).getHours() + 3
+        );
+        const dateNow = new Date().setHours(new Date().getHours());
+
+        if (eventDate < dateNow) {
+          s.available = false;
+        } else {
+          s.available = true;
+        }
+
+        return {
+          ...s,
+        };
+      });
     },
   },
   mounted() {
