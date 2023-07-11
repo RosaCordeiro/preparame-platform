@@ -176,7 +176,6 @@ export default {
         return filter.model !== "";
       });
 
-      /* verify if has userId */
       if (newFilter.length === 0) {
         return;
       }
@@ -200,6 +199,13 @@ export default {
       }
       this.listProducts();
     });
+
+    this.listProducts();
+  },
+  destroyed() {
+    try {
+      emitter.off("update_model");
+    } catch (error) {}
   },
 };
 </script>
