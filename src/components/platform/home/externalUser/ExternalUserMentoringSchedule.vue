@@ -16,7 +16,7 @@
         rounded
         class="text-white bg-prepara-me-blue q-mt-md"
         :class="{
-          disabled: !b2b || !s.available,
+          disabled: !b2b || !s.available || s.participating,
         }"
       >
         <div class="user-card-banner-content row">
@@ -26,9 +26,15 @@
             label="Participar"
             class="col-12"
             @click="participate(s.id)"
-            :disable="!b2b"
-          />
+            :disable="!b2b || !s.available || s.participating"
+          >
+          </q-btn>
         </div>
+        <q-tooltip v-if="s.participating">
+          <div class="tooltip-text">
+            Você já está participando dessa mentoria!
+          </div>
+        </q-tooltip>
       </q-banner>
     </div>
   </q-card>
@@ -64,6 +70,9 @@ export default {
             color: "positive",
             icon: "check",
           });
+
+          this.listSchedule();
+          this.$emit("update-schedule");
         } else {
           this.$q.notify({
             message: "Erro ao confirmar participação!",

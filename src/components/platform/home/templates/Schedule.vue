@@ -46,74 +46,79 @@ export default {
     },
   },
   props: ["homeType"],
+  methods: {
+    async init() {
+      const dateBegin = new Date();
+      const dateEnd = new Date();
+
+      dateBegin.setDate(dateBegin.getDate() - 1);
+      dateEnd.setDate(dateEnd.getDate() + 14);
+
+      const filters = [
+        {
+          name: this.homeType === "USER" ? "userId" : "specialistUserId",
+          model: localStorage.getItem("userId"),
+        },
+        {
+          name: "status",
+          model: "UNAVAILABLE",
+        },
+        {
+          name: "dateBegin",
+          model: formatDateToStringMasked(dateBegin, "yyyy-mm-dd"),
+        },
+        {
+          name: "dateEnd",
+          model: formatDateToStringMasked(dateEnd, "yyyy-mm-dd"),
+        },
+      ];
+
+      this.schedules = [
+        ...(await filterCrud(filters, "specialists/schedule")).map(
+          (schedule) => {
+            schedule["type"] = "individual";
+            return schedule;
+          }
+        ),
+        ...(await filterCrud(filters, "mentoring/schedule-list")).map(
+          (schedule) => {
+            schedule["type"] = "group";
+            return schedule;
+          }
+        ),
+      ];
+
+      this.schedules.forEach((schedule) => {
+        let groupKey = `${schedule["productId"]}${schedule["userId"]}${
+          schedule["specialistId"]
+        }${formatDateToStringMasked(
+          new Date(schedule["dateSchedule"]),
+          "yyyy-mm-dd"
+        )}`;
+
+        if (!this.groupSchedules[groupKey]) {
+          this.groupSchedules[groupKey] = [];
+        }
+
+        this.groupSchedules[groupKey].push(schedule);
+
+        return schedule;
+      });
+
+      Object.entries(this.groupSchedules).map((schedule) => {
+        const scheduleAdjusted = {};
+
+        scheduleAdjusted[schedule[0]] = schedule[1];
+
+        this.groupSchedulesAdjusted.push(scheduleAdjusted);
+      });
+    },
+  },
   mounted() {
     this.mobile = window.mobileAndTabletCheck();
   },
   async created() {
-    const dateBegin = new Date();
-    const dateEnd = new Date();
-
-    dateBegin.setDate(dateBegin.getDate() - 1);
-    dateEnd.setDate(dateEnd.getDate() + 14);
-
-    const filters = [
-      {
-        name: this.homeType === "USER" ? "userId" : "specialistUserId",
-        model: localStorage.getItem("userId"),
-      },
-      {
-        name: "status",
-        model: "UNAVAILABLE",
-      },
-      {
-        name: "dateBegin",
-        model: formatDateToStringMasked(dateBegin, "yyyy-mm-dd"),
-      },
-      {
-        name: "dateEnd",
-        model: formatDateToStringMasked(dateEnd, "yyyy-mm-dd"),
-      },
-    ];
-
-    this.schedules = [
-      ...(await filterCrud(filters, "specialists/schedule")).map((schedule) => {
-        schedule["type"] = "individual";
-        return schedule;
-      }),
-      ...(await filterCrud(filters, "mentoring/schedule-list")).map(
-        (schedule) => {
-          schedule["type"] = "group";
-          return schedule;
-        }
-      ),
-    ];
-
-    console.log(this.schedules);
-
-    this.schedules.forEach((schedule) => {
-      let groupKey = `${schedule["productId"]}${schedule["userId"]}${
-        schedule["specialistId"]
-      }${formatDateToStringMasked(
-        new Date(schedule["dateSchedule"]),
-        "yyyy-mm-dd"
-      )}`;
-
-      if (!this.groupSchedules[groupKey]) {
-        this.groupSchedules[groupKey] = [];
-      }
-
-      this.groupSchedules[groupKey].push(schedule);
-
-      return schedule;
-    });
-
-    Object.entries(this.groupSchedules).map((schedule) => {
-      const scheduleAdjusted = {};
-
-      scheduleAdjusted[schedule[0]] = schedule[1];
-
-      this.groupSchedulesAdjusted.push(scheduleAdjusted);
-    });
+    this.init();
   },
 };
 </script>
