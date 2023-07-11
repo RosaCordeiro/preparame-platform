@@ -170,14 +170,11 @@ export default {
     this.companyId = localStorage.getItem("companyId");
   },
   mounted() {
+    console.log(this.products);
+
     this.productsSchedulables = this.products.filter((product) => {
       return product.type === "SCHEDULED";
     });
-
-    /* this.productsSchedulables = this.productsSchedulables.filter(
-      (product, index, self) =>
-        index === self.findIndex((t) => t.id === product.id)
-    ); */
 
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;

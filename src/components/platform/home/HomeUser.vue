@@ -36,9 +36,11 @@
                 'external-user-options': true,
               }"
             >
-              <Schedule :homeType="'USER'" />
+              <Schedule :homeType="'USER'" ref="schedule" />
               <div v-if="showMentoringCalendar">
-                <ExternalUserMentoringSchedule />
+                <ExternalUserMentoringSchedule
+                  @update-schedule="updateSchedule"
+                />
               </div>
               <div
                 v-else
@@ -218,6 +220,13 @@ export default {
     ...mapActions("users", ["setUserDates"]),
     goUrl: function (url) {
       this.$router.push({ path: `${url}/${this.product.id}` });
+    },
+    updateSchedule() {
+      try {
+        this.$refs.schedule.init();
+      } catch (e) {
+        console.log(e);
+      }
     },
     answerSurvey: function (url) {
       this.$router.push({ path: `/survey` });
