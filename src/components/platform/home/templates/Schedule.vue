@@ -80,12 +80,12 @@ export default {
             return schedule;
           }
         ),
-        ...(await filterCrud(filters, "mentoring/schedule-list")).map(
-          (schedule) => {
+        ...(await filterCrud(filters, "mentoring/schedule-list"))
+          .map((schedule) => {
             schedule["type"] = "group";
             return schedule;
-          }
-        ),
+          })
+          .sort((a, b) => (a.dateSchedule > b.dateSchedule ? 1 : -1)),
       ];
 
       this.schedules.forEach((schedule) => {
