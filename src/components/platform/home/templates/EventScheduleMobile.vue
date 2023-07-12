@@ -166,9 +166,7 @@ export default {
       }
     },
     async rateSpecialist() {
-      console.log(this.eventSchedule.schedules[0].id);
-      console.log(this.eventSchedule.schedules[0]);
-      /* if (Object.entries(this.schedulesGroup)[0][1][0].type === "individual") {
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "individual") {
         await saveCrud(
           `specialists/schedule/${this.eventSchedule.schedules[0].id}`,
           this.eventSchedule.schedules[0],
@@ -187,17 +185,27 @@ export default {
           "put",
           true
         );
-      } */
+      }
     },
     async cancelSchedule() {
-      for (const index in this.eventSchedule.schedules) {
-        const revertAvailableProduct = index == 0;
-
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "group") {
         await saveCrud(
-          `specialists/schedule/${this.eventSchedule.schedules[index].id}/cancel`,
-          { revertAvailableProduct },
+          `mentoring/removeParticipant`,
+          {
+            mentoringId: this.eventSchedule.schedules[0].id,
+          },
           "post"
         );
+      } else {
+        for (const index in this.eventSchedule.schedules) {
+          const revertAvailableProduct = index == 0;
+
+          await saveCrud(
+            `specialists/schedule/${this.eventSchedule.schedules[index].id}/cancel`,
+            { revertAvailableProduct },
+            "post"
+          );
+        }
       }
 
       document.location.reload(true);

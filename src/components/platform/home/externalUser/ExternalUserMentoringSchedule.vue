@@ -73,7 +73,8 @@ export default {
           });
 
           this.listSchedule();
-          this.$emit("update-schedule");
+
+          document.location.reload(true);
         } else {
           this.$q.notify({
             message: "Erro ao confirmar participação!",
