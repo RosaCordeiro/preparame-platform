@@ -38,6 +38,7 @@
           rounded
           class="q-ma-sm text-white"
           style="background-color: #15aa7c"
+          v-if="userId !== '757a3d7b-d07a-4971-ab36-d4714d955e9a'"
         >
           <div class="user-card-banner-content row">
             <q-btn
@@ -162,12 +163,14 @@ export default {
       simulator: false,
       productsSchedulables: [],
       companyId: "",
+      userId: "",
     };
   },
   created() {
     this.userAvatarUrl = localStorage.getItem("userAvatarUrl");
     this.userName = localStorage.getItem("userName");
     this.companyId = localStorage.getItem("companyId");
+    this.userId = localStorage.getItem("userId");
   },
   mounted() {
     console.log(this.products);
