@@ -276,7 +276,7 @@ export default {
         },
       ],
       questions: [
-        {
+        /*  {
           index: 1,
           question: "Foi você que pediu demissão? Sim ou Não",
           answer: -1,
@@ -286,9 +286,9 @@ export default {
           laborRiskJSON: true,
           brandRisk: false,
           category: "laborRisk",
-        },
+        }, */
         {
-          index: 2,
+          index: 1,
           question:
             "O quanto você recomenda a empresa para seus amigos e familiares trabalharem?",
           answer: -1,
@@ -298,7 +298,7 @@ export default {
           category: "NPS",
         },
         {
-          index: 3,
+          index: 2,
           question:
             "O quanto você se sentia respeitado na empresa, de forma geral?",
           answer: -1,
@@ -309,7 +309,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 4,
+          index: 3,
           question: "O quanto você se sentia respeitado pelos seus líderes?",
           answer: -1,
           options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -319,7 +319,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 5,
+          index: 4,
           question:
             "O quanto você gostaria de voltar a trabalhar nesta empresa no futuro?",
           answer: -1,
@@ -330,7 +330,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 6,
+          index: 5,
           question:
             "O quanto você achou que seu processo de demissão foi respeitoso?",
           answer: -1,
@@ -341,7 +341,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 7,
+          index: 6,
           question: "O quanto você se sentia seguro fisicamente na empresa?",
           answer: -1,
           options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -351,7 +351,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 8,
+          index: 7,
           question: "O quanto você se sentia seguro emocionalmente na empresa?",
           answer: -1,
           options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -361,7 +361,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 9,
+          index: 8,
           question:
             "O quanto você gostava do pacote de benefícios e remuneração da empresa?",
           answer: -1,
@@ -372,7 +372,7 @@ export default {
           category: "laborRisk",
         },
         {
-          index: 10,
+          index: 9,
           question: "Os cálculos da rescisão estão corretos?",
           answer: -1,
           options: ["Não", "Sim"],

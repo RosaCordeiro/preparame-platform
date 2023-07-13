@@ -38,18 +38,18 @@
               }%; background: linear-gradient(90deg, #1a27b7 0%, ${
                 l[1] >= 7 ? '#34a67c' : '#ff4690'
               } 100%);`"
+            ></div>
+
+            <q-tooltip
+              transition-show="scale"
+              transition-hide="scale"
+              class="bg-purple text-body1"
+              :offset="[20, 20]"
             >
-              <q-tooltip
-                transition-show="scale"
-                transition-hide="scale"
-                class="bg-purple text-body1"
-                :offset="[20, 20]"
-              >
-                <div class="tooltip-text">
-                  Pergunta {{ index + 1 + " - " + l[0] + " - (" + l[1] }})
-                </div>
-              </q-tooltip>
-            </div>
+              <div class="tooltip-text">
+                Pergunta {{ index + 1 + " - " + l[0] + " - (" + l[1] }})
+              </div>
+            </q-tooltip>
           </div>
         </div>
       </div>
