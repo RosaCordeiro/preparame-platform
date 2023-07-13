@@ -57,13 +57,13 @@ export default {
     return {
       selecteds: [],
       filter: "",
-      visibleColumns: []
+      visibleColumns: [],
     };
   },
   created() {
     this.definesVisibleColumns();
 
-    console.log(this.result)
+    console.log(this.result);
   },
   methods: {
     definesVisibleColumns: function () {
@@ -79,7 +79,18 @@ export default {
       return "";
     },
     removeSelected: function (id) {
-      this.$parent.$parent.removeSelected(id);
+      console.log(id);
+
+      this.$q
+        .dialog({
+          title: "Remover",
+          message: "Deseja remover o registro selecionado?",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(() => {
+          this.$parent.$parent.removeSelected(id);
+        });
     },
     editSelected: function (id) {
       const actualUrl = this.$router.history.current.path;
