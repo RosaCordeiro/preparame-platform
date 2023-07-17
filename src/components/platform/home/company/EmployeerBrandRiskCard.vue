@@ -1,13 +1,11 @@
 <template>
-  <q-card
-    class="home-company-employeer-brand-risk-card q-pb-md q-px-md q-ma-md"
-  >
-    <div class="home-company-employeer-brand-risk-card-header">
-      <div class="home-company-employeer-brand-risk-card-info-container">
-        <q-card-section class="home-company-employeer-brand-risk-card-title"
+  <q-card class="home-company-realocated-card q-ma-md">
+    <div class="home-company-realocated-card-header">
+      <div class="home-company-realocated-card-info-container">
+        <q-card-section class="home-company-realocated-card-title"
           >Risco de Marca</q-card-section
         >
-        <q-card-section class="home-company-employeer-brand-risk-card-nps">{{
+        <q-card-section class="home-company-realocated-card-realocated">{{
           employeerBrandRisk
         }}</q-card-section>
       </div>
@@ -52,7 +50,7 @@ export default {
 .home-company-employeer-brand-risk-card-title {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   vertical-align: center;
   color: $text-dark-grey;
   text-align: center;

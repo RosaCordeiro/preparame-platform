@@ -1,5 +1,5 @@
 <template>
-  <q-card class="home-company-labor-risk-card q-pb-md q-px-md q-ma-md">
+  <q-card class="home-company-labor-risk-card q-ma-md">
     <div class="home-company-labor-risk-card-header">
       <div class="home-company-labor-risk-card-info-container">
         <q-card-section class="home-company-labor-risk-card-title"
@@ -44,7 +44,7 @@ export default {
 .home-company-labor-risk-card-title {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   vertical-align: center;
   color: $text-dark-grey;
   text-align: center;

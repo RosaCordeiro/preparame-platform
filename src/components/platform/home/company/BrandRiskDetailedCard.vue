@@ -1,16 +1,12 @@
 <template>
-  <q-card class="home-company-brand-risk-detailed-card column q-pb-md q-px-md">
+  <q-card class="home-company-brand-risk-detailed-card column">
     <div class="home-company-brand-risk-detailed-card-header column">
       <div class="home-company-brand-risk-detailed-card-info-container">
         <q-card-section class="home-company-brand-risk-detailed-card-title"
           >Riscos da Marca</q-card-section
         >
       </div>
-      <Bar
-        v-if="showChart"
-        :data="brandRiskDataChartConverted"
-        :height="380"
-      />
+      <Bar v-if="showChart" :data="brandRiskDataChartConverted" :height="380" />
     </div>
   </q-card>
 </template>

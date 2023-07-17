@@ -1,5 +1,5 @@
 <template>
-  <q-card class="home-company-feelings-map-card column q-pa-md" style="flex: 1">
+  <q-card class="home-company-feelings-map-card column" style="flex: 1">
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
         <q-card-section class="home-company-feelings-map-card-title">
@@ -34,7 +34,7 @@ export default {
   /*  components: {
     Column,
   }, */
-  props: ["feelingsMap"],
+  props: ["feelingsMap", "users"],
   data() {
     return {
       feelingsMapDataChartConverted: [],
@@ -58,7 +58,7 @@ export default {
       this.feelingsMap.forEach((feeling) => {
         this.feelingsMapDataChartConverted.push([
           feeling.feeling,
-          feeling.count,
+          (feeling.count / this.users).toFixed(2),
           "color: #1a27b7",
         ]);
       });
@@ -106,8 +106,6 @@ export default {
           },
         ],
       };
-
-      console.log(this.feelingsMapDataChartConverted);
     },
   },
 };
@@ -116,7 +114,8 @@ export default {
 <style lang="scss">
 .home-company-feelings-map-card {
   width: 40vw;
-  height: 60vh;
+  min-height: 60vh;
+  height: 100%;
   box-shadow: none;
   border-radius: 5%;
 }

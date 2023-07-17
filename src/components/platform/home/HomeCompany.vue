@@ -31,7 +31,7 @@
           ></RealocatedsCard>
           <RegisteredEmployeesCard
             v-if="dashboardsLoaded"
-            :registeredEmployees="countUsers"
+            :registeredEmployees="countAccepted"
             :totalEmployees="countEmployees"
             style="flex: 1 0 200px"
           >
@@ -52,6 +52,7 @@
           <FeelingsMapCard
             v-if="dashboardsLoaded"
             :feelingsMap="feelingsMapData"
+            :users="countUsersResponded"
           />
         </div>
 
@@ -111,6 +112,8 @@ export default {
       countEmployees: 0,
       countRealocateds: 0,
       countLaborRiskAlerts: 0,
+      countAccepted: 0,
+      countUsersResponded: 0,
       dashboardsLoaded: false,
       feelingsMapData: [],
       laborRiskData: [],
@@ -258,6 +261,14 @@ export default {
       this.countRealocateds = realocateds.length;
       this.countLaborRiskAlerts = laborRiskAlerts.length;
       this.dashboardsLoaded = true;
+      this.countUsersResponded = users.filter((user) => {
+        return user.user.surveyAnswered;
+      }).length;
+
+      this.countAccepted = users.filter((user) => {
+        console.log(user);
+        return user.accepted;
+      }).length;
     },
   },
   async mounted() {

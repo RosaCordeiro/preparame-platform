@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    class="home-company-labor-risk-detailed-card column q-pa-md"
-    style="flex: 1"
-  >
+  <q-card class="home-company-labor-risk-detailed-card column" style="flex: 1">
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
         <q-card-section
@@ -47,7 +44,8 @@
               :offset="[20, 20]"
             >
               <div class="tooltip-text">
-                Pergunta {{ index + 1 + " - " + l[0] + " - (" + l[1] }})
+                Pergunta
+                {{ index + 1 + " - " + l[0] + " - (" + l[1].toFixed(2) }})
               </div>
             </q-tooltip>
           </div>
@@ -110,7 +108,8 @@ export default {
 <style lang="scss">
 .home-company-labor-risk-detailed-card {
   width: 40vw;
-  height: 60vh;
+  min-height: 60vh;
+  height: 100%;
   box-shadow: none;
   border-radius: 5%;
 }

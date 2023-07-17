@@ -185,6 +185,15 @@ export default {
           visible: true,
         },
         {
+          name: "accepted",
+          label: "Acolhido",
+          align: "center",
+          field: "accepted",
+          sortable: false,
+          style: "width: 10px;",
+          visible: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           align: "center",

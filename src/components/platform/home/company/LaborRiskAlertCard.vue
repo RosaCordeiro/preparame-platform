@@ -1,11 +1,12 @@
 <template>
-  <q-card class="home-company-labor-risk-alert-card q-pb-md q-px-md q-ma-md">
+  <q-card class="home-company-labor-risk-alert-card q-ma-md">
     <div class="home-company-labor-risk-alert-card-header">
       <div class="home-company-labor-risk-alert-card-info-container">
         <q-card-section class="home-company-labor-risk-alert-card-title"
           >Pendências Trabalhistas</q-card-section
         >
-        <q-card-section class="home-company-labor-risk-alert-card-labor-risk-alert"
+        <q-card-section
+          class="home-company-labor-risk-alert-card-labor-risk-alert"
           >{{ laborRiskAlertsPercent }}%</q-card-section
         >
       </div>
@@ -22,7 +23,10 @@ export default {
     };
   },
   mounted() {
-    this.laborRiskAlertsPercent = ((this.laborRiskAlerts / this.totalUsers) * 100).toFixed(2);
+    this.laborRiskAlertsPercent = (
+      (this.laborRiskAlerts / this.totalUsers) *
+      100
+    ).toFixed(2);
   },
 };
 </script>

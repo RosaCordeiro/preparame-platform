@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tableData.length > 0">
+  <div>
     <CrudRegisterTitle :title="title" />
 
     <q-card class="crud-register-form q-pa-md">
