@@ -55,10 +55,12 @@ export default {
         { role: "style" },
       ]);
 
+      console.log(this.users);
+
       this.feelingsMap.forEach((feeling) => {
         this.feelingsMapDataChartConverted.push([
           feeling.feeling,
-          (feeling.count / this.users).toFixed(2),
+          ((feeling.count / this.users) * 100).toFixed(2),
           "color: #1a27b7",
         ]);
       });
@@ -105,6 +107,13 @@ export default {
             },
           },
         ],
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
+            },
+          },
+        },
       };
     },
   },
