@@ -45,7 +45,7 @@
             >
               <div class="tooltip-text">
                 Pergunta
-                {{ index + 1 + " - " + l[0] + " - (" + l[1].toFixed(2) }})
+                {{ l[0] + " - " + l[1].toFixed(2).replace(".", ",") + "%" }}
               </div>
             </q-tooltip>
           </div>

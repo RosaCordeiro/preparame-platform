@@ -31,7 +31,7 @@ export default {
 .home-company-nps-card {
   width: 18vw;
   height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 

@@ -36,6 +36,14 @@
             style="flex: 1 0 200px"
           >
           </RegisteredEmployeesCard>
+        </div>
+        <div class="home-company-charts-cards row">
+          <NineCard
+            v-if="dashboardsLoaded"
+            :lastAnswers="lastAnswers"
+            :countUsers="countUsersResponded"
+            style="flex: 1 0 200px"
+          ></NineCard>
           <LaborRiskAlertCard
             v-if="dashboardsLoaded"
             :laborRiskAlerts="countLaborRiskAlerts"
@@ -91,6 +99,7 @@ import RealocatedsCard from "./company/RealocatedsCard.vue";
 import RegisteredEmployeesCard from "./company/RegisteredEmployeesCard.vue";
 import FeelingsMapCard from "./company/FeelingsMapCard.vue";
 import LaborRiskDetailedCard from "./company/LaborRiskDetailedCard.vue";
+import NineCard from "./company/NineCard.vue";
 
 export default {
   components: {
@@ -102,6 +111,7 @@ export default {
     FeelingsMapCard,
     LaborRiskDetailedCard,
     LaborRiskAlertCard,
+    NineCard,
   },
   data() {
     return {
@@ -119,6 +129,8 @@ export default {
       laborRiskData: [],
       brandRiskData: [],
       mobile: false,
+      lastAnswer: {},
+      lastAnswers: [],
     };
   },
   methods: {
@@ -210,7 +222,12 @@ export default {
         }
 
         if (Array.isArray(laborRisks)) {
-          laborRisks.forEach((laborRiskMapped) => {
+          for (const laborRiskMapped of laborRisks) {
+            if (laborRiskMapped.index === 9) {
+              this.lastAnswers.push(laborRiskMapped);
+              continue;
+            }
+
             const findLaborRisk = this.laborRiskData.findIndex(
               (laborRiskInserted) => {
                 return laborRiskMapped.question == laborRiskInserted.question;
@@ -225,7 +242,7 @@ export default {
                 count: laborRiskMapped.answer,
               });
             }
-          });
+          }
         }
 
         this.laborRiskData.forEach((laborRisk) => {
@@ -266,9 +283,18 @@ export default {
       }).length;
 
       this.countAccepted = users.filter((user) => {
-        console.log(user);
         return user.accepted;
       }).length;
+
+      /*  this.lastAnswer = this.laborRiskData.find((laborRisk) => {
+        return laborRisk.index === 9;
+      });
+
+      console.log(this.lastAnswer);
+
+      this.laborRiskData = this.laborRiskData.filter((laborRisk) => {
+        return laborRisk.index !== 9;
+      }); */
     },
   },
   async mounted() {

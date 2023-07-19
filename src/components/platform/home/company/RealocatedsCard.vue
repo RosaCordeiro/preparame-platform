@@ -34,7 +34,7 @@ export default {
 .home-company-realocated-card {
   width: 18vw;
   height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 
