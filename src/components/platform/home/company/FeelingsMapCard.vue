@@ -55,8 +55,6 @@ export default {
         { role: "style" },
       ]);
 
-      console.log(this.users);
-
       this.feelingsMap.forEach((feeling) => {
         this.feelingsMapDataChartConverted.push([
           feeling.feeling,

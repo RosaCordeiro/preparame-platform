@@ -41,7 +41,7 @@
           <NineCard
             v-if="dashboardsLoaded"
             :lastAnswers="lastAnswers"
-            :countUsers="countUsers"
+            :countUsers="countUsersResponded"
             style="flex: 1 0 200px"
           ></NineCard>
           <LaborRiskAlertCard
@@ -164,12 +164,6 @@ export default {
         }
       });
 
-      let npsTotal = npsSurveyAnswers.reduce((npsTotal, employee) => {
-        return npsTotal + employee.user.NPSSurvey;
-      }, 0);
-
-      this.nps = (npsTotal / npsSurveyAnswers.length).toFixed(2);
-
       let laborRisk = npsSurveyAnswers.reduce(
         (laborRisckTotal = 0, employee) => {
           return laborRisckTotal + employee.user.laborRisk;
@@ -245,10 +239,6 @@ export default {
           }
         }
 
-        this.laborRiskData.forEach((laborRisk) => {
-          laborRisk.count = laborRisk.count / npsSurveyAnswers.length;
-        });
-
         if (Array.isArray(brandRisks)) {
           brandRisks.forEach((brandRiskMapped) => {
             const findBrandRisk = this.brandRiskData.findIndex(
@@ -276,7 +266,9 @@ export default {
       this.countEmployees = npsSurveyReport.length;
       this.countUsers = users.length;
       this.countRealocateds = realocateds.length;
+
       this.countLaborRiskAlerts = laborRiskAlerts.length;
+
       this.dashboardsLoaded = true;
       this.countUsersResponded = users.filter((user) => {
         return user.user.surveyAnswered;
@@ -286,15 +278,40 @@ export default {
         return user.accepted;
       }).length;
 
-      /*  this.lastAnswer = this.laborRiskData.find((laborRisk) => {
-        return laborRisk.index === 9;
+      this.laborRiskData.forEach((laborRisk) => {
+        laborRisk.count = laborRisk.count / this.countUsersResponded;
       });
 
-      console.log(this.lastAnswer);
+      const npsAnswers = npsSurveyAnswers.map((npsSurvey) => {
+        return npsSurvey.user.NPSSurvey;
+      });
 
-      this.laborRiskData = this.laborRiskData.filter((laborRisk) => {
-        return laborRisk.index !== 9;
-      }); */
+      const npsAnswersLassThanSeven = npsAnswers.reduce(
+        (npsAnswersLassThanSevenTotal = 0, npsAnswer) => {
+          if (npsAnswer < 7) {
+            return npsAnswersLassThanSevenTotal + 1;
+          }
+
+          return npsAnswersLassThanSevenTotal;
+        },
+        0
+      );
+
+      const npsAnswersMoreThanEight = npsAnswers.reduce(
+        (npsAnswersMoreThanEightTotal = 0, npsAnswer) => {
+          if (npsAnswer > 8) {
+            return npsAnswersMoreThanEightTotal + 1;
+          }
+
+          return npsAnswersMoreThanEightTotal;
+        },
+        0
+      );
+
+      this.nps = (
+        npsAnswersMoreThanEight / this.countUsersResponded -
+        npsAnswersLassThanSeven / this.countUsersResponded
+      ).toFixed(2);
     },
   },
   async mounted() {
