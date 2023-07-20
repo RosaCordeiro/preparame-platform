@@ -24,12 +24,12 @@ export default {
   mounted() {
     this.value =
       (
-        this.lastAnswers.reduce((acc, curr) => {
+        (this.lastAnswers.reduce((acc, curr) => {
           return acc + curr.answer;
-        }, 0) / this.countUsers
-      ).toFixed(2) *
-        10 +
-      "%";
+        }, 0) /
+          this.countUsers) *
+        10
+      ).toFixed(2) + "%";
   },
 };
 </script>
