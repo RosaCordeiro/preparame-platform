@@ -41,7 +41,7 @@
           <NineCard
             v-if="dashboardsLoaded"
             :lastAnswers="lastAnswers"
-            :countUsers="countUsersResponded"
+            :countUsers="countUsers"
             style="flex: 1 0 200px"
           ></NineCard>
           <LaborRiskAlertCard
