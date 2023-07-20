@@ -1,5 +1,8 @@
 <template>
-  <q-card class="home-company-labor-risk-detailed-card column" style="flex: 1">
+  <q-card
+    class="home-company-labor-risk-detailed-card column"
+    style="flex: 1 0 400px"
+  >
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
         <q-card-section

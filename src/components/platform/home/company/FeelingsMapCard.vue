@@ -1,20 +1,20 @@
 <template>
-  <q-card class="home-company-feelings-map-card column" style="flex: 1">
+  <q-card class="home-company-feelings-map-card column" style="flex: 1 0 400px">
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
         <q-card-section class="home-company-feelings-map-card-title">
           <h4>Mapa de Sentimentos</h4>
         </q-card-section>
-      </div>
 
-      <div class="row">
-        <apexchart
-          type="polarArea"
-          height="400px"
-          style="width: 100%; height: 100%"
-          :options="chartOptions"
-          :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
-        ></apexchart>
+        <q-card-section>
+          <apexchart
+            type="polarArea"
+            height="400px"
+            style="width: 100%; height: 100%"
+            :options="chartOptions"
+            :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
+          ></apexchart>
+        </q-card-section>
       </div>
 
       <!--  {{ feelingsMapDataChartConverted.slice(1).map((c) => c[1]) }}
@@ -96,9 +96,6 @@ export default {
           {
             breakpoint: 480,
             options: {
-              chart: {
-                width: 200,
-              },
               legend: {
                 position: "bottom",
               },

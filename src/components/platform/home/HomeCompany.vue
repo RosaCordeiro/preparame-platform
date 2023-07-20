@@ -52,7 +52,7 @@
           ></LaborRiskAlertCard>
         </div>
 
-        <div class="charts__row">
+        <div class="charts__row row">
           <LaborRiskDetailedCard
             v-if="dashboardsLoaded"
             :laborRisks="laborRiskData"
@@ -286,31 +286,23 @@ export default {
         return npsSurvey.user.NPSSurvey;
       });
 
-      const npsAnswersLassThanSeven = npsAnswers.reduce(
-        (npsAnswersLassThanSevenTotal = 0, npsAnswer) => {
+      const result = npsAnswers.reduce(
+        (accumulators, npsAnswer) => {
           if (npsAnswer < 7) {
-            return npsAnswersLassThanSevenTotal + 1;
+            accumulators.npsAnswersLassThanSeven += 1;
           }
-
-          return npsAnswersLassThanSevenTotal;
-        },
-        0
-      );
-
-      const npsAnswersMoreThanEight = npsAnswers.reduce(
-        (npsAnswersMoreThanEightTotal = 0, npsAnswer) => {
           if (npsAnswer > 8) {
-            return npsAnswersMoreThanEightTotal + 1;
+            accumulators.npsAnswersMoreThanEight += 1;
           }
 
-          return npsAnswersMoreThanEightTotal;
+          return accumulators;
         },
-        0
+        { npsAnswersLassThanSeven: 0, npsAnswersMoreThanEight: 0 }
       );
 
       this.nps = (
-        npsAnswersMoreThanEight / this.countUsersResponded -
-        npsAnswersLassThanSeven / this.countUsersResponded
+        result.npsAnswersMoreThanEight / this.countUsersResponded -
+        result.npsAnswersLassThanSeven / this.countUsersResponded
       ).toFixed(2);
     },
   },
