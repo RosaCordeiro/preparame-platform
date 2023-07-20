@@ -324,8 +324,9 @@ export default {
 
 <style lang="scss">
 .home-company {
-  height: 100vh;
   width: 100vw;
+  height: 100%;
+  overflow: auto;
 }
 
 .home-company-charts {
