@@ -229,11 +229,12 @@ export default {
             );
 
             if (findLaborRisk >= 0) {
-              this.laborRiskData[findLaborRisk].count += laborRiskMapped.answer;
+              this.laborRiskData[findLaborRisk].count +=
+                laborRiskMapped.answer * 1;
             } else {
               this.laborRiskData.push({
                 ...laborRiskMapped,
-                count: laborRiskMapped.answer,
+                count: laborRiskMapped.answer * 1,
               });
             }
           }

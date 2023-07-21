@@ -6,7 +6,7 @@
           >Risco de Marca</q-card-section
         >
         <q-card-section class="home-company-realocated-card-realocated">{{
-          employeerBrandRisk
+          employeerBrandRisk.toFixed(2)
         }}</q-card-section>
       </div>
     </div>
@@ -23,6 +23,8 @@ export default {
   },
   mounted() {
     this.employeerBrandRiskPercent = (this.employeerBrandRisk * 10).toFixed(2);
+
+    console.log(this.employeerBrandRiskPercent);
   },
 };
 </script>
