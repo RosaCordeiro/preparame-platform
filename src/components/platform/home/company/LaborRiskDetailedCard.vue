@@ -27,7 +27,7 @@
               :style="`min-width: 80px; width: ${l[1] * 10}%; `"
             >
               <p>Pergunta {{ index + 1 }}</p>
-              <p v-if="l[1] > 4">{{ l[1] }}</p>
+              <p v-if="l[1] > 2">{{ l[1] }}</p>
             </div>
           </div>
           <div class="chart__row" :id="formatId(l[0])">
@@ -47,7 +47,6 @@
               :offset="[20, 20]"
             >
               <div class="tooltip-text">
-                Pergunta
                 {{ l[0] + " - " + l[1].toFixed(2).replace(".", ",") }}
               </div>
             </q-tooltip>

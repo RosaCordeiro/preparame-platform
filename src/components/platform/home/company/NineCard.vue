@@ -22,17 +22,9 @@ export default {
     };
   },
   mounted() {
-    console.log(
-      this.lastAnswers.reduce((acc, curr) => {
-        console.log(curr.answer);
-        if (curr.answer === 10) return acc + 1;
-        return acc;
-      }, 0) / this.countUsers
-    );
     this.value =
       (
         (this.lastAnswers.reduce((acc, curr) => {
-          console.log(curr.answer);
           if (curr.answer === 10) return acc + 1;
           return acc;
         }, 0) /

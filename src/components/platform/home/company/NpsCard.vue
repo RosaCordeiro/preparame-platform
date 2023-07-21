@@ -3,7 +3,7 @@
     <div class="home-company-realocated-card-header">
       <div class="home-company-realocated-card-info-container">
         <q-card-section class="home-company-realocated-card-title"
-          >NPS</q-card-section
+          >e-NPS</q-card-section
         >
         <q-card-section class="home-company-realocated-card-realocated">{{
           nps
