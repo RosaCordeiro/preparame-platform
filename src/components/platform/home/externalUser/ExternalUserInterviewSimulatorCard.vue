@@ -7,6 +7,7 @@
       </div>
     </div>
     <div v-else-if="expiring" class="bg-prepara-me-expiring text-white">
+      {{ daysToExpirePeriodTest }}
       <div v-if="daysToExpireUse > 0">
         {{
           `Faltam ${daysToExpireUse.toFixed(
@@ -39,6 +40,7 @@
                 color="secondary"
                 label="ACESSAR SIMULADOR"
                 @click="goURL()"
+                :disable="expired"
               />
             </div>
             <div v-if="mobile" class="q-my-sm">
@@ -46,6 +48,7 @@
                 color="secondary"
                 label="ACESSAR SIMULADOR"
                 @click="goURL()"
+                :disable="expired"
               />
             </div>
           </div>
@@ -110,7 +113,7 @@ export default {
   },
   methods: {
     goURL: function () {
-      this.$router.push({ path: `/interviewSimulatorPresentation` });
+      this.$router.push({ path: `/interviewSimulator` });
       saveCrud("clicks", {
         name: "Simulador de entrevistas",
       });
