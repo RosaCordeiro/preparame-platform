@@ -275,7 +275,7 @@ export default {
         return user.user.surveyAnswered;
       }).length;
 
-      this.countAccepted = users.filter((user) => {
+      this.countAccepted = npsSurveyReport.filter((user) => {
         return user.accepted;
       }).length;
 

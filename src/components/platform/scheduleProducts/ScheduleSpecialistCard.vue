@@ -3,9 +3,12 @@
     <div class="row items-start">
       <q-card class="row col-12 specialists-card" flat bordered>
         <q-card-section horizontal class="col-12">
-          <q-card-section class="col-1 flex flex-center">
+          <q-card-section
+            class="col-1 flex flex-center"
+            style="min-width: 180px"
+          >
             <q-img
-              class="rounded-borders specialists-card-avatar"
+              class="rounded-borders specialists-card-avatar q-ma-md"
               :img-style="{
                 'background-size': 'contain',
               }"
