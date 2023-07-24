@@ -156,6 +156,7 @@ export default {
     save: async function (data) {
       try {
         await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);
+        this.listProducts();
       } catch (err) {
         showError(err);
 
