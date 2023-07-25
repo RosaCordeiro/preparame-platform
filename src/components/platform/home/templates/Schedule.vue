@@ -80,13 +80,19 @@ export default {
             return schedule;
           }
         ),
-        ...(await filterCrud(filters, "mentoring/schedule-list"))
-          .map((schedule) => {
+        ...(await filterCrud(filters, "mentoring/schedule-list")).map(
+          (schedule) => {
             schedule["type"] = "group";
             return schedule;
-          })
-          .sort((a, b) => (a.dateSchedule > b.dateSchedule ? 1 : -1)),
+          }
+        ),
       ];
+
+      this.schedules.sort((a, b) => (a.dateSchedule > b.dateSchedule ? 1 : -1));
+      this.schedules = this.schedules.filter(
+        (schedule, index, self) =>
+          index === self.findIndex((t) => t.id === schedule.id)
+      );
 
       this.schedules.forEach((schedule) => {
         let groupKey = `${schedule["productId"]}${schedule["userId"]}${
