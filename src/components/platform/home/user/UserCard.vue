@@ -38,7 +38,10 @@
           rounded
           class="q-ma-sm text-white"
           style="background-color: #15aa7c"
-          v-if="userId !== '757a3d7b-d07a-4971-ab36-d4714d955e9a'"
+          v-if="
+            userId !== '757a3d7b-d07a-4971-ab36-d4714d955e9a' &&
+            userId !== '3b41ceb9-9466-42a4-b043-2e819194979c'
+          "
         >
           <div class="user-card-banner-content row">
             <q-btn
