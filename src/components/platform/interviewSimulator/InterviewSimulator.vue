@@ -4,6 +4,7 @@
     :class="{ 'interview-simulator': true, column: !mobile }"
   >
     <Breadcrumbs :breadcrumbs="breadcrumbs" />
+
     <q-card-section class="interview-simulator-card-progress-bar-container row">
       <div class="interview-simulator-progress-bar-container col-12">
         <div
@@ -166,6 +167,7 @@
 </template>
 
 <script>
+import { saveCrud } from "src/components/general/crud/utils/saveCrud";
 import Breadcrumbs from "../../general/Breacrumbs.vue";
 import { filterCrud } from "./../../general/crud/utils/filterCrud";
 
@@ -173,6 +175,7 @@ export default {
   components: {
     Breadcrumbs,
   },
+
   data() {
     return {
       simulatorVideos: [],
@@ -198,6 +201,14 @@ export default {
         },
       ],
     };
+  },
+  watch: {
+    videoNumber: function () {
+      this.saveProgress();
+    },
+    videoGroupNumber: function () {
+      this.saveProgress();
+    },
   },
   methods: {
     showTipDialog: function () {
@@ -349,6 +360,28 @@ export default {
         }
       }, 1000);
     },
+    async getProgress() {
+      const response = await filterCrud(
+        [],
+        "interview/" + localStorage.getItem("userId")
+      );
+
+      if (response === "") return;
+
+      this.videoGroupNumber = response.group;
+      this.videoNumber = response.video;
+    },
+
+    async saveProgress() {
+      const body = {
+        user_id: localStorage.getItem("userId"),
+        group: this.videoGroupNumber,
+        video: this.videoNumber,
+      };
+
+      const response = await saveCrud("interview", body, "post");
+      console.log(response);
+    },
   },
   async created() {
     await this.loadGroupVideos();
@@ -378,6 +411,7 @@ export default {
     }
 
     this.initiateWebCam();
+    this.getProgress();
   },
 };
 </script>
