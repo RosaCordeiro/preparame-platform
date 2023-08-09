@@ -28,15 +28,19 @@
         @click="goFeelingsMap()"
       ></q-btn>
     </q-card-section>
+
+    <AnonymousDialog />
   </q-card>
 </template>
 
 <script>
+import AnonymousDialog from "src/components/AnonymousDialog.vue";
 import NPSQuestion from "./NPSQuestion.vue";
 
 export default {
   components: {
     NPSQuestion,
+    AnonymousDialog,
   },
   props: ["questions"],
   data() {

@@ -98,6 +98,9 @@
       </div>
       <q-dialog v-model="showSurveySuggestion">
         <div class="popup-recent-demission">
+          <div class="container-img">
+            <img src="../../../assets/imgs/popup-recent-demission.png" />
+          </div>
           <div class="container-info">
             <div class="title">Foi demitida(o) em 2023?</div>
             <div class="sub-title">Queremos saber como foi sua experiência</div>
@@ -264,11 +267,26 @@ export default {
   background-color: $prepara-me;
   height: 45vh;
   width: 60vw;
-  background-image: url("../../../assets/imgs/popup-recent-demission.png");
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+
+  .container-img {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .container-img img {
+    height: 80%;
+    width: 80%;
+    object-fit: contain;
+  }
 
   .container-info {
     display: flex;
@@ -322,6 +340,24 @@ export default {
       cursor: pointer;
       user-select: none;
     }
+  }
+
+  @media screen and (max-width: 750px) {
+    .container-img {
+      height: auto;
+      width: 100%;
+    }
+    .container-info {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .popup-recent-demission {
+    height: 80vh;
+    flex-direction: column;
+    width: 90%;
   }
 }
 
