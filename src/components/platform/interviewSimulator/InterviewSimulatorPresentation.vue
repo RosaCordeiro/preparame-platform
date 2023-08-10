@@ -99,6 +99,7 @@ export default {
           to: "",
         },
       ],
+      free: false,
     };
   },
   components: {

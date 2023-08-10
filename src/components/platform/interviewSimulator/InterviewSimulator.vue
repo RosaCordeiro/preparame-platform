@@ -163,6 +163,8 @@
         </q-card>
       </q-card>
     </q-dialog>
+
+    <InterviewDialog ref="modal" />
   </div>
 </template>
 
@@ -170,10 +172,12 @@
 import { saveCrud } from "src/components/general/crud/utils/saveCrud";
 import Breadcrumbs from "../../general/Breacrumbs.vue";
 import { filterCrud } from "./../../general/crud/utils/filterCrud";
+import InterviewDialog from "src/components/InterviewDialog.vue";
 
 export default {
   components: {
     Breadcrumbs,
+    InterviewDialog,
   },
 
   data() {
@@ -200,6 +204,7 @@ export default {
           to: "",
         },
       ],
+      free: false,
     };
   },
   watch: {
@@ -214,9 +219,23 @@ export default {
     showTipDialog: function () {
       this.pauseVideo();
 
+      console.log(this.videoGroupNumber);
+      console.log(this.videoNumber);
+
+      if (this.free) {
+        if (this.videoGroupNumber === 0 && this.videoNumber === 0) {
+          this.showTip = true;
+          return;
+        }
+
+        this.$refs.modal.show();
+
+        return;
+      }
+
       this.showTip = true;
 
-      this.loadTip();
+      //this.loadTip();
     },
     closeTipDialog: function () {
       this.playVideo();
@@ -248,15 +267,13 @@ export default {
         "products/simulatorVideos"
       );
 
-      const expiresDate = new Date(localStorage.getItem("expiresDate"));
-      const periodTest = new Date(localStorage.getItem("periodTest"));
-      const actualDate = new Date();
+      this.free = localStorage.getItem("expiresDate") === "null";
 
-      if (actualDate < periodTest && !(expiresDate > periodTest)) {
+      /* if (actualDate < periodTest && !(expiresDate > periodTest)) {
         this.simulatorVideos.forEach((simulatorVideo) => {
           simulatorVideo.tip = "Dicas disponíveis apenas na versão paga.";
         });
-      }
+      } */
 
       this.calculatePercent();
 

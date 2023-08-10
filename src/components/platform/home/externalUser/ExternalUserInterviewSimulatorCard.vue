@@ -7,7 +7,6 @@
       </div>
     </div>
     <div v-else-if="expiring" class="bg-prepara-me-expiring text-white">
-      {{ daysToExpirePeriodTest }}
       <div v-if="daysToExpireUse > 0">
         {{
           `Faltam ${daysToExpireUse.toFixed(
