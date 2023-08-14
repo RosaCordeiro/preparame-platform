@@ -16,7 +16,7 @@
         rounded
         class="text-white bg-prepara-me-blue q-mt-md"
         :class="{
-          disabled: !b2b || !s.available || s.participating,
+          disabled: !adept || !s.available || s.participating,
         }"
       >
         <div class="user-card-banner-content row">
@@ -26,7 +26,7 @@
             label="Participar"
             class="col-12"
             @click="participate(s.id)"
-            :disable="!b2b || !s.available || s.participating"
+            :disable="!adept || !s.available || s.participating"
           >
           </q-btn>
         </div>
@@ -49,15 +49,18 @@ export default {
   data() {
     return {
       schedule: [],
-      b2b:
-        localStorage.getItem("companyId") !== "" &&
-        localStorage.getItem("companyId") !== null &&
-        localStorage.getItem("companyId") !== "null",
+      adept:
+        (localStorage.getItem("companyId") !== "" &&
+          localStorage.getItem("companyId") !== null &&
+          localStorage.getItem("companyId") !== "null") ||
+        (localStorage.getItem("companyNameSignIn") !== "" &&
+          localStorage.getItem("companyNameSignIn") !== null &&
+          localStorage.getItem("companyNameSignIn") !== "null"),
     };
   },
   methods: {
     participate: async function (id) {
-      if (this.b2b) {
+      if (this.adept) {
         const email = localStorage.getItem("userEmail");
 
         const response = await saveCrud("mentoring/addParticipant", {

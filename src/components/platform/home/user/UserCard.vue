@@ -116,6 +116,7 @@
             companyNameSignIn === 'apsen'
           "
         >
+          <p>Mentoria Coletiva é um patrocínio da:</p>
           <img src="~assets/imgs/aspen.png" alt="" />
         </section>
 
@@ -311,7 +312,17 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+.section__companyName > p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 250px;
 }
 
 .section__companyName > img {
