@@ -42,8 +42,9 @@
         </aside>
 
         <aside class="right">
-          <TimerWidget v-if="false" class="timer__card" />
-          <FormWidget v-if="true" />
+          <LoadingWidget v-if="loading" />
+          <FormWidget v-if="vacancies > 0 && !loading" />
+          <TimerWidget v-else-if="!loading" class="timer__card" />
         </aside>
       </div>
     </div>
@@ -60,17 +61,39 @@
 <script>
 import TimerWidget from "src/components/site/homePageCompany/timer/TimerWidget.vue";
 import FormWidget from "src/components/site/homePageCompany/form/FormWidget.vue";
+import { filterCrud } from "src/components/general/crud/utils/filterCrud";
+import LoadingWidget from "src/components/site/homePageCompany/loading/LoadingWidget.vue";
 
 export default {
   components: {
     TimerWidget,
     FormWidget,
+    LoadingWidget,
+  },
+  data() {
+    return {
+      loading: false,
+      vacancies: 0,
+    };
   },
   mounted() {
     console.log(this.$route.params.companyName);
 
     if (this.$route.params.companyName !== "apsen")
       this.$router.push({ path: `/` });
+  },
+  beforeMount() {
+    this.loading = true;
+
+    filterCrud([], "companies/vacancies/apsen")
+      .then((res) => {
+        this.vacancies = res.total;
+        this.loading = false;
+      })
+      .catch((err) => {
+        loading = false;
+        this.vacancies = 0;
+      });
   },
 };
 </script>
