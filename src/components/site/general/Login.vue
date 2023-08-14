@@ -226,6 +226,7 @@ export default {
       }
     } catch (err) {
       console.log(err);
+      this.needLogin = true;
     }
   },
   methods: {

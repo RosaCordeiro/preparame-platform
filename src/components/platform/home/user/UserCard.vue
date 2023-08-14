@@ -108,6 +108,17 @@
           </div>
         </q-banner>
 
+        <section
+          class="section__companyName"
+          v-if="
+            companyNameSignIn !== '' &&
+            companyNameSignIn !== null &&
+            companyNameSignIn === 'apsen'
+          "
+        >
+          <img src="~assets/imgs/aspen.png" alt="" />
+        </section>
+
         <q-banner
           v-if="!laborRiskAlert && companyId != 'null'"
           rounded
@@ -167,6 +178,7 @@ export default {
       productsSchedulables: [],
       companyId: "",
       userId: "",
+      companyNameSignIn: "",
     };
   },
   created() {
@@ -174,6 +186,7 @@ export default {
     this.userName = localStorage.getItem("userName");
     this.companyId = localStorage.getItem("companyId");
     this.userId = localStorage.getItem("userId");
+    this.companyNameSignIn = localStorage.getItem("companyNameSignIn");
   },
   mounted() {
     console.log(this.products);
@@ -292,5 +305,17 @@ export default {
   font-weight: 600;
   font-size: 0.9rem;
   color: $back-dis;
+}
+
+.section__companyName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.section__companyName > img {
+  width: 100%;
+  max-width: 250px;
 }
 </style>

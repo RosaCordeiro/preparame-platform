@@ -1,163 +1,193 @@
-import ProductDetails from "../../layouts/ProductDetails.vue"
-import ProductList from "../../layouts/ProductList.vue"
-import ProductSchedule from "../../layouts/ProductSchedule.vue"
-import HomePage from "../../layouts/HomePage.vue"
-import ShoppingCart from "../../layouts/ShoppingCart.vue"
-import Site from "../../layouts/Site.vue"
-import CompanyDetails from "../../layouts/CompanyDetails.vue"
-import FAQ from "../../layouts/FAQ.vue"
-import PrivacyTerms from "../../layouts/PrivacyTerms.vue"
-import UseTerms from "../../layouts/UseTerms.vue"
-import ResponsibleDemission from "../../layouts/ResponsibleDemission.vue"
-import PageNotFound from "../../pages/PageNotFound.vue"
-import KitPro from "../../components/site/kitProPage/KitProPage"
+import ProductDetails from "../../layouts/ProductDetails.vue";
+import ProductList from "../../layouts/ProductList.vue";
+import ProductSchedule from "../../layouts/ProductSchedule.vue";
+import HomePage from "../../layouts/HomePage.vue";
+import HomePageCompany from "../../layouts/HomePageCompany.vue";
+import ShoppingCart from "../../layouts/ShoppingCart.vue";
+import Site from "../../layouts/Site.vue";
+import CompanyDetails from "../../layouts/CompanyDetails.vue";
+import FAQ from "../../layouts/FAQ.vue";
+import PrivacyTerms from "../../layouts/PrivacyTerms.vue";
+import UseTerms from "../../layouts/UseTerms.vue";
+import ResponsibleDemission from "../../layouts/ResponsibleDemission.vue";
+import PageNotFound from "../../pages/PageNotFound.vue";
+import KitPro from "../../components/site/kitProPage/KitProPage";
 
 const siteRoutes = [
-    {
+  {
+    path: "/",
+    components: {
+      site: Site,
+    },
+    children: [
+      {
         path: "/",
         components: {
-            site: Site
+          content: HomePage,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: HomePage
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/:companyName",
+    components: {
+      site: HomePageCompany,
     },
-    {
-        path: "/ProductDetails",
-        components: {
-            site: Site
-        },
-        children: [{
-            path: "/",
-            components: {
-                content: ProductDetails
-            }
-        }]
+  },
+  {
+    path: "/ProductDetails",
+    components: {
+      site: Site,
     },
-    {
-        path: "/KitRecolocacao",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: ProductDetails,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: KitPro
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/KitRecolocacao",
+    components: {
+      site: Site,
     },
-    {
-        path: "/demissaohumanizada",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: KitPro,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: ResponsibleDemission
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/demissaohumanizada",
+    components: {
+      site: Site,
     },
-    {
-        path: "/ProductList",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: ResponsibleDemission,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: ProductList
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/ProductList",
+    components: {
+      site: Site,
     },
-    {
-        path: "/ProductSchedule",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: ProductList,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: ProductSchedule
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/ProductSchedule",
+    components: {
+      site: Site,
     },
-    {
-        path: "/ShoppingCart",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: ProductSchedule,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: ShoppingCart
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/ShoppingCart",
+    components: {
+      site: Site,
     },
-    {
-        path: "/CompanyDetails",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: ShoppingCart,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: CompanyDetails
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/CompanyDetails",
+    components: {
+      site: Site,
     },
-    {
-        path: "/FAQ",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: CompanyDetails,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: FAQ
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/FAQ",
+    components: {
+      site: Site,
     },
-    {
-        path: "/PrivacyTerms",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: FAQ,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: PrivacyTerms
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/PrivacyTerms",
+    components: {
+      site: Site,
     },
-    {
-        path: "/UseTerms",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: PrivacyTerms,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: UseTerms
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/UseTerms",
+    components: {
+      site: Site,
     },
-    {
-        path: "*",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Site
+          content: UseTerms,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: PageNotFound
-            }
-        }]
-    }
+      },
+    ],
+  },
+  {
+    path: "*",
+    components: {
+      site: Site,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: PageNotFound,
+        },
+      },
+    ],
+  },
+];
 
-]
-
-export { siteRoutes }
+export { siteRoutes };
