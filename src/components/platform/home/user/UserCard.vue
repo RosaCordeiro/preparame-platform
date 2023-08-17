@@ -103,8 +103,21 @@
             />
           </div>
         </q-banner>
+
+        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
+          <div class="user-card-banner-content row">
+            <q-btn
+              flat
+              color="white"
+              label="QUERO TROCAR A MENTORIA POR OUTRO SERVIÇO"
+              class="col-12"
+              @click="showExchange = true"
+            />
+          </div>
+        </q-banner>
       </q-card-section>
     </q-card>
+
     <q-dialog v-model="laborRiskAlertDialog">
       <q-card style="min-width: 350px">
         <q-card-section>
@@ -142,6 +155,7 @@ export default {
       userName: "",
       surveyAnswered: false,
       laborRiskAlertDialog: false,
+      showExchange: false,
       laborRiskAlert: false,
       simulator: false,
       productsSchedulables: [],
