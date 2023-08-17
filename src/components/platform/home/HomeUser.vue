@@ -18,6 +18,8 @@
             class="col-3"
             :products="products"
             :interviewSimulator="interviewSimulator"
+            @open-mentoring-calendar="showMentoringCalendar = true"
+            @close-mentoring-calendar="showMentoringCalendar = false"
           />
           <div
             :class="{
@@ -34,27 +36,61 @@
                 'external-user-options': true,
               }"
             >
-              <Schedule :homeType="'USER'" />
-              <ExternalUserTalentBank :class="{ 'col-12': true }" />
-              <div class="justify-around q-mb-sm">
-                <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserInterviewSimulatorCard class="col-6" />
-                  <ExternalUserMostCommonQuestions class="col-6" />
-                </q-card>
+              <Schedule :homeType="'USER'" ref="schedule" />
+              <div v-if="showMentoringCalendar">
+                <ExternalUserMentoringSchedule
+                  @update-schedule="updateSchedule"
+                />
               </div>
-              <ExternalUserKitRealocationProCard
-                v-if="!kitPro"
-                :class="{ 'col-12': true }"
-              />
-              <ExternalUserIndividualMentorshipCard
-                v-if="false"
-                :class="{ 'col-12': true }"
-              />
-              <div class="justify-around q-mb-sm">
-                <q-card class="row external-user-card-container q-pa-sm">
-                  <ExternalUserResumeCreatorCard class="col-6" />
-                  <ExternalUserLinkedinCover class="col-6" />
-                </q-card>
+              <div
+                v-else
+                :class="{
+                  'q-col-gutter-md': !mobile,
+                  'q-col-gutter-lg': mobile,
+                  'external-user-options': true,
+                }"
+              >
+                <ExternalUserTalentBank :class="{ 'col-12': true }" />
+                <div class="justify-around q-mb-sm">
+                  <q-card class="row external-user-card-container q-pa-sm">
+                    <ExternalUserInterviewSimulatorCard
+                      :class="{
+                        'col-6': !mobile,
+                        'col-12': mobile,
+                      }"
+                    />
+                    <ExternalUserMostCommonQuestions
+                      :class="{
+                        'col-6': !mobile,
+                        'col-12': mobile,
+                      }"
+                    />
+                  </q-card>
+                </div>
+                <ExternalUserKitRealocationProCard
+                  v-if="!kitPro"
+                  :class="{ 'col-12': true }"
+                />
+                <ExternalUserIndividualMentorshipCard
+                  v-if="false"
+                  :class="{ 'col-12': true }"
+                />
+                <div class="justify-around q-mb-sm">
+                  <q-card class="row external-user-card-container q-pa-sm">
+                    <ExternalUserResumeCreatorCard
+                      :class="{
+                        'col-6': !mobile,
+                        'col-12': mobile,
+                      }"
+                    />
+                    <ExternalUserLinkedinCover
+                      :class="{
+                        'col-6': !mobile,
+                        'col-12': mobile,
+                      }"
+                    />
+                  </q-card>
+                </div>
               </div>
             </div>
           </div>
@@ -62,6 +98,9 @@
       </div>
       <q-dialog v-model="showSurveySuggestion">
         <div class="popup-recent-demission">
+          <div class="container-img">
+            <img src="../../../assets/imgs/popup-recent-demission.png" />
+          </div>
           <div class="container-info">
             <div class="title">Foi demitida(o) em 2023?</div>
             <div class="sub-title">Queremos saber como foi sua experiência</div>
@@ -84,6 +123,7 @@ import ExternalUserIndividualMentorshipCard from "./externalUser/ExternalUserInd
 import ExternalUserTalentBank from "./externalUser/ExternalUserTalentBank.vue";
 import ExternalUserMostCommonQuestions from "./externalUser/ExternalUserMostCommonQuestions.vue";
 import ExternalUserLinkedinCover from "./externalUser/ExternalUserLinkedinCover.vue";
+import ExternalUserMentoringSchedule from "./externalUser/ExternalUserMentoringSchedule.vue";
 import Schedule from "./templates/Schedule.vue";
 import UserCard from "./user/UserCard.vue";
 import axios from "axios";
@@ -107,6 +147,7 @@ export default {
       surveyAnswered: false,
       showSurveySuggestion: false,
       surveyPopupShowed: false,
+      showMentoringCalendar: false,
     };
   },
   components: {
@@ -119,6 +160,7 @@ export default {
     ExternalUserTalentBank,
     ExternalUserMostCommonQuestions,
     ExternalUserLinkedinCover,
+    ExternalUserMentoringSchedule,
     UserCard,
     Schedule,
   },
@@ -182,6 +224,13 @@ export default {
     goUrl: function (url) {
       this.$router.push({ path: `${url}/${this.product.id}` });
     },
+    updateSchedule() {
+      try {
+        this.$refs.schedule.init();
+      } catch (e) {
+        console.log(e);
+      }
+    },
     answerSurvey: function (url) {
       this.$router.push({ path: `/survey` });
     },
@@ -218,11 +267,26 @@ export default {
   background-color: $prepara-me;
   height: 45vh;
   width: 60vw;
-  background-image: url("../../../assets/imgs/popup-recent-demission.png");
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+
+  .container-img {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .container-img img {
+    height: 80%;
+    width: 80%;
+    object-fit: contain;
+  }
 
   .container-info {
     display: flex;
@@ -276,6 +340,24 @@ export default {
       cursor: pointer;
       user-select: none;
     }
+  }
+
+  @media screen and (max-width: 750px) {
+    .container-img {
+      height: auto;
+      width: 100%;
+    }
+    .container-info {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .popup-recent-demission {
+    height: 80vh;
+    flex-direction: column;
+    width: 90%;
   }
 }
 

@@ -1,11 +1,17 @@
 <template>
   <q-card class="crud-register-form">
     <q-card-section>
-      <q-form
-        class="col crud-register q-pa-md"
-      >
-        <div v-for="fields in table.registerColumns" :key="fields.row" class="row">
-          <FieldCrudDynamicTemplate v-for="col in fields.cols" :key="col.name" :col="col" />
+      <q-form class="col crud-register q-pa-md">
+        <div
+          v-for="fields in table.registerColumns"
+          :key="fields.row"
+          class="row"
+        >
+          <FieldCrudDynamicTemplate
+            v-for="col in fields.cols"
+            :key="col.name"
+            :col="col"
+          />
         </div>
       </q-form>
     </q-card-section>
@@ -30,7 +36,7 @@ export default {
         });
       });
     },
-  }
+  },
 };
 </script>
 

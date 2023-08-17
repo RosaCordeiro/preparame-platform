@@ -1,5 +1,8 @@
 <template>
-  <q-card class="home-company-labor-risk-detailed-card column q-pb-md q-px-md">
+  <q-card
+    class="home-company-labor-risk-detailed-card column"
+    style="flex: 1 0 400px"
+  >
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
         <q-card-section
@@ -24,7 +27,7 @@
               :style="`min-width: 80px; width: ${l[1] * 10}%; `"
             >
               <p>Pergunta {{ index + 1 }}</p>
-              <p v-if="l[1] > 4">{{ l[1] }}</p>
+              <p v-if="l[1] > 2">{{ l[1].toFixed(2) }}</p>
             </div>
           </div>
           <div class="chart__row" :id="formatId(l[0])">
@@ -33,20 +36,20 @@
               :style="`width: ${
                 l[1] * 10
               }%; background: linear-gradient(90deg, #1a27b7 0%, ${
-                l[1] < 5 ? '#34a67c' : '#ff4690'
+                l[1] >= 7 ? '#34a67c' : '#ff4690'
               } 100%);`"
+            ></div>
+
+            <q-tooltip
+              transition-show="scale"
+              transition-hide="scale"
+              class="bg-purple text-body1"
+              :offset="[20, 20]"
             >
-              <q-tooltip
-                transition-show="scale"
-                transition-hide="scale"
-                class="bg-purple text-body1"
-                :offset="[20, 20]"
-              >
-                <div class="tooltip-text">
-                  Pergunta {{ index + 1 + " - " + l[0] + " - (" + l[1] }})
-                </div>
-              </q-tooltip>
-            </div>
+              <div class="tooltip-text">
+                {{ l[0] + " - " + l[1].toFixed(2).replace(".", ",") }}
+              </div>
+            </q-tooltip>
           </div>
         </div>
       </div>
@@ -107,7 +110,8 @@ export default {
 <style lang="scss">
 .home-company-labor-risk-detailed-card {
   width: 40vw;
-  height: 60vh;
+  min-height: 60vh;
+  height: 100%;
   box-shadow: none;
   border-radius: 5%;
 }

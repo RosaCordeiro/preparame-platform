@@ -1,9 +1,11 @@
 <template>
-  <q-card class="home-company-nps-card column q-pb-md q-px-md q-ma-md">
-    <div class="home-company-nps-card-header">
-      <div class="home-company-nps-card-info-container">
-        <q-card-section class="home-company-nps-card-title">NPS</q-card-section>
-        <q-card-section class="home-company-nps-card-nps">{{
+  <q-card class="home-company-realocated-card q-ma-md">
+    <div class="home-company-realocated-card-header">
+      <div class="home-company-realocated-card-info-container">
+        <q-card-section class="home-company-realocated-card-title"
+          >e-NPS</q-card-section
+        >
+        <q-card-section class="home-company-realocated-card-realocated">{{
           nps
         }}</q-card-section>
       </div>
@@ -29,7 +31,7 @@ export default {
 .home-company-nps-card {
   width: 18vw;
   height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 

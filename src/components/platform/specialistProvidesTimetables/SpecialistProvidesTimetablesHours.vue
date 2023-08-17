@@ -59,14 +59,14 @@
               >
                 Indisponível
               </div>
-              <div v-if="hour.scheduled" class="text-subtitle2">
+              <!-- <div v-if="hour.scheduled" class="text-subtitle2">
                 <q-btn
                   color="blue-10"
                   icon-right="mdi-file"
                   label="Informações"
                   size="sm"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default {
       mobile: false,
       hours: [
         { hour: "7:00", id: 7, available: false, scheduled: false },
-        { hour: "8:00", id: 8, available: false, scheduled: true },
+        { hour: "8:00", id: 8, available: false, scheduled: false },
         { hour: "9:00", id: 9, available: false, scheduled: false },
         { hour: "10:00", id: 10, available: false, scheduled: false },
         { hour: "11:00", id: 11, available: false, scheduled: false },
@@ -118,6 +118,8 @@ export default {
         this.dateCalendar,
         "yyyy-mm-dd"
       );
+
+      if (this.specialist.id === undefined) return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -215,10 +217,14 @@ export default {
       });
     },
   },
+
   watch: {
     dateCalendar(newQuestion) {
       this.loadSchedule(new Date(newQuestion));
       this.adjustHours(newQuestion);
+    },
+    specialist() {
+      this.loadSchedule(new Date());
     },
   },
 };
@@ -238,6 +244,6 @@ export default {
 }
 
 .specialist-provides-timetable-timetable-mobile {
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 </style>

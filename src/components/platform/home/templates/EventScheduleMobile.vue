@@ -22,7 +22,13 @@
             {{ productName }}
           </div>
           <div class="text-caption text-weight-light">
-            {{ userType === "USER" ? specialistName : schedule.user.name }}
+            {{
+              userType === "USER"
+                ? specialistName
+                : Object.entries(this.schedulesGroup)[0][1][0].type === "group"
+                ? "Mentoria Coletiva"
+                : getUserName(eventSchedule.schedules)
+            }}
           </div>
         </div>
         <div class="event-schedule-hour">
@@ -40,6 +46,39 @@
             >
             <div v-if="!eventValid" class="text-caption" color="white">
               Evento já terminou
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="event-schedule-hour col-8"
+            style="justify-content: center; display: flex"
+          >
+            <q-rating
+              v-model="rate"
+              max="5"
+              size="2em"
+              color="gold"
+              icon="star_border"
+              icon-selected="star"
+              :disable="eventValid"
+              @click="!eventValid ? rateSpecialist() : null"
+            />
+          </div>
+          <div class="event-schedule-hour col-2">
+            <div class="text-subtitle1 text-center">
+              <q-btn
+                v-if="eventValid"
+                color="white"
+                class="text-caption"
+                flat
+                @click="goMeet()"
+                :disable="!lessThen1Hour"
+                >Ir para reunião</q-btn
+              >
+              <div v-else class="text-caption" color="white">
+                Evento já terminou
+              </div>
             </div>
           </div>
         </div>
@@ -104,10 +143,18 @@ export default {
       lessThen1Hour: false,
       confirm: false,
       eventSchedule: {},
+      rate: 0,
     };
   },
   props: ["schedulesGroup", "userType"],
   methods: {
+    getUserName(data) {
+      try {
+        return data[0].user.name;
+      } catch (error) {
+        return "Usuário não encontrado.";
+      }
+    },
     goMeet() {
       if (this.eventSchedule.schedules[0].hangoutLink) {
         window.location.href = this.eventSchedule.schedules[0].hangoutLink;
@@ -118,15 +165,47 @@ export default {
         });
       }
     },
-    async cancelSchedule() {
-      for (const index in this.eventSchedule.schedules) {
-        const revertAvailableProduct = index == 0;
-
+    async rateSpecialist() {
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "individual") {
         await saveCrud(
-          `specialists/schedule/${this.eventSchedule.schedules[index].id}/cancel`,
-          { revertAvailableProduct },
+          `specialists/schedule/${this.eventSchedule.schedules[0].id}`,
+          this.eventSchedule.schedules[0],
+          "put",
+          true
+        );
+      }
+
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "group") {
+        await saveCrud(
+          `mentoring/rate`,
+          {
+            mentoringId: this.eventSchedule.schedules[0].id,
+            rate: this.rate,
+          },
+          "put",
+          true
+        );
+      }
+    },
+    async cancelSchedule() {
+      if (Object.entries(this.schedulesGroup)[0][1][0].type === "group") {
+        await saveCrud(
+          `mentoring/removeParticipant`,
+          {
+            mentoringId: this.eventSchedule.schedules[0].id,
+          },
           "post"
         );
+      } else {
+        for (const index in this.eventSchedule.schedules) {
+          const revertAvailableProduct = index == 0;
+
+          await saveCrud(
+            `specialists/schedule/${this.eventSchedule.schedules[index].id}/cancel`,
+            { revertAvailableProduct },
+            "post"
+          );
+        }
       }
 
       document.location.reload(true);
@@ -139,7 +218,7 @@ export default {
 
     dateSchedule = new Date(
       dateSchedule.setHours(
-        dateSchedule.getHours() + (dateSchedule.getTimezoneOffset() / 60) + 1
+        dateSchedule.getHours() + dateSchedule.getTimezoneOffset() / 60 + 1
       )
     );
 
@@ -178,6 +257,7 @@ export default {
     minute = minute.substring(minute.length - 2);
 
     this.hour = `${hour}:${minute}`;
+    this.rate = Object.entries(this.schedulesGroup)[0][1][0].rating;
   },
 };
 </script>

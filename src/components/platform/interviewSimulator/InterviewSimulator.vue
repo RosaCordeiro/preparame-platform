@@ -4,6 +4,7 @@
     :class="{ 'interview-simulator': true, column: !mobile }"
   >
     <Breadcrumbs :breadcrumbs="breadcrumbs" />
+
     <q-card-section class="interview-simulator-card-progress-bar-container row">
       <div class="interview-simulator-progress-bar-container col-12">
         <div
@@ -162,17 +163,23 @@
         </q-card>
       </q-card>
     </q-dialog>
+
+    <InterviewDialog ref="modal" />
   </div>
 </template>
 
 <script>
+import { saveCrud } from "src/components/general/crud/utils/saveCrud";
 import Breadcrumbs from "../../general/Breacrumbs.vue";
 import { filterCrud } from "./../../general/crud/utils/filterCrud";
+import InterviewDialog from "src/components/InterviewDialog.vue";
 
 export default {
   components: {
     Breadcrumbs,
+    InterviewDialog,
   },
+
   data() {
     return {
       simulatorVideos: [],
@@ -197,15 +204,38 @@ export default {
           to: "",
         },
       ],
+      free: false,
     };
+  },
+  watch: {
+    videoNumber: function () {
+      this.saveProgress();
+    },
+    videoGroupNumber: function () {
+      this.saveProgress();
+    },
   },
   methods: {
     showTipDialog: function () {
       this.pauseVideo();
 
+      console.log(this.videoGroupNumber);
+      console.log(this.videoNumber);
+
+      if (this.free) {
+        if (this.videoGroupNumber === 0 && this.videoNumber === 0) {
+          this.showTip = true;
+          return;
+        }
+
+        this.$refs.modal.show();
+
+        return;
+      }
+
       this.showTip = true;
 
-      this.loadTip();
+      //this.loadTip();
     },
     closeTipDialog: function () {
       this.playVideo();
@@ -237,15 +267,13 @@ export default {
         "products/simulatorVideos"
       );
 
-      const expiresDate = new Date(localStorage.getItem("expiresDate"));
-      const periodTest = new Date(localStorage.getItem("periodTest"));
-      const actualDate = new Date();
+      this.free = localStorage.getItem("expiresDate") === "null";
 
-      if (actualDate < periodTest && !(expiresDate > periodTest)) {
+      /* if (actualDate < periodTest && !(expiresDate > periodTest)) {
         this.simulatorVideos.forEach((simulatorVideo) => {
           simulatorVideo.tip = "Dicas disponíveis apenas na versão paga.";
         });
-      }
+      } */
 
       this.calculatePercent();
 
@@ -349,6 +377,28 @@ export default {
         }
       }, 1000);
     },
+    async getProgress() {
+      const response = await filterCrud(
+        [],
+        "interview/" + localStorage.getItem("userId")
+      );
+
+      if (response === "") return;
+
+      this.videoGroupNumber = response.group;
+      this.videoNumber = response.video;
+    },
+
+    async saveProgress() {
+      const body = {
+        user_id: localStorage.getItem("userId"),
+        group: this.videoGroupNumber,
+        video: this.videoNumber,
+      };
+
+      const response = await saveCrud("interview", body, "post");
+      console.log(response);
+    },
   },
   async created() {
     await this.loadGroupVideos();
@@ -378,6 +428,7 @@ export default {
     }
 
     this.initiateWebCam();
+    this.getProgress();
   },
 };
 </script>

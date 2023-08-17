@@ -35,6 +35,26 @@
         </q-banner>
 
         <q-banner
+          rounded
+          class="q-ma-sm text-white"
+          style="background-color: #15aa7c"
+          v-if="
+            userId !== '757a3d7b-d07a-4971-ab36-d4714d955e9a' &&
+            userId !== '3b41ceb9-9466-42a4-b043-2e819194979c'
+          "
+        >
+          <div class="user-card-banner-content row">
+            <q-btn
+              flat
+              color="white"
+              label="CALENDÁRIO DE MENTORIAS COLETIVAS"
+              class="col-12"
+              @click="$emit('open-mentoring-calendar')"
+            />
+          </div>
+        </q-banner>
+
+        <q-banner
           v-if="simulator"
           rounded
           class="q-ma-sm text-white bg-prepara-me"
@@ -58,8 +78,8 @@
             'bg-green': product.scheduled,
             'bg-prepara-me': !product.scheduled,
           }"
-          v-for="product in productsSchedulables"
-          :key="product.id"
+          v-for="(product, index) in productsSchedulables"
+          :key="index"
         >
           <div class="user-card-banner-content row">
             <q-btn
@@ -87,6 +107,18 @@
             />
           </div>
         </q-banner>
+
+        <section
+          class="section__companyName"
+          v-if="
+            companyNameSignIn !== '' &&
+            companyNameSignIn !== null &&
+            companyNameSignIn === 'apsen'
+          "
+        >
+          <p>Mentoria Coletiva é um patrocínio da:</p>
+          <img src="~assets/imgs/aspen.png" alt="" />
+        </section>
 
         <q-banner
           v-if="!laborRiskAlert && companyId != 'null'"
@@ -160,22 +192,23 @@ export default {
       simulator: false,
       productsSchedulables: [],
       companyId: "",
+      userId: "",
+      companyNameSignIn: "",
     };
   },
   created() {
     this.userAvatarUrl = localStorage.getItem("userAvatarUrl");
     this.userName = localStorage.getItem("userName");
     this.companyId = localStorage.getItem("companyId");
+    this.userId = localStorage.getItem("userId");
+    this.companyNameSignIn = localStorage.getItem("companyNameSignIn");
   },
   mounted() {
+    console.log(this.products);
+
     this.productsSchedulables = this.products.filter((product) => {
       return product.type === "SCHEDULED";
     });
-
-    this.productsSchedulables = this.productsSchedulables.filter(
-      (product, index, self) =>
-        index === self.findIndex((t) => t.id === product.id)
-    );
 
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;
@@ -186,6 +219,7 @@ export default {
   methods: {
     goUrl: function (url) {
       this.$router.push({ path: `/${url}` });
+      this.$emit("close-mentoring-calendar");
     },
     goBlank: function (url) {
       window.open(url, "_blank");
@@ -286,5 +320,27 @@ export default {
   font-weight: 600;
   font-size: 0.9rem;
   color: $back-dis;
+}
+
+.section__companyName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+.section__companyName > p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.section__companyName > img {
+  width: 100%;
+  max-width: 250px;
 }
 </style>

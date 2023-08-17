@@ -4,10 +4,10 @@
       <q-card-section class="col q-pa-none">
         <q-card-section horizontal class="flex flex-center">
           <img
-            :src="specialist.user.avatarUrl"
+            :src="specialist.image"
             alt=""
             srcset=""
-            class="specialists-card-avatar"
+            class="specialists-card-avatar q-ma-lg"
           />
           <div class="col q-ml-sm">
             <div class="text-subtitle1 q-mt-sm q-mb-xs">

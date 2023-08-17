@@ -30,6 +30,19 @@
       </q-input>
     </template>
 
+    <template v-slot:body-cell-accepted="props">
+      <q-td auto-width :props="props">
+        <div v-if="props.row.accepted">ACOLHIDO</div>
+        <q-btn
+          v-else
+          color="positive"
+          label="Acolher"
+          @click="accept(props.row)"
+          :disable="blockRemove"
+        ></q-btn>
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-actions="props">
       <q-td auto-width :props="props">
         <q-btn-group>
@@ -51,21 +64,42 @@
 </template>
 
 <script>
+import { saveCrud } from "./utils/saveCrud";
+
 export default {
   props: ["result", "blockRemove"],
   data() {
     return {
       selecteds: [],
       filter: "",
-      visibleColumns: []
+      visibleColumns: [],
     };
   },
   created() {
     this.definesVisibleColumns();
 
-    console.log(this.result)
+    console.log(this.result);
   },
   methods: {
+    accept(row) {
+      this.$q
+        .dialog({
+          title: "Remover",
+          message: "Deseja acolher o usuário selecionado?",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(() => {
+          saveCrud(`companies/employees/${row.id}/accept`, {}, "put").then(
+            () => {
+              this.$q.notify({
+                color: "positive",
+                message: "Acolhido com sucesso!",
+              });
+            }
+          );
+        });
+    },
     definesVisibleColumns: function () {
       this.visibleColumns = this.result.columns
         .filter((column) => {
@@ -79,7 +113,18 @@ export default {
       return "";
     },
     removeSelected: function (id) {
-      this.$parent.$parent.removeSelected(id);
+      console.log(id);
+
+      this.$q
+        .dialog({
+          title: "Remover",
+          message: "Deseja remover o registro selecionado?",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(() => {
+          this.$parent.$parent.removeSelected(id);
+        });
     },
     editSelected: function (id) {
       const actualUrl = this.$router.history.current.path;

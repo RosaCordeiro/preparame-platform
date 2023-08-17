@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div  class="q-ma-md">
+    <div class="q-ma-md">
       <div class="external-user-most-common-questions-card-title">
         100 CAPAS PARA LINKEDIN
       </div>
       <div class="row col-12">
         <div class="q-my-md col-9">
-          Tenha um perfil de Linkedin muito mais bonito e profissional com nossas capas.
+          Tenha um perfil de Linkedin muito mais bonito e profissional com
+          nossas capas.
           <div v-if="!mobile" class="q-my-sm">
             <q-btn
               color="secondary"
@@ -38,7 +39,6 @@
 </template>
 
 <script>
-
 import { downloadFileFromPublic } from "../../../../utils/downloadFile";
 import { saveCrud } from "../../../../components/general/crud/utils/saveCrud";
 
@@ -53,10 +53,10 @@ export default {
   },
   methods: {
     downloadFile: function () {
-      downloadFileFromPublic("Capas Linkedin.zip")
+      downloadFileFromPublic("Capas.zip");
       saveCrud("clicks", {
-        name: "Capas de Linkedin"
-      })
+        name: "Capas de Linkedin",
+      });
     },
   },
 };

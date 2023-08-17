@@ -2,70 +2,72 @@
   <div>
     <div v-if="expired" class="bg-negative text-white">
       <div>
-        O uso do Simulador de Entrevista está expirado. Caso necessite
-        contrate mais dias para continuar seu uso.
+        O uso do Simulador de Entrevista está expirado. Caso necessite contrate
+        mais dias para continuar seu uso.
       </div>
     </div>
     <div v-else-if="expiring" class="bg-prepara-me-expiring text-white">
       <div v-if="daysToExpireUse > 0">
         {{
-          `Faltam ${(daysToExpireUse + 1).toFixed(
+          `Faltam ${daysToExpireUse.toFixed(
             0
           )} dia(s) para o uso do seu Simulador de Entrevistas ser interrompido.`
         }}
       </div>
       <div v-else-if="daysToExpirePeriodTest > 0">
         {{
-          `Faltam ${(daysToExpirePeriodTest + 1).toFixed(
+          `Faltam ${daysToExpirePeriodTest.toFixed(
             0
           )} dia(s) para o período de teste do seu Simulador de Entrevistas finalizar.`
         }}
       </div>
     </div>
     <div>
-    <div  class="q-ma-md">
-      <div class="external-user-most-common-questions-card-title">
-        SIMULADOR DE ENTREVISTA
-      </div>
-      <div class="row col-12">
-        <div class="q-mt-sm col-9">
-          Simule uma entrevista com perguntas reais que você encontrará em suas próximas entrevistas.
-          <div>
-          <b><br>Perca o medo e aumente sua confiança!</b>
+      <div class="q-ma-md">
+        <div class="external-user-most-common-questions-card-title">
+          SIMULADOR DE ENTREVISTA
         </div>
-          <div v-if="!mobile" class="q-my-sm">
-            <q-btn
-              color="secondary"
-              label="ACESSAR SIMULADOR"
-              @click="goURL()"
-            />
+        <div class="row col-12">
+          <div class="q-mt-sm col-9">
+            Simule uma entrevista com perguntas reais que você encontrará em
+            suas próximas entrevistas.
+            <div>
+              <b><br />Perca o medo e aumente sua confiança!</b>
+            </div>
+            <div v-if="!mobile" class="q-my-sm">
+              <q-btn
+                color="secondary"
+                label="ACESSAR SIMULADOR"
+                @click="goURL()"
+                :disable="expired"
+              />
+            </div>
+            <div v-if="mobile" class="q-my-sm">
+              <q-btn
+                color="secondary"
+                label="ACESSAR SIMULADOR"
+                @click="goURL()"
+                :disable="expired"
+              />
+            </div>
           </div>
-          <div v-if="mobile" class="q-my-sm">
-            <q-btn
-              color="secondary"
-              label="ACESSAR SIMULADOR"
-              @click="goURL()"
-            />
-          </div>
+          <img
+            v-if="!mobile"
+            class="external-user-most-common-questions-card-img col-3"
+            src="./../../../../assets/imgs/mentorshipGirl.png"
+          />
+          <img
+            v-if="mobile"
+            class="external-user-most-common-questions-card-img col-3"
+            src="./../../../../assets/imgs/mentorshipGirl.png"
+          />
         </div>
-        <img
-          v-if="!mobile"
-          class="external-user-most-common-questions-card-img col-3"
-          src="./../../../../assets/imgs/mentorshipGirl.png"
-        />
-        <img
-          v-if="mobile"
-          class="external-user-most-common-questions-card-img col-3"
-          src="./../../../../assets/imgs/mentorshipGirl.png"
-        />
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
-
 import { saveCrud } from "../../../../components/general/crud/utils/saveCrud";
 
 export default {
@@ -89,6 +91,8 @@ export default {
         24) *
       -1;
 
+    console.log(this.daysToExpirePeriodTest);
+
     this.daysToExpireUse =
       ((new Date() - new Date(localStorage.getItem("expiresDate"))) /
         1000 /
@@ -97,6 +101,7 @@ export default {
         24) *
       -1;
 
+    console.log(this.daysToExpireUse);
     if (this.daysToExpireUse > 0) {
       this.expiring = this.daysToExpireUse < 7;
     } else if (this.daysToExpirePeriodTest > 0) {
@@ -107,10 +112,10 @@ export default {
   },
   methods: {
     goURL: function () {
-      this.$router.push({ path: `/interviewSimulatorPresentation` });
+      this.$router.push({ path: `/interviewSimulator` });
       saveCrud("clicks", {
-        name: "Simulador de entrevistas"
-      })
+        name: "Simulador de entrevistas",
+      });
     },
   },
 };

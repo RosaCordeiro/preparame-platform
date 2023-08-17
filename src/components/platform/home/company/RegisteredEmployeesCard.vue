@@ -1,7 +1,5 @@
 <template>
-  <q-card
-    class="home-company-registered-employees-card q-pb-md q-px-md q-ma-md"
-  >
+  <q-card class="home-company-registered-employees-card q-ma-md">
     <div class="home-company-registered-employees-card-header">
       <div class="home-company-registered-employees-card-info-container">
         <q-card-section class="home-company-registered-employees-card-title"
@@ -25,8 +23,10 @@ export default {
     };
   },
   mounted() {
-    this.registeredEmployeesPercent =
-      ((this.registeredEmployees / this.totalEmployees) * 100).toFixed(2);
+    this.registeredEmployeesPercent = (
+      (this.registeredEmployees / this.totalEmployees) *
+      100
+    ).toFixed(2);
   },
 };
 </script>
@@ -35,7 +35,7 @@ export default {
 .home-company-registered-employees-card {
   width: 18vw;
   height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="home-company-realocated-card q-pb-md q-px-md q-ma-md">
+  <q-card class="home-company-realocated-card q-ma-md">
     <div class="home-company-realocated-card-header">
       <div class="home-company-realocated-card-info-container">
         <q-card-section class="home-company-realocated-card-title"
@@ -22,7 +22,10 @@ export default {
     };
   },
   mounted() {
-    this.realocatedPercent = ((this.realocateds / this.totalUsers) * 100).toFixed(2);
+    this.realocatedPercent = (
+      (this.realocateds / this.totalUsers) *
+      100
+    ).toFixed(2);
   },
 };
 </script>
@@ -31,7 +34,7 @@ export default {
 .home-company-realocated-card {
   width: 18vw;
   height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 

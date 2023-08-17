@@ -2,26 +2,32 @@
   <div class="row external-user-welcome-card">
     <q-card class="row col-12 external-user-welcome-card-container">
       <q-card-section class="col-12 row external-user-welcome-card-header">
-        <div class="external-user-welcome-card-first-msg col-12">
-          Olá, {{ userName }}. Seja bem vindo (a)!
+        <div class="external-user-welcome-card-first-msg">
+          Olá, {{ userName }}, aqui no Prepara.me, orientação de carreira é pra
+          todo mundo!
         </div>
+
         <div class="external-user-welcome-card-info col-12">
           <div class="external-user-welcome-card-second-msg q-mt-sm">
-            E não se esqueça de sorrir, pois você está com sorte &#129303;
+            É preciso de um final pra poder recomeçar, como é preciso cair pra
+            poder se levantar. Nem sempre engatar a ré significa voltar.
           </div>
-          <q-btn v-show=false 
+          <div class="external-user-welcome-card-third-msg q-mt-sm">
+            Trecho da poesia Recomece, do Bráulio Bessa
+          </div>
+          <q-btn
+            v-show="false"
             color="accent"
             label="ABRIR BISCOITO DA SORTE"
             class="col self-center q-mt-md"
             size="sm"
           />
         </div>
-        <div v-show=false 
+        <div
+          v-show="false"
           class="column external-user-welcome-card-fortune-cookie-container col-6"
         >
-          <div
-            class="external-user-welcome-card-fortune-cookie-img"
-          ></div>
+          <div class="external-user-welcome-card-fortune-cookie-img"></div>
         </div>
       </q-card-section>
     </q-card>
@@ -124,7 +130,7 @@ export default {
 
 .external-user-welcome-card-second-msg {
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-family: "Nunito";
   font-style: normal;
   color: $text-dark-grey;
@@ -135,5 +141,12 @@ export default {
   width: 95%;
   margin-left: 10px;
   background-color: #ff4690;
+}
+
+.text-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 5px;
 }
 </style>

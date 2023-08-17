@@ -2,19 +2,24 @@
   <div>
     <div class="row items-start">
       <q-card class="row col-12 specialists-card" flat bordered>
-        <q-card-section horizontal class="col-12" >
-          <q-card-section class="col-1 flex flex-center">
+        <q-card-section horizontal class="col-12">
+          <q-card-section
+            class="col-1 flex flex-center"
+            style="min-width: 180px"
+          >
             <q-img
-              class="rounded-borders specialists-card-avatar"
+              class="rounded-borders specialists-card-avatar q-ma-md"
               :img-style="{
                 'background-size': 'contain',
               }"
-              :src="specialist.user.avatarUrl"
+              :src="specialist.image"
             ></q-img>
           </q-card-section>
           <q-card-section class="col-6">
             <div class="text-h5 q-mt-sm q-mb-xs">{{ specialist.name }}</div>
-            <div class="specialists-card-bio q-pa-sm q-mb-sm text-caption text-grey-8">
+            <div
+              class="specialists-card-bio q-pa-sm q-mb-sm text-caption text-grey-8"
+            >
               {{ specialist.bio }}
             </div>
             <a :href="specialist.linkedinUrl" target="_blank">
@@ -22,7 +27,8 @@
             </a>
           </q-card-section>
           <q-card-section class="col-4 q-pa-none">
-            <Schedule class="col-12"
+            <Schedule
+              class="col-12"
               :specialistSchedule="specialistSchedule"
               :specialist="specialist"
               :product="product"

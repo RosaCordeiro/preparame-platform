@@ -1,58 +1,78 @@
-import Platform from "../../layouts/Platform.vue"
-import HomeDynamicTemplate from "../../components/platform/home/HomeDynamicTemplate.vue"
-import NPSSurvey from '../../components/platform/NPSSurvey/NPSSurvey.vue'
-import interviewSimulatorPresentation from '../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue'
-import interviewSimulator from '../../components/platform/interviewSimulator/InterviewSimulator.vue'
+import Platform from "../../layouts/Platform.vue";
+import HomeDynamicTemplate from "../../components/platform/home/HomeDynamicTemplate.vue";
+import NPSSurvey from "../../components/platform/NPSSurvey/NPSSurvey.vue";
+import interviewSimulatorPresentation from "../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue";
+import interviewSimulator from "../../components/platform/interviewSimulator/InterviewSimulator.vue";
 
 const platformRoutes = [
-    {
-        path: "/platform",
-        components: {
-            site: Platform
-        },
-        children: [{
-            path: "/",
-            components: {
-                content: HomeDynamicTemplate
-            }
-        }]
+  {
+    path: "/platform",
+    components: {
+      site: Platform,
     },
-    {
-        path: "/survey",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: HomeDynamicTemplate,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: NPSSurvey
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/survey",
+    components: {
+      site: Platform,
     },
-    {
-        path: "/interviewSimulatorPresentation",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: NPSSurvey,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: interviewSimulatorPresentation
-            }
-        }]
+      },
+    ],
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("token")) {
+        next();
+      } else {
+        next({
+          path: "/login",
+          query: {
+            redirect: "pesquisa",
+          },
+        });
+      }
     },
-    {
-        path: "/interviewSimulator",
+  },
+  {
+    path: "/interviewSimulatorPresentation",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: interviewSimulatorPresentation,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: interviewSimulator
-            }
-        }]
+      },
+    ],
+  },
+  {
+    path: "/interviewSimulator",
+    components: {
+      site: Platform,
     },
-]
+    children: [
+      {
+        path: "/",
+        components: {
+          content: interviewSimulator,
+        },
+      },
+    ],
+  },
+];
 
-export { platformRoutes }
+export { platformRoutes };

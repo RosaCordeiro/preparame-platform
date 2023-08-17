@@ -1,20 +1,20 @@
 <template>
-  <q-card class="home-company-feelings-map-card column q-pb-md q-px-md">
+  <q-card class="home-company-feelings-map-card column" style="flex: 1 0 400px">
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
         <q-card-section class="home-company-feelings-map-card-title">
           <h4>Mapa de Sentimentos</h4>
         </q-card-section>
-      </div>
 
-      <div class="row">
-        <apexchart
-          type="polarArea"
-          height="400px"
-          style="width: 100%; height: 100%"
-          :options="chartOptions"
-          :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
-        ></apexchart>
+        <q-card-section>
+          <apexchart
+            type="polarArea"
+            height="400px"
+            style="width: 100%; height: 100%"
+            :options="chartOptions"
+            :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
+          ></apexchart>
+        </q-card-section>
       </div>
 
       <!--  {{ feelingsMapDataChartConverted.slice(1).map((c) => c[1]) }}
@@ -34,7 +34,7 @@ export default {
   /*  components: {
     Column,
   }, */
-  props: ["feelingsMap"],
+  props: ["feelingsMap", "users"],
   data() {
     return {
       feelingsMapDataChartConverted: [],
@@ -58,7 +58,7 @@ export default {
       this.feelingsMap.forEach((feeling) => {
         this.feelingsMapDataChartConverted.push([
           feeling.feeling,
-          feeling.count,
+          ((feeling.count / this.users) * 100).toFixed(2),
           "color: #1a27b7",
         ]);
       });
@@ -96,18 +96,20 @@ export default {
           {
             breakpoint: 480,
             options: {
-              chart: {
-                width: 200,
-              },
               legend: {
                 position: "bottom",
               },
             },
           },
         ],
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
+            },
+          },
+        },
       };
-
-      console.log(this.feelingsMapDataChartConverted);
     },
   },
 };
@@ -116,7 +118,8 @@ export default {
 <style lang="scss">
 .home-company-feelings-map-card {
   width: 40vw;
-  height: 60vh;
+  min-height: 60vh;
+  height: 100%;
   box-shadow: none;
   border-radius: 5%;
 }

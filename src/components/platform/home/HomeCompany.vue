@@ -7,35 +7,64 @@
           'justify-between': true,
         }"
       >
-        <div class="home-company-charts-cards q-gutter-xs">
-          <NpsCard v-if="dashboardsLoaded" :nps="nps"></NpsCard>
+        <div class="home-company-charts-cards row">
+          <NpsCard
+            v-if="dashboardsLoaded"
+            :nps="nps"
+            style="flex: 1 0 200px"
+          ></NpsCard>
           <EmployeerBrandRiskCard
             v-if="dashboardsLoaded"
             :employeerBrandRisk="brandRisk"
+            style="flex: 1 0 200px"
           ></EmployeerBrandRiskCard>
           <LaborRiskCard
             v-if="dashboardsLoaded"
             :laborRisk="laborRisk"
+            style="flex: 1 0 200px"
           ></LaborRiskCard>
           <RealocatedsCard
             v-if="dashboardsLoaded"
             :realocateds="countRealocateds"
             :totalUsers="countUsers"
+            style="flex: 1 0 200px"
           ></RealocatedsCard>
           <RegisteredEmployeesCard
             v-if="dashboardsLoaded"
-            :registeredEmployees="countUsers"
+            :registeredEmployees="countAccepted"
             :totalEmployees="countEmployees"
+            style="flex: 1 0 200px"
           >
           </RegisteredEmployeesCard>
+        </div>
+        <div class="home-company-charts-cards row">
+          <NineCard
+            v-if="dashboardsLoaded"
+            :lastAnswers="lastAnswers"
+            :countUsers="countUsers"
+            style="flex: 1 0 200px"
+          ></NineCard>
           <LaborRiskAlertCard
             v-if="dashboardsLoaded"
             :laborRiskAlerts="countLaborRiskAlerts"
             :totalUsers="countUsers"
+            style="flex: 1 0 200px"
           ></LaborRiskAlertCard>
         </div>
 
-        <div class="home-company-charts-cards justify-around">
+        <div class="charts__row row">
+          <LaborRiskDetailedCard
+            v-if="dashboardsLoaded"
+            :laborRisks="laborRiskData"
+          />
+          <FeelingsMapCard
+            v-if="dashboardsLoaded"
+            :feelingsMap="feelingsMapData"
+            :users="countUsersResponded"
+          />
+        </div>
+
+        <!-- <div class="home-company-charts-cards justify-around">
           <LaborRiskDetailedCard
             v-if="dashboardsLoaded"
             :laborRisks="laborRiskData"
@@ -44,7 +73,7 @@
             v-if="dashboardsLoaded"
             :feelingsMap="feelingsMapData"
           />
-        </div>
+        </div> -->
       </div>
       <div
         :class="{
@@ -70,6 +99,7 @@ import RealocatedsCard from "./company/RealocatedsCard.vue";
 import RegisteredEmployeesCard from "./company/RegisteredEmployeesCard.vue";
 import FeelingsMapCard from "./company/FeelingsMapCard.vue";
 import LaborRiskDetailedCard from "./company/LaborRiskDetailedCard.vue";
+import NineCard from "./company/NineCard.vue";
 
 export default {
   components: {
@@ -81,6 +111,7 @@ export default {
     FeelingsMapCard,
     LaborRiskDetailedCard,
     LaborRiskAlertCard,
+    NineCard,
   },
   data() {
     return {
@@ -91,11 +122,15 @@ export default {
       countEmployees: 0,
       countRealocateds: 0,
       countLaborRiskAlerts: 0,
+      countAccepted: 0,
+      countUsersResponded: 0,
       dashboardsLoaded: false,
       feelingsMapData: [],
       laborRiskData: [],
       brandRiskData: [],
       mobile: false,
+      lastAnswer: {},
+      lastAnswers: [],
     };
   },
   methods: {
@@ -128,12 +163,6 @@ export default {
           return npsSurvey.user.surveyAnswered;
         }
       });
-
-      let npsTotal = npsSurveyAnswers.reduce((npsTotal, employee) => {
-        return npsTotal + employee.user.NPSSurvey;
-      }, 0);
-
-      this.nps = (npsTotal / npsSurveyAnswers.length).toFixed(2);
 
       let laborRisk = npsSurveyAnswers.reduce(
         (laborRisckTotal = 0, employee) => {
@@ -187,7 +216,12 @@ export default {
         }
 
         if (Array.isArray(laborRisks)) {
-          laborRisks.forEach((laborRiskMapped) => {
+          for (const laborRiskMapped of laborRisks) {
+            if (laborRiskMapped.index === 9) {
+              this.lastAnswers.push(laborRiskMapped);
+              continue;
+            }
+
             const findLaborRisk = this.laborRiskData.findIndex(
               (laborRiskInserted) => {
                 return laborRiskMapped.question == laborRiskInserted.question;
@@ -195,19 +229,16 @@ export default {
             );
 
             if (findLaborRisk >= 0) {
-              this.laborRiskData[findLaborRisk].count += laborRiskMapped.answer;
+              this.laborRiskData[findLaborRisk].count +=
+                laborRiskMapped.answer * 1;
             } else {
               this.laborRiskData.push({
                 ...laborRiskMapped,
-                count: laborRiskMapped.answer,
+                count: laborRiskMapped.answer * 1,
               });
             }
-          });
+          }
         }
-
-        this.laborRiskData.forEach((laborRisk) => {
-          laborRisk.count = laborRisk.count / npsSurveyAnswers.length;
-        });
 
         if (Array.isArray(brandRisks)) {
           brandRisks.forEach((brandRiskMapped) => {
@@ -236,8 +267,44 @@ export default {
       this.countEmployees = npsSurveyReport.length;
       this.countUsers = users.length;
       this.countRealocateds = realocateds.length;
+
       this.countLaborRiskAlerts = laborRiskAlerts.length;
+
       this.dashboardsLoaded = true;
+      this.countUsersResponded = users.filter((user) => {
+        return user.user.surveyAnswered;
+      }).length;
+
+      this.countAccepted = npsSurveyReport.filter((user) => {
+        return user.accepted;
+      }).length;
+
+      this.laborRiskData.forEach((laborRisk) => {
+        laborRisk.count = laborRisk.count / this.countUsersResponded;
+      });
+
+      const npsAnswers = npsSurveyAnswers.map((npsSurvey) => {
+        return npsSurvey.user.NPSSurvey;
+      });
+
+      const result = npsAnswers.reduce(
+        (accumulators, npsAnswer) => {
+          if (npsAnswer < 7) {
+            accumulators.npsAnswersLassThanSeven += 1;
+          }
+          if (npsAnswer > 8) {
+            accumulators.npsAnswersMoreThanEight += 1;
+          }
+
+          return accumulators;
+        },
+        { npsAnswersLassThanSeven: 0, npsAnswersMoreThanEight: 0 }
+      );
+
+      this.nps = (
+        result.npsAnswersMoreThanEight / this.countUsersResponded -
+        result.npsAnswersLassThanSeven / this.countUsersResponded
+      ).toFixed(2);
     },
   },
   async mounted() {
@@ -250,8 +317,9 @@ export default {
 
 <style lang="scss">
 .home-company {
-  height: 100vh;
   width: 100vw;
+  height: 100%;
+  overflow: auto;
 }
 
 .home-company-charts {
@@ -269,5 +337,23 @@ export default {
 .home-company-charts-detailed {
   height: 60vh;
   width: 100vw;
+}
+
+.charts__row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  gap: 32px;
+}
+
+.teste-1 {
+  width: 100%;
+  background-color: black;
+}
+
+.teste-2 {
+  width: 100%;
+  background-color: blue;
 }
 </style>

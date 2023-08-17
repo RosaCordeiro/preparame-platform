@@ -92,6 +92,18 @@ const menu = {
         separator: false,
         url: "addProductToUser",
       },
+      {
+        icon: "laptop_mac",
+        label: "Mentorias Coletivas",
+        separator: false,
+        url: "mentoring",
+      },
+      {
+        icon: "open_in_new",
+        label: "Ver Objetivos dos Clientes",
+        separator: false,
+        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+      },
     ],
   },
   USER: {
@@ -124,6 +136,12 @@ const menu = {
         separator: true,
         url: "providesTimetables",
       },
+      {
+        icon: "open_in_new",
+        label: "Ver Objetivos dos Clientes",
+        separator: false,
+        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+      },
     ],
   },
   COMPANY_ADMIN: {
@@ -141,10 +159,19 @@ export default {
   props: ["sideNavMenuComponent"],
   methods: {
     goUrl: function (url) {
+      if (String(url).startsWith("http")) {
+        this.goBlank(url);
+        return;
+      }
+
       if (this.$router.history.current.path !== `/${url}`) {
         this.$router.push({ path: `/${url}` });
       }
     },
+    goBlank: function (url) {
+      window.open(url, "_blank");
+    },
+
     toogleMenu() {
       this.drawerController = !this.drawerController;
     },
@@ -204,5 +231,4 @@ export default {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
 </style>

@@ -25,7 +25,7 @@ export default {
 
       const loginInterval = setInterval(() => {
         if (loginControl.isLogged && loginControl.loggedFrom == "LOGIN") {
-          if (this.redirectToSurvey) {
+          if (this.redirectToSurvey || this.$route.query.redirect) {
             this.$router.push("/survey");
           } else {
             this.$router.push("/platform");
