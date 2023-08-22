@@ -108,6 +108,18 @@
           </div>
         </q-banner>
 
+        <q-banner rounded class="q-ma-sm text-white " style="background-color: #667998;">
+          <div class="user-card-banner-content row">
+            <q-btn
+              flat
+              color="white"
+              label="QUERO TROCAR A MENTORIA POR OUTRO SERVIÇO"
+              class="col-12"
+              @click="goUrl(`mentoring/update`)"
+            />
+          </div>
+        </q-banner>
+
         <section
           class="section__companyName"
           v-if="
@@ -132,18 +144,6 @@
               label="Preciso de ajuda com pendências trabalhistas"
               class="col-12"
               @click="laborRiskAlertDialog = true"
-            />
-          </div>
-        </q-banner>
-
-        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
-          <div class="user-card-banner-content row">
-            <q-btn
-              flat
-              color="white"
-              label="QUERO TROCAR A MENTORIA POR OUTRO SERVIÇO"
-              class="col-12"
-              @click="showExchange = true"
             />
           </div>
         </q-banner>
