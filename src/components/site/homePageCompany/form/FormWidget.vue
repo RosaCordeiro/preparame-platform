@@ -85,6 +85,11 @@
     >
     </q-input>
 
+    <p class="confirm">
+      Ao se cadastrar, você aceita que o Prepara.me compartilhe seu cadastro com
+      a empresa patrocinadora.
+    </p>
+
     <div class="submit" @click="submitForm">
       <p>Acesso Grátis</p>
     </div>
@@ -166,6 +171,13 @@ img::after {
 }
 
 .input__text {
+  margin-bottom: 15px;
+}
+
+.confirm {
+  font-size: 1rem;
+  color: #fff;
+  text-align: center;
   margin-bottom: 15px;
 }
 </style>
