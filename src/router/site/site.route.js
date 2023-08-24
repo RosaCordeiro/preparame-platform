@@ -29,7 +29,7 @@ const siteRoutes = [
     ],
   },
   {
-    path: "/:companyName",
+    path: "/patrocinio/:companyName",
     components: {
       site: HomePageCompany,
     },
