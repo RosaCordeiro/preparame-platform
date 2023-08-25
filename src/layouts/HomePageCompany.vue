@@ -1,59 +1,114 @@
 <template>
-  <section class="homePageCompany">
-    <div class="header wrapper">
-      <div class="row__home-company">
+  <section>
+    <div
+      class="loading"
+      :class="{
+        active: loading,
+      }"
+    >
+      <q-spinner-gears color="white" size="100px" />
+    </div>
+    <div
+      class="homePageCompany"
+      :style="{
+        backgroundColor: backgroundColor,
+      }"
+      :class="{
+        active: !loading,
+      }"
+    >
+      <div class="header wrapper">
         <div class="row__home-company">
-          <p class="header__text">Patrocínio</p>
-          <img src="~assets/imgs/9.png" alt="" />
-        </div>
-        <div class="row__home-company">
-          <p class="header__text">Realização</p>
-          <img src="~assets/imgs/10.png" alt="" />
+          <div class="row__home-company">
+            <p
+              class="header__text"
+              :style="{
+                color: textColor,
+              }"
+            >
+              Patrocínio
+            </p>
+            <img :src="logoUrl" alt="" />
+          </div>
+          <div class="row__home-company">
+            <p
+              class="header__text"
+              :style="{
+                color: textColor,
+              }"
+            >
+              Realização
+            </p>
+            <img id="minha-imagem" src="~assets/imgs/10.png" alt="" />
+            <canvas id="canvas" style="display: none"></canvas>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="wrapper">
-      <div class="content__main">
-        <aside class="left">
-          <div class="container__message">
-            <p>Recado da Apsen pra você:</p>
-          </div>
+      <div class="wrapper">
+        <div class="content__main">
+          <aside class="left">
+            <div
+              class="container__message"
+              :style="{
+                backgroundColor: containerColor,
+              }"
+            >
+              <p
+                :style="{
+                  color: textColor,
+                }"
+              >
+                Recado da {{ companyName }} pra você:
+              </p>
+            </div>
 
-          <div class="container__text">
-            <p>
-              Nós sabemos que procurar por trabalho é uma tarefa muito
-              cansativa.
-            </p>
-            <p>
-              Por isto, todo mês oferecemos
-              <b>60 bolsas de mentorias coletivas no Prepara.me</b> para quem
-              busca por trabalho nas nossas páginas de Carreira. Então,
-              aproveite!
-            </p>
-          </div>
+            <div class="container__text">
+              <p
+                :style="{
+                  color: textColor,
+                }"
+              >
+                {{ text }}
+              </p>
+            </div>
 
-          <ul class="list">
-            <li>Mentoria Coletiva</li>
-            <li>Modelo de Currículo</li>
-            <li>Capas de Linkedln</li>
-            <li>e-Books e mais</li>
-          </ul>
-        </aside>
+            <ul
+              class="list"
+              :style="{
+                color: textColor,
+              }"
+            >
+              <li>Mentoria Coletiva</li>
+              <li>Modelo de Currículo</li>
+              <li>Capas de Linkedln</li>
+              <li>e-Books e mais</li>
+            </ul>
+          </aside>
 
-        <aside class="right">
-          <LoadingWidget v-if="loading" />
-          <FormWidget v-if="vacancies > 0 && !loading" />
-          <TimerWidget v-else-if="!loading" class="timer__card" />
-        </aside>
+          <aside class="right">
+            <LoadingWidget v-if="loading" />
+            <FormWidget v-if="remainingVacancies > 0 && !loading" />
+            <TimerWidget v-else-if="!loading" class="timer__card" />
+          </aside>
+        </div>
       </div>
-    </div>
 
-    <div class="footer">
-      <p>
-        Apsen + Prepara.me em:
-        <span>orientação de carreira é pra todo mundo!</span>
-      </p>
+      <div class="footer">
+        <p
+          :style="{
+            color: textColor,
+          }"
+        >
+          {{ companyName }} + Prepara.me em:
+          <span
+            :style="{
+              color: backgroundColor,
+            }"
+            >orientação de carreira é pra todo mundo!</span
+          >
+        </p>
+      </div>
     </div>
   </section>
 </template>
@@ -74,26 +129,100 @@ export default {
     return {
       loading: false,
       vacancies: 0,
+      remainingVacancies: 0,
+      companyName: "",
+      text: "",
+      backgroundColor: "#1a27b7",
+      containerColor: "#35aa7c",
+      textColor: "#FFF",
+      clockColor: "#f54690",
+      logoUrl: "",
     };
   },
-  mounted() {
-    console.log(this.$route.params.companyName);
+  methods: {
+    isCorClara(cor) {
+      cor = cor.toLowerCase();
+      if (cor.startsWith("rgb")) {
+        const partes = cor.match(/(\d+)/g);
 
-    if (this.$route.params.companyName !== "apsen")
-      this.$router.push({ path: `/` });
+        if (partes) {
+          const r = parseInt(partes[0]);
+          const g = parseInt(partes[1]);
+          const b = parseInt(partes[2]);
+
+          const luminosidade = 0.299 * r + 0.587 * g + 0.114 * b;
+          const limiteLuminosidade = 128; // Você pode ajustar esse valor conforme necessário
+          if (luminosidade === 0) {
+            return true;
+          }
+
+          return luminosidade >= limiteLuminosidade;
+        }
+      }
+      return false; // Se não for possível determinar a luminosidade, assuma que a cor não é clara
+    },
+    async init() {
+      this.loading = true;
+
+      const res = await filterCrud(
+        [],
+        "companies/page/" + this.$route.params.companyName
+      );
+
+      if (!res) {
+        this.loading = false;
+
+        this.$router.push("/404");
+
+        return;
+      }
+
+      if (res.expired || !res.active) {
+        this.loading = false;
+
+        this.$router.push("/404");
+
+        return;
+      }
+
+      this.companyName = res.company.name;
+      this.vacancies = res.vacancies;
+      this.remainingVacancies = res.remainingVacancies;
+      this.text =
+        res.text ??
+        `Nós sabemos que procurar por trabalho é uma tarefa muito cansativa.
+
+            Por isto, todo mês oferecemos
+            <b>${vacancies} bolsas de mentorias coletivas no Prepara.me</b>
+            para quem busca por trabalho nas nossas páginas de Carreira.
+            Então, aproveite!`;
+      this.backgroundColor = res.backgroundColor;
+      this.containerColor = res.containerColor;
+      this.textColor = res.textColor;
+      this.clockColor = res.clockColor;
+      this.logoUrl = res.logoUrl;
+
+      var imagem = document.getElementById("minha-imagem");
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const corDeFundo =
+        document.querySelector(".homePageCompany").style.backgroundColor;
+
+      if (this.isCorClara(corDeFundo)) {
+        imagem.style.filter = "invert(1)";
+        document.querySelectorAll("li").forEach((li) => {
+          li.classList.add("invert");
+        });
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      this.loading = false;
+    },
   },
   beforeMount() {
-    this.loading = true;
-
-    filterCrud([], "companies/vacancies/apsen")
-      .then((res) => {
-        this.vacancies = res.total;
-        this.loading = false;
-      })
-      .catch((err) => {
-        loading = false;
-        this.vacancies = 0;
-      });
+    this.init();
   },
 };
 </script>
@@ -140,7 +269,6 @@ export default {
 .homePageCompany {
   min-height: 100vh;
   width: 100%;
-  background-color: #1a27b7;
   background-image: url("~src/assets/imgs/7.png");
   background-repeat: no-repeat;
   background-size: contain;
@@ -148,6 +276,14 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  visibility: hidden;
+}
+
+.homePageCompany.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .header__text {
@@ -257,6 +393,11 @@ li::before {
   margin-right: 10px;
 }
 
+li.invert {
+  filter: invert(1);
+  color: #fff;
+}
+
 .list li::marker {
   font-size: 1.5rem; /* You can use px, but I think rem is more respecful */
 }
@@ -291,5 +432,27 @@ li::before {
 .footer p span {
   color: #1a27b7;
   font-weight: 700;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background-color: rgb(217 217 217 / 40%);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  visibility: hidden;
+}
+
+.loading.active {
+  opacity: 1;
+  visibility: visible;
 }
 </style>

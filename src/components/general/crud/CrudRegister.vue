@@ -7,6 +7,8 @@
 
         <CrudRegisterForm ref="mainTable" :table="forms.mainTable" />
 
+        <slot name="belowTable" class="q-mt-md"> </slot>
+
         <CrudRegisterFormRow
           v-if="registerType === 'parentChild'"
           ref="childTable"

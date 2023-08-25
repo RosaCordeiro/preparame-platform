@@ -1,6 +1,12 @@
 <template>
   <section class="timer">
-    <div class="title">
+    <div
+      class="title"
+      :style="{
+        backgroundColor: $parent.clockColor,
+        color: $parent.textColor,
+      }"
+    >
       <span>
         Este mês as bolsas acabaram. <br />
         Mês que vem tem mais :) <br />Volte em:
@@ -8,25 +14,49 @@
     </div>
 
     <div class="row row__home-company">
-      <div class="day">
+      <div
+        class="day"
+        :style="{
+          backgroundColor: $parent.clockColor,
+          color: $parent.textColor,
+        }"
+      >
         {{ days }}
         <span>
           {{ days > 1 ? "dias" : "dia" }}
         </span>
       </div>
-      <div class="hour">
+      <div
+        class="hour"
+        :style="{
+          backgroundColor: $parent.clockColor,
+          color: $parent.textColor,
+        }"
+      >
         {{ hours }}
         <span>
           {{ hours > 1 ? "horas" : "hora" }}
         </span>
       </div>
-      <div class="minute">
+      <div
+        class="minute"
+        :style="{
+          backgroundColor: $parent.clockColor,
+          color: $parent.textColor,
+        }"
+      >
         {{ minutes }}
         <span>
           {{ minutes > 1 ? "minutos" : "minuto" }}
         </span>
       </div>
-      <div class="second">
+      <div
+        class="second"
+        :style="{
+          backgroundColor: $parent.clockColor,
+          color: $parent.textColor,
+        }"
+      >
         {{ seconds }}
         <span>
           {{ seconds > 1 ? "segundos" : "segundo" }}
@@ -112,7 +142,6 @@ export default {
   font-weight: bold;
   padding: 10px;
   border-radius: 10px;
-  background: #f54690;
   border-radius: 25px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: slide 1s ease-in-out;
