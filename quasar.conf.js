@@ -49,7 +49,7 @@ module.exports = function (ctx) {
             API: "http://localhost:3334",
           }
         : {
-            API: "https://api.prepara.me",
+            API: "https://api.preparame.homolog.inf.br",
           },
 
       // transpile: false,
