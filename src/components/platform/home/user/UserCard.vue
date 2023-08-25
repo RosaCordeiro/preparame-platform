@@ -89,7 +89,24 @@
               :label="`Agendar ${product.name}`"
               class="col-12"
               @click="goUrl(`products/schedule/${product.id}`)"
-            />
+            >
+              <q-tooltip
+                anchor="center right"
+                self="center left"
+                :offset="[10, 10]"
+                v-if="product.name === 'Orientação de Carreira'"
+              >
+                <p
+                  style="font-size: 15px; font-weight: 600; text-align: center"
+                >
+                  Orientação de Carreira
+                </p>
+                <div style="font-size: 15px">
+                  Lembre-se de marcar todas as mentorias de orientação de
+                  carreira com a mesma pessoa especialista.
+                </div>
+              </q-tooltip>
+            </q-btn>
             <div v-else class="text-uppercase text-center text-weight-medium">
               Agendamento {{ product.name }} realizado
             </div>
@@ -108,7 +125,11 @@
           </div>
         </q-banner>
 
-        <q-banner rounded class="q-ma-sm text-white " style="background-color: #667998;">
+        <q-banner
+          rounded
+          class="q-ma-sm text-white"
+          style="background-color: #667998"
+        >
           <div class="user-card-banner-content row">
             <q-btn
               flat
