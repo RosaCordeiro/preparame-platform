@@ -3,7 +3,7 @@
     <q-card class="q-ma-xs q-mt-md" flat bordered>
       <q-card-section class="schedule-card q-pa-none">
         <div class="schedule-title q-mt-xs q-mb-xs text-weight-light col-3">
-          Selecione um dia e horário disponível {{ weekCount }}
+          Selecione um dia e horário disponível
         </div>
         <div class="schedule-header">
           <div class="schedule-header-set-prior-day">
@@ -307,6 +307,7 @@ export default {
 .schedule-day-header-month-data {
   line-height: 6px;
   margin-bottom: 4px;
+  color: black;
 }
 
 .schedule-day-header-weekday {
