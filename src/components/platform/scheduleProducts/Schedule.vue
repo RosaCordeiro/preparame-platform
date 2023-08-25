@@ -3,7 +3,7 @@
     <q-card class="q-ma-xs q-mt-md" flat bordered>
       <q-card-section class="schedule-card q-pa-none">
         <div class="schedule-title q-mt-xs q-mb-xs text-weight-light col-3">
-          Selecione um dia e horário disponível
+          Selecione um dia e horário disponível {{ weekCount }}
         </div>
         <div class="schedule-header">
           <div class="schedule-header-set-prior-day">
@@ -195,7 +195,7 @@ export default {
       this.weekCount--;
     },
     nextWeek: function () {
-      if (this.weekCount === 2) {
+      if (this.weekCount === 4) {
         this.$q.notify({
           type: "error",
           message:
@@ -211,6 +211,8 @@ export default {
     async loadNextWeekSchedules() {
       const actualDate = new Date();
 
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 1) * 7);
+
       const dateBegin = getDayOfNextWeek(
         actualDate,
         1,
@@ -222,6 +224,8 @@ export default {
     },
     async loadPriorWeekSchedules() {
       const actualDate = new Date();
+
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 2) * 7);
 
       const dateBegin = getDayOfWeek(actualDate, 1, actualDate.getDay() <= 5);
       const dateEnd = getDayOfWeek(actualDate, 5, actualDate.getDay() <= 5);
