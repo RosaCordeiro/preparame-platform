@@ -194,6 +194,15 @@ export default {
           visible: true,
         },
         {
+          name: "realocate",
+          label: "Realocado",
+          align: "center",
+          field: "realocate",
+          sortable: false,
+          style: "width: 10px;",
+          visible: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           align: "center",

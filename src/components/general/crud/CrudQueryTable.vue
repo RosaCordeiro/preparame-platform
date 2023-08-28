@@ -43,6 +43,19 @@
       </q-td>
     </template>
 
+    <template v-slot:body-cell-realocate="props">
+      <q-td auto-width :props="props">
+        <div v-if="props.row.realocate">REALOCADO</div>
+        <q-btn
+          v-else
+          color="positive"
+          label="Realocar"
+          @click="realocate(props.row)"
+          :disable="blockRemove"
+        ></q-btn>
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-actions="props">
       <q-td auto-width :props="props">
         <q-btn-group>
@@ -81,10 +94,31 @@ export default {
     console.log(this.result);
   },
   methods: {
+    realocate(row) {
+      this.$q
+        .dialog({
+          title: "Realocar",
+          message: "Deseja realocar o usuário selecionado",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(() => {
+          saveCrud(`companies/employees/${row.id}/realocate`, {}, "put").then(
+            () => {
+              this.$q.notify({
+                color: "positive",
+                message: "Realocado com sucesso!",
+              });
+
+              row.realocate = true;
+            }
+          );
+        });
+    },
     accept(row) {
       this.$q
         .dialog({
-          title: "Remover",
+          title: "Acolher",
           message: "Deseja acolher o usuário selecionado?",
           cancel: true,
           persistent: true,
@@ -96,6 +130,8 @@ export default {
                 color: "positive",
                 message: "Acolhido com sucesso!",
               });
+
+              row.accepted = true;
             }
           );
         });

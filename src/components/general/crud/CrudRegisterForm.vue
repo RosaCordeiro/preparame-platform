@@ -1,5 +1,10 @@
 <template>
-  <q-card class="crud-register-form">
+  <q-card
+    class="crud-register-form"
+    :class="{
+      removeCard: hasCard,
+    }"
+  >
     <q-card-section>
       <q-form class="col crud-register q-pa-md">
         <div
@@ -25,7 +30,17 @@ export default {
   components: {
     FieldCrudDynamicTemplate,
   },
-  props: ["table"],
+  props: {
+    table: {
+      type: Object,
+      required: true,
+    },
+    hasCard: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   methods: {
     alterData: function (name, data) {
       this.table.registerColumns.forEach((fields) => {
@@ -48,5 +63,10 @@ export default {
 .crud-register-form {
   background-color: $white;
   border-radius: 5px;
+}
+
+.removeCard {
+  border: unset;
+  box-shadow: unset;
 }
 </style>

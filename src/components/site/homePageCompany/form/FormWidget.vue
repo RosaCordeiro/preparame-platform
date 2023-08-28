@@ -8,7 +8,7 @@
       v-model="name"
       class="input__text"
       :input-style="{
-        backgroundColor: '#f54690',
+        backgroundColor: $parent.clockColor,
         borderRadius: '5px',
         color: '#fff',
         fontWeight: '700',
@@ -24,7 +24,7 @@
       v-model="email"
       class="input__text"
       :input-style="{
-        backgroundColor: '#f54690',
+        backgroundColor: $parent.clockColor,
         borderRadius: '5px',
         color: '#fff',
         fontWeight: '700',
@@ -41,7 +41,7 @@
       mask="###.###.###-##"
       class="input__text"
       :input-style="{
-        backgroundColor: '#f54690',
+        backgroundColor: $parent.clockColor,
         borderRadius: '5px',
         color: '#fff',
         fontWeight: '700',
@@ -58,7 +58,7 @@
       type="password"
       class="input__text"
       :input-style="{
-        backgroundColor: '#f54690',
+        backgroundColor: $parent.clockColor,
         borderRadius: '5px',
         color: '#fff',
         fontWeight: '700',
@@ -75,7 +75,7 @@
       type="password"
       class="input__text"
       :input-style="{
-        backgroundColor: '#f54690',
+        backgroundColor: $parent.clockColor,
         borderRadius: '5px',
         color: '#fff',
         fontWeight: '700',
@@ -84,6 +84,16 @@
       }"
     >
     </q-input>
+
+    <p
+      class="confirm"
+      :style="{
+        color: $parent.textColor,
+      }"
+    >
+      Ao se cadastrar, você aceita que o Prepara.me compartilhe seu cadastro com
+      a empresa patrocinadora.
+    </p>
 
     <div class="submit" @click="submitForm">
       <p>Acesso Grátis</p>
@@ -166,6 +176,13 @@ img::after {
 }
 
 .input__text {
+  margin-bottom: 15px;
+}
+
+.confirm {
+  font-size: 1rem;
+  color: #fff;
+  text-align: center;
   margin-bottom: 15px;
 }
 </style>

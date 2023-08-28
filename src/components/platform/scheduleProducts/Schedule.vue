@@ -195,7 +195,7 @@ export default {
       this.weekCount--;
     },
     nextWeek: function () {
-      if (this.weekCount === 2) {
+      if (this.weekCount === 4) {
         this.$q.notify({
           type: "error",
           message:
@@ -211,6 +211,8 @@ export default {
     async loadNextWeekSchedules() {
       const actualDate = new Date();
 
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 1) * 7);
+
       const dateBegin = getDayOfNextWeek(
         actualDate,
         1,
@@ -222,6 +224,8 @@ export default {
     },
     async loadPriorWeekSchedules() {
       const actualDate = new Date();
+
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 2) * 7);
 
       const dateBegin = getDayOfWeek(actualDate, 1, actualDate.getDay() <= 5);
       const dateEnd = getDayOfWeek(actualDate, 5, actualDate.getDay() <= 5);
@@ -303,6 +307,7 @@ export default {
 .schedule-day-header-month-data {
   line-height: 6px;
   margin-bottom: 4px;
+  color: black;
 }
 
 .schedule-day-header-weekday {
