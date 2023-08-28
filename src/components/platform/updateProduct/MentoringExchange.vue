@@ -2,30 +2,42 @@
   <div class="q-pa-lg">
     <div class="q-pa-lg container justify-center">
         <p>
-          Escolha a mentoria do seu pacote que gostaria de trocar
+          Escolha o serviço do seu pacote que gostaria de trocar.
         </p>
         <div class="container-row">
-          <q-select v-model="mentoring" :options="optionsMentoring "
-            dense
-            input-debounce="0"
-            option-label="name"
-            emit-value
-            map-options
-            borderless
-            class="select text-primary col-3"
-            label-color="white"
-            style="color:white"/>
+          <div class="container-column">
+            <p>
+              De:
+            </p>
+            <q-select v-model="mentoring" :options="optionsMentoring "
+              input-debounce="0"
+              option-label="name"
+              emit-value
+              map-options
+              borderless
+              class="select text-primary col-3"
+              label-color="white"
+              style="color:white"/>
+          </div>
 
-          <q-btn flat rounded color="grey" icon="sync_alt" @click="confirmation()"/>
+          <q-btn flat rounded color="grey" icon="double_arrow" @click="confirmation()" class="container-button">
+            <q-tooltip>
+              Clique aqui para trocar
+           </q-tooltip>
+          </q-btn>
 
-          <q-select v-model="newMentoring" :options="optionsNewMentoring "
-            dense
-            input-debounce="0"
-            option-label="name"
-            emit-value
-            map-options
-            borderless
-            class="select"/>
+          <div class="container-column">
+            <p>
+              Para:
+            </p>
+            <q-select v-model="newMentoring" :options="optionsNewMentoring "
+              input-debounce="0"
+              option-label="name"
+              emit-value
+              map-options
+              borderless
+              class="select"/>
+          </div>
         </div>
       </div>
 
@@ -151,6 +163,15 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  align-items: flex-end;
+}
+
+.container-column {
+  flex: 1;
+}
+
+.container-button {
+  height: 56px;
 }
 
 .select {
@@ -165,12 +186,16 @@ export default {
   display: flex;
   align-items: center;
   color: white !important;
-
 }
 
 @media screen and (max-width: 800px){
   .container-row {
     flex-direction: column;
+    align-items: center;
+  }
+  .container-column {
+    flex-direction: column;
+    width: 100%;
   }
 }
 </style>

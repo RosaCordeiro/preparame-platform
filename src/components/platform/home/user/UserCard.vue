@@ -113,7 +113,7 @@
             <q-btn
               flat
               color="white"
-              label="QUERO TROCAR A MENTORIA POR OUTRO SERVIÇO"
+              label="GOSTARIA DE TROCAR ALGUM DOS SEUS SERVIÇOS? CLIQUE AQUI!"
               class="col-12"
               @click="goUrl(`mentoring/update`)"
             />
