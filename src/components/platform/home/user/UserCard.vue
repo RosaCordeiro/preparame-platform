@@ -143,14 +143,10 @@
 
         <section
           class="section__companyName"
-          v-if="
-            companyNameSignIn !== '' &&
-            companyNameSignIn !== null &&
-            companyNameSignIn === 'apsen'
-          "
+          v-if="companyNameSignIn !== '' && companyNameSignIn !== null"
         >
           <p>Mentoria Coletiva é um patrocínio da:</p>
-          <img src="~assets/imgs/aspen.png" alt="" />
+          <img :src="companyNameSignInLogo" alt="" />
         </section>
 
         <q-banner
@@ -215,6 +211,7 @@ export default {
       companyId: "",
       userId: "",
       companyNameSignIn: "",
+      companyNameSignInLogo: "",
     };
   },
   created() {
@@ -223,6 +220,7 @@ export default {
     this.companyId = localStorage.getItem("companyId");
     this.userId = localStorage.getItem("userId");
     this.companyNameSignIn = localStorage.getItem("companyNameSignIn");
+    this.companyNameSignInLogo = localStorage.getItem("companyNameSignInLogo");
   },
   mounted() {
     console.log(this.products);

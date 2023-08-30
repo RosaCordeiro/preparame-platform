@@ -138,6 +138,16 @@ export default {
               type: "InputFile",
               visible: true,
             },
+            logoInternal: {
+              label: "Logo Interno",
+              name: "logoInternal",
+              size: "12",
+              row: 1,
+              col: 1,
+              model: "",
+              type: "InputFile",
+              visible: true,
+            },
             text: {
               label: "Texto",
               name: "text",

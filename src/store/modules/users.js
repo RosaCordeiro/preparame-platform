@@ -29,6 +29,10 @@ export default {
         localStorage.setItem("surveyPopupShowed", false);
         localStorage.setItem("subscribeToken", user.user.subscribeToken);
         localStorage.setItem("companyNameSignIn", user.user.companyNameSignIn);
+        localStorage.setItem(
+          "companyNameSignInLogo",
+          user.user.companyNameSignInLogo
+        );
       } else {
         delete axios.defaults.headers.common["Authorization"];
 
