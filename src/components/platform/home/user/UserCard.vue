@@ -94,7 +94,7 @@
                 anchor="center right"
                 self="center left"
                 :offset="[10, 10]"
-                v-if="product.name === 'Orientação de Carreira'"
+                v-if="product.name === 'Orientação de Carreira' && false"
               >
                 <p
                   style="font-size: 15px; font-weight: 600; text-align: center"

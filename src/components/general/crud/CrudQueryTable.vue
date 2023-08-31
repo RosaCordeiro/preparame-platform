@@ -43,7 +43,7 @@
       </q-td>
     </template>
 
-    <template v-slot:body-cell-realocate="props">
+    <!-- <template v-slot:body-cell-realocate="props">
       <q-td auto-width :props="props">
         <div v-if="props.row.realocate">REALOCADO</div>
         <q-btn
@@ -54,7 +54,7 @@
           :disable="blockRemove"
         ></q-btn>
       </q-td>
-    </template>
+    </template> -->
 
     <template v-slot:body-cell-actions="props">
       <q-td auto-width :props="props">
