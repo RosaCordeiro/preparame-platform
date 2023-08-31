@@ -143,7 +143,11 @@
 
         <section
           class="section__companyName"
-          v-if="companyNameSignIn !== '' && companyNameSignIn !== null"
+          v-if="
+            companyNameSignIn !== '' &&
+            companyNameSignIn !== null &&
+            companyNameSignIn !== 'null'
+          "
         >
           <p>Mentoria Coletiva é um patrocínio da:</p>
           <img :src="companyNameSignInLogo" alt="" />
