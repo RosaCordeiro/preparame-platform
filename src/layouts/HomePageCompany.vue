@@ -68,8 +68,10 @@
                 :style="{
                   color: textColor,
                 }"
+                v-for="(t, index) in text.split('\n')"
+                :key="index"
               >
-                {{ text }}
+                {{ t }}
               </p>
             </div>
 
