@@ -195,7 +195,7 @@ export default {
       this.weekCount--;
     },
     nextWeek: function () {
-      if (this.weekCount === 2) {
+      if (this.weekCount === 4) {
         this.$q.notify({
           type: "error",
           message:

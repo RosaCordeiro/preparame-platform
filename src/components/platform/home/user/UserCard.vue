@@ -87,25 +87,14 @@
               flat
               color="white"
               :label="`Agendar ${product.name}`"
-              class="col-12"
+              class="col-12 tooltip"
               @click="goUrl(`products/schedule/${product.id}`)"
             >
-              <q-tooltip
-                anchor="center right"
-                self="center left"
-                :offset="[10, 10]"
-                v-if="product.name === 'Orientação de Carreira' && false"
-              >
-                <p
-                  style="font-size: 15px; font-weight: 600; text-align: center"
-                >
-                  Orientação de Carreira
-                </p>
-                <div style="font-size: 15px">
-                  Lembre-se de marcar todas as mentorias de orientação de
-                  carreira com a mesma pessoa especialista.
-                </div>
-              </q-tooltip>
+              <span
+                class="tooltiptext"
+                v-if="product.name === 'Orientação de Carreira'"
+                ><img src="~assets/imgs/orientacao.png" alt=""
+              /></span>
             </q-btn>
             <div v-else class="text-uppercase text-center text-weight-medium">
               Agendamento {{ product.name }} realizado
@@ -274,6 +263,37 @@ export default {
 </script>
 
 <style lang="scss">
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 400px;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 100;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltiptext img {
+  width: 100%;
+}
+
 .user-card-container {
   border-radius: 15px;
 }
