@@ -374,27 +374,30 @@ export default {
       this.formPage
     );
 
-    filterCrud([], `companies/pageById/${this.id}`)
-      .then((res) => {
-        for (const key in res) {
-          const index = this.formPage.registerColumns[0].cols.findIndex(
-            (col) => col.name === key
-          );
-
-          if (index !== -1) {
-            this.formPage.registerColumns[0].cols[index].model = res[key];
-          }
-        }
-
-        this.subscribers = res.vacancies - res.remainingVacancies;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.initPageCompany();
   },
   methods: {
+    initPageCompany: async function () {
+      filterCrud([], `companies/pageById/${this.id}`)
+        .then((res) => {
+          for (const key in res) {
+            const index = this.formPage.registerColumns[0].cols.findIndex(
+              (col) => col.name === key
+            );
+
+            if (index !== -1) {
+              this.formPage.registerColumns[0].cols[index].model = res[key];
+            }
+          }
+
+          this.subscribers = res.vacancies - res.remainingVacancies;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     onSubmit: async function () {
-      console.log(this.$refs.mainTable.table);
+      this.$q.loading.show();
 
       const data = this.$refs.mainTable.table.registerColumns[0].cols.map(
         (col) => {
@@ -422,6 +425,8 @@ export default {
           icon: "cloud_done",
           message: "Página salva com sucesso!",
         });
+
+        await this.initPageCompany();
       } else {
         this.$q.notify({
           color: "red-4",
@@ -430,6 +435,8 @@ export default {
           message: "Erro ao salvar página!",
         });
       }
+
+      this.$q.loading.hide();
     },
     save: async function (data) {
       try {
