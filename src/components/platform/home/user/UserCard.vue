@@ -114,7 +114,7 @@
           </div>
         </q-banner>
 
-        <q-banner
+        <!-- <q-banner
           rounded
           class="q-ma-sm text-white"
           style="background-color: #667998"
@@ -128,7 +128,7 @@
               @click="goUrl(`mentoring/update`)"
             />
           </div>
-        </q-banner>
+        </q-banner> -->
 
         <section
           class="section__companyName"
