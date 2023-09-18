@@ -167,6 +167,7 @@ export default {
     },
     async rateSpecialist() {
       if (Object.entries(this.schedulesGroup)[0][1][0].type === "individual") {
+        this.eventSchedule.schedules[0].rating = this.rate;
         await saveCrud(
           `specialists/schedule/${this.eventSchedule.schedules[0].id}`,
           this.eventSchedule.schedules[0],
