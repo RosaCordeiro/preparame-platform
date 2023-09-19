@@ -45,6 +45,20 @@
             {{ click.cn_name }}
           </q-card-section>
         </q-card>
+        <div>
+          <div>
+            <q-btn style="background: #667997; color: black" label="Baixar respostas em excel" class="column btn"/>
+          </div>
+          <div class="text">
+              Filtro
+            </div>
+            <div class="column">
+              <label v-for="(option, index) in companies" :key="index" >
+                <input type="checkbox" v-model="selectedCompany" :value="option.id" @click="handleCheckboxChange(option.id)"/>
+                  {{ option.name }}
+              </label>
+          </div>
+          </div>
       </div>
     </q-page>
   </div>
@@ -62,6 +76,8 @@ export default {
       clicks: [],
       initialDate: "",
       finalDate: "",
+      companies: [],
+      selectedCompany: null,
     };
   },
   methods: {
@@ -110,14 +126,50 @@ export default {
           showError(err);
         });
     },
+    handleCheckboxChange(option) {
+      console.log(this.selectedCompany);
+      this.selectedCompany = option;
+    }
   },
   mounted() {
     this.listClicks();
+    let config = {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        url: `${baseApiUrl}/companies`,
+      };
+
+      axios(config)
+        .then(async (company) => {
+          this.companies = company.data;
+
+          console.log(this.companies);
+        })
+        .catch((err) => {
+          console.log(err);
+          showError(err);
+        });
   },
 };
 </script>
 
 <style>
+.btn {
+  background-color: color(srgb red green blue);
+  border-radius: 25px;
+  width: 275px;
+  height: 60px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 15px;
+}
 .schedule {
   height: 100%;
 }

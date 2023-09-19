@@ -5,6 +5,12 @@
         <q-card-section class="home-company-labor-risk-card-title"
           >Risco Trabalhista</q-card-section
         >
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{  }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
         <q-card-section class="home-company-labor-risk-card-nps">{{
           laborRiskShow
         }}</q-card-section>
@@ -32,13 +38,11 @@ export default {
 <style lang="scss">
 .home-company-labor-risk-card {
   width: 18vw;
-  height: 20vh;
   border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-labor-risk-card-header {
-  height: 16vh;
 }
 
 .home-company-labor-risk-card-title {
@@ -51,7 +55,6 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-labor-risk-card-nps {
@@ -110,7 +113,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-labor-risk-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

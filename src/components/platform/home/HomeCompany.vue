@@ -325,7 +325,6 @@ export default {
 .home-company-charts {
   display: flex;
   flex-direction: column;
-  height: 20vh !important;
 }
 
 .home-company-charts-cards {
@@ -355,5 +354,21 @@ export default {
 .teste-2 {
   width: 100%;
   background-color: blue;
+}
+
+.home-company-charts-cards>div>div>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.home-company-charts-cards>div>div>div>div:first-child {
+    margin-bottom: auto;
+}
+
+.home-company-charts-cards> div>div, .home-company-charts-cards> div>div>div {
+    height: 100%;
+    vertical-align: unset;
 }
 </style>

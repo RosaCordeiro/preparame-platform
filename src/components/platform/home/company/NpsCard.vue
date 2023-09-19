@@ -2,12 +2,18 @@
   <q-card class="home-company-realocated-card q-ma-md">
     <div class="home-company-realocated-card-header">
       <div class="home-company-realocated-card-info-container">
-        <q-card-section class="home-company-realocated-card-title"
-          >e-NPS</q-card-section
-        >
-        <q-card-section class="home-company-realocated-card-realocated">{{
-          nps
-        }}</q-card-section>
+        <q-card-section class="home-company-realocated-card-title">
+          e-NPS
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{  }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
+        <q-card-section class="home-company-realocated-card-realocated">
+          {{  nps  }}
+          </q-card-section>
       </div>
     </div>
   </q-card>
@@ -30,13 +36,11 @@ export default {
 <style lang="scss">
 .home-company-nps-card {
   width: 18vw;
-  height: 20vh;
   border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-nps-card-header {
-  height: 16vh;
 }
 
 .home-company-nps-card-info-container {
@@ -57,7 +61,30 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
+}
+
+.home-company-nps-card-geral {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  vertical-align: center;
+  color: $text-grey;
+  text-align: center;
+  width: 100%;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+}
+
+.home-company-nps-card-company {
+  background: linear-gradient(90deg, #1a27b7 0%, #ff4690 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  width: 100%;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0;
+  letter-spacing: 0;
 }
 
 .home-company-nps-card-nps {
@@ -116,7 +143,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-nps-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

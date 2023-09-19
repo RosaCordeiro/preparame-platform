@@ -5,6 +5,12 @@
         <q-card-section class="home-company-realocated-card-title"
           >Realocados</q-card-section
         >
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{  }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
         <q-card-section class="home-company-realocated-card-realocated"
           >{{ realocatedPercent }}%</q-card-section
         >
@@ -33,13 +39,11 @@ export default {
 <style lang="scss">
 .home-company-realocated-card {
   width: 18vw;
-  height: 20vh;
   border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-realocated-card-header {
-  height: 16vh;
 }
 
 .home-company-realocated-card-title {
@@ -52,7 +56,6 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-realocated-card-realocated {
@@ -111,7 +114,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-realocated-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>
