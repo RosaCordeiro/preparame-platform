@@ -132,11 +132,18 @@ export default {
 
       this.hasScheduleWithoutRating = Object.entries(this.groupSchedules).some(
         (schedule) => {
+          const dateSchedule = new Date(schedule[1][0].dateSchedule);
+          const formatedDate = new Date(
+            dateSchedule.setMinutes(
+              dateSchedule.getMinutes() - -dateSchedule.getTimezoneOffset()
+            )
+          );
+
           return (
             (schedule[1][0].rating === undefined ||
               schedule[1][0].rating === null ||
               schedule[1][0].rating === 0) &&
-            schedule[1][0].dateSchedule < new Date()
+            formatedDate < new Date()
           );
         }
       );
