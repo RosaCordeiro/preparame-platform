@@ -5,8 +5,14 @@
         <q-card-section class="home-company-realocated-card-title"
           >Risco de Marca</q-card-section
         >
-        <q-card-section class="home-company-realocated-card-realocated">{{
-          employeerBrandRisk.toFixed(2)
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{ employeerBrandRiskGeneral }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
+        <q-card-section class="home-company-realocated-card-realocated" style="font-weight: bold">{{
+          employeerBrandRisk
         }}</q-card-section>
       </div>
     </div>
@@ -15,30 +21,18 @@
 
 <script>
 export default {
-  props: ["employeerBrandRisk"],
-  data() {
-    return {
-      employeerBrandRiskPercent: 0,
-    };
-  },
-  mounted() {
-    this.employeerBrandRiskPercent = (this.employeerBrandRisk * 10).toFixed(2);
-
-    console.log(this.employeerBrandRiskPercent);
-  },
+  props: ["employeerBrandRisk", "employeerBrandRiskGeneral"],
 };
 </script>
 
 <style lang="scss">
 .home-company-employeer-brand-risk-card {
   width: 18vw;
-  height: 20vh;
   border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-employeer-brand-risk-card-header {
-  height: 16vh;
 }
 
 .home-company-employeer-brand-risk-card-info-container {
@@ -59,7 +53,6 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-employeer-brand-risk-card-nps {
@@ -118,7 +111,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-employeer-brand-risk-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

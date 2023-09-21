@@ -5,9 +5,15 @@
         <q-card-section class="home-company-labor-risk-alert-card-title"
           >Pendências Trabalhistas</q-card-section
         >
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{ laborIssuesGeneral }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
         <q-card-section
-          class="home-company-labor-risk-alert-card-labor-risk-alert"
-          >{{ laborRiskAlertsPercent }}%</q-card-section
+          class="home-company-labor-risk-alert-card-labor-risk-alert" style="font-weight: bold"
+          >{{ laborIssues }}</q-card-section
         >
       </div>
     </div>
@@ -16,31 +22,18 @@
 
 <script>
 export default {
-  props: ["laborRiskAlerts", "totalUsers"],
-  data() {
-    return {
-      laborRiskAlertsPercent: 0,
-    };
-  },
-  mounted() {
-    this.laborRiskAlertsPercent = (
-      (this.laborRiskAlerts / this.totalUsers) *
-      100
-    ).toFixed(2);
-  },
+  props: ["laborIssues", "laborIssuesGeneral"],
 };
 </script>
 
 <style lang="scss">
 .home-company-labor-risk-alert-card {
   width: 18vw;
-  height: 20vh;
   border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-labor-risk-alert-card-header {
-  height: 16vh;
 }
 
 .home-company-labor-risk-alert-card-title {
@@ -53,7 +46,6 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-labor-risk-alert-card-labor-risk-alert {
@@ -112,7 +104,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-labor-risk-alert-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

@@ -3,72 +3,42 @@
     <div class="home-company-feelings-map-card-header column">
       <div class="home-company-feelings-map-card-info-container">
         <q-card-section class="home-company-feelings-map-card-title">
-          <h4>Mapa de Sentimentos</h4>
+          <h4>Mapa de Sentimentos - {{ title }}</h4>
         </q-card-section>
-
-        <q-card-section>
+        <q-card-section v-if="feelingMap.length !== 0">
           <apexchart
             type="polarArea"
             height="400px"
             style="width: 100%; height: 100%"
             :options="chartOptions"
-            :series="feelingsMapDataChartConverted.slice(1).map((c) => c[1])"
-          ></apexchart>
+            :series="feelingMap.map((c) => c.count)"
+          />
+        </q-card-section>
+        <q-card-section v-else class="home-company-feelings-map-card-title">
+          <h4 style="text-align: center;padding-top: 100px;">Não há dados!</h4>
         </q-card-section>
       </div>
-
-      <!--  {{ feelingsMapDataChartConverted.slice(1).map((c) => c[1]) }}
-
-      <Column
-        v-if="showChart"
-        :data="feelingsMapDataChartConverted"
-        :height="450"
-      /> -->
     </div>
   </q-card>
 </template>
 
 <script>
-//import Column from "./../../../general/charts/Column.vue";
 export default {
-  /*  components: {
-    Column,
-  }, */
-  props: ["feelingsMap", "users"],
+  props: ["feelingMap", "title"],
   data() {
     return {
-      feelingsMapDataChartConverted: [],
       showChart: false,
-      series: [],
-      chartOptions: {},
+      chartOptions: {}
     };
   },
-  mounted() {
-    this.converDataChart();
-    this.showChart = true;
-  },
-  methods: {
-    converDataChart: function () {
-      this.feelingsMapDataChartConverted.push([
-        "Sentimento",
-        "Quantidade",
-        { role: "style" },
-      ]);
-
-      this.feelingsMap.forEach((feeling) => {
-        this.feelingsMapDataChartConverted.push([
-          feeling.feeling,
-          ((feeling.count / this.users) * 100).toFixed(2),
-          "color: #1a27b7",
-        ]);
-      });
+  watch: {
+    feelingMap(){
       this.chartOptions = {
         chart: {
           type: "polarArea",
         },
-        labels: this.feelingsMapDataChartConverted
-          .slice(1)
-          .map((c) => c[0].toString()),
+        labels: this.feelingMap
+          .map((c) => c.feeling.toString()),
         stroke: {
           colors: ["#fff"],
         },
@@ -105,12 +75,15 @@ export default {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + "%";
+              return val;
             },
           },
         },
       };
-    },
+    }
+  },
+  created() {
+    this.showChart = true;
   },
 };
 </script>

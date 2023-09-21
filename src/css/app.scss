@@ -153,13 +153,11 @@ a {
 
 .home-company-realocated-card {
     width: 18vw;
-    height: 20vh;
     border-radius: 15%;
     box-shadow: none;
   }
 
   .home-company-realocated-card-header {
-    height: 16vh;
   }
 
   .home-company-realocated-card-title {
@@ -172,7 +170,6 @@ a {
     width: 100%;
     font-size: 1.5rem;
     line-height: 1.2rem;
-    height: 4rem;
   }
 
   .home-company-realocated-card-realocated {
@@ -231,7 +228,6 @@ a {
   @media (orientation: portrait) {
     .home-company-realocated-card {
       width: 90vw;
-      height: 20vh;
     }
   }
 
