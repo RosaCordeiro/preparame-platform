@@ -1,7 +1,7 @@
 <template>
   <div id="q-app" class="schedule">
     <q-page class="q-pa-lg">
-      <div class="row">
+      <div class="row q-pa-lg">
         <q-card class="my-card col-2 q-ma-sm">
           <q-card-section class="row justify-center">
             <b>Relatório</b></q-card-section
@@ -45,20 +45,26 @@
             {{ click.cn_name }}
           </q-card-section>
         </q-card>
-        <div>
+      </div>
+      <div class="row">
+        <div class="filtro">
           <div>
-            <q-btn style="background: #667997; color: black" label="Baixar respostas em excel" class="column btn"/>
+            <q-btn style="background: #667997; color: black" label="Baixar respostas em excel" class="column btn" @click="downloadAnswers"/>
           </div>
           <div class="text">
               Filtro
             </div>
             <div class="column">
               <label v-for="(option, index) in companies" :key="index" >
-                <input type="checkbox" v-model="selectedCompany" :value="option.id" @click="handleCheckboxChange(option.id)"/>
+                <input type="radio" v-model="selectedCompany" :value="option.id"/>
                   {{ option.name }}
               </label>
           </div>
-          </div>
+        </div>
+        <section class="dashboard">
+          <DashBoardAnswers
+          :companyId="selectedCompany"/>
+        </section>
       </div>
     </q-page>
   </div>
@@ -68,9 +74,12 @@
 import axios from "axios";
 import { baseApiUrl, showError } from "../../../global";
 import { downloadFile } from "src/utils/downloadFile";
+import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
 
 export default {
-  components: {},
+  components: {
+    DashBoardAnswers,
+},
   data() {
     return {
       clicks: [],
@@ -108,6 +117,24 @@ export default {
 
       this.$q.loading.hide();
     },
+    async downloadAnswers(){
+      let config = {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        url: `${baseApiUrl}/reports/responses`,
+        responseType: "blob",
+      };
+      this.$q.loading.show();
+
+      try {
+        const data = await axios(config);
+        downloadFile(data.data, "respostas.xlsx");
+      } catch (error) {
+        showError(error);
+      }
+
+      this.$q.loading.hide();
+    },
     listClicks() {
       let config = {
         method: "GET",
@@ -126,10 +153,6 @@ export default {
           showError(err);
         });
     },
-    handleCheckboxChange(option) {
-      console.log(this.selectedCompany);
-      this.selectedCompany = option;
-    }
   },
   mounted() {
     this.listClicks();
@@ -142,6 +165,7 @@ export default {
       axios(config)
         .then(async (company) => {
           this.companies = company.data;
+          this.selectedCompany = this.companies[0].id;
 
           console.log(this.companies);
         })
@@ -179,6 +203,7 @@ export default {
   width: 180px;
   background-color: #f5f5f5;
   border-radius: 10px;
+  flex: 1;
 }
 
 .date .q-field__label.no-pointer-events.absolute.ellipsis {
@@ -192,5 +217,13 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.dashboard {
+  flex: 1;
+}
+
+.filtro {
+  padding: 32px;
 }
 </style>

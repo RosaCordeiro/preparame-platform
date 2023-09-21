@@ -5,15 +5,17 @@
         <q-card-section class="home-company-feelings-map-card-title">
           <h4>Mapa de Sentimentos - {{ title }}</h4>
         </q-card-section>
-
-        <q-card-section>
+        <q-card-section v-if="feelingMap.length !== 0">
           <apexchart
             type="polarArea"
             height="400px"
             style="width: 100%; height: 100%"
             :options="chartOptions"
             :series="feelingMap.map((c) => c.count)"
-          ></apexchart>
+          />
+        </q-card-section>
+        <q-card-section v-else class="home-company-feelings-map-card-title">
+          <h4 style="text-align: center;padding-top: 100px;">Não há dados!</h4>
         </q-card-section>
       </div>
     </div>
@@ -73,7 +75,7 @@ export default {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + "%";
+              return val;
             },
           },
         },

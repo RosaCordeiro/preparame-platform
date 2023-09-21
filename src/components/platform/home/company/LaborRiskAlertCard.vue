@@ -12,7 +12,7 @@
           Sua empresa:
         </q-card-section>
         <q-card-section
-          class="home-company-labor-risk-alert-card-labor-risk-alert"
+          class="home-company-labor-risk-alert-card-labor-risk-alert" style="font-weight: bold"
           >{{ laborIssues }}</q-card-section
         >
       </div>

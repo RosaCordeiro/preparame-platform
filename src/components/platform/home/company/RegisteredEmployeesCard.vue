@@ -12,7 +12,7 @@
           Sua empresa:
         </q-card-section>
         <q-card-section
-          class="home-company-registered-employees-card-registered-employees"
+          class="home-company-registered-employees-card-registered-employees" style="font-weight: bold"
           >{{ welcomed }}</q-card-section
         >
       </div>

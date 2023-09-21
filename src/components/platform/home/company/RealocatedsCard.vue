@@ -11,7 +11,7 @@
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
-        <q-card-section class="home-company-realocated-card-realocated"
+        <q-card-section class="home-company-realocated-card-realocated" style="font-weight: bold"
           >{{ realocateds }}</q-card-section
         >
       </div>
