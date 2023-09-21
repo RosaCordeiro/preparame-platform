@@ -6,13 +6,13 @@
           >Risco de Marca</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ employeerBrandRiskGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section class="home-company-realocated-card-realocated">{{
-          employeerBrandRisk.toFixed(2)
+          employeerBrandRisk
         }}</q-card-section>
       </div>
     </div>
@@ -21,17 +21,7 @@
 
 <script>
 export default {
-  props: ["employeerBrandRisk"],
-  data() {
-    return {
-      employeerBrandRiskPercent: 0,
-    };
-  },
-  mounted() {
-    this.employeerBrandRiskPercent = (this.employeerBrandRisk * 10).toFixed(2);
-
-    console.log(this.employeerBrandRiskPercent);
-  },
+  props: ["employeerBrandRisk", "employeerBrandRiskGeneral"],
 };
 </script>
 

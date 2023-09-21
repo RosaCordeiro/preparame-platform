@@ -6,13 +6,13 @@
           >Risco Trabalhista</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ laborRiskGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section class="home-company-labor-risk-card-nps">{{
-          laborRiskShow
+          laborRisk
         }}</q-card-section>
       </div>
     </div>
@@ -21,17 +21,7 @@
 
 <script>
 export default {
-  props: ["laborRisk"],
-  data() {
-    return {
-      laborRiskPercent: 0,
-      laborRiskShow: 0,
-    };
-  },
-  mounted() {
-    this.laborRiskPercent = this.laborRisk * 10;
-    this.laborRiskShow = this.laborRisk.toFixed(2);
-  },
+  props: ["laborRisk","laborRiskGeneral"],
 };
 </script>
 

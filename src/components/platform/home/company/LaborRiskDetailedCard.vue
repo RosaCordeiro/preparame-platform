@@ -9,34 +9,34 @@
           class="home-company-labor-risk-detailed-card-title"
           style="height: 65px"
         >
-          <h4>Pesquisa de Desligamento</h4>
-          <h6>Notas de 1 a 10</h6>
+          <h4>Pesquisa de Desligamento - {{ title }}</h4>
+            <h6>Notas de 1 a 10</h6>
         </q-card-section>
       </div>
-      <Column v-if="false" :data="laborRiskDataChartConverted" :height="450" />
+      <Column v-if="false" :data="shutDown" :height="450" />
 
       <div class="q-mt-lg card">
         <div
           class="chart-card"
-          v-for="(l, index) in laborRiskDataChartConverted.slice(1)"
+          v-for="(l, index) in shutDown"
           :key="index"
         >
           <div class="chart__row-title">
             <div
               class="chart__row-label"
-              :style="`min-width: 80px; width: ${l[1] * 10}%; `"
+              :style="`min-width: 80px; width: ${l.count * 10}%; `"
             >
               <p>Pergunta {{ index + 1 }}</p>
-              <p v-if="l[1] > 2">{{ l[1].toFixed(2) }}</p>
+              <p v-if="l.count > 2">{{ l.count }}</p>
             </div>
           </div>
-          <div class="chart__row" :id="formatId(l[0])">
+          <div class="chart__row" :id="l.question">
             <div
               class="chart__row__value"
               :style="`width: ${
-                l[1] * 10
+                l.count * 10
               }%; background: linear-gradient(90deg, #1a27b7 0%, ${
-                l[1] >= 7 ? '#34a67c' : '#ff4690'
+                l.count >= 7 ? '#34a67c' : '#ff4690'
               } 100%);`"
             ></div>
 
@@ -47,7 +47,7 @@
               :offset="[20, 20]"
             >
               <div class="tooltip-text">
-                {{ l[0] + " - " + l[1].toFixed(2).replace(".", ",") }}
+                {{ l.question + " - " + l.count }}
               </div>
             </q-tooltip>
           </div>
@@ -63,47 +63,7 @@ export default {
   components: {
     Column,
   },
-  props: ["laborRisks"],
-  data() {
-    return {
-      laborRiskDataChartConverted: [],
-      showChart: false,
-    };
-  },
-  mounted() {
-    this.converDataChart();
-    this.showChart = true;
-  },
-  methods: {
-    formatId(name) {
-      const format = (str) => {
-        return str
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/([^\w]+|\s+)/g, "-")
-          .replace(/\-\-+/g, "-")
-          .replace(/(^-+|-+$)/, "");
-      };
-
-      return "chart__row-" + format(name);
-    },
-
-    converDataChart: function () {
-      this.laborRiskDataChartConverted.push([
-        "Risco Trabalhista",
-        "Soma",
-        { role: "style" },
-      ]);
-
-      this.laborRisks.forEach((laborRisk) => {
-        this.laborRiskDataChartConverted.push([
-          laborRisk.question,
-          laborRisk.count,
-          "color: #ff4690",
-        ]);
-      });
-    },
-  },
+  props: ["shutDown", "title"],
 };
 </script>
 

@@ -6,14 +6,14 @@
           >Pendências Trabalhistas</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ laborIssuesGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section
           class="home-company-labor-risk-alert-card-labor-risk-alert"
-          >{{ laborRiskAlertsPercent }}%</q-card-section
+          >{{ laborIssues }}</q-card-section
         >
       </div>
     </div>
@@ -22,18 +22,7 @@
 
 <script>
 export default {
-  props: ["laborRiskAlerts", "totalUsers"],
-  data() {
-    return {
-      laborRiskAlertsPercent: 0,
-    };
-  },
-  mounted() {
-    this.laborRiskAlertsPercent = (
-      (this.laborRiskAlerts / this.totalUsers) *
-      100
-    ).toFixed(2);
-  },
+  props: ["laborIssues", "laborIssuesGeneral"],
 };
 </script>
 

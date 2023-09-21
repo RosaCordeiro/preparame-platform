@@ -11,28 +11,31 @@
           <NpsCard
             v-if="dashboardsLoaded"
             :nps="nps"
+            :npsGeneral="npsGeneral"
             style="flex: 1 0 200px"
           ></NpsCard>
           <EmployeerBrandRiskCard
             v-if="dashboardsLoaded"
             :employeerBrandRisk="brandRisk"
+            :employeerBrandRiskGeneral="brandRiskGeneral"
             style="flex: 1 0 200px"
           ></EmployeerBrandRiskCard>
           <LaborRiskCard
             v-if="dashboardsLoaded"
             :laborRisk="laborRisk"
+            :laborRiskGeneral="laborRiskGeneral"
             style="flex: 1 0 200px"
           ></LaborRiskCard>
           <RealocatedsCard
             v-if="dashboardsLoaded"
-            :realocateds="countRealocateds"
-            :totalUsers="countUsers"
+            :realocateds="realocateds"
+            :realocatedsGeneral="realocatedsGeneral"
             style="flex: 1 0 200px"
           ></RealocatedsCard>
           <RegisteredEmployeesCard
             v-if="dashboardsLoaded"
-            :registeredEmployees="countAccepted"
-            :totalEmployees="countEmployees"
+            :welcomed="welcomed"
+            :welcomedGeneral="welcomedGeneral"
             style="flex: 1 0 200px"
           >
           </RegisteredEmployeesCard>
@@ -40,14 +43,14 @@
         <div class="home-company-charts-cards row">
           <NineCard
             v-if="dashboardsLoaded"
-            :lastAnswers="lastAnswers"
-            :countUsers="countUsers"
+            :termination="termination"
+            :terminationGeneral="terminationGeneral"
             style="flex: 1 0 200px"
           ></NineCard>
           <LaborRiskAlertCard
             v-if="dashboardsLoaded"
-            :laborRiskAlerts="countLaborRiskAlerts"
-            :totalUsers="countUsers"
+            :laborIssues="laborIssues"
+            :laborIssuesGeneral="laborIssuesGeneral"
             style="flex: 1 0 200px"
           ></LaborRiskAlertCard>
         </div>
@@ -55,13 +58,27 @@
         <div class="charts__row row">
           <LaborRiskDetailedCard
             v-if="dashboardsLoaded"
-            :laborRisks="laborRiskData"
+            :shutDown="shutDown"
+            :title="'Sua Empresa'"
           />
-          <FeelingsMapCard
+          <LaborRiskDetailedCard
             v-if="dashboardsLoaded"
-            :feelingsMap="feelingsMapData"
-            :users="countUsersResponded"
+            :shutDown="shutDownGeneral"
+            :title="'Geral'"
           />
+        </div>
+
+        <div class="charts__row row">
+          <FeelingsMapCard
+          v-if="dashboardsLoaded"
+          :feelingMap="feelingMap"
+          :title="'Sua Empresa'"
+        />
+        <FeelingsMapCard
+          v-if="dashboardsLoaded"
+          :feelingMap="feelingMapGeneral"
+          :title="'Geral'"
+        />
         </div>
 
         <!-- <div class="home-company-charts-cards justify-around">
@@ -115,22 +132,26 @@ export default {
   },
   data() {
     return {
-      nps: 0,
-      laborRisk: 0,
-      brandRisk: 0,
-      countUsers: 0,
-      countEmployees: 0,
-      countRealocateds: 0,
-      countLaborRiskAlerts: 0,
-      countAccepted: 0,
-      countUsersResponded: 0,
-      dashboardsLoaded: false,
-      feelingsMapData: [],
-      laborRiskData: [],
-      brandRiskData: [],
+      nps: "",
+      npsGeneral: "",
+      brandRisk: "",
+      brandRiskGeneral: "",
+      laborRisk: "",
+      laborRiskGeneral: "",
+      realocateds: "",
+      realocatedsGeneral: "",
+      welcomed: "",
+      welcomedGeneral: "",
+      termination: "",
+      terminationGeneral: "",
+      laborIssues: "",
+      laborIssuesGeneral: "",
+      shutDown: [],
+      shutDownGeneral: [],
+      feelingMap: [],
+      feelingMapGeneral: [],
+      dashboardsLoaded: true,
       mobile: false,
-      lastAnswer: {},
-      lastAnswers: [],
     };
   },
   methods: {
@@ -158,153 +179,34 @@ export default {
         "reports/NPSSurveyAnswers"
       );
 
-      const npsSurveyAnswers = npsSurveyReport.filter((npsSurvey) => {
-        if (npsSurvey.user) {
-          return npsSurvey.user.surveyAnswered;
-        }
-      });
+      this.nps = npsSurveyReport.nps;
+      this.npsGeneral = npsSurveyReport.general.nps;
 
-      let laborRisk = npsSurveyAnswers.reduce(
-        (laborRisckTotal = 0, employee) => {
-          return laborRisckTotal + employee.user.laborRisk;
-        },
-        0
-      );
+      this.brandRisk = npsSurveyReport.brandRisk;
+      this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
 
-      this.laborRisk = 10 - (laborRisk / npsSurveyAnswers.length).toFixed(2);
+      this.laborRisk = npsSurveyReport.laborRisk;
+      this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
 
-      let brandRisk = npsSurveyAnswers.reduce(
-        (brandRisckTotal = 0, employee) => {
-          return brandRisckTotal + employee.user.brandRisk;
-        },
-        0
-      );
+      this.realocateds = npsSurveyReport.realocateds;
+      this.realocatedsGeneral = npsSurveyReport.general.realocateds;
 
-      this.brandRisk = 10 - (brandRisk / npsSurveyAnswers.length).toFixed(2);
+      this.welcomed = npsSurveyReport.welcomed;
+      this.welcomedGeneral = npsSurveyReport.general.welcomed;
 
-      const users = npsSurveyReport.filter((employee) => {
-        return employee.userId;
-      });
+      this.termination = npsSurveyReport.termination;
+      this.terminationGeneral = npsSurveyReport.general.termination;
 
-      const realocateds = users.filter((user) => {
-        return user.user.realocated == "REALOCATED";
-      });
+      this.laborIssues = npsSurveyReport.laborIssues;
+      this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
 
-      const laborRiskAlerts = users.filter((user) => {
-        return user.user.laborRiskAlert == "ALERT";
-      });
+      this.shutDown = npsSurveyReport.shutDown;
+      this.shutDownGeneral = npsSurveyReport.general.shutDown;
 
-      users.forEach((user) => {
-        const feelingsMap = JSON.parse(user.user.feelingsMapJSON);
-        const laborRisks = JSON.parse(user.user.laborRiskJSON);
-        const brandRisks = JSON.parse(user.user.brandRiskJSON);
+      this.feelingMap = npsSurveyReport.feelingMap;
+      this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
 
-        if (Array.isArray(feelingsMap)) {
-          feelingsMap.forEach((feelingMapped) => {
-            const findFeeling = this.feelingsMapData.findIndex(
-              (feelingInserted) => {
-                return feelingMapped.feeling == feelingInserted.feeling;
-              }
-            );
-
-            if (findFeeling >= 0) {
-              this.feelingsMapData[findFeeling].count++;
-            } else {
-              this.feelingsMapData.push({ ...feelingMapped, count: 1 });
-            }
-          });
-        }
-
-        if (Array.isArray(laborRisks)) {
-          for (const laborRiskMapped of laborRisks) {
-            if (laborRiskMapped.index === 9) {
-              this.lastAnswers.push(laborRiskMapped);
-              continue;
-            }
-
-            const findLaborRisk = this.laborRiskData.findIndex(
-              (laborRiskInserted) => {
-                return laborRiskMapped.question == laborRiskInserted.question;
-              }
-            );
-
-            if (findLaborRisk >= 0) {
-              this.laborRiskData[findLaborRisk].count +=
-                laborRiskMapped.answer * 1;
-            } else {
-              this.laborRiskData.push({
-                ...laborRiskMapped,
-                count: laborRiskMapped.answer * 1,
-              });
-            }
-          }
-        }
-
-        if (Array.isArray(brandRisks)) {
-          brandRisks.forEach((brandRiskMapped) => {
-            const findBrandRisk = this.brandRiskData.findIndex(
-              (brandRiskInserted) => {
-                return brandRiskMapped.question == brandRiskInserted.question;
-              }
-            );
-
-            if (findBrandRisk >= 0) {
-              this.brandRiskData[findBrandRisk].count += brandRiskMapped.answer;
-            } else {
-              this.brandRiskData.push({
-                ...brandRiskMapped,
-                count: brandRiskMapped.answer,
-              });
-            }
-          });
-        }
-      });
-
-      this.brandRiskData.forEach((brandRisk) => {
-        brandRisk.count = brandRisk.count / users.length;
-      });
-
-      this.countEmployees = npsSurveyReport.length;
-      this.countUsers = users.length;
-      this.countRealocateds = realocateds.length;
-
-      this.countLaborRiskAlerts = laborRiskAlerts.length;
-
-      this.dashboardsLoaded = true;
-      this.countUsersResponded = users.filter((user) => {
-        return user.user.surveyAnswered;
-      }).length;
-
-      this.countAccepted = npsSurveyReport.filter((user) => {
-        return user.accepted;
-      }).length;
-
-      this.laborRiskData.forEach((laborRisk) => {
-        laborRisk.count = laborRisk.count / this.countUsersResponded;
-      });
-
-      const npsAnswers = npsSurveyAnswers.map((npsSurvey) => {
-        return npsSurvey.user.NPSSurvey;
-      });
-
-      const result = npsAnswers.reduce(
-        (accumulators, npsAnswer) => {
-          if (npsAnswer < 7) {
-            accumulators.npsAnswersLassThanSeven += 1;
-          }
-          if (npsAnswer > 8) {
-            accumulators.npsAnswersMoreThanEight += 1;
-          }
-
-          return accumulators;
-        },
-        { npsAnswersLassThanSeven: 0, npsAnswersMoreThanEight: 0 }
-      );
-
-      this.nps = (
-        result.npsAnswersMoreThanEight / this.countUsersResponded -
-        result.npsAnswersLassThanSeven / this.countUsersResponded
-      ).toFixed(2);
+      console.log(npsSurveyReport);
     },
   },
   async mounted() {

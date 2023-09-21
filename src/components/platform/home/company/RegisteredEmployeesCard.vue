@@ -6,14 +6,14 @@
           >Acolhidos</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ welcomedGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section
           class="home-company-registered-employees-card-registered-employees"
-          >{{ registeredEmployees }}/{{ totalEmployees }}</q-card-section
+          >{{ welcomed }}</q-card-section
         >
       </div>
     </div>
@@ -22,18 +22,7 @@
 
 <script>
 export default {
-  props: ["registeredEmployees", "totalEmployees"],
-  data() {
-    return {
-      registeredEmployeesPercent: 0,
-    };
-  },
-  mounted() {
-    this.registeredEmployeesPercent = (
-      (this.registeredEmployees / this.totalEmployees) *
-      100
-    ).toFixed(2);
-  },
+  props: ["welcomed", "welcomedGeneral"],
 };
 </script>
 

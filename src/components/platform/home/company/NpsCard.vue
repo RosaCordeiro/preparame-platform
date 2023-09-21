@@ -6,13 +6,13 @@
           e-NPS
         </q-card-section>
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ npsGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section class="home-company-realocated-card-realocated">
-          {{  nps  }}
+          {{ nps }}
           </q-card-section>
       </div>
     </div>
@@ -21,15 +21,7 @@
 
 <script>
 export default {
-  props: ["nps"],
-  data() {
-    return {
-      npsPercent: 0,
-    };
-  },
-  mounted() {
-    this.npsPercent = (this.nps * 10).toFixed(2);
-  },
+  props: ["nps", "npsGeneral"],
 };
 </script>
 

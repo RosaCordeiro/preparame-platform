@@ -6,13 +6,13 @@
           >Realocados</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ realocatedsGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section class="home-company-realocated-card-realocated"
-          >{{ realocatedPercent }}%</q-card-section
+          >{{ realocateds }}</q-card-section
         >
       </div>
     </div>
@@ -21,18 +21,7 @@
 
 <script>
 export default {
-  props: ["realocateds", "totalUsers"],
-  data() {
-    return {
-      realocatedPercent: 0,
-    };
-  },
-  mounted() {
-    this.realocatedPercent = (
-      (this.realocateds / this.totalUsers) *
-      100
-    ).toFixed(2);
-  },
+  props: ["realocateds", "realocatedsGeneral"],
 };
 </script>
 

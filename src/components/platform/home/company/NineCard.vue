@@ -6,13 +6,13 @@
           >Cálculos da rescisão estão corretos?</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{  }}
+          Geral: {{ terminationGeneral }}
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
         <q-card-section class="home-company-labor-risk-card-nps">{{
-          value
+          termination
         }}</q-card-section>
       </div>
     </div>
@@ -21,24 +21,7 @@
 
 <script>
 export default {
-  props: ["lastAnswers", "countUsers"],
-  data() {
-    return {
-      value: 0,
-    };
-  },
-  mounted() {
-    this.value =
-      (
-        (1 -
-          this.lastAnswers.reduce((acc, curr) => {
-            if (curr.answer === 0) return acc + 1;
-            return acc;
-          }, 0) /
-            this.countUsers) *
-        100
-      ).toFixed(2) + "%";
-  },
+  props: ["termination", "terminationGeneral"],
 };
 </script>
 
