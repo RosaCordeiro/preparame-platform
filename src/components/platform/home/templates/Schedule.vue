@@ -1,5 +1,5 @@
 <template>
-  <div class="schedule justify-around">
+  <div class="schedule justify-around" style="position: relative">
     <q-card
       :class="{
         'schedule-container': true,
@@ -21,6 +21,22 @@
         />
       </q-card-section>
     </q-card>
+
+    <!-- <div class="popup__not-rating">
+    </div> -->
+    <div class="image-popup" v-if="hasScheduleWithoutRating">
+      <img src="~assets/imgs/mentoria_sem_nota.png" alt="" />
+      <!-- close button -->
+      <q-btn
+        @click="hasScheduleWithoutRating = false"
+        class="image-popup__close"
+        icon="close"
+        round
+        flat
+        color="black"
+        style="position: absolute; right: 0; top: 0"
+      />
+    </div>
   </div>
 </template>
 
@@ -35,6 +51,7 @@ export default {
       groupSchedulesAdjusted: [],
       schedules: [],
       mobile: false,
+      hasScheduleWithoutRating: false,
     };
   },
   components: {
@@ -51,7 +68,7 @@ export default {
       const dateBegin = new Date();
       const dateEnd = new Date();
 
-      dateBegin.setDate(dateBegin.getDate() - 1);
+      dateBegin.setDate(dateBegin.getDate() - 7);
       dateEnd.setDate(dateEnd.getDate() + 30);
 
       const filters = [
@@ -95,6 +112,8 @@ export default {
       );
 
       this.schedules.forEach((schedule) => {
+        console.log(schedule);
+
         let groupKey = `${schedule["productId"]}${schedule["userId"]}${
           schedule["specialistId"]
         }${formatDateToStringMasked(
@@ -110,6 +129,24 @@ export default {
 
         return schedule;
       });
+
+      this.hasScheduleWithoutRating = Object.entries(this.groupSchedules).some(
+        (schedule) => {
+          const dateSchedule = new Date(schedule[1][0].dateSchedule);
+          const formatedDate = new Date(
+            dateSchedule.setMinutes(
+              dateSchedule.getMinutes() - -dateSchedule.getTimezoneOffset()
+            )
+          );
+
+          return (
+            (schedule[1][0].rating === undefined ||
+              schedule[1][0].rating === null ||
+              schedule[1][0].rating === 0) &&
+            formatedDate < new Date()
+          );
+        }
+      );
 
       Object.entries(this.groupSchedules).map((schedule) => {
         const scheduleAdjusted = {};
@@ -146,5 +183,18 @@ export default {
   .schedule-container {
     width: 98%;
   }
+}
+
+.image-popup {
+  position: absolute;
+  left: 0;
+  top: -150px;
+  height: 200px;
+}
+
+.image-popup img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 </style>

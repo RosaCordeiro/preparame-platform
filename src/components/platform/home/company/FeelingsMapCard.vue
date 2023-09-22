@@ -15,7 +15,7 @@
           />
         </q-card-section>
         <q-card-section v-else class="home-company-feelings-map-card-title">
-          <h4 style="text-align: center;padding-top: 100px;">Não há dados!</h4>
+          <h4 style="text-align: center; padding-top: 100px">Não há dados!</h4>
         </q-card-section>
       </div>
     </div>
@@ -32,13 +32,17 @@ export default {
     };
   },
   watch: {
-    feelingMap(){
+    feelingMap() {
+      this.setChartOptions();
+    },
+  },
+  methods: {
+    setChartOptions() {
       this.chartOptions = {
         chart: {
           type: "polarArea",
         },
-        labels: this.feelingMap
-          .map((c) => c.feeling.toString()),
+        labels: this.feelingMap.map((c) => c.feeling.toString()),
         stroke: {
           colors: ["#fff"],
         },
@@ -80,10 +84,14 @@ export default {
           },
         },
       };
-    }
+    },
   },
-  created() {
+  mounted() {
     this.showChart = true;
+
+    setTimeout(() => {
+      this.setChartOptions();
+    }, 100);
   },
 };
 </script>

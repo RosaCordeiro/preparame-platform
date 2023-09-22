@@ -70,14 +70,11 @@
 
         <div class="charts__row row">
           <FeelingsMapCard
-          v-if="dashboardsLoaded"
-          :feelingMap="feelingMap"
-          :title="'Sua Empresa'"
-        />
-        <FeelingsMapCard
-          :feelingMap="feelingMapGeneral"
-          :title="'Geral'"
-        />
+            v-if="dashboardsLoaded"
+            :feelingMap="feelingMap"
+            :title="'Sua Empresa'"
+          />
+          <FeelingsMapCard :feelingMap="feelingMapGeneral" :title="'Geral'" />
         </div>
 
         <!-- <div class="home-company-charts-cards justify-around">
@@ -155,9 +152,11 @@ export default {
   },
   props: ["companyId"],
   watch: {
-    companyId(){
+    companyId() {
+      console.log("companyId changed");
+
       this.loadNpsSurveyAnswers();
-    }
+    },
   },
   methods: {
     loadNpsSurveyAnswers: async function () {
@@ -217,6 +216,8 @@ export default {
     this.mobile = window.mobileAndTabletCheck();
 
     this.loadNpsSurveyAnswers();
+
+    console.log(this.companyId);
   },
 };
 </script>
@@ -262,19 +263,20 @@ export default {
   background-color: blue;
 }
 
-.home-company-charts-cards>div>div>div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
+.home-company-charts-cards > div > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 }
 
-.home-company-charts-cards>div>div>div>div:first-child {
-    margin-bottom: auto;
+.home-company-charts-cards > div > div > div > div:first-child {
+  margin-bottom: auto;
 }
 
-.home-company-charts-cards> div>div, .home-company-charts-cards> div>div>div {
-    height: 100%;
-    vertical-align: unset;
+.home-company-charts-cards > div > div,
+.home-company-charts-cards > div > div > div {
+  height: 100%;
+  vertical-align: unset;
 }
 </style>
