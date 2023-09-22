@@ -11,7 +11,14 @@
             height="400px"
             style="width: 100%; height: 100%"
             :options="chartOptions"
-            :series="feelingMap.map((c) => c.count)"
+            :series="
+              feelingMap.map((c) =>
+                (
+                  (c.count / feelingMap.reduce((a, b) => a + b.count, 0)) *
+                  100
+                ).toFixed(2)
+              )
+            "
           />
         </q-card-section>
         <q-card-section v-else class="home-company-feelings-map-card-title">
@@ -79,7 +86,7 @@ export default {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val;
+              return val + "%";
             },
           },
         },
