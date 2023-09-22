@@ -6,7 +6,7 @@
           >Acolhidos</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{ welcomedGeneral }}
+          -
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:

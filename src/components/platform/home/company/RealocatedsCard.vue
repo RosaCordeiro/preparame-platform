@@ -6,7 +6,7 @@
           >Realocados</q-card-section
         >
         <q-card-section class="home-company-nps-card-geral">
-          Geral: {{ realocatedsGeneral }}
+          -
         </q-card-section>
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:

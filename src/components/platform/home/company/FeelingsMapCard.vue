@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       showChart: false,
-      chartOptions: {}
+      chartOptions: {},
     };
   },
   watch: {

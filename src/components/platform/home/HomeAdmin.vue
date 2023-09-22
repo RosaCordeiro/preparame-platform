@@ -55,6 +55,18 @@
               Filtro
             </div>
             <div class="column">
+              <label >
+                <input type="radio" v-model="selectedCompany" :value="'TUDO'"/>
+                  Tudo
+              </label>
+              <label >
+                <input type="radio" v-model="selectedCompany" :value="'B2B'"/>
+                  B2B
+              </label>
+              <label >
+                <input type="radio" v-model="selectedCompany" :value="'B2C'"/>
+                  B2C
+              </label>
               <label v-for="(option, index) in companies" :key="index" >
                 <input type="radio" v-model="selectedCompany" :value="option.id"/>
                   {{ option.name }}
@@ -86,7 +98,7 @@ export default {
       initialDate: "",
       finalDate: "",
       companies: [],
-      selectedCompany: null,
+      selectedCompany: "TUDO",
     };
   },
   methods: {
@@ -165,7 +177,6 @@ export default {
       axios(config)
         .then(async (company) => {
           this.companies = company.data;
-          this.selectedCompany = this.companies[0].id;
 
           console.log(this.companies);
         })
