@@ -91,7 +91,7 @@ export default {
 
     setTimeout(() => {
       this.setChartOptions();
-    }, 100);
+    }, 500);
   },
 };
 </script>
