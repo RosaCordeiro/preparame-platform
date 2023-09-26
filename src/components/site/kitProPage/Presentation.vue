@@ -125,6 +125,14 @@
               <q-icon color="white" name="mdi-lock" />
             </template>
           </q-input>
+          <div class="container-presentation">
+            <q-checkbox v-model="acceptTerms"/>
+            <div class="text-presentation" style="text-align: start;">
+              Aceito a
+              <a @click="goUrl('PrivacyTerms')">Política de Privacidade</a> e os
+              <a @click="goUrl('useTerms')">Termos de Uso</a> deste site.
+            </div>
+          </div>
         </div>
         <q-btn
           class="q-mt-lg text-white bg-prepara-me-blue"
@@ -150,7 +158,7 @@ export default {
       },
       user: {},
       forcePassword: "",
-      acceptTerms: true,
+      acceptTerms: false,
       token: ""
     };
   },
@@ -159,6 +167,10 @@ export default {
   },
   methods: {
     freeAccess() {
+      if(!this.acceptTerms){
+        showError("É necessário aceitar os termos do site para se cadastrar.");
+        return;
+      }
       if (signUp(this.acceptTerms, this.user, this.token)) {
         this.$router.push({ path: "/login" });
       }
@@ -182,6 +194,10 @@ export default {
       if (forcePassword <= 30) {
         this.forcePassword = "Fraca";
       }
+    },
+    goUrl: function (url) {
+      this.$router.push({ path: `/${url}` });
+      this.$emit("close-mentoring-calendar");
     },
   },
 };
@@ -265,6 +281,24 @@ export default {
       width: 50vw;
     }
   }
+}
+
+.container-presentation {
+  display: flex;
+  flex-direction: row;
+}
+
+.text-presentation {
+  text-align: center;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.text-presentation a {
+  color: #1a27b7;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media (orientation: portrait) {

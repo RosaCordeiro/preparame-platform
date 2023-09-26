@@ -166,9 +166,9 @@
         </template>
       </q-input>
 
-      <div class="login-form-accept-terms-container">
-        <q-checkbox v-model="acceptTerms" class="login-form-accept-terms" />
-        <div class="login-form-accept-terms-text">
+      <div class="container-login">
+        <q-checkbox v-model="acceptTerms"/>
+        <div class="text-login">
           Aceito a
           <a @click="goUrl('PrivacyTerms')">Política de Privacidade</a> e os
           <a @click="goUrl('useTerms')">Termos de Uso</a> deste site.
@@ -522,20 +522,19 @@ export default {
   font-size: 1.5rem;
 }
 
-.login-form-accept-terms-container {
+.container-login {
   display: flex;
   flex-direction: row;
-  margin: 0 5vh;
 }
 
-.login-form-accept-terms-text {
+.text-login {
   line-height: 40px;
   text-align: center;
   color: #667998;
   font-size: 13px;
 }
 
-.login-form-accept-terms-text a {
+.text-login a {
   color: #667998;
   font-weight: 700;
   text-decoration: none;
