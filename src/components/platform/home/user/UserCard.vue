@@ -157,6 +157,12 @@
             />
           </div>
         </q-banner>
+        <div class="terms row q-pa-sm">
+              Ver
+            <a @click="goUrl('PrivacyTerms')">Políticas de Privacidade</a>
+               e
+            <a @click="goUrl('useTerms')">Termo de uso</a>
+          </div>
       </q-card-section>
     </q-card>
 
@@ -385,5 +391,19 @@ export default {
 .section__companyName > img {
   width: 100%;
   max-width: 250px;
+}
+
+.terms{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.terms a {
+  color: #667998;
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 </style>

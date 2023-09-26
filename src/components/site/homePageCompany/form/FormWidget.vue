@@ -85,6 +85,19 @@
     >
     </q-input>
 
+    <div class="container-form">
+      <q-checkbox v-model="acceptTerms"/>
+      <div class="text-form confirm" style="text-align: start;">
+        Aceito a
+        <a @click="goUrl('PrivacyTerms')" :style="{
+        color: $parent.clockColor,
+      }">Política de Privacidade</a> e os
+        <a @click="goUrl('useTerms')" :style="{
+        color: $parent.clockColor,
+      }">Termos de Uso</a> deste site.
+      </div>
+    </div>
+
     <p
       class="confirm"
       :style="{
@@ -113,26 +126,35 @@ export default {
       cpf: "",
       password: "",
       confirmPassword: "",
+      acceptTerms: false,
     };
   },
   methods: {
     async submitForm() {
-      const response = await signUp(
-        true,
-        {
-          name: this.name,
-          email: this.email,
-          documentId: this.cpf,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-        },
-        "",
-        this.$route.params.companyName
-      );
+      if (!this.acceptTerms) {
+        showError("É necessário aceitar os termos do site para se cadastrar.");
+        return;
+      }
+        const response = await signUp(
+          true,
+          {
+            name: this.name,
+            email: this.email,
+            documentId: this.cpf,
+            password: this.password,
+            confirmPassword: this.confirmPassword,
+          },
+          "",
+          this.$route.params.companyName
+        );
 
       if (response === true) {
         this.$router.push({ path: "/login" });
       }
+    },
+    goUrl: function (url) {
+      this.$router.push({ path: `/${url}` });
+      this.$emit("close-mentoring-calendar");
     },
   },
 };
@@ -159,6 +181,23 @@ img::after {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.container-form {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.text-form {
+  color: #ffffff;
+}
+
+.text-form a {
+  color: #000000;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media (min-width: 801px) {
