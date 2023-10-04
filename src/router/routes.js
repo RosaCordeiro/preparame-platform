@@ -1,9 +1,6 @@
-import { platformRoutesGroup } from "./platform/index"
-import { siteRoutesGroup } from "./site/index"
+import { platformRoutesGroup } from "./platform/index";
+import { siteRoutesGroup } from "./site/index";
 
-const routes = [
-  ...platformRoutesGroup,
-  ...siteRoutesGroup,
-]
+const routes = [...platformRoutesGroup, ...siteRoutesGroup];
 
-export default routes
+export default routes;
