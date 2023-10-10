@@ -382,7 +382,7 @@ export default {
   height: max-content;
 }
 
-li::before {
+.list li::before {
   content: "";
   transform: translate(0px, 5px);
   display: inline-block;
@@ -395,7 +395,7 @@ li::before {
   margin-right: 10px;
 }
 
-li.invert {
+.list li.invert {
   filter: invert(1);
   color: #fff;
 }
