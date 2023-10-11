@@ -2,7 +2,7 @@
   <div id="q-app" class="schedule">
     <q-page class="q-pa-lg">
       <div class="row q-pa-lg">
-        <q-card class="my-card col-2 q-ma-sm">
+        <q-card class="my-card col-lg-2 col-md-auto q-ma-sm">
           <q-card-section class="row justify-center">
             <b>Relatório</b></q-card-section
           >
@@ -34,7 +34,7 @@
           </q-card-section>
         </q-card>
         <q-card
-          class="my-card col-2 q-ma-sm card-clicks"
+          class="my-card col-lg-2 col-md-auto q-ma-sm card-clicks"
           v-for="click in clicks"
           :key="click.cn_name"
         >
@@ -49,35 +49,56 @@
       <div class="row">
         <div class="filtro">
           <div>
-            <q-btn style="background: #667997; color: black" label="Baixar respostas em excel" class="column btn" @click="downloadAnswers"/>
+            <q-btn
+              style="background: #667997; color: black"
+              label="Baixar respostas em excel"
+              class="column btn"
+              @click="downloadAnswers"
+            />
+
+            <q-btn
+              style="background: #667997; color: black"
+              label="Open"
+              class="column btn"
+              @click="
+                () => {
+                  this.$refs.confirmScheduleDialog.show(() => {
+                    console.log('testeando asdasdas');
+                  });
+                }
+              "
+            />
           </div>
-          <div class="text">
-              Filtro
-            </div>
-            <div class="column">
-              <label >
-                <input type="radio" v-model="selectedCompany" :value="'TUDO'"/>
-                  Tudo
-              </label>
-              <label >
-                <input type="radio" v-model="selectedCompany" :value="'B2B'"/>
-                  B2B
-              </label>
-              <label >
-                <input type="radio" v-model="selectedCompany" :value="'B2C'"/>
-                  B2C
-              </label>
-              <label v-for="(option, index) in companies" :key="index" >
-                <input type="radio" v-model="selectedCompany" :value="option.id"/>
-                  {{ option.name }}
-              </label>
+          <div class="text">Filtro</div>
+          <div class="column">
+            <label>
+              <input type="radio" v-model="selectedCompany" :value="'TUDO'" />
+              Tudo
+            </label>
+            <label>
+              <input type="radio" v-model="selectedCompany" :value="'B2B'" />
+              B2B
+            </label>
+            <label>
+              <input type="radio" v-model="selectedCompany" :value="'B2C'" />
+              B2C
+            </label>
+            <label v-for="(option, index) in companies" :key="index">
+              <input
+                type="radio"
+                v-model="selectedCompany"
+                :value="option.id"
+              />
+              {{ option.name }}
+            </label>
           </div>
         </div>
         <section class="dashboard">
-          <DashBoardAnswers
-          :companyId="selectedCompany"/>
+          <DashBoardAnswers :companyId="selectedCompany" />
         </section>
       </div>
+
+      <ConfirmScheduleDialog ref="confirmScheduleDialog" />
     </q-page>
   </div>
 </template>
@@ -87,11 +108,13 @@ import axios from "axios";
 import { baseApiUrl, showError } from "../../../global";
 import { downloadFile } from "src/utils/downloadFile";
 import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
+import ConfirmScheduleDialog from "src/components/ConfirmScheduleDialog.vue";
 
 export default {
   components: {
     DashBoardAnswers,
-},
+    ConfirmScheduleDialog,
+  },
   data() {
     return {
       clicks: [],
@@ -129,7 +152,7 @@ export default {
 
       this.$q.loading.hide();
     },
-    async downloadAnswers(){
+    async downloadAnswers() {
       let config = {
         method: "GET",
         headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -169,21 +192,21 @@ export default {
   mounted() {
     this.listClicks();
     let config = {
-        method: "GET",
-        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
-        url: `${baseApiUrl}/companies`,
-      };
+      method: "GET",
+      headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+      url: `${baseApiUrl}/companies`,
+    };
 
-      axios(config)
-        .then(async (company) => {
-          this.companies = company.data;
+    axios(config)
+      .then(async (company) => {
+        this.companies = company.data;
 
-          console.log(this.companies);
-        })
-        .catch((err) => {
-          console.log(err);
-          showError(err);
-        });
+        console.log(this.companies);
+      })
+      .catch((err) => {
+        console.log(err);
+        showError(err);
+      });
   },
 };
 </script>
@@ -210,7 +233,7 @@ export default {
 }
 
 .my-card {
-  height: 180px;
+  min-height: 180px;
   width: 180px;
   background-color: #f5f5f5;
   border-radius: 10px;

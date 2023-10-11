@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="home-company-labor-risk-detailed-card column"
-    style="flex: 1 0 400px"
+    style="flex: 1 0 250px"
   >
     <div class="home-company-labor-risk-detailed-card-header column">
       <div class="home-company-labor-risk-detailed-card-info-container">
@@ -10,17 +10,13 @@
           style="height: 65px"
         >
           <h4>Pesquisa de Desligamento - {{ title }}</h4>
-            <h6>Notas de 1 a 10</h6>
+          <h6>Notas de 1 a 10</h6>
         </q-card-section>
       </div>
       <Column v-if="false" :data="shutDown" :height="450" />
 
       <div class="q-mt-lg card">
-        <div
-          class="chart-card"
-          v-for="(l, index) in shutDown"
-          :key="index"
-        >
+        <div class="chart-card" v-for="(l, index) in shutDown" :key="index">
           <div class="chart__row-title">
             <div
               class="chart__row-label"
