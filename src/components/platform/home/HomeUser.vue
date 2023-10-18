@@ -50,7 +50,10 @@
                   'external-user-options': true,
                 }"
               >
-                <ExternalUserTalentBank :class="{ 'col-12': true }" />
+                <ExternalSurvey
+                  :class="{ 'col-12': true }"
+                  v-if="!surveyAnswered"
+                />
                 <div class="justify-around q-mb-sm">
                   <q-card class="row external-user-card-container q-pa-sm">
                     <ExternalUserInterviewSimulatorCard
@@ -120,10 +123,12 @@ import ExternalUserKitRealocationProCard from "./externalUser/ExternalUserKitRea
 import ExternalUserInterviewSimulatorCard from "./externalUser/ExternalUserInterviewSimulatorCard.vue";
 import ExternalUserResumeCreatorCard from "./externalUser/ExternalUserResumeCreatorCard.vue";
 import ExternalUserIndividualMentorshipCard from "./externalUser/ExternalUserIndividualMentorshipCard.vue";
-import ExternalUserTalentBank from "./externalUser/ExternalUserTalentBank.vue";
+
 import ExternalUserMostCommonQuestions from "./externalUser/ExternalUserMostCommonQuestions.vue";
 import ExternalUserLinkedinCover from "./externalUser/ExternalUserLinkedinCover.vue";
 import ExternalUserMentoringSchedule from "./externalUser/ExternalUserMentoringSchedule.vue";
+import ExternalSurvey from "./externalUser/ExternalSurvey.vue";
+
 import Schedule from "./templates/Schedule.vue";
 import UserCard from "./user/UserCard.vue";
 import axios from "axios";
@@ -157,10 +162,10 @@ export default {
     ExternalUserResumeCreatorCard,
     ExternalUserIndividualMentorshipCard,
     ExternalUserWelcomeCardMobile,
-    ExternalUserTalentBank,
     ExternalUserMostCommonQuestions,
     ExternalUserLinkedinCover,
     ExternalUserMentoringSchedule,
+    ExternalSurvey,
     UserCard,
     Schedule,
   },

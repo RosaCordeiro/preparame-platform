@@ -32,6 +32,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+      <SurveyViewDialog ref="surveyViewDialog" />
     </q-page>
   </div>
 </template>
@@ -41,12 +42,14 @@ import { saveCrud } from "./../../general/crud/utils/saveCrud.js";
 import Breadcrumbs from "../../general/Breacrumbs.vue";
 import NPSQuestionsContainer from "./NPSQuestionsContainer.vue";
 import NPSFeelingsMap from "./NPSFeelingsMap.vue";
+import SurveyViewDialog from "src/components/SurveyViewDialog.vue";
 
 export default {
   components: {
     Breadcrumbs,
     NPSQuestionsContainer,
     NPSFeelingsMap,
+    SurveyViewDialog,
   },
   methods: {
     goNPSSurvey: function () {
@@ -90,12 +93,7 @@ export default {
       if (userUpdated.status == 204) {
         localStorage.setItem("surveyAnswered", "true");
 
-        this.$router.push("/platform");
-
-        this.$q.notify({
-          type: "success",
-          message: "Pesquisa respondida com sucesso.",
-        });
+        this.$refs.surveyViewDialog.show();
       }
     },
     finishSurvey: function () {
