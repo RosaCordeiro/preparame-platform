@@ -40,24 +40,33 @@
 
         <div class="col-3">
           <div v-if="eventValid" class="column">
-            <span  class="q-ma-sm txt-center">Carregar seu currículo (mesmo que destualizado)</span>
-            <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm" @click="
+            <span class="q-ma-sm txt-center"
+              >Carregar seu currículo (mesmo que destualizado)</span
+            >
+            <q-btn
+              style="background: #FF0080; color=white"
+              label="Procurar Arquivo"
+              class="q-ma-sm"
+              @click="
                 () => {
-                  this.$refs.searchFileDialog.show();
+                  this.$refs.searchFileDialog.show(
+                    Object.entries(this.schedulesGroup)[0][1][0].id
+                  );
                 }
-              "/>
+              "
+            />
           </div>
           <div v-else-if="insertedResume" class="column">
             Curriculo inserido
-            <q-icon name="warning" size="4.4em"/>
+            <q-icon name="warning" size="4.4em" />
           </div>
           <div v-else-if="processingReport" class="column">
             Relatório sendo finalizado
-            <q-icon name="warning" size="4.4em"/>
+            <q-icon name="warning" size="4.4em" />
           </div>
           <div v-else class="column">
             Baixar aqui o relatório da sua mentoria
-            <q-icon name="warning" size="4.4em"/>
+            <q-icon name="warning" size="4.4em" />
           </div>
         </div>
 
@@ -132,6 +141,8 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <SearchFileDialog ref="searchFileDialog" />
   </q-banner>
 </template>
 
@@ -141,7 +152,7 @@ import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
   components: {
-    SearchFileDialog
+    SearchFileDialog,
   },
   data() {
     return {

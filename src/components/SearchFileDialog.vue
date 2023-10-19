@@ -1,29 +1,82 @@
 <template>
-  <div class="file-widget">
-    <div class="file-container">
-      <div class="file-container-text">
-        <div class="column">
-          <q-icon name="upload" size="4.4em"></q-icon>
-          <span class="confirm-text"> Arraste ou solte os arquivos aqui </span>
-          <q-btn style="background: #FF0080; color=white" label="Selecione um arquivo" class="q-ma-sm" @click="
-                () => {
-                }
-              "/>
+  <div class="search-file-dialog-widget" id="search-file-dialog">
+    <div class="search-file-dialog-container">
+      <div class="search-file-dialog-container-text">
+        <div class="row">
+          {{ files }}
+
+          <q-btn
+            style="background: #FF0080; color=white"
+            label="Selecione o arquivo"
+            class="q-ma-sm"
+            @click="() => {}"
+          />
         </div>
+      </div>
+
+      <div class="button__cancel">
+        <q-icon name="close" size="25px" color="grey" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { filterCrud } from "./general/crud/utils/filterCrud";
 export default {
+  data() {
+    return {
+      id: null,
+      files: [],
+    };
+  },
+  mounted() {
+    const cancelButton = document.querySelector(".button__cancel");
+
+    cancelButton.addEventListener("click", () => {
+      const confirmDialog = document.getElementById("search-file-dialog");
+
+      confirmDialog.classList.remove("show");
+      setTimeout(() => {
+        confirmDialog.classList.remove("hide");
+      }, 300);
+    });
+  },
   methods: {
+    show(id) {
+      this.id = id;
+      const confirmDialog = document.getElementById("search-file-dialog");
+
+      confirmDialog.classList.add("show");
+      setTimeout(() => {
+        confirmDialog.classList.add("hide");
+      }, 300);
+
+      const userType = localStorage.getItem("userType");
+
+      filterCrud(
+        [],
+        `specialists/schedule/${id}/schedule-files?type=${userType}`
+      ).then((response) => {
+        this.files = response;
+      });
+    },
+    confirm() {
+      window.func();
+      const confirmDialog = document.getElementById("search-file-dialog");
+
+      confirmDialog.classList.remove("show");
+      setTimeout(() => {
+        confirmDialog.classList.remove("hide");
+        this.func = null;
+      }, 300);
+    },
   },
 };
 </script>
 
-<style>
-.file-widget {
+<style scoped>
+.search-file-dialog-widget {
   position: fixed;
   top: 0;
   left: 0;
@@ -40,7 +93,7 @@ export default {
   visibility: hidden;
 }
 
-.file-widget.show {
+.search-file-dialog-widget.show {
   opacity: 1;
 }
 
@@ -48,21 +101,22 @@ export default {
   visibility: visible;
 }
 
-.file-container {
+.search-file-dialog-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  width: 400px;
+  width: 600px;
   margin: 50px;
   border-radius: 10px;
   padding: 10px;
   box-shadow: 0px 0px 4px 1px rgba(217, 217, 217, 0.3);
   background: #ffffff;
   border: 15px solid #1a27b7;
+  position: relative;
 }
 
-.confirm-schedule-title {
+.search-file-title {
   text-align: center;
   border-radius: 15px;
   background-color: yellow;
@@ -72,11 +126,11 @@ export default {
   color: #000000;
 }
 
-.file-container b {
+.search-file-dialog-container b {
   font-weight: 700;
 }
 
-.file-container-text {
+.search-file-dialog-container-text {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -95,14 +149,11 @@ export default {
 
 .button__cancel,
 .button__confirm {
-  background-color: #f54690;
-  border-radius: 10px;
   border: none;
-  padding: 10px 20px;
-  font-size: 30px;
-  font-weight: 700;
   cursor: pointer;
-  flex: 1 0 200px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .button__confirm {
@@ -113,15 +164,11 @@ export default {
   font-size: 30px;
   font-weight: 700;
   text-align: center;
-
   color: #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 @media (max-width: 768px) {
-  .file-container {
+  .search-file-dialog-container {
     width: 90%;
     margin: 0;
   }
@@ -137,11 +184,11 @@ export default {
     font-size: 15px;
   }
 
-  .confirm-schedule-title {
+  .search-file-title {
     font-size: 15px;
   }
 
-  .file-container-text {
+  .search-file-dialog-container-text {
     font-size: 15px;
     padding: 0px;
   }
@@ -149,9 +196,5 @@ export default {
   .row {
     flex-direction: column;
   }
-}
-
-.file-container-text > img {
-  object-fit: contain;
 }
 </style>
