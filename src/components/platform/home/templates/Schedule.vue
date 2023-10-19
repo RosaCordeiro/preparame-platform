@@ -42,7 +42,10 @@
 
 <script>
 import { filterCrud } from "../../../general/crud/utils/filterCrud";
-import { formatDateToStringMasked } from "../../../../utils/formatDate.js";
+import {
+  formatDateToStringMasked,
+  formatDateToStringWithHour,
+} from "../../../../utils/formatDate.js";
 
 export default {
   data() {
@@ -116,7 +119,7 @@ export default {
 
         let groupKey = `${schedule["productId"]}${schedule["userId"]}${
           schedule["specialistId"]
-        }${formatDateToStringMasked(
+        }${formatDateToStringWithHour(
           new Date(schedule["dateSchedule"]),
           "yyyy-mm-dd"
         )}`;

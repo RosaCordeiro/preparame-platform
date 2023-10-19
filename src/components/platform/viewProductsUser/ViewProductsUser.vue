@@ -5,6 +5,7 @@
       :title="title"
       :tables="tables"
       :registerType="registerType"
+      :showActionButtons="false"
     >
       <div v-if="products.length > 0">
         <q-table
@@ -20,17 +21,25 @@
           title-class="text-white bg-secondary crud-query-title"
           rows-per-page-label="Linhas por página: "
         >
-          <template v-slot:body-cell-actions="props">
-            <q-td auto-width :props="props">
-              <q-btn-group>
-                <q-btn
-                  color="negative"
-                  icon="mdi-delete"
-                  :disable="props.row.availableQuantity === 0"
-                  @click="deleteProduct(props.row)"
-                ></q-btn>
-              </q-btn-group>
-            </q-td>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="product" :props="props">{{ props.row.name }}</q-td>
+              <q-td key="dateSchedule" :props="props">{{
+                props.row.schedule === null
+                  ? "Não Agendado"
+                  : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+              }}</q-td>
+              <q-td key="specialist" :props="props">
+                <img
+                  v-if="props.row.specialist"
+                  :src="props.row.specialist.image"
+                  height="50"
+                  width="50"
+                  style="border-radius: 50%"
+                />
+                <div v-else>Não Atribuído</div>
+              </q-td>
+            </q-tr>
           </template>
         </q-table>
       </div>
@@ -42,10 +51,11 @@
 import CrudRegister from "../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "../../general/crud/utils/saveCrud.js";
-import { showError, showSucess } from "../../../global.js";
+import { showError } from "../../../global.js";
 import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
+import { formatDateToStringWithHour } from "src/utils/formatDate";
 
 export default {
   components: {
@@ -63,7 +73,7 @@ export default {
             user: {
               label: "Usuário",
               name: "userId",
-              size: "5",
+              size: "12",
               row: 1,
               col: 1,
               model: "",
@@ -83,7 +93,7 @@ export default {
               col: 2,
               model: "",
               type: "DialogSelect",
-              visible: true,
+              visible: false,
               options: {
                 table: "products",
                 value: "id",
@@ -98,41 +108,45 @@ export default {
               col: 3,
               model: "",
               type: "Integer",
-              visible: true,
+              visible: false,
             },
           },
         },
       },
       breadcrumbs: [
         {
-          title: "Adicionar Produtos Para Usuários",
+          title: "Visualizar Produtos do Usuário",
           to: "",
         },
       ],
       title: {
-        mainTable: "Adicionar Produtos Para Usuários",
+        mainTable: "Visualizar Produtos do Usuário",
       },
       products: [],
       columns: [
         {
-          name: "name",
+          name: "product",
           label: "Produto",
-          field: "name",
+          field: "product",
           align: "left",
           sortable: true,
         },
-        /* availableQuantity */
+
+        /* dateSchedule */
         {
-          name: "availableQuantity",
-          label: "Quantidade",
-          field: "availableQuantity",
+          name: "dateSchedule",
+          label: "Data Agendamento",
+          field: "dateSchedule",
+          align: "left",
+          sortable: true,
         },
 
         {
-          name: "actions",
-          label: "Ações",
-          field: "actions",
-          align: "center",
+          name: "specialist",
+          label: "Especialista",
+          field: "specialist",
+          align: "left",
+          sortable: true,
         },
       ],
       filters: [
@@ -153,11 +167,10 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    formatDateToStringWithHour,
     save: async function (data) {
       try {
         await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);
-        showSucess("Salvo com sucesso.");
-
         this.listProducts();
       } catch (err) {
         showError(err);
@@ -187,9 +200,11 @@ export default {
         return;
       }
 
-      filterCrud(newFilter, "products/listProductByUser").then((res) => {
-        this.products = res;
-      });
+      filterCrud(newFilter, "products/listProductByUserWithSpecialist").then(
+        (res) => {
+          this.products = res;
+        }
+      );
     },
   },
   mounted() {
