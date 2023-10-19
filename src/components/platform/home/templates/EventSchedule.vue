@@ -41,7 +41,11 @@
         <div class="col-3">
           <div v-if="eventValid" class="column">
             <span  class="q-ma-sm txt-center">Carregar seu currículo (mesmo que destualizado)</span>
-            <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm"/>
+            <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm" @click="
+                () => {
+                  this.$refs.searchFileDialog.show();
+                }
+              "/>
           </div>
           <div v-else-if="insertedResume" class="column">
             Curriculo inserido
@@ -133,8 +137,12 @@
 
 <script>
 import { saveCrud } from "./../../../general/crud/utils/saveCrud";
+import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
+  components: {
+    SearchFileDialog
+  },
   data() {
     return {
       scheduleDay: "",
