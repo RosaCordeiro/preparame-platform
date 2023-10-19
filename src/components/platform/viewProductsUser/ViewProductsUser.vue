@@ -5,6 +5,7 @@
       :title="title"
       :tables="tables"
       :registerType="registerType"
+      :showActionButtons="false"
     >
       <div v-if="products.length > 0">
         <q-table
@@ -38,33 +39,8 @@
                 />
                 <div v-else>Não Atribuído</div>
               </q-td>
-              <q-td key="availableQuantity" :props="props">
-                {{ props.row.availableQuantity }}
-              </q-td>
-              <q-td key="actions" :props="props">
-                <q-btn-group>
-                  <q-btn
-                    color="negative"
-                    icon="mdi-delete"
-                    :disable="props.row.availableQuantity === 0"
-                    @click="deleteProduct(props.row)"
-                  ></q-btn>
-                </q-btn-group>
-              </q-td>
             </q-tr>
           </template>
-          <!-- <template v-slot:body-cell-actions="props">
-            <q-td auto-width :props="props">
-              <q-btn-group>
-                <q-btn
-                  color="negative"
-                  icon="mdi-delete"
-                  :disable="props.row.availableQuantity === 0"
-                  @click="deleteProduct(props.row)"
-                ></q-btn>
-              </q-btn-group>
-            </q-td>
-          </template> -->
         </q-table>
       </div>
     </CrudRegister>
@@ -75,7 +51,7 @@
 import CrudRegister from "../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "../../general/crud/utils/saveCrud.js";
-import { confirmDialog, showError, showSucess } from "../../../global.js";
+import { showError } from "../../../global.js";
 import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
@@ -97,7 +73,7 @@ export default {
             user: {
               label: "Usuário",
               name: "userId",
-              size: "5",
+              size: "12",
               row: 1,
               col: 1,
               model: "",
@@ -117,7 +93,7 @@ export default {
               col: 2,
               model: "",
               type: "DialogSelect",
-              visible: true,
+              visible: false,
               options: {
                 table: "products",
                 value: "id",
@@ -132,19 +108,19 @@ export default {
               col: 3,
               model: "",
               type: "Integer",
-              visible: true,
+              visible: false,
             },
           },
         },
       },
       breadcrumbs: [
         {
-          title: "Adicionar Produtos Para Usuários",
+          title: "Visualizar Produtos do Usuário",
           to: "",
         },
       ],
       title: {
-        mainTable: "Adicionar Produtos Para Usuários",
+        mainTable: "Visualizar Produtos do Usuário",
       },
       products: [],
       columns: [
@@ -172,20 +148,6 @@ export default {
           align: "left",
           sortable: true,
         },
-        /* availableQuantity */
-        {
-          name: "availableQuantity",
-          label: "Quantidade",
-          field: "availableQuantity",
-          align: "left",
-          sortable: true,
-        },
-        {
-          name: "actions",
-          label: "Ações",
-          field: "actions",
-          align: "center",
-        },
       ],
       filters: [
         {
@@ -209,8 +171,6 @@ export default {
     save: async function (data) {
       try {
         await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);
-        showSucess("Salvo com sucesso.");
-
         this.listProducts();
       } catch (err) {
         showError(err);
@@ -219,17 +179,12 @@ export default {
       }
     },
     deleteProduct: async function (data) {
-      confirmDialog(
-        "Atenção",
-        "Deseja realmente remover este produto?",
-        async () => {
-          await removeCrud("", `products/${data.id}/users`);
-          this.listProducts();
+      removeCrud("", `products/${data.id}/users`).then((data) => {
+        console.log(data);
+        this.listProducts();
+      });
 
-          showSucess("Removido com sucesso.");
-          this.listProducts();
-        }
-      );
+      //this.listProducts();
     },
     listProducts: async function () {
       console.log(this.filters);

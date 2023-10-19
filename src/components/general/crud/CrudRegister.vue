@@ -16,7 +16,7 @@
           :removeAction="hasAction"
           :title="title.childTable"
         />
-        <CrudRegisterButtons />
+        <CrudRegisterButtons v-if="showActionButtons === undefined" />
         <slot></slot>
       </div>
     </q-page>
@@ -40,7 +40,14 @@ export default {
     CrudRegisterButtons,
     Breadcrumbs,
   },
-  props: ["title", "breadcrumbs", "registerType", "tables", "removeAction"],
+  props: [
+    "title",
+    "breadcrumbs",
+    "registerType",
+    "tables",
+    "removeAction",
+    "showActionButtons",
+  ],
   data() {
     return {
       forms: {},

@@ -36,7 +36,7 @@ export default {
               col: 1,
               model: "",
               type: "Input",
-              visible: false
+              visible: false,
             },
             name: {
               label: "Nome",
@@ -46,8 +46,9 @@ export default {
               col: 1,
               model: "",
               type: "Input",
-              visible: true
+              visible: true,
             },
+
             shortName: {
               label: "Nome Resumido",
               name: "shortName",
@@ -56,7 +57,7 @@ export default {
               col: 2,
               model: "",
               type: "Input",
-              visible: true
+              visible: true,
             },
             status: {
               label: "Situação",
@@ -76,7 +77,7 @@ export default {
                   value: "INACTIVE",
                 },
               ],
-              visible: true
+              visible: true,
             },
             type: {
               label: "Tipo",
@@ -96,7 +97,7 @@ export default {
                   value: "NON_SCHEDULED",
                 },
               ],
-              visible: true
+              visible: true,
             },
             bestSeller: {
               label: "Mais Vendido",
@@ -116,7 +117,7 @@ export default {
                   value: "NORMAL",
                 },
               ],
-              visible: true
+              visible: true,
             },
             price: {
               label: "Preço",
@@ -126,7 +127,7 @@ export default {
               col: 4,
               model: "",
               type: "Decimal",
-              visible: true
+              visible: true,
             },
             duration: {
               label: "Duração",
@@ -136,7 +137,17 @@ export default {
               col: 1,
               model: "",
               type: "Integer",
-              visible: true
+              visible: true,
+            },
+            slug: {
+              label: "Slug",
+              name: "slug",
+              size: "12",
+              row: 1,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
             },
           },
         },
@@ -231,7 +242,7 @@ export default {
             ":id",
             productCreated.data.id
           );
-          
+
           data.childTable.forEach(async (values) => {
             await saveCrud(this.tables.childTable.apiUrl, values);
           });

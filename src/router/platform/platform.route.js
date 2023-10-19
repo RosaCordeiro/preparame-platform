@@ -32,18 +32,6 @@ const platformRoutes = [
         },
       },
     ],
-    beforeEnter: (to, from, next) => {
-      if (localStorage.getItem("token")) {
-        next();
-      } else {
-        next({
-          path: "/login",
-          query: {
-            redirect: "pesquisa",
-          },
-        });
-      }
-    },
   },
   {
     path: "/interviewSimulatorPresentation",

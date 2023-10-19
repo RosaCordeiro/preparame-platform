@@ -25,8 +25,9 @@ export default {
 
       const loginInterval = setInterval(() => {
         if (loginControl.isLogged && loginControl.loggedFrom == "LOGIN") {
-          if (this.redirectToSurvey || this.$route.query.redirect) {
-            this.$router.push("/survey");
+          if (sessionStorage.getItem("redirect") != null) {
+            this.$router.push(sessionStorage.getItem("redirect"));
+            sessionStorage.removeItem("redirect");
           } else {
             this.$router.push("/platform");
           }
@@ -37,12 +38,6 @@ export default {
     },
   },
   created() {
-    const queryString = window.location.hash;
-
-    if (queryString.indexOf("pesquisa") > 0) {
-      this.redirectToSurvey = true;
-    }
-
     this.requestLogin();
   },
 };

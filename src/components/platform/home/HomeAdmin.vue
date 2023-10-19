@@ -62,9 +62,7 @@
               class="column btn"
               @click="
                 () => {
-                  this.$refs.confirmScheduleDialog.show(() => {
-                    console.log('testeando asdasdas');
-                  });
+                  this.$refs.deuCertoDialog.show();
                 }
               "
             />
@@ -99,21 +97,24 @@
       </div>
 
       <ConfirmScheduleDialog ref="confirmScheduleDialog" />
+      <DeuCertoDialog ref="deuCertoDialog" />
     </q-page>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { baseApiUrl, showError } from "../../../global";
+import { baseApiUrl, showDeuCerto, showError } from "../../../global";
 import { downloadFile } from "src/utils/downloadFile";
 import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
 import ConfirmScheduleDialog from "src/components/ConfirmScheduleDialog.vue";
+import DeuCertoDialog from "src/components/DeuCertoDialog.vue";
 
 export default {
   components: {
     DashBoardAnswers,
     ConfirmScheduleDialog,
+    DeuCertoDialog,
   },
   data() {
     return {
@@ -125,6 +126,7 @@ export default {
     };
   },
   methods: {
+    showDeuCerto,
     async generateReport() {
       const params = {};
 

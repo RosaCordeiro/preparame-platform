@@ -73,7 +73,7 @@ export default {
       specialist,
       product
     ) {
-      this.confirmSchedule = true;
+      //this.confirmSchedule = true;
       this.daySchedule = daySchedule;
       this.hourSchedules = hourSchedules;
       this.specialist = specialist;
@@ -98,6 +98,8 @@ export default {
         hour: "numeric",
         minute: "numeric",
       })}.`;
+
+      this.scheduleConfirmation();
     },
     scheduleConfirmation: async function () {
       this.$refs.confirmScheduleDialog.show(async () => {
