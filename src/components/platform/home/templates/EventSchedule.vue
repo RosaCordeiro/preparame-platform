@@ -17,9 +17,10 @@
       <div class="col event-schedule-day-info text-center text-h5 col-2">
         <div class="event-schedule-day">{{ scheduleDay }}</div>
         <div class="event-schedule-day text-caption">{{ month }}</div>
+        <div class="text-subtitle1 text-center">{{ hour }}</div>
       </div>
       <div class="row items-start items-center event-schedule-info col-10">
-        <div class="event-schedule-product col items-center col-6">
+        <div class="event-schedule-product col items-center col-4">
           <div class="text-subtitle1">{{ productName }}</div>
           <div class="text-caption text-weight-light">
             {{
@@ -36,8 +37,24 @@
             }}
           </div>
         </div>
-        <div class="event-schedule-hour col-1">
-          <div class="text-subtitle1 text-center">{{ hour }}</div>
+
+        <div class="col-3">
+          <div v-if="eventValid" class="column">
+            <span  class="q-ma-sm txt-center">Carregar seu currículo (mesmo que destualizado)</span>
+            <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm"/>
+          </div>
+          <div v-else-if="insertedResume" class="column">
+            Curriculo inserido
+            <q-icon name="warning" size="4.4em"/>
+          </div>
+          <div v-else-if="processingReport" class="column">
+            Relatório sendo finalizado
+            <q-icon name="warning" size="4.4em"/>
+          </div>
+          <div v-else class="column">
+            Baixar aqui o relatório da sua mentoria
+            <q-icon name="warning" size="4.4em"/>
+          </div>
         </div>
 
         <div class="event-schedule-hour col-2">
@@ -132,6 +149,9 @@ export default {
       confirm: false,
       eventSchedule: {},
       rate: 0,
+      missingResume: false,
+      insertedResume: false,
+      processingReport: false,
     };
   },
   props: ["schedulesGroup", "userType"],
@@ -271,5 +291,9 @@ export default {
 
 .bg-prepara-me-green {
   background-color: #15aa7c;
+}
+
+.txt-center {
+  text-align: center;
 }
 </style>
