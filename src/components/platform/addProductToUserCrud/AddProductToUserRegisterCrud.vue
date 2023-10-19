@@ -20,7 +20,40 @@
           title-class="text-white bg-secondary crud-query-title"
           rows-per-page-label="Linhas por página: "
         >
-          <template v-slot:body-cell-actions="props">
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="product" :props="props">{{ props.row.name }}</q-td>
+              <q-td key="dateSchedule" :props="props">{{
+                props.row.schedule === null
+                  ? "Não Agendado"
+                  : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+              }}</q-td>
+              <q-td key="specialist" :props="props">
+                <img
+                  v-if="props.row.specialist"
+                  :src="props.row.specialist.image"
+                  height="50"
+                  width="50"
+                  style="border-radius: 50%"
+                />
+                <div v-else>Não Atribuído</div>
+              </q-td>
+              <q-td key="availableQuantity" :props="props">
+                {{ props.row.availableQuantity }}
+              </q-td>
+              <q-td key="actions" :props="props">
+                <q-btn-group>
+                  <q-btn
+                    color="negative"
+                    icon="mdi-delete"
+                    :disable="props.row.availableQuantity === 0"
+                    @click="deleteProduct(props.row)"
+                  ></q-btn>
+                </q-btn-group>
+              </q-td>
+            </q-tr>
+          </template>
+          <!-- <template v-slot:body-cell-actions="props">
             <q-td auto-width :props="props">
               <q-btn-group>
                 <q-btn
@@ -31,7 +64,7 @@
                 ></q-btn>
               </q-btn-group>
             </q-td>
-          </template>
+          </template> -->
         </q-table>
       </div>
     </CrudRegister>
@@ -42,10 +75,11 @@
 import CrudRegister from "../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "../../general/crud/utils/saveCrud.js";
-import { showError, showSucess } from "../../../global.js";
+import { confirmDialog, showError, showSucess } from "../../../global.js";
 import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
+import { formatDateToStringWithHour } from "src/utils/formatDate";
 
 export default {
   components: {
@@ -115,9 +149,26 @@ export default {
       products: [],
       columns: [
         {
-          name: "name",
+          name: "product",
           label: "Produto",
-          field: "name",
+          field: "product",
+          align: "left",
+          sortable: true,
+        },
+
+        /* dateSchedule */
+        {
+          name: "dateSchedule",
+          label: "Data Agendamento",
+          field: "dateSchedule",
+          align: "left",
+          sortable: true,
+        },
+
+        {
+          name: "specialist",
+          label: "Especialista",
+          field: "specialist",
           align: "left",
           sortable: true,
         },
@@ -126,8 +177,9 @@ export default {
           name: "availableQuantity",
           label: "Quantidade",
           field: "availableQuantity",
+          align: "left",
+          sortable: true,
         },
-
         {
           name: "actions",
           label: "Ações",
@@ -153,6 +205,7 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    formatDateToStringWithHour,
     save: async function (data) {
       try {
         await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);
@@ -166,12 +219,17 @@ export default {
       }
     },
     deleteProduct: async function (data) {
-      removeCrud("", `products/${data.id}/users`).then((data) => {
-        console.log(data);
-        this.listProducts();
-      });
+      confirmDialog(
+        "Atenção",
+        "Deseja realmente remover este produto?",
+        async () => {
+          await removeCrud("", `products/${data.id}/users`);
+          this.listProducts();
 
-      //this.listProducts();
+          showSucess("Removido com sucesso.");
+          this.listProducts();
+        }
+      );
     },
     listProducts: async function () {
       console.log(this.filters);
@@ -187,9 +245,11 @@ export default {
         return;
       }
 
-      filterCrud(newFilter, "products/listProductByUser").then((res) => {
-        this.products = res;
-      });
+      filterCrud(newFilter, "products/listProductByUserWithSpecialist").then(
+        (res) => {
+          this.products = res;
+        }
+      );
     },
   },
   mounted() {
