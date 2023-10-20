@@ -202,7 +202,7 @@ export default {
           name: "fileStatus",
           label: "Status Arquivo",
           field: "fileStatus",
-          align: "left",
+          align: "center",
           sortable: true,
         },
         {
@@ -231,8 +231,7 @@ export default {
   },
   methods: {
     viewFileDialog: function (product) {
-      console.log(product);
-      this.$refs.viewFileDialog.show(product.id);
+      this.$refs.viewFileDialog.show(product.id, "ALL");
     },
     statusFiles(product) {
       if (product.schedule === null && product.specialist === null) {

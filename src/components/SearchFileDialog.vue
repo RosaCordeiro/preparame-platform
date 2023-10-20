@@ -17,7 +17,7 @@
         <input
           class="input__file"
           type="file"
-          accept="image/*"
+          accept=".pdf, .docx, image/*"
           @change="changeFile"
           multiple
         />
@@ -48,6 +48,19 @@ export default {
       files: [],
     };
   },
+  watch: {
+    files: {
+      handler() {
+        this.$parent.filesCountUser = this.files.filter(
+          (f) => f.fileType === "USER"
+        ).length;
+        this.$parent.filesCountSpecialist = this.files.filter(
+          (f) => f.fileType === "SPECIALIST"
+        ).length;
+      },
+      deep: true,
+    },
+  },
   mounted() {
     const cancelButton = document.querySelector(".button__cancel");
 
@@ -68,8 +81,6 @@ export default {
       }
 
       const formData = new FormData();
-      /* specialistScheduleId, file */
-
       Object.values(e.target.files).forEach((f) => {
         formData.append("file", f);
       });
@@ -82,26 +93,6 @@ export default {
           this.files = [...this.files, ...response.data];
         }
       );
-
-      /*  console.log(e.target.files);
-
-      this.files = [
-        ...this.files.map((f) => {
-          return {
-            ...f,
-            typeFile: "link",
-          };
-        }),
-        ...Object.values(e.target.files).map((f) => {
-          console.log(f);
-
-          return {
-            fileName: f.name,
-            fileLink: URL.createObjectURL(f),
-            typeFile: "file",
-          };
-        }),
-      ]; */
     },
     removeFile(file) {
       confirmDialog(

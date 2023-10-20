@@ -9,7 +9,7 @@
           <p @click="openUrl(file.fileLink)">
             {{ file.fileName }}
           </p>
-          <span v-if="userTypeStorage === 'ADMIN'">
+          <span v-if="userTypeStorage === 'ALL'">
             {{ file.fileType === "USER" ? "Usuário" : "Especialista" }}
           </span>
         </div>
@@ -30,15 +30,9 @@ export default {
     return {
       id: null,
       files: [],
-      userTypeStorage: null,
+      userTypeStorage: "",
     };
   },
-  mounted() {
-    this.userTypeStorage = localStorage.getItem("userType");
-
-    console.log(this.userTypeStorage);
-  },
-
   methods: {
     close() {
       const confirmDialog = document.getElementById("view-file-dialog");
@@ -53,10 +47,9 @@ export default {
     openUrl(url) {
       window.open(url, "_blank");
     },
-    async show(id) {
-      console.log(id);
-
+    async show(id, userTypeStorage) {
       this.id = id;
+      this.userTypeStorage = userTypeStorage;
       const confirmDialog = document.getElementById("view-file-dialog");
 
       confirmDialog.classList.add("show");
@@ -66,8 +59,8 @@ export default {
 
       let userType = "";
 
-      if (this.userTypeStorage === "SPECIALIST") {
-        userType = "?type=USER";
+      if (userTypeStorage === "USER" || userTypeStorage === "SPECIALIST") {
+        userType = "?type=" + userTypeStorage;
       }
 
       const response = await filterCrud(

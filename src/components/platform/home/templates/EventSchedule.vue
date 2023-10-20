@@ -12,6 +12,9 @@
         'bg-prepara-me-green':
           Object.entries(this.schedulesGroup)[0][1][0].type === 'group' &&
           eventValid,
+        'bg-prepara-me-pink': !eventValid && filesCountSpecialist === 0,
+        'bg-prepara-me-green-specialist':
+          !eventValid && filesCountSpecialist >= 1,
       }"
     >
       <div class="row items-start items-center event-schedule">
@@ -40,21 +43,8 @@
             </div>
           </div>
 
-          <div class="col-3">
-            <q-btn
-              v-if="userType === 'SPECIALIST'"
-              style="background: #FF0080; color=white"
-              label="Visualizar Arquivos Usuário"
-              class="q-ma-sm"
-              @click="openFileDialog()"
-            />
-            <q-btn
-              style="background: #FF0080; color=white"
-              label="Procurar Arquivo"
-              class="q-ma-sm"
-              @click="openSearchFileDialog()"
-            />
-            <div v-if="filesCountUser == 0" class="column">
+          <div class="col-3" v-if="userType === 'USER'">
+            <div v-if="eventValid && filesCountUser == 0" class="column">
               <span class="q-ma-sm txt-center"
                 >Carregar seu currículo (mesmo que destualizado)</span
               >
@@ -65,9 +55,14 @@
                 @click="openSearchFileDialog()"
               />
             </div>
-            <div v-else-if="filesCountUser >= 1" class="column">
-              Curriculo inserido
-              <q-icon name="warning" size="4.4em" />
+            <div v-else-if="eventValid && filesCountUser >= 1" class="column">
+              <span class="q-ma-sm txt-center">Curriculo inserido</span>
+              <q-btn
+                style="background: #FF0080; color=white"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
             <div
               v-else-if="!eventValid && filesCountSpecialist === 0"
@@ -81,7 +76,54 @@
               class="column"
             >
               Baixar aqui o relatório da sua mentoria
-              <q-icon name="warning" size="4.4em" />
+
+              <q-btn
+                style="background: #FF0080; color=white"
+                label="Visualizar Relatório"
+                class="q-ma-sm"
+                @click="openFileDialog('SPECIALIST')"
+              />
+            </div>
+          </div>
+          <div class="col-3" v-else>
+            <div v-if="eventValid && filesCountUser == 0" class="column">
+              <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
+            </div>
+
+            <div v-else-if="eventValid && filesCountUser >= 1" class="column">
+              <q-btn
+                v-if="userType === 'SPECIALIST'"
+                style="background: #FF0080; color=white"
+                label="Visualizar Arquivos Usuário"
+                class="q-ma-sm"
+                @click="openFileDialog('USER')"
+              />
+            </div>
+
+            <div
+              v-else-if="!eventValid && filesCountSpecialist === 0"
+              class="column"
+            >
+              <span class="q-ma-sm txt-center">Relatório Pendente</span>
+              <q-btn
+                style="background: #000; color: #fff"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
+            </div>
+
+            <div
+              v-else-if="!eventValid && filesCountSpecialist > 0"
+              class="column"
+            >
+              <span class="q-ma-sm txt-center">Relatório Carregado</span>
+              <q-btn
+                style="background: #000; color: #fff"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
           </div>
 
@@ -195,12 +237,13 @@ export default {
   },
   props: ["schedulesGroup", "userType"],
   methods: {
-    openFileDialog() {
+    openFileDialog(type) {
       this.viewDialog = true;
 
       setTimeout(() => {
         this.$refs.viewFileDialog.show(
-          Object.entries(this.schedulesGroup)[0][1][0].id
+          Object.entries(this.schedulesGroup)[0][1][0].id,
+          type
         );
       }, 10);
     },
@@ -356,5 +399,13 @@ export default {
 
 .txt-center {
   text-align: center;
+}
+
+.bg-prepara-me-pink {
+  background-color: #ff0080 !important;
+}
+
+.bg-prepara-me-green-specialist {
+  background-color: #15aa7c !important;
 }
 </style>
