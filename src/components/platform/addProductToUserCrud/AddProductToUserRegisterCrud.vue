@@ -34,12 +34,15 @@
                   :src="props.row.specialist.image"
                   height="50"
                   width="50"
-                  style="border-radius: 50%"
+                  style="border-radius: 50%; object-fit: cover"
                 />
                 <div v-else>Não Atribuído</div>
               </q-td>
               <q-td key="availableQuantity" :props="props">
                 {{ props.row.availableQuantity }}
+              </q-td>
+              <q-td key="fileStatus" :props="props">
+                {{ statusFiles(props.row) }}
               </q-td>
               <q-td key="actions" :props="props">
                 <q-btn-group>
@@ -181,6 +184,13 @@ export default {
           sortable: true,
         },
         {
+          name: "fileStatus",
+          label: "Status Arquivo",
+          field: "fileStatus",
+          align: "left",
+          sortable: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           field: "actions",
@@ -205,6 +215,46 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    statusFiles(product) {
+      if (product.schedule === null && product.specialist === null) {
+        return "N/A";
+      }
+
+      const isBefore = new Date(product.schedule.dateSchedule) < new Date();
+
+      if (isBefore) {
+        if (product.countfilesspecialist === 0) {
+          return "Relatório Não Enviado";
+        }
+
+        if (product.countfilesspecialist > 0) {
+          return "Relatório Enviado";
+        }
+      }
+
+      const productsName = [
+        "Reconstrução de Currículo Português",
+        "Reconstrução de Curriculo Português + Inglês",
+        "Reconstrução de Curriculo + Relatório Perfil Link",
+        "Reconstrução de Currículo em Ingles",
+      ];
+
+      console.log(productsName.includes(product.name));
+
+      if (!isBefore) {
+        if (productsName.includes(product.name)) {
+          if (product.countfilesuser === 0) {
+            return "Currículo Não Enviado";
+          }
+
+          if (product.countfilesuser > 0) {
+            return "Currículo Enviado";
+          }
+        }
+
+        return "N/A";
+      }
+    },
     formatDateToStringWithHour,
     save: async function (data) {
       try {

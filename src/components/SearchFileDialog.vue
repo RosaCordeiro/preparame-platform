@@ -2,28 +2,49 @@
   <div class="search-file-dialog-widget" id="search-file-dialog">
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
-        <div class="row">
-          {{ files }}
+        <div class="file-container" v-for="(file, index) in files" :key="index">
+          <p @click="openUrl(file.fileLink)">
+            {{ file.fileName }}
+          </p>
 
-          <q-btn
-            style="background: #FF0080; color=white"
-            label="Selecione o arquivo"
-            class="q-ma-sm"
-            @click="() => {}"
-          />
+          <q-btn flat icon="close" color="white" @click="removeFile(file)" />
         </div>
+
+        <!--  <q-btn
+          style="background: #FF0080; color=white"
+          label="Selecione o arquivo"
+          class="q-ma-sm"
+          @click="() => {}"
+        /> -->
+
+        <input
+          class="input__file"
+          type="file"
+          accept="image/*"
+          @change="changeFile"
+          multiple
+        />
       </div>
 
       <div class="button__cancel">
         <q-icon name="close" size="25px" color="grey" />
       </div>
     </div>
+
+    <DeuCertoDialog ref="deuCertoDialog" />
   </div>
 </template>
 
 <script>
+import { confirmDialog, showError } from "src/global";
 import { filterCrud } from "./general/crud/utils/filterCrud";
+import { saveCrud } from "./general/crud/utils/saveCrud";
+import DeuCertoDialog from "./DeuCertoDialog.vue";
+
 export default {
+  components: {
+    DeuCertoDialog,
+  },
   data() {
     return {
       id: null,
@@ -43,6 +64,70 @@ export default {
     });
   },
   methods: {
+    async changeFile(e) {
+      if (this.files.length + e.target.files.length > 3) {
+        showError("Você só pode enviar até 3 arquivos");
+        return;
+      }
+
+      const formData = new FormData();
+      /* specialistScheduleId, file */
+
+      Object.values(e.target.files).forEach((f) => {
+        formData.append("file", f);
+      });
+
+      formData.append("specialistScheduleId", this.id);
+
+      await saveCrud(`specialists/schedule-files`, formData, "POST").then(
+        (response) => {
+          this.$refs.deuCertoDialog.show();
+          this.files = [...this.files, ...response.data];
+        }
+      );
+
+      /*  console.log(e.target.files);
+
+      this.files = [
+        ...this.files.map((f) => {
+          return {
+            ...f,
+            typeFile: "link",
+          };
+        }),
+        ...Object.values(e.target.files).map((f) => {
+          console.log(f);
+
+          return {
+            fileName: f.name,
+            fileLink: URL.createObjectURL(f),
+            typeFile: "file",
+          };
+        }),
+      ]; */
+    },
+    removeFile(file) {
+      confirmDialog(
+        "Atenção",
+        "Deseja realmente excluir o arquivo?",
+        async () => {
+          const response = await saveCrud(
+            `specialists/schedule/${file.id}/schedule-files-delete`,
+            {},
+            "DELETE"
+          );
+
+          if (response) {
+            const index = this.files.indexOf(file);
+
+            this.files.splice(index, 1);
+          }
+        }
+      );
+    },
+    openUrl(url) {
+      window.open(url, "_blank");
+    },
     show(id) {
       this.id = id;
       const confirmDialog = document.getElementById("search-file-dialog");
@@ -134,9 +219,10 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
-  padding: 10px 20px;
+  padding: 0 40px;
+  margin-top: 30px;
 }
 
 .row {
@@ -165,6 +251,23 @@ export default {
   font-weight: 700;
   text-align: center;
   color: #000000;
+}
+
+.file-container {
+  background-color: grey;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-container p {
+  color: white;
+
+  font-weight: 700;
+  margin: 0;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -196,5 +299,20 @@ export default {
   .row {
     flex-direction: column;
   }
+}
+
+input[type="file"] {
+  width: 150px !important;
+}
+
+input[type="file"]::file-selector-button {
+  border: none;
+  background: rgba(255, 70, 144, 1);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  width: 150px !important;
 }
 </style>

@@ -55,17 +55,6 @@
               class="column btn"
               @click="downloadAnswers"
             />
-
-            <q-btn
-              style="background: #667997; color: black"
-              label="Open"
-              class="column btn"
-              @click="
-                () => {
-                  this.$refs.deuCertoDialog.show();
-                }
-              "
-            />
           </div>
           <div class="text">Filtro</div>
           <div class="column">
@@ -97,7 +86,6 @@
       </div>
 
       <ConfirmScheduleDialog ref="confirmScheduleDialog" />
-      <DeuCertoDialog ref="deuCertoDialog" />
     </q-page>
   </div>
 </template>
@@ -108,13 +96,11 @@ import { baseApiUrl, showDeuCerto, showError } from "../../../global";
 import { downloadFile } from "src/utils/downloadFile";
 import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
 import ConfirmScheduleDialog from "src/components/ConfirmScheduleDialog.vue";
-import DeuCertoDialog from "src/components/DeuCertoDialog.vue";
 
 export default {
   components: {
     DashBoardAnswers,
     ConfirmScheduleDialog,
-    DeuCertoDialog,
   },
   data() {
     return {
