@@ -118,6 +118,8 @@ export default {
         if (hour.dateSchedule) {
           const diffHours = Math.abs(new Date() - hour.dateSchedule) / 36e5;
 
+          console.log(diffHours);
+
           if (diffHours < 3) {
             hour.available = false;
           }
