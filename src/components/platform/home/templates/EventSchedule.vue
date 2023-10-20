@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-3">
-          <div v-if="eventValid" class="column">
+          <div v-if="filesCountUser == 0" class="column">
             <span class="q-ma-sm txt-center"
               >Carregar seu currículo (mesmo que destualizado)</span
             >
@@ -56,15 +56,15 @@
               "
             />
           </div>
-          <div v-else-if="insertedResume" class="column">
+          <div v-else-if="filesCountUser >= 1" class="column">
             Curriculo inserido
             <q-icon name="warning" size="4.4em" />
           </div>
-          <div v-else-if="processingReport" class="column">
+          <div v-else-if="!eventValid && filesCountSpecialist === 0" class="column">
             Relatório sendo finalizado
             <q-icon name="warning" size="4.4em" />
           </div>
-          <div v-else class="column">
+          <div v-else-if="!eventValid && filesCountSpecialist >= 1" class="column">
             Baixar aqui o relatório da sua mentoria
             <q-icon name="warning" size="4.4em" />
           </div>
@@ -168,9 +168,8 @@ export default {
       confirm: false,
       eventSchedule: {},
       rate: 0,
-      missingResume: false,
-      insertedResume: false,
-      processingReport: false,
+      filesCountUser: 0,
+      filesCountSpecialist: 0,
     };
   },
   props: ["schedulesGroup", "userType"],
@@ -242,6 +241,9 @@ export default {
   watch: {},
   mounted() {
     this.eventSchedule.schedules = Object.entries(this.schedulesGroup)[0][1];
+
+    this.filesCountSpecialist = this.eventSchedule.schedules[0].filesCountSpecialist;
+    this.filesCountUser = this.eventSchedule.schedules[0].filesCountUser;
 
     if (
       this.eventSchedule.schedules[0].rating === undefined ||
