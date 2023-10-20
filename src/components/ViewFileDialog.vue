@@ -9,6 +9,9 @@
           <p @click="openUrl(file.fileLink)">
             {{ file.fileName }}
           </p>
+          <span v-if="userTypeStorage === 'ADMIN'">
+            {{ file.fileType === "USER" ? "Usuário" : "Especialista" }}
+          </span>
         </div>
       </div>
 
@@ -27,7 +30,13 @@ export default {
     return {
       id: null,
       files: [],
+      userTypeStorage: null,
     };
+  },
+  mounted() {
+    this.userTypeStorage = localStorage.getItem("userType");
+
+    console.log(this.userTypeStorage);
   },
 
   methods: {
@@ -55,15 +64,17 @@ export default {
         confirmDialog.classList.add("hide");
       }, 300);
 
-      const userType = "USER";
+      let userType = "";
+
+      if (this.userTypeStorage === "SPECIALIST") {
+        userType = "?type=USER";
+      }
 
       const response = await filterCrud(
         [],
-        `specialists/schedule/${id}/schedule-files?type=${userType}`
+        `specialists/schedule/${id}/schedule-files${userType}`
       );
       this.files = response;
-
-      console.log(this.files);
     },
   },
 };

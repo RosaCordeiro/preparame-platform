@@ -24,7 +24,10 @@
 
     <!-- <div class="popup__not-rating">
     </div> -->
-    <div class="image-popup" v-if="hasScheduleWithoutRating">
+    <div
+      class="image-popup"
+      v-if="hasScheduleWithoutRating && homeType === 'USER'"
+    >
       <img src="~assets/imgs/mentoria_sem_nota.png" alt="" />
       <!-- close button -->
       <q-btn

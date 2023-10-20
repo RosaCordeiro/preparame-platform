@@ -35,15 +35,30 @@
                   :src="props.row.specialist.image"
                   height="50"
                   width="50"
-                  style="border-radius: 50%"
+                  style="border-radius: 50%; object-fit: cover"
                 />
                 <div v-else>Não Atribuído</div>
+              </q-td>
+              <q-td key="fileStatus" :props="props">
+                <div class="row justify-center">
+                  <span class="col-12" style="text-align: center">
+                    {{ statusFiles(props.row) }}
+                  </span>
+
+                  <q-btn
+                    v-if="props.row.countfilesuser > 0"
+                    color="primary"
+                    label="Visualizar Arquivos"
+                    @click="viewFileDialog(props.row)"
+                  />
+                </div>
               </q-td>
             </q-tr>
           </template>
         </q-table>
       </div>
     </CrudRegister>
+    <ViewFileDialogVue ref="viewFileDialog" />
   </div>
 </template>
 
@@ -56,10 +71,12 @@ import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
+import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
+    ViewFileDialogVue,
   },
   data: () => {
     return {
@@ -148,6 +165,13 @@ export default {
           align: "left",
           sortable: true,
         },
+        {
+          name: "fileStatus",
+          label: "Status Arquivo",
+          field: "fileStatus",
+          align: "left",
+          sortable: true,
+        },
       ],
       filters: [
         {
@@ -167,6 +191,48 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    viewFileDialog: function (product) {
+      console.log(product);
+      this.$refs.viewFileDialog.show(product.id);
+    },
+    statusFiles(product) {
+      if (product.schedule === null && product.specialist === null) {
+        return "N/A";
+      }
+
+      const isBefore = new Date(product.schedule.dateSchedule) < new Date();
+
+      if (isBefore) {
+        if (product.countfilesspecialist === 0) {
+          return "Relatório Não Enviado";
+        }
+
+        if (product.countfilesspecialist > 0) {
+          return "Relatório Enviado";
+        }
+      }
+
+      const productsName = [
+        "Reconstrução de Currículo Português",
+        "Reconstrução de Curriculo Português + Inglês",
+        "Reconstrução de Curriculo + Relatório Perfil Link",
+        "Reconstrução de Currículo em Ingles",
+      ];
+
+      if (!isBefore) {
+        if (productsName.includes(product.name)) {
+          if (product.countfilesuser === 0) {
+            return "Currículo Não Enviado";
+          }
+
+          if (product.countfilesuser > 0) {
+            return "Currículo Enviado";
+          }
+        }
+
+        return "N/A";
+      }
+    },
     formatDateToStringWithHour,
     save: async function (data) {
       try {

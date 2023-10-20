@@ -42,7 +42,18 @@
                 {{ props.row.availableQuantity }}
               </q-td>
               <q-td key="fileStatus" :props="props">
-                {{ statusFiles(props.row) }}
+                <div class="row justify-center">
+                  <span class="col-12" style="text-align: center">
+                    {{ statusFiles(props.row) }}
+                  </span>
+
+                  <q-btn
+                    v-if="props.row.countfilesuser > 0"
+                    color="primary"
+                    label="Visualizar Arquivos"
+                    @click="viewFileDialog(props.row)"
+                  />
+                </div>
               </q-td>
               <q-td key="actions" :props="props">
                 <q-btn-group>
@@ -71,6 +82,8 @@
         </q-table>
       </div>
     </CrudRegister>
+
+    <ViewFileDialogVue ref="viewFileDialog" />
   </div>
 </template>
 
@@ -83,10 +96,12 @@ import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
+import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
+    ViewFileDialogVue,
   },
   data: () => {
     return {
@@ -215,6 +230,10 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    viewFileDialog: function (product) {
+      console.log(product);
+      this.$refs.viewFileDialog.show(product.id);
+    },
     statusFiles(product) {
       if (product.schedule === null && product.specialist === null) {
         return "N/A";
