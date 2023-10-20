@@ -1,8 +1,7 @@
 <template>
-  <div class="search-file-dialog-widget" id="search-file-dialog">
-    <div class="search-file-dialog-container">
-      <div class="search-file-dialog-container-text">
-        <p style="color: black"></p>
+  <div class="view-file-dialog-widget" id="view-file-dialog">
+    <div class="view-file-dialog-container">
+      <div class="view-file-dialog-container-text">
         <div v-if="files.length === 0" class="not-found">
           <p>Nenhum arquivo encontrado</p>
         </div>
@@ -10,155 +9,68 @@
           <p @click="openUrl(file.fileLink)">
             {{ file.fileName }}
           </p>
-
-          <q-btn flat icon="close" color="white" @click="removeFile(file)" />
         </div>
-
-        <input
-          class="input__file"
-          type="file"
-          accept="image/*"
-          @change="changeFile"
-          multiple
-        />
       </div>
 
-      <div class="button__cancel">
+      <div @click="close" class="button__cancel">
         <q-icon name="close" size="25px" color="grey" />
       </div>
     </div>
-
-    <DeuCertoDialog ref="deuCertoDialog" />
   </div>
 </template>
 
 <script>
-import { confirmDialog, showError } from "src/global";
 import { filterCrud } from "./general/crud/utils/filterCrud";
-import { saveCrud } from "./general/crud/utils/saveCrud";
-import DeuCertoDialog from "./DeuCertoDialog.vue";
 
 export default {
-  components: {
-    DeuCertoDialog,
-  },
   data() {
     return {
       id: null,
       files: [],
     };
   },
-  mounted() {
-    const cancelButton = document.querySelector(".button__cancel");
 
-    cancelButton.addEventListener("click", () => {
-      const confirmDialog = document.getElementById("search-file-dialog");
+  methods: {
+    close() {
+      const confirmDialog = document.getElementById("view-file-dialog");
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
         confirmDialog.classList.remove("hide");
       }, 300);
-    });
-  },
-  methods: {
-    async changeFile(e) {
-      if (this.files.length + e.target.files.length > 3) {
-        showError("Você só pode enviar até 3 arquivos");
-        return;
-      }
 
-      const formData = new FormData();
-      /* specialistScheduleId, file */
-
-      Object.values(e.target.files).forEach((f) => {
-        formData.append("file", f);
-      });
-
-      formData.append("specialistScheduleId", this.id);
-
-      await saveCrud(`specialists/schedule-files`, formData, "POST").then(
-        (response) => {
-          this.$refs.deuCertoDialog.show();
-          this.files = [...this.files, ...response.data];
-        }
-      );
-
-      /*  console.log(e.target.files);
-
-      this.files = [
-        ...this.files.map((f) => {
-          return {
-            ...f,
-            typeFile: "link",
-          };
-        }),
-        ...Object.values(e.target.files).map((f) => {
-          console.log(f);
-
-          return {
-            fileName: f.name,
-            fileLink: URL.createObjectURL(f),
-            typeFile: "file",
-          };
-        }),
-      ]; */
-    },
-    removeFile(file) {
-      confirmDialog(
-        "Atenção",
-        "Deseja realmente excluir o arquivo?",
-        async () => {
-          const response = await saveCrud(
-            `specialists/schedule/${file.id}/schedule-files-delete`,
-            {},
-            "DELETE"
-          );
-
-          if (response) {
-            const index = this.files.indexOf(file);
-
-            this.files.splice(index, 1);
-          }
-        }
-      );
+      this.$parent.viewDialog = false;
     },
     openUrl(url) {
       window.open(url, "_blank");
     },
-    show(id) {
+    async show(id) {
+      console.log(id);
+
       this.id = id;
-      const confirmDialog = document.getElementById("search-file-dialog");
+      const confirmDialog = document.getElementById("view-file-dialog");
 
       confirmDialog.classList.add("show");
       setTimeout(() => {
         confirmDialog.classList.add("hide");
       }, 300);
 
-      const userType = localStorage.getItem("userType");
+      const userType = "USER";
 
-      filterCrud(
+      const response = await filterCrud(
         [],
         `specialists/schedule/${id}/schedule-files?type=${userType}`
-      ).then((response) => {
-        this.files = response;
-      });
-    },
-    confirm() {
-      window.func();
-      const confirmDialog = document.getElementById("search-file-dialog");
+      );
+      this.files = response;
 
-      confirmDialog.classList.remove("show");
-      setTimeout(() => {
-        confirmDialog.classList.remove("hide");
-        this.func = null;
-      }, 300);
+      console.log(this.files);
     },
   },
 };
 </script>
 
 <style scoped>
-.search-file-dialog-widget {
+.view-file-dialog-widget {
   position: fixed;
   top: 0;
   left: 0;
@@ -175,7 +87,7 @@ export default {
   visibility: hidden;
 }
 
-.search-file-dialog-widget.show {
+.view-file-dialog-widget.show {
   opacity: 1;
 }
 
@@ -183,7 +95,7 @@ export default {
   visibility: visible;
 }
 
-.search-file-dialog-container {
+.view-file-dialog-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -208,11 +120,11 @@ export default {
   color: #000000;
 }
 
-.search-file-dialog-container b {
+.view-file-dialog-container b {
   font-weight: 700;
 }
 
-.search-file-dialog-container-text {
+.view-file-dialog-container-text {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -220,6 +132,7 @@ export default {
   width: 100%;
   padding: 0 40px;
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .row {
@@ -268,7 +181,7 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .search-file-dialog-container {
+  .view-file-dialog-container {
     width: 90%;
     margin: 0;
   }
@@ -288,7 +201,7 @@ export default {
     font-size: 15px;
   }
 
-  .search-file-dialog-container-text {
+  .view-file-dialog-container-text {
     font-size: 15px;
     padding: 0px;
   }

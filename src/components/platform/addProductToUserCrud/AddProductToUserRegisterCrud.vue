@@ -239,8 +239,6 @@ export default {
         "Reconstrução de Currículo em Ingles",
       ];
 
-      console.log(productsName.includes(product.name));
-
       if (!isBefore) {
         if (productsName.includes(product.name)) {
           if (product.countfilesuser === 0) {
