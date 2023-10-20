@@ -34,7 +34,7 @@
                   :src="props.row.specialist.image"
                   height="50"
                   width="50"
-                  style="border-radius: 50%"
+                  style="border-radius: 50%; object-fit: cover"
                 />
                 <div v-else>Não Atribuído</div>
               </q-td>
@@ -205,6 +205,9 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    statusFiles(product) {
+      console.log(product);
+    },
     formatDateToStringWithHour,
     save: async function (data) {
       try {

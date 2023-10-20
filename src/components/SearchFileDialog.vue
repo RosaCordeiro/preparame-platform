@@ -30,6 +30,8 @@
         <q-icon name="close" size="25px" color="grey" />
       </div>
     </div>
+
+    <DeuCertoDialog ref="deuCertoDialog" />
   </div>
 </template>
 
@@ -37,7 +39,12 @@
 import { confirmDialog, showError } from "src/global";
 import { filterCrud } from "./general/crud/utils/filterCrud";
 import { saveCrud } from "./general/crud/utils/saveCrud";
+import DeuCertoDialog from "./DeuCertoDialog.vue";
+
 export default {
+  components: {
+    DeuCertoDialog,
+  },
   data() {
     return {
       id: null,
@@ -74,13 +81,10 @@ export default {
 
       await saveCrud(`specialists/schedule-files`, formData, "POST").then(
         (response) => {
-          console.log(response.data);
-
+          this.$refs.deuCertoDialog.show();
           this.files = [...this.files, ...response.data];
         }
       );
-
-      console.log("Deu certo");
 
       /*  console.log(e.target.files);
 
@@ -297,15 +301,9 @@ export default {
   }
 }
 
-/* .input__file {
-  width: 151px;
-  height: 19px;
-  flex-shrink: 0;
-  background-color: rgba(255, 70, 144, 1);
-  color: rgba(255, 255, 255, 1);
-  font-size: 14px;
-  font-weight: 700;
-} */
+input[type="file"] {
+  width: 150px !important;
+}
 
 input[type="file"]::file-selector-button {
   border: none;
@@ -315,6 +313,6 @@ input[type="file"]::file-selector-button {
   color: #fff;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
-  width: 150px;
+  width: 150px !important;
 }
 </style>
