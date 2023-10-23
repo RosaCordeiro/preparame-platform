@@ -44,7 +44,10 @@
           </div>
 
           <div class="col-3" v-if="userType === 'USER'">
-            <div v-if="eventValid && filesCountUser == 0" class="column">
+            <div
+              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+              class="column"
+            >
               <span class="q-ma-sm txt-center"
                 >Carregar seu currículo (mesmo que destualizado)</span
               >
@@ -55,7 +58,12 @@
                 @click="openSearchFileDialog()"
               />
             </div>
-            <div v-else-if="eventValid && filesCountUser >= 1" class="column">
+            <div
+              v-else-if="
+                eventValid && filesCountUser >= 1 && enableUploadFileUser
+              "
+              class="column"
+            >
               <span class="q-ma-sm txt-center">Curriculo inserido</span>
               <q-btn
                 style="background: #FF0080; color=white"
@@ -86,11 +94,19 @@
             </div>
           </div>
           <div class="col-3" v-else>
-            <div v-if="eventValid && filesCountUser == 0" class="column">
+            <div
+              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+              class="column"
+            >
               <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
             </div>
 
-            <div v-else-if="eventValid && filesCountUser >= 1" class="column">
+            <div
+              v-else-if="
+                eventValid && filesCountUser >= 1 && enableUploadFileUser
+              "
+              class="column"
+            >
               <q-btn
                 v-if="userType === 'SPECIALIST'"
                 style="background: #FF0080; color=white"
@@ -233,9 +249,20 @@ export default {
       filesCountSpecialist: 0,
       searchDialog: false,
       viewDialog: false,
+      productsName: [
+        "Reconstrução de Currículo Português",
+        "Reconstrução de Curriculo Português + Inglês",
+        "Reconstrução de Curriculo + Relatório Perfil Link",
+        "Reconstrução de Currículo em Ingles",
+      ],
     };
   },
   props: ["schedulesGroup", "userType"],
+  computed: {
+    enableUploadFileUser() {
+      return this.productsName.includes(this.productName);
+    },
+  },
   methods: {
     openFileDialog(type) {
       this.viewDialog = true;
