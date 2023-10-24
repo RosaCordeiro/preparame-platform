@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <div class="col-3" v-if="userType === 'USER'">
+          <div class="col-3 justify-center" v-if="userType === 'USER'">
             <div
               v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
               class="column"
@@ -65,12 +65,14 @@
               class="column"
             >
               <span class="q-ma-sm txt-center">Curriculo inserido</span>
-              <img
-                src="../../../../assets/icons/visto.png"
-                alt=""
-                width="80"
-                height="50"
-              />
+              <div class="icones">
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
+              </div>
               <q-btn
                 style="background: #FF0080; color=white"
                 label="Procurar Arquivo"
@@ -82,8 +84,10 @@
               v-else-if="!eventValid && filesCountSpecialist === 0"
               class="column"
             >
+            <span>
               Relatório sendo finalizado
-              <div class="imagens">
+            </span>
+              <div class="icone-ampulheta">
                 <img
                   src="../../../../assets/icons/ampulheta.png"
                   alt=""
@@ -96,13 +100,17 @@
               v-else-if="!eventValid && filesCountSpecialist >= 1"
               class="column"
             >
+            <span>
               Baixar aqui o relatório da sua mentoria
-              <img
-                src="../../../../assets/icons/visto.png"
-                alt=""
-                width="80"
-                height="50"
-              />
+            </span>
+              <div class="icones">
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
+              </div>
               <q-btn
                 style="background: #FF0080; color=white"
                 label="Visualizar Relatório"
@@ -117,12 +125,14 @@
               class="column"
             >
               <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
-              <img
-                src="../../../../assets/icons/bloqueio.png"
-                alt=""
-                width="80"
-                height="50"
-              />
+              <div class="icones">
+                <img
+                  src="../../../../assets/icons/bloqueio.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
+              </div>
             </div>
 
             <div
@@ -131,12 +141,15 @@
               "
               class="column"
             >
-            <img
-              src="../../../../assets/icons/visto.png"
-              alt=""
-              width="80"
-              height="50"
-            />
+            <span class="q-ma-sm txt-center">Baixar currículo</span>
+            <div class="icones">
+              <img
+                src="../../../../assets/icons/visto.png"
+                alt=""
+                width="80"
+                height="50"
+              />
+            </div>
               <q-btn
                 v-if="userType === 'SPECIALIST'"
                 style="background: #FF0080; color=white"
@@ -151,12 +164,14 @@
               class="column"
             >
               <span class="q-ma-sm txt-center">Relatório Pendente</span>
-              <img
-                src="../../../../assets/icons/bloqueio.png"
-                alt=""
-                width="80"
-                height="50"
-              />
+              <div class="icones">
+                <img
+                  src="../../../../assets/icons/bloqueio.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
+              </div>
               <q-btn
                 style="background: #000; color: #fff"
                 label="Procurar Arquivo"
@@ -170,13 +185,15 @@
               class="column"
             >
               <span class="q-ma-sm txt-center">Relatório Carregado</span>
-              <img
-                src="../../../../assets/icons/visto.png"
-                alt=""
-                width="80"
-                height="50"
-                class="imagem"
-              />
+              <div class="icones">
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                  class="imagem"
+                />
+              </div>
               <q-btn
                 style="background: #000; color: #fff"
                 label="Procurar Arquivo"
@@ -455,18 +472,30 @@ export default {
 </script>
 
 <style lang="scss">
-
-.imagens {
+.column span {
+  text-align: center;
+}
+.column {
+  justify-content: center;
+  align-items: center;
+}
+.icones{
   display: flex;
   align-items: center;
-  border-radius: 50%;
-  background-color: white;
-  width:50px;
-  height:50px;
   justify-content: center;
 }
 
-.imagens img {
+.icone-ampulheta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:50px;
+  height:50px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.icone-ampulheta img {
   object-fit: cover;
 }
 
