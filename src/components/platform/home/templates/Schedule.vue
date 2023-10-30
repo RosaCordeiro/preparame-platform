@@ -24,7 +24,10 @@
 
     <!-- <div class="popup__not-rating">
     </div> -->
-    <div class="image-popup" v-if="hasScheduleWithoutRating">
+    <div
+      class="image-popup"
+      v-if="hasScheduleWithoutRating && homeType === 'USER'"
+    >
       <img src="~assets/imgs/mentoria_sem_nota.png" alt="" />
       <!-- close button -->
       <q-btn
@@ -42,7 +45,10 @@
 
 <script>
 import { filterCrud } from "../../../general/crud/utils/filterCrud";
-import { formatDateToStringMasked } from "../../../../utils/formatDate.js";
+import {
+  formatDateToStringMasked,
+  formatDateToStringWithHour,
+} from "../../../../utils/formatDate.js";
 
 export default {
   data() {
@@ -116,7 +122,7 @@ export default {
 
         let groupKey = `${schedule["productId"]}${schedule["userId"]}${
           schedule["specialistId"]
-        }${formatDateToStringMasked(
+        }${formatDateToStringWithHour(
           new Date(schedule["dateSchedule"]),
           "yyyy-mm-dd"
         )}`;

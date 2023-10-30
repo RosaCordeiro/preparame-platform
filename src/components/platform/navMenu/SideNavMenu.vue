@@ -142,6 +142,12 @@ const menu = {
         separator: false,
         url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
       },
+      {
+        icon: "person",
+        label: "Visualizar Produtos do Usuário",
+        separator: false,
+        url: "viewProductsUser",
+      },
     ],
   },
   COMPANY_ADMIN: {

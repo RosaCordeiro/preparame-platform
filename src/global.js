@@ -1,4 +1,4 @@
-import { Notify } from "quasar";
+import { Notify, Dialog } from "quasar";
 
 export const userKey = "__knowledge_user";
 
@@ -35,5 +35,23 @@ export function showSucess(e) {
   Notify.create({ type: "success", message: e });
   return true;
 }
+
+export const confirmDialog = (title = "Atenção", message, func) => {
+  Dialog.create({
+    title,
+    message,
+    cancel: true,
+  })
+    .onOk(func)
+    .onCancel(() => {});
+};
+
+export const showDeuCerto = () => {
+  // Crie uma div
+
+  setTimeout(function () {
+    document.body.removeChild(div);
+  }, 5000);
+};
 
 export default { baseApiUrl, showError };
