@@ -46,7 +46,7 @@
           <div class="col-3 justify-center" v-if="userType === 'USER'">
             <div
               v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
-              class="column"
+              class="textandbutton column"
             >
               <span class="q-ma-sm txt-center"
                 >Carregar seu currículo (mesmo que destualizado)</span
@@ -62,7 +62,7 @@
               v-else-if="
                 eventValid && filesCountUser >= 1 && enableUploadFileUser
               "
-              class="column"
+              class="textandbutton column"
             >
               <span class="q-ma-sm txt-center">Curriculo inserido</span>
               <div class="icones">
@@ -82,7 +82,7 @@
             </div>
             <div
               v-else-if="!eventValid && filesCountSpecialist === 0"
-              class="column"
+              class="textandbutton column"
             >
             <span>
               Relatório sendo finalizado
@@ -98,7 +98,7 @@
             </div>
             <div
               v-else-if="!eventValid && filesCountSpecialist >= 1"
-              class="column"
+              class="textandbutton column"
             >
             <span>
               Baixar aqui o relatório da sua mentoria
@@ -122,7 +122,7 @@
           <div class="col-3" v-else>
             <div
               v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
-              class="column"
+              class="textandbutton column"
             >
               <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
               <div class="icones">
@@ -139,7 +139,7 @@
               v-else-if="
                 eventValid && filesCountUser >= 1 && enableUploadFileUser
               "
-              class="column"
+              class="textandbutton column"
             >
             <span class="q-ma-sm txt-center">Baixar currículo</span>
             <div class="icones">
@@ -161,7 +161,7 @@
 
             <div
               v-else-if="!eventValid && filesCountSpecialist === 0"
-              class="column"
+              class="textandbutton column"
             >
               <span class="q-ma-sm txt-center">Relatório Pendente</span>
               <div class="icones">
@@ -182,7 +182,7 @@
 
             <div
               v-else-if="!eventValid && filesCountSpecialist > 0"
-              class="column"
+              class="textandbutton column"
             >
               <span class="q-ma-sm txt-center">Relatório Carregado</span>
               <div class="icones">
@@ -472,13 +472,15 @@ export default {
 </script>
 
 <style lang="scss">
-.column span {
+.textandbutton span {
   text-align: center;
 }
-.column {
+
+.textandbutton {
   justify-content: center;
   align-items: center;
 }
+
 .icones{
   display: flex;
   align-items: center;
