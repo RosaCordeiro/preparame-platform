@@ -8,16 +8,19 @@ export const downloadFile = (blob, fileName) => {
   console.log(blob);
 };
 
-export const downloadFileFromUrl = (url, fileName) => {
-  fetch(url)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
+export const downloadFileFromUrl = async (url, fileName) => {
+  fetch(url, {
+    method: "get",
+  })
+    .then((res) => res.blob())
+    .then((res) => {
+      const aElement = document.createElement("a");
+      aElement.setAttribute("download", fileName);
+      const href = URL.createObjectURL(res);
+      aElement.href = href;
+      aElement.setAttribute("target", "_blank");
+      aElement.click();
+      URL.revokeObjectURL(href);
     });
 };
 

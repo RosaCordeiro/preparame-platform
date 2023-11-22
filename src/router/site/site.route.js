@@ -3,6 +3,8 @@ import ProductList from "../../layouts/ProductList.vue";
 import ProductSchedule from "../../layouts/ProductSchedule.vue";
 import HomePage from "../../layouts/HomePage.vue";
 import HomePageCompany from "../../layouts/HomePageCompany.vue";
+import MateriaisGratuitos from "../../layouts/MateriaisGratuitos.vue";
+
 import ShoppingCart from "../../layouts/ShoppingCart.vue";
 import Site from "../../layouts/Site.vue";
 import CompanyDetails from "../../layouts/CompanyDetails.vue";
@@ -32,6 +34,12 @@ const siteRoutes = [
     path: "/patrocinio/:companyName",
     components: {
       site: HomePageCompany,
+    },
+  },
+  {
+    path: "/MateriaisGratuitos/:materialName",
+    components: {
+      site: MateriaisGratuitos,
     },
   },
   {
