@@ -59,6 +59,16 @@
       </q-td>
     </template>
 
+    <template v-slot:body-cell-clickable="props">
+      <q-td auto-width :props="props">
+        <a
+          :href="`#/MateriaisGratuitos/${props.row.slug}`"
+          style="color: blue; text-decoration: underline"
+          >Ir até página</a
+        >
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-actions="props">
       <q-td auto-width :props="props">
         <q-btn-group>

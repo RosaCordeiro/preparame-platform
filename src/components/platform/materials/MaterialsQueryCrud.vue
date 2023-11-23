@@ -91,6 +91,14 @@ export default {
           visible: true,
         },
         {
+          name: "clickable",
+          label: "Link",
+          align: "left",
+          field: "clickable",
+          sortable: true,
+          visible: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           align: "center",
