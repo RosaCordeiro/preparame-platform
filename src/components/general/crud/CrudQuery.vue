@@ -13,7 +13,9 @@
           ref="table"
           :result="{ columns, data }"
           :blockRemove="blockRemove"
-        />
+        >
+          <slot> </slot>
+        </CrudQueryTable>
       </div>
     </q-page>
   </div>

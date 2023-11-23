@@ -143,7 +143,7 @@ export default {
         );
       }
 
-      //downloadFileFromUrl(this.config.file_url, this.config.file);
+      downloadFileFromUrl(this.config.file_url, this.config.file);
     },
   },
   async mounted() {

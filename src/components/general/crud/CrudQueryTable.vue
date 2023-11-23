@@ -19,15 +19,18 @@
     :visible-columns="visibleColumns"
   >
     <template v-slot:top-right>
-      <q-input
-        borderless
-        dense
-        debounce="300"
-        v-model="filter"
-        placeholder="Search"
-      >
-        <q-icon slot="append" name="search"></q-icon>
-      </q-input>
+      <div class="row">
+        <slot> </slot>
+        <q-input
+          borderless
+          dense
+          debounce="300"
+          v-model="filter"
+          placeholder="Search"
+        >
+          <q-icon slot="append" name="search"></q-icon>
+        </q-input>
+      </div>
     </template>
 
     <template v-slot:body-cell-accepted="props">

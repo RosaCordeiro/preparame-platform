@@ -6,18 +6,54 @@
       :filters="filters"
       :columns="columns"
       :url="url"
-    />
+    >
+      <template>
+        <q-btn
+          label="Download Relatório"
+          type="submit"
+          color="primary"
+          class="q-ma-sm q-mr-md"
+          @click="downloadReport"
+        />
+      </template>
+    </CrudQuery>
   </div>
 </template>
 
 <script>
+import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import CrudQuery from "../../general/crud/CrudQuery.vue";
+import { downloadFile } from "src/utils/downloadFile";
+import { baseApiUrl, showError } from "src/global";
+import axios from "axios";
 
 export default {
   components: {
     CrudQuery,
   },
-  methods: {},
+  methods: {
+    async downloadReport() {
+      let config = {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        url: `${baseApiUrl}/materials/list-download`,
+        responseType: "blob",
+      };
+
+      this.$q.loading.show();
+
+      try {
+        const data = await axios(config);
+        downloadFile(data.data, "relatorio-materiais-gratuitos.xlsx");
+      } catch (error) {
+        console.log(error);
+
+        showError(error);
+      }
+
+      this.$q.loading.hide();
+    },
+  },
   data() {
     return {
       title: "Materiais Gratuitos",
