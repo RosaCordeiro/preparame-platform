@@ -2,27 +2,15 @@
   <div class="search-file-dialog-widget" id="search-file-dialog">
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
-        <p style="color: black"></p>
-        <div v-if="files.length === 0" class="not-found">
-          <p>Nenhum arquivo encontrado</p>
-        </div>
         <div class="file-container" v-for="(file, index) in files" :key="index">
           <p @click="openUrl(file.fileLink)">
             {{ file.fileName }}
           </p>
-
           <q-btn flat icon="close" color="white" @click="removeFile(file)" />
         </div>
-
-        <input
-          class="input__file"
-          type="file"
-          accept=".pdf, .docx, image/*"
-          @change="changeFile"
-          multiple
-        />
+        <p v-if="files.length > 0">Você tem {{ files.length }} arquivos anexados</p>
+        <input class="input__file" type="file" accept=".pdf, .docx, image/*" @change="changeFile" multiple />
       </div>
-
       <div class="button__cancel">
         <q-icon name="close" size="25px" color="grey" />
       </div>
@@ -114,6 +102,7 @@ export default {
       );
     },
     openUrl(url) {
+      console.log(url)
       window.open(url, "_blank");
     },
     show(id) {
