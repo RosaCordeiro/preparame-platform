@@ -148,8 +148,10 @@
       </q-dialog>
     </q-banner>
 
-    <SearchFileDialog ref="searchFileDialog" v-if="searchDialog" />
-    <ViewFileDialog ref="viewFileDialog" v-if="viewDialog" />
+    <SearchFileDialog ref="searchFileDialog" v-if="searchDialog"
+      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id" />
+    <ViewFileDialog ref="viewFileDialog" v-if="viewDialog"
+      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id" />
   </div>
 </template>
 

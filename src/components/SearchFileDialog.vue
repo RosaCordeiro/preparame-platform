@@ -1,5 +1,5 @@
 <template>
-  <div class="search-file-dialog-widget" id="search-file-dialog">
+  <div class="search-file-dialog-widget" :id="`search-file-dialog-${identifier}`">
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
         <div class="file-container" v-for="(file, index) in files" :key="index">
@@ -12,7 +12,7 @@
         <input class="input__file" type="file" accept=".pdf, .docx, image/*" @change="changeFile" multiple />
       </div>
       <div class="button__cancel">
-        <q-icon name="close" size="25px" color="grey" />
+        <q-icon name="close" size="25px" color="grey" @click="close()" />
       </div>
     </div>
 
@@ -27,6 +27,12 @@ import { saveCrud } from "./general/crud/utils/saveCrud";
 import DeuCertoDialog from "./DeuCertoDialog.vue";
 
 export default {
+  props: {
+    identifier: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     DeuCertoDialog,
   },
@@ -48,18 +54,6 @@ export default {
       },
       deep: true,
     },
-  },
-  mounted() {
-    const cancelButton = document.querySelector(".button__cancel");
-
-    cancelButton.addEventListener("click", () => {
-      const confirmDialog = document.getElementById("search-file-dialog");
-
-      confirmDialog.classList.remove("show");
-      setTimeout(() => {
-        confirmDialog.classList.remove("hide");
-      }, 300);
-    });
   },
   methods: {
     async changeFile(e) {
@@ -107,7 +101,7 @@ export default {
     },
     show(id) {
       this.id = id;
-      const confirmDialog = document.getElementById("search-file-dialog");
+      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
 
       confirmDialog.classList.add("show");
       setTimeout(() => {
@@ -120,12 +114,12 @@ export default {
         [],
         `specialists/schedule/${id}/schedule-files?type=${userType}`
       ).then((response) => {
-        this.files = response;
+        this.files = JSON.parse(JSON.stringify(response));
       });
     },
     confirm() {
       window.func();
-      const confirmDialog = document.getElementById("search-file-dialog");
+      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
@@ -133,6 +127,14 @@ export default {
         this.func = null;
       }, 300);
     },
+    close() {
+      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
+
+      confirmDialog.classList.remove("show");
+      setTimeout(() => {
+        confirmDialog.classList.remove("hide");
+      }, 300);
+    }
   },
 };
 </script>
