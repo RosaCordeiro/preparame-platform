@@ -51,6 +51,10 @@ export default {
         this.$parent.filesCountSpecialist = this.files.filter(
           (f) => f.fileType === "SPECIALIST"
         ).length;
+        let userType = localStorage.getItem("userType");
+        if (userType == "ADMIN") {
+          this.$parent.listProducts()
+        }
       },
       deep: true,
     },
@@ -69,12 +73,19 @@ export default {
 
       formData.append("specialistScheduleId", this.id);
 
+      let userType = localStorage.getItem("userType");
+
+      if (userType == "ADMIN") {
+        formData.append("fileType", "USER");
+      }
+      this.$q.loading.show();
       await saveCrud(`specialists/schedule-files`, formData, "POST").then(
         (response) => {
           this.$refs.deuCertoDialog.show();
           this.files = [...this.files, ...response.data];
         }
       );
+      this.$q.loading.hide();
     },
     removeFile(file) {
       confirmDialog(
@@ -108,7 +119,13 @@ export default {
         confirmDialog.classList.add("hide");
       }, 300);
 
-      const userType = localStorage.getItem("userType");
+      let userType = localStorage.getItem("userType");
+
+      if (userType == "ADMIN") {
+        userType = "USER"
+      }
+
+      console.log(userType)
 
       filterCrud(
         [],

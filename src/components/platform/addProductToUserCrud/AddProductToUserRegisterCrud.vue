@@ -1,41 +1,22 @@
 <template>
   <div class="product-crud">
-    <CrudRegister
-      :breadcrumbs="breadcrumbs"
-      :title="title"
-      :tables="tables"
-      :registerType="registerType"
-    >
+    <CrudRegister :breadcrumbs="breadcrumbs" :title="title" :tables="tables" :registerType="registerType">
       <div v-if="products.length > 0">
-        <q-table
-          class="q-mt-md bg-secondary crud-table"
-          :data="products"
-          :columns="columns"
-          table-class="bg-background"
-          table-header-class="text-white bg-secondary"
-          no-data-label="Sem dados para mostrar."
-          no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa."
-          dense
-          title="Resultado(s) Pesquisa"
-          title-class="text-white bg-secondary crud-query-title"
-          rows-per-page-label="Linhas por página: "
-        >
+        <q-table class="q-mt-md bg-secondary crud-table" :data="products" :columns="columns" table-class="bg-background"
+          table-header-class="text-white bg-secondary" no-data-label="Sem dados para mostrar."
+          no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa." dense title="Resultado(s) Pesquisa"
+          title-class="text-white bg-secondary crud-query-title" rows-per-page-label="Linhas por página: ">
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td key="product" :props="props">{{ props.row.name }}</q-td>
               <q-td key="dateSchedule" :props="props">{{
                 props.row.schedule === null
-                  ? "Não Agendado"
-                  : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+                ? "Não Agendado"
+                : formatDateToStringWithHour(props.row.schedule.dateSchedule)
               }}</q-td>
               <q-td key="specialist" :props="props">
-                <img
-                  v-if="props.row.specialist"
-                  :src="props.row.specialist.image"
-                  height="50"
-                  width="50"
-                  style="border-radius: 50%; object-fit: cover"
-                />
+                <img v-if="props.row.specialist" :src="props.row.specialist.image" height="50" width="50"
+                  style="border-radius: 50%; object-fit: cover" />
                 <div v-else>Não Atribuído</div>
               </q-td>
               <q-td key="availableQuantity" :props="props">
@@ -47,22 +28,22 @@
                     {{ statusFiles(props.row) }}
                   </span>
 
-                  <q-btn
-                    v-if="props.row.countfilesuser > 0"
-                    color="primary"
-                    label="Visualizar Arquivos"
-                    @click="viewFileDialog(props.row)"
-                  />
+                  <q-btn v-if="props.row.countfilesuser > 0" color="primary" label="Visualizar Arquivos"
+                    @click="viewFileDialog(props.row)" />
+                </div>
+              </q-td>
+              <q-td key="fileUser" :props="props">
+                <div class="row justify-center">
+                  <span class="col-12" style="text-align: center">
+                    {{ props.row.countfilesuser }} arquivos do usuário
+                  </span>
+                  <q-btn color="primary" label="Adicionar Arquivos" @click="openSearchFileDialog(props.row)" />
                 </div>
               </q-td>
               <q-td key="actions" :props="props">
                 <q-btn-group>
-                  <q-btn
-                    color="negative"
-                    icon="mdi-delete"
-                    :disable="props.row.availableQuantity === 0"
-                    @click="deleteProduct(props.row)"
-                  ></q-btn>
+                  <q-btn color="negative" icon="mdi-delete" :disable="props.row.availableQuantity === 0"
+                    @click="deleteProduct(props.row)"></q-btn>
                 </q-btn-group>
               </q-td>
             </q-tr>
@@ -82,8 +63,8 @@
         </q-table>
       </div>
     </CrudRegister>
-
-    <ViewFileDialogVue ref="viewFileDialog" />
+    <SearchFileDialog ref="searchFileDialog" :identifier="`AddProductToUserRegisterCrudSearchFileDialog`" />
+    <ViewFileDialogVue ref="viewFileDialog" :identifier="`AddProductToUserRegisterCrudViewFileDialog`" />
   </div>
 </template>
 
@@ -97,11 +78,13 @@ import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
 import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
+import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
     ViewFileDialogVue,
+    SearchFileDialog,
   },
   data: () => {
     return {
@@ -206,6 +189,13 @@ export default {
           sortable: true,
         },
         {
+          name: "fileUser",
+          label: "Adicionar Produto ao Usuário",
+          field: "fileUser",
+          align: "center",
+          sortable: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           field: "actions",
@@ -224,12 +214,22 @@ export default {
       ],
     };
   },
+  props: ["schedulesGroup", "userType"],
   created() {
     this.id = this.$router.history.current.params.id;
 
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    openSearchFileDialog(data) {
+      this.searchDialog = true;
+      console.log(this.$refs.searchFileDialog)
+      setTimeout(() => {
+        this.$refs.searchFileDialog.show(
+          data.id,
+        );
+      }, 10);
+    },
     viewFileDialog: function (product) {
       this.$refs.viewFileDialog.show(product.id, "ALL");
     },
@@ -334,7 +334,7 @@ export default {
   destroyed() {
     try {
       emitter.off("update_model");
-    } catch (error) {}
+    } catch (error) { }
   },
 };
 </script>
