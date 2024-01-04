@@ -1,134 +1,260 @@
 <template>
   <div>
-    <q-banner rounded :class="{
-      'event-schedule': true,
-      'q-ma-sm': true,
-      'text-white': true,
-      'bg-grey': !eventValid,
-      'bg-prepara-me-blue': eventValid && !lessThen1Hour,
-      'bg-primary': eventValid && lessThen1Hour,
-      'bg-prepara-me-green':
-        Object.entries(this.schedulesGroup)[0][1][0].type === 'group' &&
-        eventValid,
-      'bg-prepara-me-pink': !eventValid && filesCountSpecialist === 0,
-      'bg-prepara-me-green-specialist':
-        !eventValid && filesCountSpecialist >= 1,
-    }">
+    <q-banner
+      rounded
+      :class="{
+        'event-schedule': true,
+        'q-ma-sm': true,
+        'text-white': true,
+        'bg-grey': !eventValid,
+        'bg-prepara-me-blue': eventValid && !lessThen1Hour,
+        'bg-primary': eventValid && lessThen1Hour,
+        'bg-prepara-me-green':
+          Object.entries(this.schedulesGroup)[0][1][0].type === 'group' &&
+          eventValid,
+        'bg-prepara-me-pink': !eventValid && filesCountSpecialist === 0,
+        'bg-prepara-me-green-specialist':
+          !eventValid && filesCountSpecialist >= 1,
+      }"
+    >
       <div class="row items-start items-center event-schedule">
-        <div class="col event-schedule-day-info text-center text-h5 col-2">
+        <div
+          class="col event-schedule-day-info text-center text-h5 col-xs-12 col-sm-2 display-hour"
+        >
           <div class="event-schedule-day">{{ scheduleDay }}</div>
           <div class="event-schedule-day text-caption">{{ month }}</div>
           <div class="text-subtitle1 text-center">{{ hour }}</div>
         </div>
-        <div class="row items-start items-center event-schedule-info col-10">
-          <div class="event-schedule-product col items-center col-4">
+        <div
+          class="row items-start items-center event-schedule-info col-xs-12 col-sm-10"
+        >
+          <div
+            class="event-schedule-product col items-center col-xs-12 col-sm-4"
+          >
             <div class="text-subtitle1">{{ productName }}</div>
             <div class="text-caption text-weight-light">
               {{
                 userType === "USER"
-                ? specialistName
-                : Object.entries(this.schedulesGroup)[0][1][0].type ===
-                  "group"
+                  ? specialistName
+                  : Object.entries(this.schedulesGroup)[0][1][0].type ===
+                    "group"
                   ? "Mentoria Coletiva"
                   : getUserName(eventSchedule.schedules)
               }}
               {{
                 Object.entries(this.schedulesGroup)[0][1][0].type === "group"
-                ? "- Mentoria Coletiva"
-                : ""
+                  ? "- Mentoria Coletiva"
+                  : ""
               }}
             </div>
           </div>
 
-          <div class="col-3 justify-center" v-if="userType === 'USER'">
-            <div v-if="eventValid && filesCountUser == 0 && enableUploadFileUser" class="textandbutton column">
-              <span class="q-ma-sm txt-center">Carregar seu currículo (mesmo que desatualizado)</span>
-              <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm"
-                @click="openSearchFileDialog()" />
+          <div
+            class="col-xs-12 col-sm-3 justify-center"
+            v-if="userType === 'USER'"
+          >
+            <div
+              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+              class="textandbutton column"
+            >
+              <span class="q-ma-sm txt-center"
+                >Carregar seu currículo (mesmo que destualizado)</span
+              >
+              <q-btn
+                style="background: #FF0080; color=white"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
-            <div v-else-if="eventValid && filesCountUser >= 1 && enableUploadFileUser
-              " class="textandbutton column">
+            <div
+              v-else-if="
+                eventValid && filesCountUser >= 1 && enableUploadFileUser
+              "
+              class="textandbutton column"
+            >
               <span class="q-ma-sm txt-center">Curriculo inserido</span>
               <div class="icones">
-                <img src="../../../../assets/icons/visto.png" alt="" width="80" height="50" />
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
               </div>
-              <q-btn style="background: #FF0080; color=white" label="Procurar Arquivo" class="q-ma-sm"
-                @click="openSearchFileDialog()" />
+              <q-btn
+                style="background: #FF0080; color=white"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
-            <div v-else-if="!eventValid && filesCountSpecialist === 0" class="textandbutton column">
-              <span>
-                Relatório sendo finalizado
-              </span>
+            <div
+              v-else-if="!eventValid && filesCountSpecialist === 0"
+              class="textandbutton column"
+            >
+              <span> Relatório sendo finalizado </span>
               <div class="icone-ampulheta">
-                <img src="../../../../assets/icons/ampulheta.png" alt="" width="40" height="40" />
+                <img
+                  src="../../../../assets/icons/ampulheta.png"
+                  alt=""
+                  width="40"
+                  height="40"
+                />
               </div>
             </div>
-            <div v-else-if="!eventValid && filesCountSpecialist >= 1" class="textandbutton column">
-              <span>
-                Baixar aqui o relatório da sua mentoria
-              </span>
+            <div
+              v-else-if="!eventValid && filesCountSpecialist >= 1"
+              class="textandbutton column"
+            >
+              <span> Baixar aqui o relatório da sua mentoria </span>
               <div class="icones">
-                <img src="../../../../assets/icons/visto.png" alt="" width="80" height="50" />
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
               </div>
-              <q-btn style="background: #FF0080; color=white" label="Visualizar Relatório" class="q-ma-sm"
-                @click="openFileDialog('SPECIALIST')" />
+              <q-btn
+                style="background: #FF0080; color=white"
+                label="Visualizar Relatório"
+                class="q-ma-sm"
+                @click="openFileDialog('SPECIALIST')"
+              />
             </div>
           </div>
-          <div class="col-3" v-else>
-            <div v-if="eventValid && filesCountUser == 0 && enableUploadFileUser" class="textandbutton column">
+          <div class="col-xs-12 col-sm-3" v-else>
+            <div
+              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+              class="textandbutton column"
+            >
               <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
               <div class="icones">
-                <img src="../../../../assets/icons/bloqueio.png" alt="" width="80" height="50" />
+                <img
+                  src="../../../../assets/icons/bloqueio.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
               </div>
             </div>
 
-            <div v-else-if="eventValid && filesCountUser >= 1 && enableUploadFileUser
-              " class="textandbutton column">
+            <div
+              v-else-if="
+                eventValid && filesCountUser >= 1 && enableUploadFileUser
+              "
+              class="textandbutton column"
+            >
               <span class="q-ma-sm txt-center">Baixar currículo</span>
               <div class="icones">
-                <img src="../../../../assets/icons/visto.png" alt="" width="80" height="50" />
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
               </div>
-              <q-btn v-if="userType === 'SPECIALIST'" style="background: #FF0080; color=white"
-                label="Visualizar Arquivos Usuário" class="q-ma-sm" @click="openFileDialog('USER')" />
+              <q-btn
+                v-if="userType === 'SPECIALIST'"
+                style="background: #FF0080; color=white"
+                label="Visualizar Arquivos Usuário"
+                class="q-ma-sm"
+                @click="openFileDialog('USER')"
+              />
             </div>
 
-            <div v-else-if="!eventValid && filesCountSpecialist === 0" class="textandbutton column">
+            <div
+              v-else-if="!eventValid && filesCountSpecialist === 0"
+              class="textandbutton column"
+            >
               <span class="q-ma-sm txt-center">Relatório Pendente</span>
               <div class="icones">
-                <img src="../../../../assets/icons/bloqueio.png" alt="" width="80" height="50" />
+                <img
+                  src="../../../../assets/icons/bloqueio.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                />
               </div>
-              <q-btn style="background: #000; color: #fff" label="Procurar Arquivo" class="q-ma-sm"
-                @click="openSearchFileDialog()" />
+              <q-btn
+                style="background: #000; color: #fff"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
 
-            <div v-else-if="!eventValid && filesCountSpecialist > 0" class="textandbutton column">
+            <div
+              v-else-if="!eventValid && filesCountSpecialist > 0"
+              class="textandbutton column"
+            >
               <span class="q-ma-sm txt-center">Relatório Carregado</span>
               <div class="icones">
-                <img src="../../../../assets/icons/visto.png" alt="" width="80" height="50" class="imagem" />
+                <img
+                  src="../../../../assets/icons/visto.png"
+                  alt=""
+                  width="80"
+                  height="50"
+                  class="imagem"
+                />
               </div>
-              <q-btn style="background: #000; color: #fff" label="Procurar Arquivo" class="q-ma-sm"
-                @click="openSearchFileDialog()" />
+              <q-btn
+                style="background: #000; color: #fff"
+                label="Procurar Arquivo"
+                class="q-ma-sm"
+                @click="openSearchFileDialog()"
+              />
             </div>
           </div>
 
-          <div class="event-schedule-hour col-2">
-            <q-rating v-model="rate" max="5" size="2em" color="gold" icon="star_border" icon-selected="star"
-              :disable="eventValid" @click="!eventValid ? rateSpecialist() : null" />
+          <div
+            class="event-schedule-hour col-xs-12 col-sm-2 justify-center event-schedule-star"
+          >
+            <q-rating
+              v-model="rate"
+              max="5"
+              size="2em"
+              color="gold"
+              icon="star_border"
+              icon-selected="star"
+              :disable="eventValid"
+              @click="!eventValid ? rateSpecialist() : null"
+            />
           </div>
-          <div class="event-schedule-hour col-2">
+          <div class="event-schedule-hour col-xs-12 col-sm-2">
             <div class="text-subtitle1 text-center">
-              <q-btn v-if="eventValid" color="white" class="text-caption" flat @click="goMeet()"
-                :disable="!lessThen1Hour">Ir para reunião</q-btn>
+              <q-btn
+                v-if="eventValid"
+                color="white"
+                class="text-caption"
+                flat
+                @click="goMeet()"
+                :disable="!lessThen1Hour"
+                >Ir para reunião</q-btn
+              >
               <div v-else class="text-caption" color="white">
                 Evento já terminou
               </div>
             </div>
           </div>
-          <div class="col-1 text-center">
-            <q-btn v-if="eventValid" color="white" class="text-caption" flat @click="confirm = true">
+          <div
+            class="col-xs-12 col-sm-1 text-center justify-center"
+            v-if="eventValid && !lessThen3Hours && userType === 'USER'"
+          >
+            <q-btn
+              v-if="eventValid && !lessThen3Hours && userType === 'USER'"
+              color="white"
+              class="text-caption"
+              flat
+              @click="confirm = true"
+            >
               <q-tooltip> Cancelar Agendamento </q-tooltip>
-              <q-icon v-if="eventValid && !lessThen24Hours && userType === 'USER'" name="mdi-delete-outline"
-                class="event-schedule-delete-icon text-h5"></q-icon>
+              <q-icon
+                v-if="eventValid && !lessThen3Hours && userType === 'USER'"
+                name="mdi-delete-outline"
+                class="event-schedule-delete-icon text-h5"
+              ></q-icon>
             </q-btn>
           </div>
         </div>
@@ -136,22 +262,40 @@
       <q-dialog v-model="confirm" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <q-avatar icon="mdi-exclamation" color="negative" text-color="white" />
-            <span class="q-ml-sm">Deseja confirmar o cancelamento do horário agendado?</span>
+            <q-avatar
+              icon="mdi-exclamation"
+              color="negative"
+              text-color="white"
+            />
+            <span class="q-ml-sm"
+              >Deseja confirmar o cancelamento do horário agendado?</span
+            >
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn flat label="Sim" color="primary" v-close-popup @click="cancelSchedule()" />
+            <q-btn
+              flat
+              label="Sim"
+              color="primary"
+              v-close-popup
+              @click="cancelSchedule()"
+            />
             <q-btn flat label="Não" color="primary" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
     </q-banner>
 
-    <SearchFileDialog ref="searchFileDialog" v-if="searchDialog"
-      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id" />
-    <ViewFileDialog ref="viewFileDialog" v-if="viewDialog"
-      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id" />
+    <SearchFileDialog
+      ref="searchFileDialog"
+      v-if="searchDialog"
+      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id"
+    />
+    <ViewFileDialog
+      ref="viewFileDialog"
+      v-if="viewDialog"
+      :identifier="Object.entries(this.schedulesGroup)[0][1][0].id"
+    />
   </div>
 </template>
 
@@ -173,7 +317,7 @@ export default {
       productName: "",
       hour: "",
       eventValid: true,
-      lessThen24Hours: false,
+      lessThen3Hours: false,
       lessThen1Hour: false,
       moreThen1Hour: false,
       confirm: false,
@@ -300,7 +444,7 @@ export default {
 
     dateSchedule = new Date(
       dateSchedule.setHours(
-        dateSchedule.getHours() + dateSchedule.getTimezoneOffset() / 60 + 1
+        dateSchedule.getHours() + dateSchedule.getTimezoneOffset() / 60
       )
     );
 
@@ -310,11 +454,26 @@ export default {
       actualDate.setHours(actualDate.getHours())
     );
 
+    console.log("actualDateAddEventDuration", actualDateAddEventDuration);
+    console.log("dateSchedule", dateSchedule);
+    console.log("actualDate", actualDate);
+
     this.eventValid = !(actualDateAddEventDuration > dateSchedule);
 
-    const diffHours = Math.abs(actualDate - dateSchedule) / 36e5;
+    const getDiffHours = (dt2, dt1) => {
+      console.log("dt2", dt2);
 
-    this.lessThen24Hours = diffHours < 24;
+      console.log("dt1", dt1);
+      var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+      diff /= 60 * 60;
+      return Math.abs(Math.round(diff));
+    };
+
+    const diffHours = getDiffHours(actualDate, dateSchedule);
+
+    console.log("diffHours", diffHours);
+
+    this.lessThen3Hours = diffHours < 3;
     this.lessThen1Hour = diffHours < 2;
     this.moreThen1Hour = diffHours > 1;
 
@@ -329,11 +488,11 @@ export default {
 
     this.productName =
       this.eventSchedule.schedules[0].product &&
-        this.eventSchedule.schedules[0].product.name
+      this.eventSchedule.schedules[0].product.name
         ? this.eventSchedule.schedules[0].product.name
         : "Serviço não identificado";
 
-    let hour = `0${dateSchedule.getHours() - 1}`;
+    let hour = `0${dateSchedule.getHours()}`;
     hour = hour.substring(hour.length - 2);
 
     let minute = `0${dateSchedule.getMinutes()}`;
@@ -397,5 +556,26 @@ export default {
 
 .bg-prepara-me-green-specialist {
   background-color: #15aa7c !important;
+}
+
+@media screen and (max-width: 600px) {
+  .display-hour {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .display-hour > div {
+    font-size: 12px;
+  }
+
+  .event-schedule-product > div {
+    font-size: 12px;
+  }
+
+  .event-schedule-star {
+    display: flex;
+  }
 }
 </style>

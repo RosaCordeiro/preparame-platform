@@ -62,9 +62,7 @@ export default {
   },
   components: {
     EventSchedule: () => {
-      const component = window.mobileAndTabletCheck()
-        ? import("../templates/EventScheduleMobile.vue")
-        : import("../templates/EventSchedule.vue");
+      const component = import("../templates/EventSchedule.vue");
       return component;
     },
   },
