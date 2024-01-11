@@ -69,7 +69,17 @@ export default {
             backgroundColor: {
               label: "Cor de Fundo",
               name: "backgroundColor",
-              size: "12",
+              size: "6",
+              row: 2,
+              col: 1,
+              model: "",
+              type: "Color",
+              visible: true,
+            },
+            buttonColor: {
+              label: "Cor do Botão",
+              name: "buttonColor",
+              size: "6",
               row: 2,
               col: 1,
               model: "",

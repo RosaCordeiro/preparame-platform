@@ -83,7 +83,17 @@
           </div>
         </div>
 
-        <button @click="download" :disabled="!accept">BAIXAR GRÁTIS</button>
+        {{ buttonDisabled }}
+
+        <button
+          :style="{
+            backgroundColor: config.buttonColor,
+          }"
+          @click="download"
+          :disabled="buttonDisabled"
+        >
+          BAIXAR GRÁTIS
+        </button>
       </section>
 
       <section class="right">
@@ -111,6 +121,16 @@ export default {
       company: "",
       role: "",
     };
+  },
+  computed: {
+    buttonDisabled() {
+      return (
+        !this.accept ||
+        this.name === "" ||
+        this.email === "" ||
+        this.phone === ""
+      );
+    },
   },
   methods: {
     download() {
