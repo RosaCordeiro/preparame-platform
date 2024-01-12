@@ -5,11 +5,7 @@
         <h1>Quem <b>Somos</b></h1>
       </div>
       <div class="who-we-are-employees-container">
-        <WhoWeAreEmployee
-          v-for="employee in employees"
-          :key="employee.name"
-          :employee="employee"
-        />
+        <WhoWeAreEmployee v-for="employee in employees" :key="employee.name" :employee="employee" />
       </div>
     </div>
   </div>
@@ -31,11 +27,6 @@ export default {
           img: "prelucy",
         },
         {
-          name: "Leandro de Andria",
-          function: "Especialista em carreira e recrutador",
-          img: "preleandro",
-        },
-        {
           name: "Bárbara Cardozo",
           function: "Especialista em recrutamento e seleção",
           img: "prebarbara",
@@ -46,14 +37,34 @@ export default {
           img: "preandrea",
         },
         {
-          name: "Raquel Tetti",
-          function: "Especialista em carreira",
-          img: "preraquel",
-        },
-        {
           name: "Priscila Dietrich",
           function: "Psicologa e especialista em recrutamento e seleção",
           img: "prepriscila",
+        },
+        {
+          name: "Laianna Lima",
+          function: "Operações",
+          img: "prelaianna",
+        },
+        {
+          name: "Patricia Froner",
+          function: "Especialista Finanças Pessoais",
+          img: "prepatricia",
+        },
+        {
+          name: "Ana Carolina de Marcos",
+          function: "Psicóloga e especialista em carreira",
+          img: "preana",
+        },
+        {
+          name: "Ananda Arruda",
+          function: "Psicóloga e especialista em carreira",
+          img: "preananda",
+        },
+        {
+          name: "Thaís Vilela",
+          function: "Comercial",
+          img: "prethais",
         },
       ],
     };
