@@ -55,7 +55,7 @@ export default {
   data: () => {
     return {
       subscribers: null,
-      registerType: "parentChild",
+      /* registerType: "parentChild", */
       editUrl: "/companies",
       tables: {
         mainTable: {
@@ -221,7 +221,7 @@ export default {
           },
         },
 
-        childTable: {
+        /* childTable: {
           content: "companySubscriptionPlan",
           apiUrl: "/companies/:id/subscriptionPlans",
           removeUrl: "companies/subscriptionPlans",
@@ -349,7 +349,7 @@ export default {
             },
           ],
           tableData: [],
-        },
+        }, */
       },
       breadcrumbs: [
         {

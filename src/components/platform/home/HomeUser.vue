@@ -105,9 +105,9 @@
             <img src="../../../assets/imgs/popup-recent-demission.png" />
           </div>
           <div class="container-info">
-            <div class="title">Foi demitida(o) em 2023?</div>
+            <img src="../../../assets/imgs/passou.png" />
             <div class="sub-title">Queremos saber como foi sua experiência</div>
-            <div class="detail">é bem rapidinho</div>
+            <div class="detail">é rapidinho</div>
             <div class="buton" @click="answerSurvey()">Responder Pesquisa</div>
           </div>
         </div>
@@ -264,6 +264,63 @@ export default {
 </script>
 
 <style lang="scss">
+h2 {
+  font-size: 50px;
+  color: black;
+  text-align: center;
+}
+
+h2 span {
+  background-color: #16a085;
+  padding: 8px 30px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  border-radius: 25px;
+  line-height: 1.3;
+}
+
+h2 span:last-child {
+  border-radius: 0 0 25px 25px;
+  position: relative;
+}
+
+/* add  -webkit-mask-image: radial-gradient(circle 10px at 0 0, transparent 0, transparent 20px, black 21px) with before and after in last span */
+h2 span:last-child:before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: -11px;
+  width: 50px;
+  height: 50px;
+  background-color: #16a085;
+  border-radius: 25px;
+  -webkit-mask-image: radial-gradient(
+    circle 1px at 0px 50px,
+    transparent 0,
+    transparent 30px,
+    black 21px
+  );
+}
+
+h2 span:last-child:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  right: -30px;
+  top: -11px;
+  width: 50px;
+  height: 50px;
+  background-color: #16a085;
+  border-radius: 25px;
+  -webkit-mask-image: radial-gradient(
+    circle 1px at 50px 50px,
+    transparent 0,
+    transparent 30px,
+    black 21px
+  );
+}
+
 .home-external-user {
   height: 100%;
 }
