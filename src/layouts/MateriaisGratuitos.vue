@@ -162,8 +162,8 @@ export default {
       }
 
       downloadFileFromUrl(
-        this.config.title + " - Prepara.me",
-        this.config.file
+        this.config.file_url,
+        this.config.title + " - Prepara.me"
       );
     },
   },
