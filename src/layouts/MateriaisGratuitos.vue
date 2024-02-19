@@ -83,8 +83,6 @@
           </div>
         </div>
 
-        {{ buttonDisabled }}
-
         <button
           :style="{
             backgroundColor: config.buttonColor,
