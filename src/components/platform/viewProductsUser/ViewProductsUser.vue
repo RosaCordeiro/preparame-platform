@@ -53,11 +53,27 @@
                   />
                 </div>
               </q-td>
+              <q-td key="fileUser" :props="props">
+                <div class="row justify-center">
+                  <span class="col-12" style="text-align: center">
+                    {{ props.row.countfilesuser }} arquivos do usuário
+                  </span>
+                  <q-btn
+                    color="primary"
+                    label="Adicionar Arquivos"
+                    @click="openSearchFileDialog(props.row)"
+                  />
+                </div>
+              </q-td>
             </q-tr>
           </template>
         </q-table>
       </div>
     </CrudRegister>
+    <SearchFileDialog
+      ref="searchFileDialog"
+      :identifier="`AddProductToUserRegisterCrudSearchFileDialog`"
+    />
     <ViewFileDialogVue ref="viewFileDialog" />
   </div>
 </template>
@@ -72,11 +88,13 @@ import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
 import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
+import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
     ViewFileDialogVue,
+    SearchFileDialog,
   },
   data: () => {
     return {
@@ -172,6 +190,13 @@ export default {
           align: "center",
           sortable: true,
         },
+        {
+          name: "fileUser",
+          label: "Adicionar Produto ao Usuário",
+          field: "fileUser",
+          align: "center",
+          sortable: true,
+        },
       ],
       filters: [
         {
@@ -191,6 +216,13 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    openSearchFileDialog(data) {
+      this.searchDialog = true;
+      console.log(this.$refs.searchFileDialog);
+      setTimeout(() => {
+        this.$refs.searchFileDialog.show(data.id);
+      }, 10);
+    },
     viewFileDialog: function (product) {
       console.log(product);
       this.$refs.viewFileDialog.show(product.id, "ALL");
