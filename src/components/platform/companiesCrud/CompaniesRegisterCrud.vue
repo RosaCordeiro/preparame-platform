@@ -378,6 +378,8 @@ export default {
   },
   methods: {
     initPageCompany: async function () {
+      if (!this.id) return;
+
       filterCrud([], `companies/pageById/${this.id}`)
         .then((res) => {
           for (const key in res) {
