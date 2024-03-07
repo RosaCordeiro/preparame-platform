@@ -14,11 +14,23 @@ export const downloadFileFromUrl = async (url, fileName) => {
   fetch(url, {
     method: "get",
   })
-    .then((res) => res.blob())
-    .then((res) => {
+    .then(async (res) => {
+      const contentType = res.headers.get("Content-Type");
+      const fileExtension = contentType ? contentType.split("/")[1] : "unknown";
+
+      return {
+        blob: await res.blob(),
+        fileExtension: fileExtension,
+      };
+    })
+    .then((data) => {
       const aElement = document.createElement("a");
-      aElement.setAttribute("download", fileName);
-      const href = URL.createObjectURL(res);
+
+      // Concatenando a extensão do arquivo ao nome
+      const fullFileName = `${fileName}.${data.fileExtension}`;
+
+      aElement.setAttribute("download", fullFileName);
+      const href = URL.createObjectURL(data.blob);
       aElement.href = href;
       aElement.setAttribute("target", "_blank");
       aElement.click();

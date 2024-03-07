@@ -8,6 +8,7 @@
           :blockCreateNew="blockCreateNew"
           :blockRemove="blockRemove"
         />
+        <slot name="title"> </slot>
         <CrudQueryFilter :rows="rows" v-if="filters.length > 0" />
         <CrudQueryTable
           ref="table"

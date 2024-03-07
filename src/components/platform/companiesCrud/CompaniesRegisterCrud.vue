@@ -1,11 +1,6 @@
 <template>
   <div class="company-crud">
-    <CrudRegister
-      :breadcrumbs="breadcrumbs"
-      :title="title"
-      :tables="tables"
-      :registerType="registerType"
-    >
+    <CrudRegister :breadcrumbs="breadcrumbs" :title="title" :tables="tables">
       <template #belowTable>
         <q-card class="crud-register-form q-mt-md">
           <q-card-section>
@@ -55,7 +50,7 @@ export default {
   data: () => {
     return {
       subscribers: null,
-      registerType: "parentChild",
+      /* registerType: "parentChild", */
       editUrl: "/companies",
       tables: {
         mainTable: {
@@ -221,7 +216,7 @@ export default {
           },
         },
 
-        childTable: {
+        /* childTable: {
           content: "companySubscriptionPlan",
           apiUrl: "/companies/:id/subscriptionPlans",
           removeUrl: "companies/subscriptionPlans",
@@ -349,7 +344,7 @@ export default {
             },
           ],
           tableData: [],
-        },
+        }, */
       },
       breadcrumbs: [
         {

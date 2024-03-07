@@ -57,13 +57,14 @@ export default {
   async created() {
     this.productId = this.$route.params.productId;
 
-    await this.loadSpecialists();
     await this.loadProduct();
+    await this.loadSpecialists();
   },
   methods: {
     loadProduct: async function () {
       const products = await filterCrud([], `products/${this.productId}`);
       this.product = products[0];
+      this.productId = this.product.id;
     },
     loadSpecialists: async function () {
       const filtersProductSpecialist = [

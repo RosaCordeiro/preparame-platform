@@ -23,7 +23,7 @@
 
         <input
           type="text"
-          placeholder="Nome"
+          placeholder="Nome *"
           name="name"
           v-model="name"
           class="input"
@@ -31,7 +31,7 @@
 
         <input
           type="text"
-          placeholder="E-mail principal"
+          placeholder="E-mail principal *"
           name="email"
           v-model="email"
           class="input"
@@ -41,7 +41,7 @@
           dense
           borderless
           type="text"
-          placeholder="Telefone"
+          placeholder="Telefone *"
           name="phone"
           v-model="phone"
           mask="(##) #####-####"
@@ -82,8 +82,6 @@
             Demissão Responsável e outros temas de Gestão de Pessoas
           </div>
         </div>
-
-        {{ buttonDisabled }}
 
         <button
           :style="{
@@ -163,7 +161,10 @@ export default {
         );
       }
 
-      downloadFileFromUrl(this.config.file_url, this.config.file);
+      downloadFileFromUrl(
+        this.config.file_url,
+        this.config.title + " - Prepara.me"
+      );
     },
   },
   async mounted() {
