@@ -442,19 +442,10 @@ export default {
           data.mainTable
         );
 
-        if (companyCreated.status === 201) {
-          this.tables.childTable.apiUrl = this.tables.childTable.apiUrl.replace(
-            ":id",
-            companyCreated.data.id
-          );
-
-          data.childTable.forEach(async (values) => {
-            await saveCrud(this.tables.childTable.apiUrl, values);
-          });
-        }
-
         return companyCreated;
       } catch (err) {
+        console.log(err);
+
         showError(err);
 
         return false;
