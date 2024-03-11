@@ -102,6 +102,12 @@
                   height="40"
                 />
               </div>
+              <q-btn
+                style="background: #fff; color: #000"
+                label="Visualizar Seus Arquivos"
+                class="q-ma-sm"
+                @click="openFileDialog('ALL')"
+              />
             </div>
             <div
               v-else-if="!eventValid && filesCountSpecialist >= 1"
@@ -118,9 +124,9 @@
               </div>
               <q-btn
                 style="background: #FF0080; color=white"
-                label="Visualizar Relatório"
+                label="Visualizar Relatório e Arquivos"
                 class="q-ma-sm"
-                @click="openFileDialog('SPECIALIST')"
+                @click="openFileDialog('ALL')"
               />
             </div>
           </div>
