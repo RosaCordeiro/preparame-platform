@@ -1,5 +1,8 @@
 <template>
-  <div class="search-file-dialog-widget" :id="`search-file-dialog-${identifier}`">
+  <div
+    class="search-file-dialog-widget"
+    :id="`search-file-dialog-${identifier}`"
+  >
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
         <div class="file-container" v-for="(file, index) in files" :key="index">
@@ -8,8 +11,16 @@
           </p>
           <q-btn flat icon="close" color="white" @click="removeFile(file)" />
         </div>
-        <p v-if="files.length > 0">Você tem {{ files.length }} arquivos anexados</p>
-        <input class="input__file" type="file" accept=".pdf, .docx, image/*" @change="changeFile" multiple />
+        <p v-if="files.length > 0">
+          Você tem {{ files.length }} arquivos anexados
+        </p>
+        <input
+          class="input__file"
+          type="file"
+          accept=".pdf, .docx, image/*"
+          @change="changeFile"
+          multiple
+        />
       </div>
       <div class="button__cancel">
         <q-icon name="close" size="25px" color="grey" @click="close()" />
@@ -30,8 +41,8 @@ export default {
   props: {
     identifier: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
     DeuCertoDialog,
@@ -53,7 +64,7 @@ export default {
         ).length;
         let userType = localStorage.getItem("userType");
         if (userType == "ADMIN") {
-          this.$parent.listProducts()
+          this.$parent.listProducts();
         }
       },
       deep: true,
@@ -61,8 +72,10 @@ export default {
   },
   methods: {
     async changeFile(e) {
-      if (this.files.length + e.target.files.length > 3) {
-        showError("Você só pode enviar até 3 arquivos");
+      const maxFiles = localStorage.getItem("userType") == "SPECIALIST" ? 5 : 3;
+
+      if (this.files.length + e.target.files.length > maxFiles) {
+        showError(`Você só pode enviar até ${maxFiles} arquivos`);
         return;
       }
 
@@ -107,12 +120,14 @@ export default {
       );
     },
     openUrl(url) {
-      console.log(url)
+      console.log(url);
       window.open(url, "_blank");
     },
     show(id) {
       this.id = id;
-      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
 
       confirmDialog.classList.add("show");
       setTimeout(() => {
@@ -122,10 +137,10 @@ export default {
       let userType = localStorage.getItem("userType");
 
       if (userType == "ADMIN") {
-        userType = "USER"
+        userType = "USER";
       }
 
-      console.log(userType)
+      console.log(userType);
 
       filterCrud(
         [],
@@ -136,7 +151,9 @@ export default {
     },
     confirm() {
       window.func();
-      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
@@ -145,13 +162,15 @@ export default {
       }, 300);
     },
     close() {
-      const confirmDialog = document.getElementById(`search-file-dialog-${this.identifier}`);
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
         confirmDialog.classList.remove("hide");
       }, 300);
-    }
+    },
   },
 };
 </script>
