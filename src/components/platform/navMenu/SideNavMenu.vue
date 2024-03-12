@@ -99,6 +99,13 @@ const menu = {
         url: "mentoring",
       },
       {
+        icon: "category",
+        label: "Materiais Gratuitos",
+        separator: false,
+        url: "materials",
+      },
+
+      {
         icon: "open_in_new",
         label: "Ver Objetivos dos Clientes",
         separator: false,

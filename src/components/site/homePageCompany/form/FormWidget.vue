@@ -86,15 +86,25 @@
     </q-input>
 
     <div class="container-form">
-      <q-checkbox v-model="acceptTerms"/>
-      <div class="text-form confirm" style="text-align: start;">
+      <q-checkbox v-model="acceptTerms" />
+      <div class="text-form confirm" style="text-align: start">
         Aceito a
-        <a @click="goUrl('PrivacyTerms')" :style="{
-        color: $parent.clockColor,
-      }">Política de Privacidade</a> e os
-        <a @click="goUrl('useTerms')" :style="{
-        color: $parent.clockColor,
-      }">Termos de Uso</a> deste site.
+        <a
+          @click="goUrl('PrivacyTerms')"
+          :style="{
+            color: $parent.clockColor,
+          }"
+          >Política de Privacidade</a
+        >
+        e os
+        <a
+          @click="goUrl('useTerms')"
+          :style="{
+            color: $parent.clockColor,
+          }"
+          >Termos de Uso</a
+        >
+        deste site.
       </div>
     </div>
 
@@ -135,18 +145,18 @@ export default {
         showError("É necessário aceitar os termos do site para se cadastrar.");
         return;
       }
-        const response = await signUp(
-          true,
-          {
-            name: this.name,
-            email: this.email,
-            documentId: this.cpf,
-            password: this.password,
-            confirmPassword: this.confirmPassword,
-          },
-          "",
-          this.$route.params.companyName
-        );
+      const response = await signUp(
+        true,
+        {
+          name: this.name,
+          email: this.email,
+          documentId: this.cpf,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+        },
+        "",
+        this.$route.params.companyName
+      );
 
       if (response === true) {
         this.$router.push({ path: "/login" });

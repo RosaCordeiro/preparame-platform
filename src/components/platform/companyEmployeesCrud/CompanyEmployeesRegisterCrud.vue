@@ -121,9 +121,9 @@ export default {
             easyRegister: {
               label: "Cadastro Simples",
               name: "easyRegister",
-              size: "3",
+              size: "6",
               row: 4,
-              col: 2,
+              col: 1,
               model: "",
               type: "Select",
               options: [
@@ -137,6 +137,56 @@ export default {
                 },
               ],
               visible: true,
+            },
+            /*
+              entryDate
+              position
+              department
+            */
+            entryDate: {
+              label: "Data de Entrada",
+              name: "entryDate",
+              size: "6",
+              row: 5,
+              col: 1,
+              model: "",
+              type: "Date",
+              visible: true,
+            },
+            position: {
+              label: "Cargo",
+              name: "position",
+              size: "6",
+              row: 5,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            department: {
+              label: "Departamento",
+              name: "department",
+              size: "6",
+              row: 6,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            planId: {
+              label: "Plano",
+              name: "planId",
+              size: "6",
+              row: 6,
+              col: 2,
+              model: "",
+              type: "DialogSelect",
+              visible: true,
+              options: {
+                table: "subscriptionPlans",
+                value: "id",
+                label: "name",
+              },
             },
           },
         },
@@ -163,8 +213,8 @@ export default {
     save: async function (data) {
       try {
         if (!data.mainTable.companyId) {
-          showError("Necessário informar a empresa")
-          return 
+          showError("Necessário informar a empresa");
+          return;
         }
 
         const url = this.tables.mainTable.apiUrl.replace(

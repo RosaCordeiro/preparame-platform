@@ -8,6 +8,7 @@ import { userRoutes } from "./users.route";
 import { simulatorVideosGroupRoutes } from "./simulatorVideos.route";
 import { resumeRoutes } from "./resume.route";
 import { mentoringRoutes } from "./mentoring.route";
+import { materialsRoutes } from "./materials.route";
 
 const platformRoutesGroup = [
   ...loginRoutes,
@@ -21,6 +22,7 @@ const platformRoutesGroup = [
     ...simulatorVideosGroupRoutes,
     ...resumeRoutes,
     ...mentoringRoutes,
+    ...materialsRoutes,
   ].map((route) => {
     route.beforeEnter = (to, from, next) => {
       console.log("beforeEnter");

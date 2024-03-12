@@ -1,19 +1,19 @@
 <template>
-  <div class="search-file-dialog-widget" id="search-file-dialog">
+  <div
+    class="search-file-dialog-widget"
+    :id="`search-file-dialog-${identifier}`"
+  >
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
-        <p style="color: black"></p>
-        <div v-if="files.length === 0" class="not-found">
-          <p>Nenhum arquivo encontrado</p>
-        </div>
         <div class="file-container" v-for="(file, index) in files" :key="index">
           <p @click="openUrl(file.fileLink)">
             {{ file.fileName }}
           </p>
-
           <q-btn flat icon="close" color="white" @click="removeFile(file)" />
         </div>
-
+        <p v-if="files.length > 0">
+          Você tem {{ files.length }} arquivos anexados
+        </p>
         <input
           class="input__file"
           type="file"
@@ -22,9 +22,8 @@
           multiple
         />
       </div>
-
       <div class="button__cancel">
-        <q-icon name="close" size="25px" color="grey" />
+        <q-icon name="close" size="25px" color="grey" @click="close()" />
       </div>
     </div>
 
@@ -39,6 +38,12 @@ import { saveCrud } from "./general/crud/utils/saveCrud";
 import DeuCertoDialog from "./DeuCertoDialog.vue";
 
 export default {
+  props: {
+    identifier: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     DeuCertoDialog,
   },
@@ -57,26 +62,20 @@ export default {
         this.$parent.filesCountSpecialist = this.files.filter(
           (f) => f.fileType === "SPECIALIST"
         ).length;
+        let userType = localStorage.getItem("userType");
+        if (userType == "ADMIN") {
+          this.$parent.listProducts();
+        }
       },
       deep: true,
     },
   },
-  mounted() {
-    const cancelButton = document.querySelector(".button__cancel");
-
-    cancelButton.addEventListener("click", () => {
-      const confirmDialog = document.getElementById("search-file-dialog");
-
-      confirmDialog.classList.remove("show");
-      setTimeout(() => {
-        confirmDialog.classList.remove("hide");
-      }, 300);
-    });
-  },
   methods: {
     async changeFile(e) {
-      if (this.files.length + e.target.files.length > 3) {
-        showError("Você só pode enviar até 3 arquivos");
+      const maxFiles = localStorage.getItem("userType") == "SPECIALIST" ? 5 : 3;
+
+      if (this.files.length + e.target.files.length > maxFiles) {
+        showError(`Você só pode enviar até ${maxFiles} arquivos`);
         return;
       }
 
@@ -87,12 +86,19 @@ export default {
 
       formData.append("specialistScheduleId", this.id);
 
+      let userType = localStorage.getItem("userType");
+
+      if (userType == "ADMIN") {
+        formData.append("fileType", "USER");
+      }
+      this.$q.loading.show();
       await saveCrud(`specialists/schedule-files`, formData, "POST").then(
         (response) => {
           this.$refs.deuCertoDialog.show();
           this.files = [...this.files, ...response.data];
         }
       );
+      this.$q.loading.hide();
     },
     removeFile(file) {
       confirmDialog(
@@ -114,34 +120,55 @@ export default {
       );
     },
     openUrl(url) {
+      console.log(url);
       window.open(url, "_blank");
     },
     show(id) {
       this.id = id;
-      const confirmDialog = document.getElementById("search-file-dialog");
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
 
       confirmDialog.classList.add("show");
       setTimeout(() => {
         confirmDialog.classList.add("hide");
       }, 300);
 
-      const userType = localStorage.getItem("userType");
+      let userType = localStorage.getItem("userType");
+
+      if (userType == "ADMIN") {
+        userType = "USER";
+      }
+
+      console.log(userType);
 
       filterCrud(
         [],
         `specialists/schedule/${id}/schedule-files?type=${userType}`
       ).then((response) => {
-        this.files = response;
+        this.files = JSON.parse(JSON.stringify(response));
       });
     },
     confirm() {
       window.func();
-      const confirmDialog = document.getElementById("search-file-dialog");
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
         confirmDialog.classList.remove("hide");
         this.func = null;
+      }, 300);
+    },
+    close() {
+      const confirmDialog = document.getElementById(
+        `search-file-dialog-${this.identifier}`
+      );
+
+      confirmDialog.classList.remove("show");
+      setTimeout(() => {
+        confirmDialog.classList.remove("hide");
       }, 300);
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-file-dialog-widget" id="view-file-dialog">
+  <div class="view-file-dialog-widget" :id="`view-file-dialog-${identifier}`">
     <div class="view-file-dialog-container">
       <div class="view-file-dialog-container-text">
         <div v-if="files.length === 0" class="not-found">
@@ -26,6 +26,12 @@
 import { filterCrud } from "./general/crud/utils/filterCrud";
 
 export default {
+  props: {
+    identifier: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       id: null,
@@ -35,7 +41,7 @@ export default {
   },
   methods: {
     close() {
-      const confirmDialog = document.getElementById("view-file-dialog");
+      const confirmDialog = document.getElementById(`view-file-dialog-${this.identifier}`);
 
       confirmDialog.classList.remove("show");
       setTimeout(() => {
@@ -50,7 +56,7 @@ export default {
     async show(id, userTypeStorage) {
       this.id = id;
       this.userTypeStorage = userTypeStorage;
-      const confirmDialog = document.getElementById("view-file-dialog");
+      const confirmDialog = document.getElementById(`view-file-dialog-${this.identifier}`);
 
       confirmDialog.classList.add("show");
       setTimeout(() => {
@@ -67,7 +73,7 @@ export default {
         [],
         `specialists/schedule/${id}/schedule-files${userType}`
       );
-      this.files = response;
+      this.files = JSON.parse(JSON.stringify(response));
     },
   },
 };

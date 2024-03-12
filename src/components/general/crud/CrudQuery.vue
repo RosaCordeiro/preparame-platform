@@ -8,12 +8,15 @@
           :blockCreateNew="blockCreateNew"
           :blockRemove="blockRemove"
         />
+        <slot name="title"> </slot>
         <CrudQueryFilter :rows="rows" v-if="filters.length > 0" />
         <CrudQueryTable
           ref="table"
           :result="{ columns, data }"
           :blockRemove="blockRemove"
-        />
+        >
+          <slot> </slot>
+        </CrudQueryTable>
       </div>
     </q-page>
   </div>

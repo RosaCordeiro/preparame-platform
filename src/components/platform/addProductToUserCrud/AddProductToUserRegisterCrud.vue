@@ -55,6 +55,18 @@
                   />
                 </div>
               </q-td>
+              <q-td key="fileUser" :props="props">
+                <div class="row justify-center">
+                  <span class="col-12" style="text-align: center">
+                    {{ props.row.countfilesuser }} arquivos do usuário
+                  </span>
+                  <q-btn
+                    color="primary"
+                    label="Adicionar Arquivos"
+                    @click="openSearchFileDialog(props.row)"
+                  />
+                </div>
+              </q-td>
               <q-td key="actions" :props="props">
                 <q-btn-group>
                   <q-btn
@@ -62,6 +74,16 @@
                     icon="mdi-delete"
                     :disable="props.row.availableQuantity === 0"
                     @click="deleteProduct(props.row)"
+                  ></q-btn>
+                </q-btn-group>
+              </q-td>
+              <q-td key="cancel" :props="props">
+                <q-btn-group>
+                  <q-btn
+                    color="negative"
+                    icon="mdi-cancel"
+                    :disable="disableCancel(props.row)"
+                    @click="cancelProduct(props.row)"
                   ></q-btn>
                 </q-btn-group>
               </q-td>
@@ -82,8 +104,14 @@
         </q-table>
       </div>
     </CrudRegister>
-
-    <ViewFileDialogVue ref="viewFileDialog" />
+    <SearchFileDialog
+      ref="searchFileDialog"
+      :identifier="`AddProductToUserRegisterCrudSearchFileDialog`"
+    />
+    <ViewFileDialogVue
+      ref="viewFileDialog"
+      :identifier="`AddProductToUserRegisterCrudViewFileDialog`"
+    />
   </div>
 </template>
 
@@ -97,12 +125,15 @@ import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
 import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
+import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
     ViewFileDialogVue,
+    SearchFileDialog,
   },
+
   data: () => {
     return {
       registerType: "unique",
@@ -181,6 +212,7 @@ export default {
           field: "dateSchedule",
           align: "left",
           sortable: true,
+          format: (val) => val,
         },
 
         {
@@ -206,9 +238,23 @@ export default {
           sortable: true,
         },
         {
+          name: "fileUser",
+          label: "Adicionar Produto ao Usuário",
+          field: "fileUser",
+          align: "center",
+          sortable: true,
+        },
+        {
           name: "actions",
           label: "Ações",
           field: "actions",
+          align: "center",
+        },
+        /* cancel */
+        {
+          name: "cancel",
+          label: "Cancelar",
+          field: "cancel",
           align: "center",
         },
       ],
@@ -224,12 +270,33 @@ export default {
       ],
     };
   },
+  props: ["schedulesGroup", "userType"],
   created() {
     this.id = this.$router.history.current.params.id;
 
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    openSearchFileDialog(data) {
+      this.searchDialog = true;
+      console.log(this.$refs.searchFileDialog);
+      setTimeout(() => {
+        this.$refs.searchFileDialog.show(data.id);
+      }, 10);
+    },
+    disableCancel(row) {
+      console.log(row);
+
+      if (row.schedule === null) return true;
+      if (row.schedule.dateSchedule === null) return true;
+
+      const isBefore = new Date(row.schedule.dateSchedule) < new Date();
+
+      if (isBefore) {
+        return true;
+      }
+    },
+
     viewFileDialog: function (product) {
       this.$refs.viewFileDialog.show(product.id, "ALL");
     },
@@ -283,6 +350,24 @@ export default {
 
         return false;
       }
+    },
+    cancelProduct: async function (data) {
+      console.log(data);
+
+      confirmDialog(
+        "Atenção",
+        "Deseja realmente cancelar este produto?",
+        async () => {
+          await saveCrud(
+            `specialists/schedule/${data.id}/cancel`,
+            { revertAvailableProduct: true },
+            "post"
+          );
+
+          showSucess("Cancelado com sucesso.");
+          this.listProducts();
+        }
+      );
     },
     deleteProduct: async function (data) {
       confirmDialog(

@@ -19,15 +19,18 @@
     :visible-columns="visibleColumns"
   >
     <template v-slot:top-right>
-      <q-input
-        borderless
-        dense
-        debounce="300"
-        v-model="filter"
-        placeholder="Search"
-      >
-        <q-icon slot="append" name="search"></q-icon>
-      </q-input>
+      <div class="row">
+        <slot> </slot>
+        <q-input
+          borderless
+          dense
+          debounce="300"
+          v-model="filter"
+          placeholder="Search"
+        >
+          <q-icon slot="append" name="search"></q-icon>
+        </q-input>
+      </div>
     </template>
 
     <template v-slot:body-cell-accepted="props">
@@ -53,6 +56,16 @@
           @click="realocate(props.row)"
           :disable="blockRemove"
         ></q-btn>
+      </q-td>
+    </template>
+
+    <template v-slot:body-cell-clickable="props">
+      <q-td auto-width :props="props">
+        <a
+          :href="`#/MateriaisGratuitos/${props.row.slug}`"
+          style="color: blue; text-decoration: underline"
+          >Ir até página</a
+        >
       </q-td>
     </template>
 

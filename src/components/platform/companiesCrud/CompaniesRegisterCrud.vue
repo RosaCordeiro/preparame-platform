@@ -1,11 +1,6 @@
 <template>
   <div class="company-crud">
-    <CrudRegister
-      :breadcrumbs="breadcrumbs"
-      :title="title"
-      :tables="tables"
-      :registerType="registerType"
-    >
+    <CrudRegister :breadcrumbs="breadcrumbs" :title="title" :tables="tables">
       <template #belowTable>
         <q-card class="crud-register-form q-mt-md">
           <q-card-section>
@@ -55,7 +50,7 @@ export default {
   data: () => {
     return {
       subscribers: null,
-      registerType: "parentChild",
+      /* registerType: "parentChild", */
       editUrl: "/companies",
       tables: {
         mainTable: {
@@ -221,7 +216,7 @@ export default {
           },
         },
 
-        childTable: {
+        /* childTable: {
           content: "companySubscriptionPlan",
           apiUrl: "/companies/:id/subscriptionPlans",
           removeUrl: "companies/subscriptionPlans",
@@ -349,7 +344,7 @@ export default {
             },
           ],
           tableData: [],
-        },
+        }, */
       },
       breadcrumbs: [
         {
@@ -378,6 +373,8 @@ export default {
   },
   methods: {
     initPageCompany: async function () {
+      if (!this.id) return;
+
       filterCrud([], `companies/pageById/${this.id}`)
         .then((res) => {
           for (const key in res) {
@@ -445,19 +442,10 @@ export default {
           data.mainTable
         );
 
-        if (companyCreated.status === 201) {
-          this.tables.childTable.apiUrl = this.tables.childTable.apiUrl.replace(
-            ":id",
-            companyCreated.data.id
-          );
-
-          data.childTable.forEach(async (values) => {
-            await saveCrud(this.tables.childTable.apiUrl, values);
-          });
-        }
-
         return companyCreated;
       } catch (err) {
+        console.log(err);
+
         showError(err);
 
         return false;
