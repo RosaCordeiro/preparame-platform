@@ -14,6 +14,7 @@ import CrudRegister from "./../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "./../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "./../../general/crud/utils/saveCrud.js";
 import { showError } from "../../../global.js";
+import emitter from "src/config/event-bus";
 
 export default {
   components: {
@@ -103,21 +104,6 @@ export default {
               type: "Input",
               visible: true,
             },
-            user: {
-              label: "Usuário",
-              name: "userId",
-              size: "6",
-              row: 4,
-              col: 1,
-              model: null,
-              type: "DialogSelect",
-              visible: true,
-              options: {
-                table: "users",
-                value: "id",
-                label: "name",
-              },
-            },
             easyRegister: {
               label: "Cadastro Simples",
               name: "easyRegister",
@@ -138,11 +124,21 @@ export default {
               ],
               visible: true,
             },
-            /*
-              entryDate
-              position
-              department
-            */
+            user: {
+              label: "Usuário",
+              name: "userId",
+              size: "6",
+              row: 4,
+              col: 1,
+              model: null,
+              type: "DialogSelect",
+              visible: false,
+              options: {
+                table: "users",
+                value: "id",
+                label: "name",
+              },
+            },
             entryDate: {
               label: "Data de Entrada",
               name: "entryDate",
@@ -191,6 +187,7 @@ export default {
           },
         },
       },
+
       breadcrumbs: [
         {
           title: "Funcionarios",
@@ -231,6 +228,25 @@ export default {
         return false;
       }
     },
+  },
+  mounted() {
+    console.log("id", this.$route.params.id);
+
+    if (this.$route.params.id) {
+      this.tables.mainTable.registerColumns.planId.visible = false;
+    }
+
+    emitter.on("update_model", (data) => {
+      if (data.label === "Cadastro Simples") {
+        this.tables.mainTable.registerColumns.user.visible =
+          data.model.value === "NO";
+      }
+    });
+  },
+  destroyed() {
+    try {
+      emitter.off("update_model");
+    } catch (error) {}
   },
 };
 </script>
