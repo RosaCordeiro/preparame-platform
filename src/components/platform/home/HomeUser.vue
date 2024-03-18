@@ -217,8 +217,12 @@ export default {
         userProduct.scheduled = true;
       }
 
+      userProduct.product.availableQuantity = userProduct.availableQuantity;
+
       this.products.push(userProduct.product);
     });
+
+    this.products = this.unirProdutos(this.products);
 
     this.loadUserCard = true;
 
@@ -228,6 +232,25 @@ export default {
     ...mapActions("users", ["setUserDates"]),
     goUrl: function (url) {
       this.$router.push({ path: `${url}/${this.product.id}` });
+    },
+    unirProdutos(array) {
+      const produtosUnicos = {};
+
+      // Percorre o array de produtos
+      array.forEach((produto) => {
+        // Verifica se o produto já está no objeto produtosUnicos
+        if (produtosUnicos[produto.id]) {
+          // Se estiver, soma as quantidades
+          produtosUnicos[produto.id].availableQuantity +=
+            produto.availableQuantity;
+        } else {
+          // Se não estiver, adiciona o produto ao objeto produtosUnicos
+          produtosUnicos[produto.id] = produto;
+        }
+      });
+
+      // Retorna um array com os produtos únicos
+      return Object.values(produtosUnicos);
     },
     updateSchedule() {
       try {

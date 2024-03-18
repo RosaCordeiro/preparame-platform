@@ -99,6 +99,10 @@
             <div v-else class="text-uppercase text-center text-weight-medium">
               Agendamento {{ product.name }} realizado
             </div>
+
+            <div class="badge">
+              {{ product.availableQuantity * 1 }}
+            </div>
           </div>
         </q-banner>
 
@@ -158,11 +162,11 @@
           </div>
         </q-banner>
         <div class="terms row q-pa-sm">
-              Ver
-            <a @click="goUrl('PrivacyTerms')">Políticas de Privacidade</a>
-               e
-            <a @click="goUrl('useTerms')">Termo de uso</a>
-          </div>
+          Ver
+          <a @click="goUrl('PrivacyTerms')">Políticas de Privacidade</a>
+          e
+          <a @click="goUrl('useTerms')">Termo de uso</a>
+        </div>
       </q-card-section>
     </q-card>
 
@@ -393,7 +397,7 @@ export default {
   max-width: 250px;
 }
 
-.terms{
+.terms {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -405,5 +409,28 @@ export default {
   cursor: pointer;
   margin-left: 3px;
   margin-right: 3px;
+}
+
+.user-card-banner-content {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+
+  top: -4px;
+  right: -12px;
+  border-radius: 50%;
+  background-color: #f00;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  z-index: 100;
 }
 </style>
