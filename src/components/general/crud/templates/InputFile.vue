@@ -3,7 +3,7 @@
     <img
       :src="model"
       style="width: 100%; height: 200px; object-fit: contain"
-      v-if="model !== null && model !== ''"
+      v-if="model !== null && model !== '' && type !== 'application/pdf'"
     />
 
     <q-file
@@ -41,6 +41,7 @@ export default {
     return {
       model: "",
       file: null,
+      type: "",
     };
   },
   created() {
@@ -76,7 +77,14 @@ export default {
       deep: true,
     },
     file(newQuestion, oldQuestion) {
-      this.fileToBase64();
+      if (newQuestion === null) return;
+
+      this.type = newQuestion.type;
+
+      if (newQuestion.type !== "application/pdf") {
+        this.fileToBase64();
+      }
+
       this.$parent.alterData(this.col.name, newQuestion);
     },
   },
