@@ -417,12 +417,11 @@ export default {
 
 .badge {
   position: absolute;
-
   top: -4px;
   right: -12px;
   border-radius: 50%;
-  background-color: #f00;
-  color: #fff;
+  background-color: #fff;
+  color: #1a27b7;
   font-size: 0.7rem;
   padding: 5px;
   width: 20px;
