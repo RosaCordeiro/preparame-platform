@@ -64,6 +64,7 @@
         <a
           :href="`#/MateriaisGratuitos/${props.row.slug}`"
           style="color: blue; text-decoration: underline"
+          target="_blank"
           >Ir até página</a
         >
       </q-td>

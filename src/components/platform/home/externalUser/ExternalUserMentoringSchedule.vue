@@ -9,7 +9,7 @@
       <q-img :src="s.image" :ratio="9 / 13" class="schedule-image q-mb-md" />
 
       <p class="schedule-title">Tema: {{ s.title }}</p>
-      <p>Quem: {{ s.mentor.name }}</p>
+      <p>Quem: {{ s.mentor !== null ? s.mentor.name : "N/A" }}</p>
       <p>Quando: {{ formatDateToStringWithHour(s.date) }}</p>
 
       <q-banner
