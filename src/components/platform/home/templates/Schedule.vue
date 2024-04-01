@@ -72,8 +72,18 @@ export default {
       const dateBegin = new Date();
       const dateEnd = new Date();
 
-      dateBegin.setDate(dateBegin.getDate() - 7);
-      dateEnd.setDate(dateEnd.getDate() + 30);
+      console.log("homeType", this.homeType === "USER");
+
+      dateBegin.setDate(
+        this.homeType === "USER"
+          ? dateBegin.getDate() - 1000
+          : dateBegin.getDate() - 30
+      );
+      dateEnd.setDate(
+        this.homeType === "USER"
+          ? dateEnd.getDate() + 1000
+          : dateEnd.getDate() + 30
+      );
 
       const filters = [
         {

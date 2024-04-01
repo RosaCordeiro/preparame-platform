@@ -435,6 +435,8 @@ export default {
   mounted() {
     this.eventSchedule.schedules = Object.entries(this.schedulesGroup)[0][1];
 
+    console.log("AQUI O EVENT SCHEDULE", this.eventSchedule.schedules[0]);
+
     this.filesCountSpecialist =
       this.eventSchedule.schedules[0].filesCountSpecialist;
     this.filesCountUser = this.eventSchedule.schedules[0].filesCountUser;
@@ -460,16 +462,31 @@ export default {
       actualDate.setHours(actualDate.getHours())
     );
 
-    console.log("actualDateAddEventDuration", actualDateAddEventDuration);
-    console.log("dateSchedule", dateSchedule);
-    console.log("actualDate", actualDate);
+    /*  if (
+      this.eventSchedule.schedules[0].id ===
+      "b7889fcc-f3fa-4d7b-a063-5beb0e9d3788"
+    ) {
+      console.log("actualDateAddEventDuration", actualDateAddEventDuration);
+      console.log("dateSchedule", dateSchedule);
+      console.log("actualDate", actualDate);
 
-    this.eventValid = !(actualDateAddEventDuration > dateSchedule);
+
+      console.log("dateScheduleMore", dateScheduleMore);
+    } */
+    /* const dateScheduleMore = new Date(
+      dateSchedule.setHours(dateSchedule.getHours() + 1)
+    ); */
+
+    const compareDateSchedule = new Date(
+      JSON.parse(JSON.stringify(dateSchedule))
+    ).setHours(dateSchedule.getHours() + 1);
+
+    this.eventValid = !(actualDateAddEventDuration > compareDateSchedule);
 
     const getDiffHours = (dt2, dt1) => {
-      console.log("dt2", dt2);
+      /* console.log("dt2", dt2);
 
-      console.log("dt1", dt1);
+      console.log("dt1", dt1); */
       var diff = (dt2.getTime() - dt1.getTime()) / 1000;
       diff /= 60 * 60;
       return Math.abs(Math.round(diff));
@@ -477,7 +494,7 @@ export default {
 
     const diffHours = getDiffHours(actualDate, dateSchedule);
 
-    console.log("diffHours", diffHours);
+    //console.log("diffHours", diffHours);
 
     this.lessThen3Hours = diffHours < 3;
     this.lessThen1Hour = diffHours < 2;
