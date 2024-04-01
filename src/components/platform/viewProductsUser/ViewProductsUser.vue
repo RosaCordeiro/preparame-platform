@@ -1,24 +1,42 @@
 <template>
   <div class="product-crud">
-    <CrudRegister :breadcrumbs="breadcrumbs" :title="title" :tables="tables" :registerType="registerType"
-      :showActionButtons="false">
+    <CrudRegister
+      :breadcrumbs="breadcrumbs"
+      :title="title"
+      :tables="tables"
+      :registerType="registerType"
+      :showActionButtons="false"
+    >
       <div v-if="products.length > 0">
-        <q-table class="q-mt-md bg-secondary crud-table" :data="products" :columns="columns" table-class="bg-background"
-          table-header-class="text-white bg-secondary" no-data-label="Sem dados para mostrar."
-          no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa." dense
-          title="Resultado(s) Pesquisa" title-class="text-white bg-secondary crud-query-title"
-          rows-per-page-label="Linhas por página: ">
+        <q-table
+          class="q-mt-md bg-secondary crud-table"
+          :data="products"
+          :columns="columns"
+          table-class="bg-background"
+          table-header-class="text-white bg-secondary"
+          no-data-label="Sem dados para mostrar."
+          no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa."
+          dense
+          title="Resultado(s) Pesquisa"
+          title-class="text-white bg-secondary crud-query-title"
+          rows-per-page-label="Linhas por página: "
+        >
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td key="product" :props="props">{{ props.row.name }}</q-td>
               <q-td key="dateSchedule" :props="props">{{
-      props.row.schedule === null
-        ? "Não Agendado"
-        : formatDateToStringWithHour(props.row.schedule.dateSchedule)
-    }}</q-td>
+                props.row.schedule === null
+                  ? "Não Agendado"
+                  : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+              }}</q-td>
               <q-td key="specialist" :props="props">
-                <img v-if="props.row.specialist" :src="props.row.specialist.image" height="50" width="50"
-                  style="border-radius: 50%; object-fit: cover" />
+                <img
+                  v-if="props.row.specialist"
+                  :src="props.row.specialist.image"
+                  height="50"
+                  width="50"
+                  style="border-radius: 50%; object-fit: cover"
+                />
                 <div v-else>Não Atribuído</div>
               </q-td>
               <q-td key="fileStatus" :props="props">
@@ -27,17 +45,26 @@
                     {{ statusFiles(props.row) }}
                   </span>
 
-                  <q-btn v-if="props.row.countfilesuser > 0" color="primary" label="Visualizar Arquivos"
-                    @click="viewFileDialog(props.row)" />
+                  <q-btn
+                    v-if="props.row.countfilesuser > 0"
+                    color="primary"
+                    label="Visualizar Arquivos"
+                    @click="viewFileDialog(props.row)"
+                  />
                 </div>
               </q-td>
               <q-td key="fileUser" :props="props">
                 <div class="row justify-center">
                   <span class="col-12" style="text-align: center">
-                    {{ props.row.countfilesuser }} arquivos do usuário + {{ props.row.countfilesspecialist }} arquivos
-                    do especialista
+                    {{ props.row.countfilesuser }} arquivos do usuário +
+                    {{ props.row.countfilesspecialist }} arquivos do
+                    especialista
                   </span>
-                  <q-btn color="primary" label="Adicionar Arquivos" @click="openSearchFileDialog(props.row)" />
+                  <q-btn
+                    color="primary"
+                    label="Adicionar Arquivos"
+                    @click="openSearchFileDialog(props.row)"
+                  />
                 </div>
               </q-td>
             </q-tr>
@@ -45,7 +72,10 @@
         </q-table>
       </div>
     </CrudRegister>
-    <SearchFileDialog ref="searchFileDialog" :identifier="`AddProductToUserRegisterCrudSearchFileDialog`" />
+    <SearchFileDialog
+      ref="searchFileDialog"
+      :identifier="`AddProductToUserRegisterCrudSearchFileDialog`"
+    />
     <ViewFileDialogVue ref="viewFileDialog" />
   </div>
 </template>
@@ -293,7 +323,7 @@ export default {
   destroyed() {
     try {
       emitter.off("update_model");
-    } catch (error) { }
+    } catch (error) {}
   },
 };
 </script>

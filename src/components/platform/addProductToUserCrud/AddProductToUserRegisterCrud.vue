@@ -48,7 +48,6 @@
                   </span>
 
                   <q-btn
-                    v-if="props.row.countfilesuser > 0"
                     color="primary"
                     label="Visualizar Arquivos"
                     @click="viewFileDialog(props.row)"
@@ -398,6 +397,8 @@ export default {
 
       filterCrud(newFilter, "products/listProductByUserWithSpecialist").then(
         (res) => {
+          console.log(res);
+
           this.products = res;
         }
       );
