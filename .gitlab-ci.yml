@@ -19,7 +19,7 @@ deploy_job:
     - echo "Instalando dependências..."
     - npm install
     - echo "Gerando build..."
-    - npx quasar build
+    - sudo npx quasar build
     - echo "Publicando $projectName"
     - sudo pm2 restart $projectPm2Name
     - echo "Finalizando deploy..."
