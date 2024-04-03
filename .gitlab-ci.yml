@@ -10,13 +10,12 @@ deploy_job:
   stage: deploy
   script:
     - echo "Deploying develop branch..."
+    - echo "Acessando pasta do projeto..."
     - cd /var/www/$projetctFolder
     - git checkout .
     - git pull origin develop
-    - echo "Acessando pasta do projeto..."
-    - cd /var/www/$projetctFolder/code
     - echo "Dando permissão para a pasta do projeto..."
-    - sudo chmod -R 777 /var/www/$projetctFolder/code
+    - sudo chmod -R 777 /var/www/$projetctFolder
     - echo "Instalando dependências..."
     - npm install
     - echo "Gerando build..."
