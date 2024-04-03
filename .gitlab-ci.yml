@@ -17,8 +17,8 @@ deploy_job:
     - echo "Dando permissão para a pasta do projeto..."
     - sudo chmod -R 777 /var/www/$projetctFolder
     - echo "Instalando dependências..."
-    - npm install
     - npm install --save vue-apexcharts
+    - npm install
     - echo "Gerando build..."
     - sudo npx quasar build
     - echo "Publicando $projectName"
