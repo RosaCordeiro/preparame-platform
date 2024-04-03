@@ -12,7 +12,6 @@ deploy_job:
     - echo "Deploying develop branch..."
     - echo "Acessando pasta do projeto..."
     - cd /var/www/$projetctFolder
-    - git checkout .
     - git pull origin develop
     - echo "Dando permissão para a pasta do projeto..."
     - sudo chmod -R 777 /var/www/$projetctFolder
