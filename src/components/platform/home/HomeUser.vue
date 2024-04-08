@@ -36,7 +36,11 @@
                 'external-user-options': true,
               }"
             >
-              <Schedule :homeType="'USER'" ref="schedule" />
+              <Schedule
+                :homeType="'USER'"
+                ref="schedule"
+                v-if="!showMentoringCalendar"
+              />
               <div v-if="showMentoringCalendar">
                 <ExternalUserMentoringSchedule
                   @update-schedule="updateSchedule"
