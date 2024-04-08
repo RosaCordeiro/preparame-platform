@@ -344,7 +344,7 @@ export default {
   props: ["schedulesGroup", "userType"],
   computed: {
     enableUploadFileUser() {
-      return this.productsName.includes(this.productName);
+      return true;
     },
   },
   methods: {
