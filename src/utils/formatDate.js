@@ -67,7 +67,7 @@ function formatDateToStringWithHour(date) {
   const newDate = new Date(date);
 
   const formatedDate = new Date(
-    newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
+    newDate.setMinutes(newDate.getMinutes() + newDate.getTimezoneOffset())
   );
 
   const day = formatedDate.getDate().toString().padStart(2, "0");
