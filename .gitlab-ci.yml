@@ -3,25 +3,48 @@ stages:
 
 variables:
   projectName: Prepara.me - ADMIN
-  projetctFolder: admin/admin.preparame.n1.homolog.inf.br
   shouldRunCompose: "false"
-  projectPm2Name: admin.preparame.n1.homolog.inf.br
-deploy_job:
+  projetctFolderHomolog: admin/admin.preparame.n1.homolog.inf.br
+  projectPm2NameHomolog: admin.preparame.n1.homolog.inf.br
+  projetctFolderProduction: preparame_app
+  projectPm2NameProduction: plataforma
+
+deploy_homolog:
   stage: deploy
   script:
     - echo "Deploying develop branch..."
     - echo "Acessando pasta do projeto..."
-    - cd /var/www/$projetctFolder
+    - cd /var/www/$projetctFolderHomolog
     - git checkout .
     - git pull origin develop
     - echo "Dando permissão para a pasta do projeto..."
-    - sudo chmod -R 777 /var/www/$projetctFolder
+    - sudo chmod -R 777 /var/www/$projetctFolderHomolog
     - echo "Gerando build..."
     - sudo npx quasar build
     - echo "Publicando $projectName"
-    - sudo pm2 restart $projectPm2Name
+    - sudo pm2 restart $projectPm2NameHomolog
     - echo "Finalizando deploy..."
   tags:
     - homolog_sso
   only:
     - develop # Run on branches starting with ''
+
+deploy_production:
+  stage: deploy
+  script:
+    - echo "Deploying master branch..."
+    - echo "Acessando pasta do projeto..."
+    - cd /var/www/$projetctFolderProduction
+    - git checkout .
+    - git pull origin main
+    - echo "Dando permissão para a pasta do projeto..."
+    - sudo chmod -R 777 /var/www/$projetctFolderProduction
+    - echo "Gerando build..."
+    - sudo npx quasar build
+    - echo "Publicando $projectName"
+    - sudo pm2 restart $projectPm2NameProduction
+    - echo "Finalizando deploy..."
+  tags:
+    - production_sso
+  only:
+    - master # Run on branches starting with ''
