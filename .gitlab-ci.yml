@@ -47,4 +47,4 @@ deploy_production:
   tags:
     - production_sso
   only:
-    - master # Run on branches starting with ''
+    - main # Run on branches starting with ''
