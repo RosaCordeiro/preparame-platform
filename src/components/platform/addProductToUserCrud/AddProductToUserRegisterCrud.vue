@@ -26,7 +26,9 @@
               <q-td key="dateSchedule" :props="props">{{
                 props.row.schedule === null
                   ? "Não Agendado"
-                  : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+                  : formatDateToStringMentoringWithHour(
+                      props.row.schedule.dateSchedule
+                    )
               }}</q-td>
               <q-td key="specialist" :props="props">
                 <img
@@ -122,7 +124,7 @@ import { confirmDialog, showError, showSucess } from "../../../global.js";
 import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
-import { formatDateToStringWithHour } from "src/utils/formatDate";
+import { formatDateToStringMentoringWithHour } from "src/utils/formatDate";
 import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
 import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
@@ -337,7 +339,7 @@ export default {
         return "N/A";
       }
     },
-    formatDateToStringWithHour,
+    formatDateToStringMentoringWithHour,
     save: async function (data) {
       try {
         await saveCrud(this.tables.mainTable.apiUrl, data.mainTable);

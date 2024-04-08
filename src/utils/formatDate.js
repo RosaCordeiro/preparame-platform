@@ -83,8 +83,25 @@ function formatDateToStringWithHour(date) {
   return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
 
+function formatDateToStringMentoringWithHour(date) {
+  console.log("dateeeee", date);
+
+  const newDate = new Date(date);
+
+  console.log("newDate", newDate);
+
+  const day = newDate.getDate().toString().padStart(2, "0");
+  const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = newDate.getFullYear().toString().padStart(4, "0");
+  const hour = newDate.getHours().toString().padStart(2, "0");
+  const minute = newDate.getMinutes().toString().padStart(2, "0");
+
+  return `${day}/${month}/${year}, ${hour}:${minute}`;
+}
+
 export {
   formatDateToString,
   formatDateToStringMasked,
   formatDateToStringWithHour,
+  formatDateToStringMentoringWithHour,
 };
