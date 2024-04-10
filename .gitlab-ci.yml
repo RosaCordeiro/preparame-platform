@@ -45,6 +45,6 @@ deploy_production:
     - sudo pm2 restart $projectPm2NameProduction
     - echo "Finalizando deploy..."
   tags:
-    - production_sso
+    - preparame_prod
   only:
     - main # Run on branches starting with ''
