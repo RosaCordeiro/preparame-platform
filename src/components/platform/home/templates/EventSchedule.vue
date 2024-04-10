@@ -89,6 +89,7 @@
                 @click="openSearchFileDialog()"
               />
             </div>
+
             <div
               v-else-if="!eventValid && filesCountSpecialist === 0"
               class="textandbutton column"
@@ -147,9 +148,7 @@
             </div>
 
             <div
-              v-else-if="
-                eventValid && filesCountUser >= 1 && enableUploadFileUser
-              "
+              v-else-if="eventValid && filesCountUser >= 1"
               class="textandbutton column"
             >
               <span class="q-ma-sm txt-center">Baixar currículo</span>
@@ -344,7 +343,7 @@ export default {
   props: ["schedulesGroup", "userType"],
   computed: {
     enableUploadFileUser() {
-      return true;
+      return this.productsName.includes(this.productName);
     },
   },
   methods: {
