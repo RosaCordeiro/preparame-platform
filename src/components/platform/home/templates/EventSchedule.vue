@@ -51,165 +51,173 @@
 
           <div
             class="col-xs-12 col-sm-3 justify-center"
-            v-if="userType === 'USER'"
-          >
+            v-if="disableFileUpload"
+          ></div>
+          <div class="col-xs-12 col-sm-3 justify-center" v-else>
             <div
-              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
-              class="textandbutton column"
+              class="col-xs-12 col-sm-3 justify-center"
+              v-if="userType === 'USER'"
             >
-              <span class="q-ma-sm txt-center"
-                >Carregar seu currículo (mesmo que destualizado)</span
+              <div
+                v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+                class="textandbutton column"
               >
-              <q-btn
-                style="background: #FF0080; color=white"
-                label="Procurar Arquivo"
-                class="q-ma-sm"
-                @click="openSearchFileDialog()"
-              />
-            </div>
-            <div
-              v-else-if="
-                eventValid && filesCountUser >= 1 && enableUploadFileUser
-              "
-              class="textandbutton column"
-            >
-              <span class="q-ma-sm txt-center">Curriculo inserido</span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/visto.png"
-                  alt=""
-                  width="80"
-                  height="50"
+                <span class="q-ma-sm txt-center"
+                  >Carregar seu currículo (mesmo que destualizado)</span
+                >
+                <q-btn
+                  style="background: #FF0080; color=white"
+                  label="Procurar Arquivo"
+                  class="q-ma-sm"
+                  @click="openSearchFileDialog()"
                 />
               </div>
-              <q-btn
-                style="background: #FF0080; color=white"
-                label="Procurar Arquivo"
-                class="q-ma-sm"
-                @click="openSearchFileDialog()"
-              />
-            </div>
+              <div
+                v-else-if="
+                  eventValid && filesCountUser >= 1 && enableUploadFileUser
+                "
+                class="textandbutton column"
+              >
+                <span class="q-ma-sm txt-center">Curriculo inserido</span>
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/visto.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                  />
+                </div>
+                <q-btn
+                  style="background: #FF0080; color=white"
+                  label="Procurar Arquivo"
+                  class="q-ma-sm"
+                  @click="openSearchFileDialog()"
+                />
+              </div>
 
-            <div
-              v-else-if="!eventValid && filesCountSpecialist === 0"
-              class="textandbutton column"
-            >
-              <span> Relatório sendo finalizado </span>
-              <div class="icone-ampulheta">
-                <img
-                  src="../../../../assets/icons/ampulheta.png"
-                  alt=""
-                  width="40"
-                  height="40"
+              <div
+                v-else-if="!eventValid && filesCountSpecialist === 0"
+                class="textandbutton column"
+              >
+                <span> Relatório sendo finalizado </span>
+                <div class="icone-ampulheta">
+                  <img
+                    src="../../../../assets/icons/ampulheta.png"
+                    alt=""
+                    width="40"
+                    height="40"
+                  />
+                </div>
+                <q-btn
+                  style="background: #fff; color: #000"
+                  label="Visualizar Seus Arquivos"
+                  class="q-ma-sm"
+                  @click="openFileDialog('ALL')"
                 />
               </div>
-              <q-btn
-                style="background: #fff; color: #000"
-                label="Visualizar Seus Arquivos"
-                class="q-ma-sm"
-                @click="openFileDialog('ALL')"
-              />
-            </div>
-            <div
-              v-else-if="!eventValid && filesCountSpecialist >= 1"
-              class="textandbutton column"
-            >
-              <span> Baixar aqui o relatório da sua mentoria </span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/visto.png"
-                  alt=""
-                  width="80"
-                  height="50"
-                />
-              </div>
-              <q-btn
-                style="background: #FF0080; color=white"
-                label="Visualizar Relatório e Arquivos"
-                class="q-ma-sm"
-                @click="openFileDialog('ALL')"
-              />
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-3" v-else>
-            <div
-              v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
-              class="textandbutton column"
-            >
-              <span class="q-ma-sm txt-center">Agendamento sem currículo</span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/bloqueio.png"
-                  alt=""
-                  width="80"
-                  height="50"
+              <div
+                v-else-if="!eventValid && filesCountSpecialist >= 1"
+                class="textandbutton column"
+              >
+                <span> Baixar aqui o relatório da sua mentoria </span>
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/visto.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                  />
+                </div>
+                <q-btn
+                  style="background: #FF0080; color=white"
+                  label="Visualizar Relatório e Arquivos"
+                  class="q-ma-sm"
+                  @click="openFileDialog('ALL')"
                 />
               </div>
             </div>
+            <div class="col-xs-12 col-sm-3" v-else>
+              <div
+                v-if="eventValid && filesCountUser == 0 && enableUploadFileUser"
+                class="textandbutton column"
+              >
+                <span class="q-ma-sm txt-center"
+                  >Agendamento sem currículo</span
+                >
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/bloqueio.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                  />
+                </div>
+              </div>
 
-            <div
-              v-else-if="eventValid && filesCountUser >= 1"
-              class="textandbutton column"
-            >
-              <span class="q-ma-sm txt-center">Baixar currículo</span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/visto.png"
-                  alt=""
-                  width="80"
-                  height="50"
+              <div
+                v-else-if="eventValid && filesCountUser >= 1"
+                class="textandbutton column"
+              >
+                <span class="q-ma-sm txt-center">Baixar currículo</span>
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/visto.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                  />
+                </div>
+                <q-btn
+                  v-if="userType === 'SPECIALIST'"
+                  style="background: #FF0080; color=white"
+                  label="Visualizar Arquivos Usuário"
+                  class="q-ma-sm"
+                  @click="openFileDialog('USER')"
                 />
               </div>
-              <q-btn
-                v-if="userType === 'SPECIALIST'"
-                style="background: #FF0080; color=white"
-                label="Visualizar Arquivos Usuário"
-                class="q-ma-sm"
-                @click="openFileDialog('USER')"
-              />
-            </div>
 
-            <div
-              v-else-if="!eventValid && filesCountSpecialist === 0"
-              class="textandbutton column"
-            >
-              <span class="q-ma-sm txt-center">Relatório Pendente</span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/bloqueio.png"
-                  alt=""
-                  width="80"
-                  height="50"
+              <div
+                v-else-if="!eventValid && filesCountSpecialist === 0"
+                class="textandbutton column"
+              >
+                <span class="q-ma-sm txt-center">Relatório Pendente</span>
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/bloqueio.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                  />
+                </div>
+                <q-btn
+                  style="background: #000; color: #fff"
+                  label="Procurar Arquivo"
+                  class="q-ma-sm"
+                  @click="openSearchFileDialog()"
                 />
               </div>
-              <q-btn
-                style="background: #000; color: #fff"
-                label="Procurar Arquivo"
-                class="q-ma-sm"
-                @click="openSearchFileDialog()"
-              />
-            </div>
 
-            <div
-              v-else-if="!eventValid && filesCountSpecialist > 0"
-              class="textandbutton column"
-            >
-              <span class="q-ma-sm txt-center">Relatório Carregado</span>
-              <div class="icones">
-                <img
-                  src="../../../../assets/icons/visto.png"
-                  alt=""
-                  width="80"
-                  height="50"
-                  class="imagem"
+              <div
+                v-else-if="!eventValid && filesCountSpecialist > 0"
+                class="textandbutton column"
+              >
+                <span class="q-ma-sm txt-center">Relatório Carregado</span>
+                <div class="icones">
+                  <img
+                    src="../../../../assets/icons/visto.png"
+                    alt=""
+                    width="80"
+                    height="50"
+                    class="imagem"
+                  />
+                </div>
+                <q-btn
+                  style="background: #000; color: #fff"
+                  label="Procurar Arquivo"
+                  class="q-ma-sm"
+                  @click="openSearchFileDialog()"
                 />
               </div>
-              <q-btn
-                style="background: #000; color: #fff"
-                label="Procurar Arquivo"
-                class="q-ma-sm"
-                @click="openSearchFileDialog()"
-              />
             </div>
           </div>
 
@@ -338,12 +346,20 @@ export default {
         "Reconstrução de Curriculo + Relatório Perfil Link",
         "Reconstrução de Currículo em Ingles",
       ],
+      productsDisable: [
+        "Kit Recolocação",
+        "Orientação Previdenciária INSS",
+        "Aula de LinkedIn",
+      ],
     };
   },
   props: ["schedulesGroup", "userType"],
   computed: {
     enableUploadFileUser() {
       return this.productsName.includes(this.productName);
+    },
+    disableFileUpload() {
+      return this.productsDisable.includes(this.productName);
     },
   },
   methods: {
