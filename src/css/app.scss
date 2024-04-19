@@ -236,3 +236,122 @@ a {
     padding: 10px;
   }
 
+
+.apexcharts-legend.apx-legend-position-right, .apexcharts-legend.apx-legend-position-left{
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  transform: translateY(-5%);
+}
+
+
+.surpreso::before {
+  background: url("../../src/assets/icons/surpreso.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+/* alegre, aliviado, bravo, desesperado, indiferente, injustificado, inseguro, triste */
+.alegre::before {
+  background: url("../../src/assets/icons/alegre.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.aliviado::before {
+  background: url("../../src/assets/icons/aliviado.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.bravo::before {
+  background: url("../../src/assets/icons/bravo.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.desesperado::before {
+  background: url("../../src/assets/icons/desesperado.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.indiferente::before {
+  background: url("../../src/assets/icons/indiferente.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.injusticado::before {
+  background: url("../../src/assets/icons/injusticado.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.inseguro::before {
+  background: url("../../src/assets/icons/inseguro.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+.triste::before {
+  background: url("../../src/assets/icons/triste.png");
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  transform: translate(-7px, 2.5px);
+}
+
+

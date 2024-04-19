@@ -11,9 +11,11 @@
         <q-card-section class="home-company-nps-card-company">
           Sua empresa:
         </q-card-section>
-        <q-card-section class="home-company-labor-risk-card-nps" style="font-weight: bold">{{
-          termination
-        }}</q-card-section>
+        <q-card-section
+          class="home-company-labor-risk-card-nps"
+          style="font-weight: bold"
+          >{{ termination }}</q-card-section
+        >
       </div>
     </div>
   </q-card>
