@@ -609,4 +609,18 @@ export default {
   font-weight: 700;
   padding: 5px 20px;
 }
+
+@media (max-width: 768px) {
+  .box__three-columns-item,
+  .box__two-columns-item,
+  .card {
+    flex: 1 0 100%;
+  }
+
+  .card .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
 </style>
