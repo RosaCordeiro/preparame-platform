@@ -11,13 +11,45 @@
           <p>Unidade</p>
         </div>
 
-        <div class="box__button-actions-item">
-          <p>Área</p>
-        </div>
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Área"
+          text-color="white"
+          no-caps
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.area">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.area"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="area"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
 
-        <div class="box__button-actions-item">
-          <p>Cargo</p>
-        </div>
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Cargo"
+          text-color="white"
+          no-caps
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.role">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.role"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="role"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
 
         <div class="box__button-actions-item">
           <p>Baixar</p>
@@ -281,6 +313,9 @@ export default {
       dashboardsLoaded: false,
       mobile: false,
       chartOptions: {},
+      parameters: {},
+      area: [],
+      role: [],
     };
   },
   props: ["companyId"],
@@ -292,6 +327,12 @@ export default {
     },
     feelingMap() {
       this.setChartOptions();
+    },
+    area() {
+      this.loadNpsSurveyAnswers();
+    },
+    role() {
+      this.loadNpsSurveyAnswers();
     },
   },
 
@@ -366,6 +407,11 @@ export default {
     removePercent(value) {
       return value.toString().replace("%", "") * 1;
     },
+    loadParameters: async function () {
+      const data = await filterCrud([], `companies/config/${this.companyId}`);
+
+      this.parameters = data;
+    },
     loadNpsSurveyAnswers: async function () {
       if (this.companyId === "null") {
         this.$q.notify({
@@ -383,10 +429,28 @@ export default {
         },
       ];
 
+      if (this.area.length > 0) {
+        filters.push({
+          name: "area",
+          model: JSON.stringify(this.area),
+        });
+      }
+
+      if (this.role.length > 0) {
+        filters.push({
+          name: "role",
+          model: JSON.stringify(this.role),
+        });
+      }
+
+      this.$q.loading.show();
+
       const npsSurveyReport = await filterCrud(
         filters,
         "reports/NPSSurveyAnswers"
       );
+
+      this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
       this.npsGeneral = npsSurveyReport.general.nps;
@@ -426,6 +490,7 @@ export default {
   async mounted() {
     this.mobile = window.mobileAndTabletCheck();
 
+    this.loadParameters();
     this.loadNpsSurveyAnswers();
 
     console.log(this.companyId);
