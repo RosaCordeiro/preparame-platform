@@ -84,9 +84,9 @@
           </div>
         </q-btn-dropdown>
 
-        <div class="box__button-actions-item">
+        <!-- <div class="box__button-actions-item">
           <p>Baixar</p>
-        </div>
+        </div> -->
       </div>
 
       <div class="box__three-columns">
@@ -597,10 +597,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.box__button-actions-item:last-child {
-  background: rgba(26, 39, 183, 1);
 }
 
 .box__button-actions-item p {
