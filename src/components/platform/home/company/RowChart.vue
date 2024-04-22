@@ -6,7 +6,9 @@
       <div class="chart__row">
         <div
           class="chart__row__value"
-          :style="`width: ${((data - minValue) * 100) / (maxValue - minValue)}%;
+          :style="`width: ${
+            isNaN(data) ? 0 : ((data - minValue) * 100) / (maxValue - minValue)
+          }%;
           }; background: ${
             data >= intersectionValue
               ? invertedColors
@@ -18,7 +20,7 @@
           }`"
         ></div>
 
-        <p>{{ data }}</p>
+        <p>{{ isNaN(data) ? "N/A" : data }}</p>
 
         <div class="first-emoji">
           <img

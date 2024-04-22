@@ -1,15 +1,48 @@
 <template>
   <div id="q-app" class="home-company">
     <q-page>
-      <div class="box__button-actions">
+      <div class="box__button-actions" v-if="userType !== 'ADMIN'">
         <!-- Período, Unidade, Área, Cargo, Baixar -->
-        <div class="box__button-actions-item">
-          <p>Período</p>
-        </div>
 
-        <div class="box__button-actions-item">
-          <p>Unidade</p>
-        </div>
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Período"
+          text-color="white"
+          no-caps
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.period">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.period"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="period"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Unidade"
+          text-color="white"
+          no-caps
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.unity">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.unity"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="unity"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
 
         <q-btn-dropdown
           class="box__button-actions-item"
@@ -212,7 +245,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card mapa">
         <div class="card-top">
           <h2>Mapa de sentimentos</h2>
 
@@ -314,8 +347,11 @@ export default {
       mobile: false,
       chartOptions: {},
       parameters: {},
+      period: [],
       area: [],
       role: [],
+      unity: [],
+      userType: localStorage.getItem("userType"),
     };
   },
   props: ["companyId"],
@@ -334,9 +370,29 @@ export default {
     role() {
       this.loadNpsSurveyAnswers();
     },
+    period() {
+      this.loadNpsSurveyAnswers();
+    },
+    unity() {
+      this.loadNpsSurveyAnswers();
+    },
   },
 
   methods: {
+    /* generatePdf() {
+      const element = document.querySelectorAll(".box__three-columns-item");
+
+      let options = {
+        margin: 1,
+        filename: "meu-documento.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+
+      // Usar html2pdf() passando o elemento e as opções
+      html2pdf().set(options).from(div).save();
+    }, */
     formatFeeling(feeling) {
       /* remove diacritics */
       feeling = feeling.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -443,6 +499,20 @@ export default {
         });
       }
 
+      if (this.period.length > 0) {
+        filters.push({
+          name: "period",
+          model: JSON.stringify(this.period),
+        });
+      }
+
+      if (this.unity.length > 0) {
+        filters.push({
+          name: "unity",
+          model: JSON.stringify(this.unity),
+        });
+      }
+
       this.$q.loading.show();
 
       const npsSurveyReport = await filterCrud(
@@ -490,7 +560,9 @@ export default {
   async mounted() {
     this.mobile = window.mobileAndTabletCheck();
 
-    this.loadParameters();
+    if (this.userType !== "ADMIN") {
+      this.loadParameters();
+    }
     this.loadNpsSurveyAnswers();
 
     console.log(this.companyId);
