@@ -343,8 +343,8 @@ export default {
       productsName: [
         "Reconstrução de Currículo Português",
         "Reconstrução de Curriculo Português + Inglês",
-        "Reconstrução de Curriculo + Relatório Perfil Link",
-        "Reconstrução de Currículo em Ingles",
+        "Reconstrução de Currículo em Inglês",
+        "Reconstrução de Currículo em Português + Relatório Perfil LinkedIn",
       ],
       productsDisable: [
         "Kit Recolocação",
@@ -356,6 +356,8 @@ export default {
   props: ["schedulesGroup", "userType"],
   computed: {
     enableUploadFileUser() {
+      console.log(this.productName);
+
       return this.productsName.includes(this.productName);
     },
     disableFileUpload() {
