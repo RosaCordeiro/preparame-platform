@@ -84,9 +84,12 @@
           </div>
         </q-btn-dropdown>
 
-        <!-- <div class="box__button-actions-item">
+        <div
+          class="box__button-actions-item box__button-actions-download"
+          @click="gerarPDF()"
+        >
           <p>Baixar</p>
-        </div> -->
+        </div>
       </div>
 
       <div class="box__three-columns">
@@ -245,7 +248,7 @@
         </div>
       </div>
 
-      <div class="card mapa">
+      <!-- <div class="card mapa">
         <div class="card-top">
           <h2>Mapa de sentimentos</h2>
 
@@ -259,7 +262,7 @@
           :options="chartOptions"
           :series="feelingMap.map((c) => c.count)"
         />
-      </div>
+      </div> -->
 
       <div class="card">
         <h2>Comparativo mapa de sentimentos</h2>
@@ -314,6 +317,8 @@ import RowChart from "../company/RowChart.vue";
 import RowChartNoEmojiString from "../company/RowChartNoEmojiString.vue";
 import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
+import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
 
 export default {
   components: {
@@ -379,19 +384,47 @@ export default {
   },
 
   methods: {
-    /* generatePdf() {
-      const element = document.querySelectorAll(".box__three-columns-item");
+    gerarPDF() {
+      const doc = new jsPDF({
+        orientation: "landscape",
+        format: "letter",
+        compress: true,
+      });
+
+      doc.html(document.getElementById("q-app"), {
+        x: 10,
+        y: 10,
+        autoPaging: true,
+        html2canvas: {
+          scale: 0.5,
+        },
+        windowWidth: document.getElementById("q-app").offsetWidth,
+        windowHeight: document.getElementById("q-app").offsetHeight,
+        callback: function (doc) {
+          doc.save("arquivo.pdf");
+        },
+      });
+
+      const element = document.getElementById("q-app"); // ou qualquer outro seletor para o elemento que você quer converter
+      doc.html(element, {
+        callback: function (doc) {
+          doc.save("arquivo.pdf");
+        },
+      });
+    },
+    /* gerarPDF() {
+      const element = document.getElementById("q-app");
 
       let options = {
         margin: 1,
         filename: "meu-documento.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 1 },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
       };
 
       // Usar html2pdf() passando o elemento e as opções
-      html2pdf().set(options).from(div).save();
+      html2pdf().set(options).from(element).save();
     }, */
     formatFeeling(feeling) {
       /* remove diacritics */
@@ -755,5 +788,10 @@ export default {
     flex-direction: column;
     justify-content: space-between;
   }
+}
+
+.box__button-actions-download {
+  background: rgba(26, 39, 183, 1);
+  cursor: pointer;
 }
 </style>
