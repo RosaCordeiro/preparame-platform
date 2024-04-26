@@ -143,7 +143,7 @@
             certo.
           </p>
         </div>
-        <div v-else-if="id === 'Pendências Trabalhistas'">
+        <div v-else-if="id === 'Pendências trabalhistas'">
           <span>Pendências Trabalhistas</span>
 
           <p>
