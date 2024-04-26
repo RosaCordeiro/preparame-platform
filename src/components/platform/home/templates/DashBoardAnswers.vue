@@ -84,12 +84,12 @@
           </div>
         </q-btn-dropdown>
 
-        <div
+        <!--  <div
           class="box__button-actions-item box__button-actions-download"
           @click="gerarPDF()"
         >
           <p>Baixar</p>
-        </div>
+        </div> -->
       </div>
 
       <div class="box__three-columns">
