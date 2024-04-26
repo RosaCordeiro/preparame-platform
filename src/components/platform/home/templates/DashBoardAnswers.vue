@@ -94,7 +94,7 @@
 
       <div class="box__three-columns">
         <div class="box__three-columns-item">
-          <h2>e-NPS</h2>
+          <IconInfo label="e-NPS" />
 
           <RowChart
             :title="'Sua Empresa'"
@@ -113,7 +113,8 @@
         </div>
 
         <div class="box__three-columns-item">
-          <h2>Risco Trabalhista</h2>
+          <IconInfo label="Risco Trabalhista" />
+
           <RowChart
             :title="'Sua Empresa'"
             :data="removePercent(laborRisk)"
@@ -135,7 +136,7 @@
         </div>
 
         <div class="box__three-columns-item">
-          <h2>Marca</h2>
+          <IconInfo label="Marca" />
           <RowChart
             :title="'Sua Empresa'"
             :data="removePercent(brandRisk)"
@@ -159,7 +160,7 @@
 
       <div class="box__two-columns">
         <div class="box__two-columns-item">
-          <h2>Realocados</h2>
+          <IconInfo label="Realocados" />
 
           <RowChartOneEmoji
             :title="'Sua Empresa'"
@@ -168,7 +169,7 @@
         </div>
 
         <div class="box__two-columns-item">
-          <h2>Acolhidos</h2>
+          <IconInfo label="Acolhidos" />
 
           <RowChartNoEmojiString :title="'Sua Empresa'" :data="welcomed" />
         </div>
@@ -176,7 +177,7 @@
 
       <div class="box__two-columns">
         <div class="box__two-columns-item">
-          <h2>Cálculos da rescisão estão corretos?</h2>
+          <IconInfo label="Cálculos da rescisão estão corretos?" />
 
           <RowChartOneEmojiExpanded
             :title="'Sua Empresa'"
@@ -189,7 +190,7 @@
         </div>
 
         <div class="box__two-columns-item">
-          <h2>Pendências trabalhistas</h2>
+          <IconInfo label="Pendências trabalhistas" />
 
           <RowChartOneEmojiExpanded
             :title="'Sua Empresa'"
@@ -208,7 +209,7 @@
 
       <div class="box__two-columns">
         <div class="box__two-columns-item">
-          <h2>Avaliação pós demissão</h2>
+          <IconInfo label="Avaliação pós demissão" />
 
           <div class="row">
             <h3 class="your-company">Sua empresa</h3>
@@ -228,7 +229,7 @@
         </div>
 
         <div class="box__two-columns-item">
-          <h2>Avaliação pós demissão</h2>
+          <IconInfo label="Avaliação pós demissão" />
 
           <div class="row">
             <h3 class="your-company">Geral</h3>
@@ -248,9 +249,9 @@
         </div>
       </div>
 
-      <!-- <div class="card mapa">
+      <div class="card mapa">
         <div class="card-top">
-          <h2>Mapa de sentimentos</h2>
+          <IconInfo label="Mapa de sentimentos" />
 
           <div class="tag">Sua empresa</div>
         </div>
@@ -262,7 +263,7 @@
           :options="chartOptions"
           :series="feelingMap.map((c) => c.count)"
         />
-      </div> -->
+      </div>
 
       <div class="card">
         <h2>Comparativo mapa de sentimentos</h2>
@@ -317,14 +318,13 @@ import RowChart from "../company/RowChart.vue";
 import RowChartNoEmojiString from "../company/RowChartNoEmojiString.vue";
 import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
-import jsPDF from "jspdf";
-import html2pdf from "html2pdf.js";
+import IconInfo from "src/components/general/IconInfo.vue";
 
 export default {
   components: {
     RowChart,
     RowChartOneEmoji,
-
+    IconInfo,
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
   },
