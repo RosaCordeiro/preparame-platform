@@ -590,15 +590,18 @@ export default {
       this.feelingMap = npsSurveyReport.feelingMap;
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
 
-      this.feelingMap = this.feelingMap.sort((a, b) => b.feeling - a.feeling);
+      function compareFeelings(a, b) {
+        if (a.feeling < b.feeling) {
+          return -1;
+        }
+        if (a.feeling > b.feeling) {
+          return 1;
+        }
+        return 0;
+      }
 
-      this.feelingMapGeneral = this.feelingMapGeneral.sort(
-        (a, b) => b.feeling - a.feeling
-      );
-
-      console.log("feelingMap", this.feelingMap);
-      console.log("feelingMapGeneral", this.feelingMapGeneral);
-      console.log("chegou?");
+      this.feelingMap.sort(compareFeelings);
+      this.feelingMapGeneral.sort(compareFeelings);
 
       this.dashboardsLoaded = true;
     },
