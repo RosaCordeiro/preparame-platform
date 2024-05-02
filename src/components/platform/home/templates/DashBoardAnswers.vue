@@ -162,7 +162,7 @@
         <div class="box__two-columns-item">
           <IconInfo label="Realocados" />
 
-          <RowChartOneEmoji
+          <RowChartOneEmojiWithoutIntersection
             :title="'Sua Empresa'"
             :data="removePercent(realocateds)"
           />
@@ -224,6 +224,7 @@
               :title="i.question"
               :data="removePercent(i.count)"
               :intersectionValue="7"
+              :textBold="false"
             />
           </div>
         </div>
@@ -244,6 +245,7 @@
               :title="i.question"
               :data="removePercent(i.count)"
               :intersectionValue="7"
+              :textBold="false"
             />
           </div>
         </div>
@@ -284,6 +286,7 @@
                 :width="'100%'"
                 :data="removePercent(i.count)"
                 :icon="formatFeeling(i.feeling)"
+                :textBold="false"
               />
             </div>
           </div>
@@ -303,6 +306,7 @@
                 :width="'100%'"
                 :data="removePercent(i.count)"
                 :icon="formatFeeling(i.feeling)"
+                :textBold="false"
               />
             </div>
           </div>
@@ -319,6 +323,7 @@ import RowChartNoEmojiString from "../company/RowChartNoEmojiString.vue";
 import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
 import IconInfo from "src/components/general/IconInfo.vue";
+import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
 
 export default {
   components: {
@@ -327,6 +332,7 @@ export default {
     IconInfo,
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
+    RowChartOneEmojiWithoutIntersection,
   },
   data() {
     return {
@@ -553,6 +559,8 @@ export default {
         "reports/NPSSurveyAnswers"
       );
 
+      console.log(npsSurveyReport);
+
       this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
@@ -687,7 +695,7 @@ export default {
 }
 
 .box__two-columns-item {
-  flex: 1 0 652px; /* Ajuste conforme sua necessidade */
+  flex: 1 0 400px; /* Ajuste conforme sua necessidade */
   box-sizing: border-box;
   padding: 20px;
   background: white;

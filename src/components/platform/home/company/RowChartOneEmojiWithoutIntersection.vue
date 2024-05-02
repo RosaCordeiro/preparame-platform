@@ -20,39 +20,14 @@
           :style="`width: ${
             isNaN(data) ? 0 : ((data - minValue) * 100) / (maxValue - minValue)
           }%;
-          }; background: ${
-            data >= intersectionValue
-              ? invertedColors
-                ? 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-                : 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : invertedColors
-              ? 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-          }`"
+          }; background: ${'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'}`"
         ></div>
 
         <p>{{ isNaN(data) ? "N/A" : data }}</p>
 
         <div class="emoji">
           <img
-            v-if="icon"
-            :src="getIcon(icon)"
-            alt="before"
-            width="24"
-            height="24"
-          />
-
-          <img
-            v-else-if="data >= intersectionValue"
             src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-
-          <img
-            v-else
-            src="../../../../assets/icons/triste.png"
             alt="before"
             width="24"
             height="24"
@@ -84,18 +59,7 @@ export default {
       type: Number,
       required: true,
     },
-    invertedIcons: {
-      type: Boolean,
-      default: false,
-    },
-    intersectionValue: {
-      type: Number,
-      default: 5,
-    },
-    invertedColors: {
-      type: Boolean,
-      default: false,
-    },
+
     minValue: {
       type: Number,
       default: 0,
