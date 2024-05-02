@@ -591,9 +591,14 @@ export default {
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
 
       this.feelingMap = this.feelingMap.sort((a, b) => b.feeling - a.feeling);
+
       this.feelingMapGeneral = this.feelingMapGeneral.sort(
         (a, b) => b.feeling - a.feeling
       );
+
+      console.log("feelingMap", this.feelingMap);
+      console.log("feelingMapGeneral", this.feelingMapGeneral);
+      console.log("chegou?");
 
       this.dashboardsLoaded = true;
     },
