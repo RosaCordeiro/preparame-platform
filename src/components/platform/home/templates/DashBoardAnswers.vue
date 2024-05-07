@@ -313,6 +313,8 @@
         </div>
       </div>
     </q-page>
+
+    <TextDialogWidget ref="infoWidget" />
   </div>
 </template>
 
@@ -324,10 +326,12 @@ import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
 import IconInfo from "src/components/general/IconInfo.vue";
 import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
+import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
 
 export default {
   components: {
     RowChart,
+    TextDialogWidget,
     RowChartOneEmoji,
     IconInfo,
     RowChartNoEmojiString,
@@ -604,6 +608,8 @@ export default {
       this.feelingMapGeneral.sort(compareFeelings);
 
       this.dashboardsLoaded = true;
+
+      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
     },
   },
   async mounted() {
