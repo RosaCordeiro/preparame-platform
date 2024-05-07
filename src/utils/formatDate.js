@@ -1,4 +1,8 @@
 function formatDateToString(date) {
+  if (!date || date === null || date === "") {
+    return "";
+  }
+
   let newDate = date.substr(0, 10);
 
   newDate = newDate.split("-");
