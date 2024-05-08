@@ -1,14 +1,29 @@
 <template>
-  <div id="q-app" class="home-company">
+  <div
+    id="q-app"
+    class="home-company"
+    :style="{
+      padding: this.userType === 'ADMIN' ? '0' : '20px',
+    }"
+  >
     <q-page>
-      <div class="box__button-actions" v-if="userType !== 'ADMIN'">
-        <!-- Período, Unidade, Área, Cargo, Baixar -->
+      <div class="box__button-actions">
+        <q-tooltip
+          anchor="top middle"
+          self="bottom middle"
+          v-if="disableFilters"
+        >
+          <div class="tooltip-text">
+            <p>Selecione uma empresa para habilitar os filtros.</p>
+          </div>
+        </q-tooltip>
 
         <q-btn-dropdown
           class="box__button-actions-item"
           label="Período"
           text-color="white"
           no-caps
+          :disable="disableFilters"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
@@ -29,6 +44,7 @@
           label="Unidade"
           text-color="white"
           no-caps
+          :disable="disableFilters"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
@@ -49,6 +65,7 @@
           label="Área"
           text-color="white"
           no-caps
+          :disable="disableFilters"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
@@ -69,6 +86,7 @@
           label="Cargo"
           text-color="white"
           no-caps
+          :disable="disableFilters"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
@@ -370,9 +388,23 @@ export default {
     };
   },
   props: ["companyId"],
+  computed: {
+    disableFilters() {
+      return (
+        this.companyId === "TUDO" ||
+        this.companyId === "B2B" ||
+        this.companyId === "B2C"
+      );
+    },
+  },
   watch: {
     companyId() {
-      console.log("companyId changed");
+      console.log("companyId changed", this.companyId);
+
+      this.period = [];
+      this.area = [];
+      this.role = [];
+      this.unity = [];
 
       this.loadNpsSurveyAnswers();
     },
@@ -507,11 +539,39 @@ export default {
       return value.toString().replace("%", "") * 1;
     },
     loadParameters: async function () {
-      const data = await filterCrud([], `companies/config/${this.companyId}`);
+      let filters = [];
+
+      if (this.period.length > 0) {
+        filters.push({
+          name: "period",
+          model: JSON.stringify(this.period),
+        });
+      }
+
+      if (this.unity.length > 0) {
+        filters.push({
+          name: "unity",
+          model: JSON.stringify(this.unity),
+        });
+      }
+
+      if (this.area.length > 0) {
+        filters.push({
+          name: "area",
+          model: JSON.stringify(this.area),
+        });
+      }
+
+      const data = await filterCrud(
+        filters,
+        `companies/config/${this.companyId}`
+      );
 
       this.parameters = data;
     },
     loadNpsSurveyAnswers: async function () {
+      this.loadParameters();
+
       if (this.companyId === "null") {
         this.$q.notify({
           type: "error",
@@ -632,7 +692,6 @@ export default {
   width: 100vw;
   height: 100%;
   overflow: auto;
-  padding: 20px;
 }
 
 .box__button-actions {
@@ -815,5 +874,10 @@ export default {
 .box__button-actions-download {
   background: rgba(26, 39, 183, 1);
   cursor: pointer;
+}
+
+.tooltip-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
 }
 </style>

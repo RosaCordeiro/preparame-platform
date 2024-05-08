@@ -1,12 +1,12 @@
 <template>
   <div id="q-app" class="schedule">
     <q-page class="q-pa-lg">
-      <div class="row q-pa-lg">
-        <q-card class="my-card col-lg-2 col-md-auto q-ma-sm">
-          <q-card-section class="row justify-center">
+      <div class="row row-cards">
+        <q-card class="my-card col-lg-2 col-md-auto">
+          <q-card-section class="row justify-center title-card">
             <b>Relatório</b></q-card-section
           >
-          <q-card-section class="row justify-center">
+          <q-card-section class="row justify-center" style="gap: 10px">
             <q-input
               outlined
               dense
@@ -28,25 +28,24 @@
             <q-btn
               label="Gerar"
               color="blue"
-              class="col-12 q-mt-sm"
+              class="col-12 q-mt-sm btn"
               @click="generateReport"
             />
           </q-card-section>
         </q-card>
         <q-card
-          class="my-card col-lg-2 col-md-auto q-ma-sm card-clicks"
+          class="my-card col-lg-2 col-md-auto card-clicks"
           v-for="click in clicks"
           :key="click.cn_name"
         >
-          <q-card-section class="row justify-center">
-            <b>{{ click.count }} Cliques</b></q-card-section
-          >
-          <q-card-section class="row justify-center q-mb-lg">
+          <q-card-section class="row justify-center q-mb-lg title-card">
             {{ click.cn_name }}
           </q-card-section>
+
+          <div class="text-card">{{ click.count }} Cliques</div>
         </q-card>
       </div>
-      <div class="row">
+      <div class="row-cards">
         <div class="filtro">
           <div>
             <q-btn
@@ -201,14 +200,19 @@ export default {
 
 <style>
 .btn {
-  background-color: color(srgb red green blue);
   border-radius: 25px;
   width: 275px;
   height: 60px;
   text-align: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: rgba(26, 39, 183, 1) !important;
+  color: white !important;
+  border-radius: 5px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .text {
@@ -223,9 +227,26 @@ export default {
 .my-card {
   min-height: 180px;
   width: 180px;
-  background-color: #f5f5f5;
+  background-color: #fff;
   border-radius: 10px;
   flex: 1;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.text-card {
+  position: absolute;
+  font-weight: bold;
+  padding-top: 15px;
+  top: 50%;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  color: rgba(91, 91, 91, 1);
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .date .q-field__label.no-pointer-events.absolute.ellipsis {
@@ -246,6 +267,30 @@ export default {
 }
 
 .filtro {
-  padding: 32px;
+  padding: 20px 0;
+}
+
+.filtro .text {
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+}
+
+.filtro label {
+  font-family: "Montserrat", sans-serif;
+}
+
+.title-card {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+  color: rgba(26, 39, 183, 1);
+}
+
+.row-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 </style>
