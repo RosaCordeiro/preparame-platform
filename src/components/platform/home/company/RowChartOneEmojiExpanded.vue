@@ -20,7 +20,8 @@
           }`"
         ></div>
 
-        <p>{{ isNaN(data) ? "N/A" : data + "%" }}</p>
+        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data + "%" }}</p>
+        <p v-else>Sem informações suficientes</p>
 
         <div class="emoji">
           <img
@@ -80,6 +81,10 @@ export default {
       default: 98,
     },
     invertedColors: {
+      type: Boolean,
+      default: false,
+    },
+    lessThanFive: {
       type: Boolean,
       default: false,
     },

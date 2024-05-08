@@ -9,7 +9,8 @@
           :style="`background: linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);`"
         ></div>
 
-        <p>{{ data }}</p>
+        <p v-if="!lessThanFive">{{ data }}</p>
+        <p v-else>Sem informações suficientes</p>
       </div>
     </div>
   </div>
@@ -31,6 +32,10 @@ export default {
     data: {
       type: String,
       required: true,
+    },
+    lessThanFive: {
+      type: Boolean,
+      default: false,
     },
   },
 };

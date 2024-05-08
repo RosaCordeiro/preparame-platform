@@ -120,6 +120,7 @@
             :maxValue="100"
             :data="removePercent(this.nps)"
             :intersectionValue="0"
+            :lessThanFive="lessThanFive"
           />
           <RowChart
             :title="'Média Geral'"
@@ -141,6 +142,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
+            :lessThanFive="lessThanFive"
           />
           <RowChart
             :title="'Média Geral'"
@@ -163,6 +165,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
+            :lessThanFive="lessThanFive"
           />
           <RowChart
             :title="'Média Geral'"
@@ -183,13 +186,18 @@
           <RowChartOneEmojiWithoutIntersection
             :title="'Sua Empresa'"
             :data="removePercent(realocateds)"
+            :lessThanFive="lessThanFive"
           />
         </div>
 
         <div class="box__two-columns-item">
           <IconInfo label="Acolhidos" />
 
-          <RowChartNoEmojiString :title="'Sua Empresa'" :data="welcomed" />
+          <RowChartNoEmojiString
+            :title="'Sua Empresa'"
+            :data="welcomed"
+            :lessThanFive="lessThanFive"
+          />
         </div>
       </div>
 
@@ -200,6 +208,7 @@
           <RowChartOneEmojiExpanded
             :title="'Sua Empresa'"
             :data="removePercent(termination)"
+            :lessThanFive="lessThanFive"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -215,6 +224,7 @@
             :data="removePercent(laborIssues)"
             :intersectionValue="3"
             :invertedColors="true"
+            :lessThanFive="lessThanFive"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -385,6 +395,7 @@ export default {
       role: [],
       unity: [],
       userType: localStorage.getItem("userType"),
+      lessThanFive: false,
     };
   },
   props: ["companyId"],
@@ -628,31 +639,30 @@ export default {
       this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
-      this.npsGeneral = npsSurveyReport.general.nps;
-
       this.brandRisk = npsSurveyReport.brandRisk;
-      this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
-
       this.laborRisk = npsSurveyReport.laborRisk;
-      this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
-
       this.realocateds = npsSurveyReport.realocateds;
-      this.realocatedsGeneral = npsSurveyReport.general.realocateds;
-
       this.welcomed = npsSurveyReport.welcomed;
-      this.welcomedGeneral = npsSurveyReport.general.welcomed;
-
       this.termination = npsSurveyReport.termination;
-      this.terminationGeneral = npsSurveyReport.general.termination;
-
       this.laborIssues = npsSurveyReport.laborIssues;
-      this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
-
       this.shutDown = npsSurveyReport.shutDown;
-      this.shutDownGeneral = npsSurveyReport.general.shutDown;
-
       this.feelingMap = npsSurveyReport.feelingMap;
+
+      if (npsSurveyReport.lessThanFive) {
+        this.nps = "Sem informações";
+      }
+
+      this.npsGeneral = npsSurveyReport.general.nps;
+      this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
+      this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
+      this.realocatedsGeneral = npsSurveyReport.general.realocateds;
+      this.welcomedGeneral = npsSurveyReport.general.welcomed;
+      this.terminationGeneral = npsSurveyReport.general.termination;
+      this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
+      this.shutDownGeneral = npsSurveyReport.general.shutDown;
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
+
+      this.lessThanFive = npsSurveyReport.lessThanFive;
 
       function compareFeelings(a, b) {
         if (a.feeling < b.feeling) {

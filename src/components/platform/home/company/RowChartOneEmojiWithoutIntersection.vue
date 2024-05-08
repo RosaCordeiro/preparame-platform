@@ -23,7 +23,8 @@
           }; background: ${'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'}`"
         ></div>
 
-        <p>{{ isNaN(data) ? "N/A" : data }}</p>
+        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data }}</p>
+        <p v-else>Sem informações suficientes</p>
 
         <div class="emoji">
           <img
@@ -75,6 +76,10 @@ export default {
     textBold: {
       type: Boolean,
       default: true,
+    },
+    lessThanFive: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

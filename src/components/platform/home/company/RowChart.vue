@@ -20,7 +20,8 @@
           }`"
         ></div>
 
-        <p>{{ isNaN(data) ? "N/A" : data }}</p>
+        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data }}</p>
+        <p v-else>Sem informações suficientes</p>
 
         <div class="first-emoji">
           <img
@@ -104,6 +105,10 @@ export default {
     data: {
       type: Number,
       required: true,
+    },
+    lessThanFive: {
+      type: Boolean,
+      default: false,
     },
   },
 };
