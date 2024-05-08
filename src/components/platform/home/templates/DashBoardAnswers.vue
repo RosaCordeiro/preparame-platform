@@ -226,7 +226,7 @@
       </div>
 
       <div class="box__two-columns">
-        <div class="box__two-columns-item">
+        <div class="box__two-columns-item" v-if="shutDown.length > 0">
           <IconInfo label="Avaliação pós demissão" />
 
           <div class="row">
@@ -269,7 +269,7 @@
         </div>
       </div>
 
-      <div class="card mapa">
+      <div class="card mapa" v-if="feelingMap.length > 0">
         <div class="card-top">
           <IconInfo label="Mapa de sentimentos" />
 
@@ -289,7 +289,7 @@
         <h2>Comparativo mapa de sentimentos</h2>
 
         <div class="row">
-          <div class="card-col">
+          <div class="card-col" v-if="feelingMap.length > 0">
             <div class="row">
               <h3 class="your-company">Sua empresa</h3>
 
