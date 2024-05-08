@@ -10,7 +10,7 @@
         ></div>
 
         <p v-if="!lessThanFive">{{ data }}</p>
-        <p v-else>Sem informações suficientes</p>
+        <p v-else>Informação insuficiente.</p>
       </div>
     </div>
   </div>
