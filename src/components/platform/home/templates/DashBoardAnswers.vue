@@ -679,6 +679,7 @@ export default {
 
       this.dashboardsLoaded = true;
 
+      this.$refs.infoWidget.close();
       if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
     },
   },
