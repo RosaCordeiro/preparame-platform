@@ -110,6 +110,21 @@
         </div> -->
       </div>
 
+      <div class="box__filters">
+        <div class="box__filters-title">Filtros selecionados</div>
+
+        <div class="box__filters-wrap" v-if="selectedFilters.length > 0">
+          <div
+            class="box__filters-wrap-item"
+            v-for="(i, index) in selectedFilters"
+            :key="index"
+          >
+            {{ i }}
+          </div>
+        </div>
+        <div v-else class="nofilter">Nenhum filtro selecionado</div>
+      </div>
+
       <div class="box__three-columns">
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
@@ -407,11 +422,12 @@ export default {
         this.companyId === "B2C"
       );
     },
+    selectedFilters() {
+      return [...this.period, ...this.area, ...this.role, ...this.unity];
+    },
   },
   watch: {
     companyId() {
-      console.log("companyId changed", this.companyId);
-
       this.period = [];
       this.area = [];
       this.role = [];
@@ -422,16 +438,16 @@ export default {
     feelingMap() {
       this.setChartOptions();
     },
-    area() {
+    area(f) {
       this.loadNpsSurveyAnswers();
     },
-    role() {
+    role(f) {
       this.loadNpsSurveyAnswers();
     },
-    period() {
+    period(f) {
       this.loadNpsSurveyAnswers();
     },
-    unity() {
+    unity(f) {
       this.loadNpsSurveyAnswers();
     },
   },
@@ -634,8 +650,6 @@ export default {
         "reports/NPSSurveyAnswers"
       );
 
-      console.log(npsSurveyReport);
-
       this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
@@ -690,8 +704,6 @@ export default {
       this.loadParameters();
     }
     this.loadNpsSurveyAnswers();
-
-    console.log(this.companyId);
   },
 };
 </script>
@@ -752,6 +764,55 @@ export default {
   justify-content: space-between;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   gap: 20px;
+}
+
+.box__filters {
+  background: white;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.box__filters-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 29.26px;
+  color: black;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.box__filters-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.box__filters-wrap-item {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 29.26px;
+  border-radius: 5px;
+}
+
+.nofilter {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 29.26px;
+  text-align: center;
+}
+
+.box__filters-wrap-item::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  -moz-border-radius: 7.5px;
+  -webkit-border-radius: 7.5px;
+  border-radius: 7.5px;
+  background-color: rgba(21, 170, 124, 1);
 }
 
 .box__three-columns-item h2,
