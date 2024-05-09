@@ -595,6 +595,12 @@ export default {
       );
 
       this.parameters = data;
+
+      for (let i = 0; i < this.role.length; i++) {
+        if (!this.parameters.role.includes(this.role[i])) {
+          this.role = this.role.filter((role) => role !== this.role[i]);
+        }
+      }
     },
     loadNpsSurveyAnswers: async function () {
       this.loadParameters();
@@ -693,8 +699,8 @@ export default {
 
       this.dashboardsLoaded = true;
 
-      this.$refs.infoWidget.close();
-      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
+      /* this.$refs.infoWidget.close();
+      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open(); */
     },
   },
   async mounted() {
