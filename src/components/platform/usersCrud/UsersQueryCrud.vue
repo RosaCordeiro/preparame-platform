@@ -152,6 +152,7 @@ export default {
             },
           ],
         },
+
         laborRiskAlert: {
           label: "Alerta de Risco Trabalhista",
           name: "laborRiskAlert",
@@ -184,8 +185,8 @@ export default {
           col: 2,
           model: "",
           type: "Date",
-          visible: true
-        }
+          visible: true,
+        },
       },
       columns: [
         {

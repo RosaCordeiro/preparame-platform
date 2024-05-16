@@ -24,6 +24,10 @@ export default {
   created() {
     if (this.col.editable !== undefined) this.editable = this.col.editable;
     this.model = this.oldValue;
+
+    if (this.oldValue === undefined) this.model = false;
+
+    console.log("this.model", this.model);
   },
   watch: {
     col: {

@@ -205,6 +205,26 @@ export default {
               type: "Input",
               visible: false,
             },
+            packageDeclined: {
+              label: "Pacote Recusado",
+              name: "packageDeclined",
+              size: "6",
+              row: 6,
+              col: 2,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Sim",
+                  value: true,
+                },
+                {
+                  label: "Não",
+                  value: false,
+                },
+              ],
+              visible: true,
+            },
           },
         },
       },

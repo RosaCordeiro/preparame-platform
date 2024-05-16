@@ -68,6 +68,23 @@
                   />
                 </div>
               </q-td>
+              <q-td key="reschedule" :props="props">
+                <q-btn
+                  color="blue"
+                  label="Reagendar"
+                  :disable="disableCancel(props.row)"
+                  @click="cancelProduct(props.row, true, 'REAGENDADO')"
+                />
+              </q-td>
+              <q-td key="notAttended" :props="props">
+                <q-btn
+                  color="negative"
+                  label="Não Compareceu"
+                  :disable="disableCancel(props.row)"
+                  @click="cancelProduct(props.row, false, 'NÃO COMPARECEU')"
+                />
+              </q-td>
+
               <q-td key="actions" :props="props">
                 <q-btn-group>
                   <q-btn
@@ -83,8 +100,8 @@
                   <q-btn
                     color="negative"
                     icon="mdi-cancel"
+                    @click="cancelProduct(props.row, true, 'CANCELADO')"
                     :disable="disableCancel(props.row)"
-                    @click="cancelProduct(props.row)"
                   ></q-btn>
                 </q-btn-group>
               </q-td>
@@ -246,6 +263,18 @@ export default {
           sortable: true,
         },
         {
+          name: "reschedule",
+          label: "Reagendar",
+          field: "reschedule",
+          align: "center",
+        },
+        {
+          name: "notAttended",
+          label: "Não Compareceu",
+          field: "notAttended",
+          align: "center",
+        },
+        {
           name: "actions",
           label: "Ações",
           field: "actions",
@@ -286,16 +315,10 @@ export default {
       }, 10);
     },
     disableCancel(row) {
-      console.log(row);
-
       if (row.schedule === null) return true;
       if (row.schedule.dateSchedule === null) return true;
 
-      const isBefore = new Date(row.schedule.dateSchedule) < new Date();
-
-      if (isBefore) {
-        return true;
-      }
+      return false;
     },
 
     viewFileDialog: function (product) {
@@ -352,16 +375,14 @@ export default {
         return false;
       }
     },
-    cancelProduct: async function (data) {
-      console.log(data);
-
+    cancelProduct: async function (data, revertAvailableProduct, reason) {
       confirmDialog(
         "Atenção",
-        "Deseja realmente cancelar este produto?",
+        `Deseja realmente ${reason.toLowerCase()} este produto?`,
         async () => {
           await saveCrud(
             `specialists/schedule/${data.id}/cancel`,
-            { revertAvailableProduct: true },
+            { revertAvailableProduct, reason },
             "post"
           );
 
