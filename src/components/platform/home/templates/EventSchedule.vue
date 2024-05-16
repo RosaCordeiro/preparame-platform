@@ -260,7 +260,7 @@
               color="white"
               class="text-caption"
               flat
-              @click="confirm = true"
+              @click="cancelScheduleFunction()"
             >
               <q-tooltip> Cancelar Agendamento </q-tooltip>
               <q-icon
@@ -309,10 +309,17 @@
       v-if="viewDialog"
       :identifier="Object.entries(this.schedulesGroup)[0][1][0].id"
     />
+
+    <ConfirmDialogScheduleWidget
+      ref="confirmDialog"
+      :onCancel="onCancel"
+      :onShow="goToSchedule"
+    />
   </div>
 </template>
 
 <script>
+import ConfirmDialogScheduleWidget from "src/components/general/ConfirmDialogScheduleWidget.vue";
 import { saveCrud } from "./../../../general/crud/utils/saveCrud";
 import SearchFileDialog from "src/components/SearchFileDialog.vue";
 import ViewFileDialog from "src/components/ViewFileDialog.vue";
@@ -321,6 +328,7 @@ export default {
   components: {
     SearchFileDialog,
     ViewFileDialog,
+    ConfirmDialogScheduleWidget,
   },
   data() {
     return {
@@ -365,6 +373,18 @@ export default {
     },
   },
   methods: {
+    goToSchedule() {
+      this.$router.push(
+        `/products/schedule/${this.eventSchedule.schedules[0].productId}?reschedule=true&scheduleId=${this.eventSchedule.schedules[0].id}`
+      );
+    },
+    onCancel() {
+      this.confirm = true;
+    },
+    cancelScheduleFunction() {
+      this.$refs.confirmDialog.open();
+      //this.confirm = true;
+    },
     openFileDialog(type) {
       this.viewDialog = true;
 

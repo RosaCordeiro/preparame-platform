@@ -57,6 +57,7 @@ export default {
       product: {},
       dateSchedule: "",
       specialist: {},
+      reschedule: false,
     };
   },
   props: ["confirmScheduleFunctions"],
@@ -71,13 +72,15 @@ export default {
       daySchedule,
       hourSchedules,
       specialist,
-      product
+      product,
+      reschedule
     ) {
       //this.confirmSchedule = true;
       this.daySchedule = daySchedule;
       this.hourSchedules = hourSchedules;
       this.specialist = specialist;
       this.product = product;
+      this.reschedule = reschedule;
 
       let endHour = new Date(this.hourSchedules[0].dateSchedule);
 
@@ -100,6 +103,10 @@ export default {
       })}.`;
 
       this.scheduleConfirmation();
+      /* if (!reschedule) {
+      } else {
+        console.log("reschedule aq");
+      } */
     },
     scheduleConfirmation: async function () {
       this.$refs.confirmScheduleDialog.show(async () => {
@@ -113,22 +120,44 @@ export default {
           specialistSchedule.specialistId = specialistSchedule.specialist.id;
           specialistSchedule.createEvent = index == 0 ? true : false;
 
-          await saveCrud(
-            `specialists/schedule/${this.hourSchedules[index].id}`,
-            specialistSchedule,
-            "put"
-          ).then(() => {
-            if (index == this.hourSchedules.length - 1) {
-              this.$q.notify({
-                type: "success",
-                message: "Agendado com sucesso",
-              });
+          if (this.reschedule) {
+            await saveCrud(
+              `specialists/reschedule/${this.hourSchedules[index].id}`,
+              {
+                ...specialistSchedule,
+                oldScheduleId: this.$route.query.scheduleId,
+              },
+              "put"
+            ).then(() => {
+              if (index == this.hourSchedules.length - 1) {
+                this.$q.notify({
+                  type: "success",
+                  message: "Agendado com sucesso",
+                });
 
-              this.$router.push({ path: "/platform" });
-            }
-          });
+                this.$router.push({ path: "/platform" });
+              }
+            });
+
+            return;
+          } else {
+            await saveCrud(
+              `specialists/schedule/${this.hourSchedules[index].id}`,
+              specialistSchedule,
+              "put"
+            ).then(() => {
+              if (index == this.hourSchedules.length - 1) {
+                this.$q.notify({
+                  type: "success",
+                  message: "Agendado com sucesso",
+                });
+
+                this.$router.push({ path: "/platform" });
+              }
+            });
+          }
         }
-      });
+      }, this.reschedule);
     },
   },
 };

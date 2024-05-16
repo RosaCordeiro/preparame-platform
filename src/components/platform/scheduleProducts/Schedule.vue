@@ -173,12 +173,15 @@ export default {
 
         return;
       } else {
+        const reschedule = this.$route.query.reschedule || false;
+
         this.confirmScheduleFunctions.$emit(
           "showScheduleConfirmDialog",
           daySchedule,
           selectedSchedules,
           this.specialist,
-          this.product
+          this.product,
+          reschedule
         );
       }
     },

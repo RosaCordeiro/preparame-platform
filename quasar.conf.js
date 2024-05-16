@@ -46,7 +46,7 @@ module.exports = function (ctx) {
 
       env: ctx.dev
         ? {
-            API: "https://api.prepara.me",
+            API: "http://localhost:3334",
           }
         : {
             API: "https://api.preparame.homolog.inf.br",

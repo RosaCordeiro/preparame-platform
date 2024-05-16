@@ -33,6 +33,11 @@
 
 <script>
 export default {
+  setup() {
+    return {
+      reschedule: false,
+    };
+  },
   mounted() {
     const cancelButton = document.querySelector(".button__cancel");
 
@@ -46,7 +51,9 @@ export default {
     });
   },
   methods: {
-    show(f) {
+    show(f, r) {
+      console.log("r", r);
+
       window.func = f;
       const confirmDialog = document.getElementById("confirm-schedule-dialog");
 
@@ -54,6 +61,15 @@ export default {
       setTimeout(() => {
         confirmDialog.classList.add("hide");
       }, 300);
+
+      this.reschedule = r;
+
+      if (r) {
+        const button__confirm = document.querySelector(".button__confirm");
+        button__confirm.innerText = "SIM, QUERO REAGENDAR";
+      }
+
+      console.log("this.reschedule", this.reschedule);
     },
     confirm() {
       window.func();
