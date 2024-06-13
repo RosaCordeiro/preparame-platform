@@ -102,6 +102,50 @@
           </div>
         </q-btn-dropdown>
 
+        <!-- subarea -->
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Subárea"
+          text-color="white"
+          no-caps
+          :disable="disableFilters"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.subarea">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.subarea"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="subarea"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <!-- level -->
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Nível"
+          text-color="white"
+          no-caps
+          :disable="disableFilters"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.level">
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.level"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="level"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
         <!--  <div
           class="box__button-actions-item box__button-actions-download"
           @click="gerarPDF()"
@@ -409,6 +453,8 @@ export default {
       area: [],
       role: [],
       unity: [],
+      subarea: [],
+      level: [],
       userType: localStorage.getItem("userType"),
       lessThanFive: false,
     };
@@ -423,7 +469,14 @@ export default {
       );
     },
     selectedFilters() {
-      return [...this.period, ...this.area, ...this.role, ...this.unity];
+      return [
+        ...this.period,
+        ...this.area,
+        ...this.role,
+        ...this.unity,
+        ...this.subarea,
+        ...this.level,
+      ];
     },
   },
   watch: {
@@ -432,6 +485,8 @@ export default {
       this.area = [];
       this.role = [];
       this.unity = [];
+      this.subarea = [];
+      this.level = [];
 
       this.loadNpsSurveyAnswers();
     },
@@ -448,6 +503,12 @@ export default {
       this.loadNpsSurveyAnswers();
     },
     unity(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    subarea(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    level(f) {
       this.loadNpsSurveyAnswers();
     },
   },
@@ -589,6 +650,20 @@ export default {
         });
       }
 
+      if (this.subarea.length > 0) {
+        filters.push({
+          name: "subarea",
+          model: JSON.stringify(this.subarea),
+        });
+      }
+
+      if (this.level.length > 0) {
+        filters.push({
+          name: "level",
+          model: JSON.stringify(this.level),
+        });
+      }
+
       const data = await filterCrud(
         filters,
         `companies/config/${this.companyId}`
@@ -649,6 +724,20 @@ export default {
         });
       }
 
+      if (this.subarea.length > 0) {
+        filters.push({
+          name: "subarea",
+          model: JSON.stringify(this.subarea),
+        });
+      }
+
+      if (this.level.length > 0) {
+        filters.push({
+          name: "level",
+          model: JSON.stringify(this.level),
+        });
+      }
+
       this.$q.loading.show();
 
       const npsSurveyReport = await filterCrud(
@@ -699,8 +788,8 @@ export default {
 
       this.dashboardsLoaded = true;
 
-      /* this.$refs.infoWidget.close();
-      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open(); */
+      this.$refs.infoWidget.close();
+      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
     },
   },
   async mounted() {
