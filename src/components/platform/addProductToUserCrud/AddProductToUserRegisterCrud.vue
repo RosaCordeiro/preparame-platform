@@ -24,11 +24,13 @@
             <q-tr :props="props">
               <q-td key="product" :props="props">{{ props.row.name }}</q-td>
               <q-td key="dateSchedule" :props="props">{{
-                props.row.schedule === null
+                props.row.schedule === null && props.row.dateSchedule === null
                   ? "Não Agendado"
-                  : formatDateToStringMentoringWithHour(
+                  : props.row.dateSchedule === null
+                  ? formatDateToStringMentoringWithHour(
                       props.row.schedule.dateSchedule
                     )
+                  : formatDateToStringMentoringWithHour(props.row.dateSchedule)
               }}</q-td>
               <q-td key="specialist" :props="props">
                 <img
@@ -45,27 +47,43 @@
               </q-td>
               <q-td key="fileStatus" :props="props">
                 <div class="row justify-center">
-                  <span class="col-12" style="text-align: center">
+                  <span
+                    class="col-12"
+                    style="text-align: center"
+                    v-if="props.row.schedule !== null"
+                  >
                     {{ statusFiles(props.row) }}
                   </span>
 
                   <q-btn
+                    v-if="props.row.schedule !== null"
                     color="primary"
                     label="Visualizar Arquivos"
                     @click="viewFileDialog(props.row)"
                   />
+                  <span class="col-12" style="text-align: center" v-else>
+                    N/A
+                  </span>
                 </div>
               </q-td>
               <q-td key="fileUser" :props="props">
                 <div class="row justify-center">
-                  <span class="col-12" style="text-align: center">
+                  <span
+                    class="col-12"
+                    style="text-align: center"
+                    v-if="props.row.schedule !== null"
+                  >
                     {{ props.row.countfilesuser }} arquivos do usuário
                   </span>
                   <q-btn
+                    v-if="props.row.schedule !== null"
                     color="primary"
                     label="Adicionar Arquivos"
                     @click="openSearchFileDialog(props.row)"
                   />
+                  <span class="col-12" style="text-align: center" v-else>
+                    N/A
+                  </span>
                 </div>
               </q-td>
               <q-td key="reschedule" :props="props">
@@ -104,6 +122,14 @@
                     :disable="disableCancel(props.row)"
                   ></q-btn>
                 </q-btn-group>
+              </q-td>
+              <q-td key="status" :props="props">
+                <span>
+                  {{ props.row.table }}
+                </span>
+              </q-td>
+              <q-td key="reason" :props="props">
+                <span v-if="props.row.reason">{{ props.row.reason }}</span>
               </q-td>
             </q-tr>
           </template>
@@ -287,6 +313,18 @@ export default {
           field: "cancel",
           align: "center",
         },
+        {
+          name: "status",
+          label: "Status",
+          field: "status",
+          align: "center",
+        },
+        {
+          name: "reason",
+          label: "Razão Cancelamento",
+          field: "reason",
+          align: "center",
+        },
       ],
       filters: [
         {
@@ -325,9 +363,11 @@ export default {
       this.$refs.viewFileDialog.show(product.id, "ALL");
     },
     statusFiles(product) {
-      if (product.schedule === null && product.specialist === null) {
+      if (product.schedule === null || product.specialist === null) {
         return "N/A";
       }
+
+      console.log(product);
 
       const isBefore = new Date(product.schedule.dateSchedule) < new Date();
 
