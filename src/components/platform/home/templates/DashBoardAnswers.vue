@@ -24,7 +24,7 @@
           text-color="white"
           no-caps
           :disable="disableFilters || parameters.period.length === 0"
-          :class="{ label: parameters.period.length === 0 }"
+          :class="{ label: !disableFilters && parameters.period.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
@@ -52,7 +52,7 @@
           text-color="white"
           no-caps
           :disable="disableFilters || parameters.unity.length === 0"
-          :class="{ label: parameters.unity.length === 0 }"
+          :class="{ label: !disableFilters && parameters.unity.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
@@ -80,7 +80,7 @@
           text-color="white"
           no-caps
           :disable="disableFilters || parameters.area.length === 0"
-          :class="{ label: parameters.area.length === 0 }"
+          :class="{ label: !disableFilters && parameters.area.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
@@ -108,7 +108,7 @@
           text-color="white"
           no-caps
           :disable="disableFilters || parameters.role.length === 0"
-          :class="{ label: parameters.role.length === 0 }"
+          :class="{ label: !disableFilters && parameters.role.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
