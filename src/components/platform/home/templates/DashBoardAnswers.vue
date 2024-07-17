@@ -1,59 +1,131 @@
 <template>
-  <div id="q-app" class="home-company" :style="{
-    padding: this.userType === 'ADMIN' ? '0' : '20px',
-  }">
+  <div
+    id="q-app"
+    class="home-company"
+    :style="{
+      padding: this.userType === 'ADMIN' ? '0' : '20px',
+    }"
+  >
     <q-page>
       <div class="box__button-actions">
-        <q-tooltip anchor="top middle" self="bottom middle" v-if="disableFilters">
+        <q-tooltip
+          anchor="top middle"
+          self="bottom middle"
+          v-if="disableFilters"
+        >
           <div class="tooltip-text">
             <p>Selecione uma empresa para habilitar os filtros.</p>
           </div>
         </q-tooltip>
 
-        <q-btn-dropdown class="box__button-actions-item" label="Período" text-color="white" no-caps
-          :disable="disableFilters">
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Período"
+          text-color="white"
+          no-caps
+          :disable="disableFilters || parameters.period.length === 0"
+          :class="{ label: parameters.period.length === 0 }"
+        >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
-              <q-checkbox color="primary" v-if="parameters.period.length > 0" v-model="selectAllPeriods"
-                label="Selecionar Todos" />
-              <q-checkbox color="primary" v-for="(r, index) in parameters.period" :key="index" :label="r" :val="r"
-                v-model="period" />
+              <q-checkbox
+                color="primary"
+                v-if="parameters.period.length > 0"
+                v-model="selectAllPeriods"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.period"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="period"
+              />
             </div>
           </div>
         </q-btn-dropdown>
 
-        <q-btn-dropdown class="box__button-actions-item" label="Unidade" text-color="white" no-caps
-          :disable="disableFilters">
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Unidade"
+          text-color="white"
+          no-caps
+          :disable="disableFilters || parameters.unity.length === 0"
+          :class="{ label: parameters.unity.length === 0 }"
+        >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
-              <q-checkbox color="primary" v-if="parameters.unity.length > 0" v-model="selectAllUnity"
-                label="Selecionar Todos" />
-              <q-checkbox color="primary" v-for="(r, index) in parameters.unity" :key="index" :label="r" :val="r"
-                v-model="unity" />
+              <q-checkbox
+                color="primary"
+                v-if="parameters.unity.length > 0"
+                v-model="selectAllUnity"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.unity"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="unity"
+              />
             </div>
           </div>
         </q-btn-dropdown>
 
-        <q-btn-dropdown class="box__button-actions-item" label="Área" text-color="white" no-caps
-          :disable="disableFilters">
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Área"
+          text-color="white"
+          no-caps
+          :disable="disableFilters || parameters.area.length === 0"
+          :class="{ label: parameters.area.length === 0 }"
+        >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
-              <q-checkbox color="primary" v-if="parameters.area.length > 0" v-model="selectAllArea"
-                label="Selecionar Todos" />
-              <q-checkbox color="primary" v-for="(r, index) in parameters.area" :key="index" :label="r" :val="r"
-                v-model="area" />
+              <q-checkbox
+                color="primary"
+                v-if="parameters.area.length > 0"
+                v-model="selectAllArea"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.area"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="area"
+              />
             </div>
           </div>
         </q-btn-dropdown>
 
-        <q-btn-dropdown class="box__button-actions-item" label="Cargo" text-color="white" no-caps
-          :disable="disableFilters">
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Cargo"
+          text-color="white"
+          no-caps
+          :disable="disableFilters || parameters.role.length === 0"
+          :class="{ label: parameters.role.length === 0 }"
+        >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
-              <q-checkbox color="primary" v-if="parameters.role.length > 0" v-model="selectAllRole"
-                label="Selecionar Todos" />
-              <q-checkbox color="primary" v-for="(r, index) in parameters.role" :key="index" :label="r" :val="r"
-                v-model="role" />
+              <q-checkbox
+                color="primary"
+                v-if="parameters.role.length > 0"
+                v-model="selectAllRole"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.role"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="role"
+              />
             </div>
           </div>
         </q-btn-dropdown>
@@ -70,7 +142,11 @@
         <div class="box__filters-title">Filtros selecionados</div>
 
         <div class="box__filters-wrap" v-if="selectedFilters.length > 0">
-          <div class="box__filters-wrap-item" v-for="(i, index) in selectedFilters" :key="index">
+          <div
+            class="box__filters-wrap-item"
+            v-for="(i, index) in selectedFilters"
+            :key="index"
+          >
             {{ i }}
           </div>
         </div>
@@ -81,27 +157,68 @@
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
 
-          <RowChart :title="'Sua Empresa'" :minValue="-100" :maxValue="100" :data="removePercent(this.nps)"
-            :intersectionValue="0" :lessThanFive="lessThanFive" />
-          <RowChart :title="'Média Geral'" :minValue="-100" :maxValue="100" :data="removePercent(this.npsGeneral)"
-            :intersectionValue="0" />
+          <RowChart
+            :title="'Sua Empresa'"
+            :minValue="-100"
+            :maxValue="100"
+            :data="removePercent(this.nps)"
+            :intersectionValue="0"
+            :lessThanFive="lessThanFive"
+          />
+          <RowChart
+            :title="'Média Geral'"
+            :minValue="-100"
+            :maxValue="100"
+            :data="removePercent(this.npsGeneral)"
+            :intersectionValue="0"
+          />
         </div>
 
         <div class="box__three-columns-item">
           <IconInfo label="Risco Trabalhista" />
 
-          <RowChart :title="'Sua Empresa'" :data="removePercent(laborRisk)" :minValue="0" :maxValue="10"
-            :intersectionValue="4" :invertedColors="true" :invertedIcons="true" :lessThanFive="lessThanFive" />
-          <RowChart :title="'Média Geral'" :data="removePercent(laborRiskGeneral)" :minValue="0" :maxValue="10"
-            :intersectionValue="4" :invertedColors="true" :invertedIcons="true" />
+          <RowChart
+            :title="'Sua Empresa'"
+            :data="removePercent(laborRisk)"
+            :minValue="0"
+            :maxValue="10"
+            :intersectionValue="4"
+            :invertedColors="true"
+            :invertedIcons="true"
+            :lessThanFive="lessThanFive"
+          />
+          <RowChart
+            :title="'Média Geral'"
+            :data="removePercent(laborRiskGeneral)"
+            :minValue="0"
+            :maxValue="10"
+            :intersectionValue="4"
+            :invertedColors="true"
+            :invertedIcons="true"
+          />
         </div>
 
         <div class="box__three-columns-item">
           <IconInfo label="Marca" />
-          <RowChart :title="'Sua Empresa'" :data="removePercent(brandRisk)" :minValue="0" :maxValue="10"
-            :intersectionValue="4" :invertedColors="true" :invertedIcons="true" :lessThanFive="lessThanFive" />
-          <RowChart :title="'Média Geral'" :data="removePercent(brandRiskGeneral)" :minValue="0" :maxValue="10"
-            :intersectionValue="4" :invertedColors="true" :invertedIcons="true" />
+          <RowChart
+            :title="'Sua Empresa'"
+            :data="removePercent(brandRisk)"
+            :minValue="0"
+            :maxValue="10"
+            :intersectionValue="4"
+            :invertedColors="true"
+            :invertedIcons="true"
+            :lessThanFive="lessThanFive"
+          />
+          <RowChart
+            :title="'Média Geral'"
+            :data="removePercent(brandRiskGeneral)"
+            :minValue="0"
+            :maxValue="10"
+            :intersectionValue="4"
+            :invertedColors="true"
+            :invertedIcons="true"
+          />
         </div>
       </div>
 
@@ -109,14 +226,21 @@
         <div class="box__two-columns-item">
           <IconInfo label="Realocados" />
 
-          <RowChartOneEmojiWithoutIntersection :title="'Sua Empresa'" :data="removePercent(realocateds)"
-            :lessThanFive="lessThanFive" />
+          <RowChartOneEmojiWithoutIntersection
+            :title="'Sua Empresa'"
+            :data="removePercent(realocateds)"
+            :lessThanFive="lessThanFive"
+          />
         </div>
 
         <div class="box__two-columns-item">
           <IconInfo label="Acolhidos" />
 
-          <RowChartNoEmojiString :title="'Sua Empresa'" :data="welcomed" :lessThanFive="lessThanFive" />
+          <RowChartNoEmojiString
+            :title="'Sua Empresa'"
+            :data="welcomed"
+            :lessThanFive="lessThanFive"
+          />
         </div>
       </div>
 
@@ -124,18 +248,33 @@
         <div class="box__two-columns-item">
           <IconInfo label="Cálculos da rescisão estão corretos?" />
 
-          <RowChartOneEmojiExpanded :title="'Sua Empresa'" :data="removePercent(termination)"
-            :lessThanFive="lessThanFive" />
-          <RowChartOneEmojiExpanded :title="'Média Geral'" :data="removePercent(terminationGeneral)" />
+          <RowChartOneEmojiExpanded
+            :title="'Sua Empresa'"
+            :data="removePercent(termination)"
+            :lessThanFive="lessThanFive"
+          />
+          <RowChartOneEmojiExpanded
+            :title="'Média Geral'"
+            :data="removePercent(terminationGeneral)"
+          />
         </div>
 
         <div class="box__two-columns-item">
           <IconInfo label="Pendências trabalhistas" />
 
-          <RowChartOneEmojiExpanded :title="'Sua Empresa'" :data="removePercent(laborIssues)" :intersectionValue="3"
-            :invertedColors="true" :lessThanFive="lessThanFive" />
-          <RowChartOneEmojiExpanded :title="'Média Geral'" :data="removePercent(laborIssuesGeneral)"
-            :intersectionValue="3" :invertedColors="true" />
+          <RowChartOneEmojiExpanded
+            :title="'Sua Empresa'"
+            :data="removePercent(laborIssues)"
+            :intersectionValue="3"
+            :invertedColors="true"
+            :lessThanFive="lessThanFive"
+          />
+          <RowChartOneEmojiExpanded
+            :title="'Média Geral'"
+            :data="removePercent(laborIssuesGeneral)"
+            :intersectionValue="3"
+            :invertedColors="true"
+          />
         </div>
       </div>
 
@@ -150,8 +289,14 @@
           </div>
 
           <div v-for="(i, number) in shutDown" :key="number">
-            <RowChartOneEmoji :minValue="1" :maxValue="10" :title="i.question" :data="removePercent(i.count)"
-              :intersectionValue="7" :textBold="false" />
+            <RowChartOneEmoji
+              :minValue="1"
+              :maxValue="10"
+              :title="i.question"
+              :data="removePercent(i.count)"
+              :intersectionValue="7"
+              :textBold="false"
+            />
           </div>
         </div>
 
@@ -165,8 +310,14 @@
           </div>
 
           <div v-for="(i, number) in shutDownGeneral" :key="number">
-            <RowChartOneEmoji :minValue="1" :maxValue="10" :title="i.question" :data="removePercent(i.count)"
-              :intersectionValue="7" :textBold="false" />
+            <RowChartOneEmoji
+              :minValue="1"
+              :maxValue="10"
+              :title="i.question"
+              :data="removePercent(i.count)"
+              :intersectionValue="7"
+              :textBold="false"
+            />
           </div>
         </div>
       </div>
@@ -178,8 +329,13 @@
           <div class="tag">Sua empresa</div>
         </div>
 
-        <apexchart type="polarArea" height="400px" style="width: 100%; height: 100%" :options="chartOptions"
-          :series="feelingMap.map((c) => c.count)" />
+        <apexchart
+          type="polarArea"
+          height="400px"
+          style="width: 100%; height: 100%"
+          :options="chartOptions"
+          :series="feelingMap.map((c) => c.count)"
+        />
       </div>
 
       <div class="card">
@@ -194,8 +350,15 @@
             </div>
 
             <div v-for="(i, number) in feelingMap" :key="number">
-              <RowChartOneEmoji :minValue="1" :maxValue="100" :title="i.feeling" :width="'100%'"
-                :data="removePercent(i.count)" :icon="formatFeeling(i.feeling)" :textBold="false" />
+              <RowChartOneEmoji
+                :minValue="1"
+                :maxValue="100"
+                :title="i.feeling"
+                :width="'100%'"
+                :data="removePercent(i.count)"
+                :icon="formatFeeling(i.feeling)"
+                :textBold="false"
+              />
             </div>
           </div>
 
@@ -207,8 +370,15 @@
             </div>
 
             <div v-for="(i, number) in feelingMapGeneral" :key="number">
-              <RowChartOneEmoji :minValue="1" :maxValue="100" :title="i.feeling" :width="'100%'"
-                :data="removePercent(i.count)" :icon="formatFeeling(i.feeling)" :textBold="false" />
+              <RowChartOneEmoji
+                :minValue="1"
+                :maxValue="100"
+                :title="i.feeling"
+                :width="'100%'"
+                :data="removePercent(i.count)"
+                :icon="formatFeeling(i.feeling)"
+                :textBold="false"
+              />
             </div>
           </div>
         </div>
@@ -285,12 +455,7 @@ export default {
       );
     },
     selectedFilters() {
-      return [
-        ...this.period,
-        ...this.area,
-        ...this.role,
-        ...this.unity,
-      ];
+      return [...this.period, ...this.area, ...this.role, ...this.unity];
     },
   },
   watch: {
@@ -639,6 +804,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .box__button-actions-item p {
@@ -841,7 +1007,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-
   .box__three-columns-item,
   .box__two-columns-item,
   .card {
@@ -863,5 +1028,16 @@ export default {
 .tooltip-text {
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
+}
+
+.box__button-actions-item.label::before {
+  content: "* Não há filtros disponíveis";
+  position: absolute;
+  display: inline-block;
+  bottom: -9px;
+  left: 0;
+  height: 10px;
+  border-radius: 7.5px;
+  color: black;
 }
 </style>
