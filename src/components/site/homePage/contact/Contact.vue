@@ -39,8 +39,22 @@
       <q-space />
       <div class="contact-info col-2 column">
         <div class="contact-terms-title">Termos</div>
-        <div class="contact-terms-text" @click="goUrl('PrivacyTerms', 'internal')">Politicas de Privacidade</div>
-        <div class="contact-terms-text" @click="goUrl('UseTerms', 'internal')">Termos de Uso</div>
+        <div
+          class="contact-terms-text"
+          @click="goUrl('PrivacyTerms', 'internal')"
+        >
+          Politicas de Privacidade
+        </div>
+        <div class="contact-terms-text" @click="goUrl('UseTerms', 'internal')">
+          Termos de Uso
+        </div>
+        <a
+          class="q-mt-md"
+          href="https://www.privacidade.com.br/portal-de-privacidade?token=96e68d530e60530923326f874779b49a"
+          ><img
+            src="https://api.dponet.com.br/selo_portal_de_privacidade.png"
+            width="300"
+        /></a>
       </div>
       <q-space />
       <div class="contact-info col-2 column">
@@ -65,6 +79,7 @@
       </div>
       <q-space />
     </div>
+
     <div class="contact-reserved-rights">
       {{ year }} | Todos os direitos reservados @prepara.me
     </div>
@@ -85,8 +100,8 @@ export default {
     this.mobile = window.mobileAndTabletCheck();
   },
   methods: {
-    goUrl: function (url, type = 'external') {
-      if (type === 'external') {
+    goUrl: function (url, type = "external") {
+      if (type === "external") {
         window.open(url, "_blank").focus();
       } else {
         this.$router.push({ path: url });
