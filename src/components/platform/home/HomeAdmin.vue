@@ -47,12 +47,19 @@
       </div>
       <div class="row-cards">
         <div class="filtro">
-          <div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
             <q-btn
               style="background: #667997; color: black"
               label="Baixar respostas em excel"
               class="column btn"
               @click="downloadAnswers"
+            />
+          
+            <q-btn
+              style="background: #667997; color: black"
+              label="Relatório visão de únicos"
+              class="column btn"
+              @click="downloadUsersReport"
             />
           </div>
           <div class="text">Filtro</div>
@@ -151,6 +158,24 @@ export default {
       try {
         const data = await axios(config);
         downloadFile(data.data, "respostas.xlsx");
+      } catch (error) {
+        showError(error);
+      }
+
+      this.$q.loading.hide();
+    },
+    async downloadUsersReport() {
+      let config = {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        url: `${baseApiUrl}/reports/users`,
+        responseType: "blob",
+      };
+      this.$q.loading.show();
+
+      try {
+        const data = await axios(config);
+        downloadFile(data.data, "usuarios.xlsx");
       } catch (error) {
         showError(error);
       }
