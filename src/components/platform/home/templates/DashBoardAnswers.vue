@@ -23,10 +23,17 @@
           label="Período"
           text-color="white"
           no-caps
-          :disable="disableFilters"
+          :disable="disableFilters || parameters.period.length === 0"
+          :class="{ label: !disableFilters && parameters.period.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.period.length > 0"
+                v-model="selectAllPeriods"
+                label="Selecionar Todos"
+              />
               <q-checkbox
                 color="primary"
                 v-for="(r, index) in parameters.period"
@@ -44,10 +51,17 @@
           label="Unidade"
           text-color="white"
           no-caps
-          :disable="disableFilters"
+          :disable="disableFilters || parameters.unity.length === 0"
+          :class="{ label: !disableFilters && parameters.unity.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.unity.length > 0"
+                v-model="selectAllUnity"
+                label="Selecionar Todos"
+              />
               <q-checkbox
                 color="primary"
                 v-for="(r, index) in parameters.unity"
@@ -65,10 +79,17 @@
           label="Área"
           text-color="white"
           no-caps
-          :disable="disableFilters"
+          :disable="disableFilters || parameters.area.length === 0"
+          :class="{ label: !disableFilters && parameters.area.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.area.length > 0"
+                v-model="selectAllArea"
+                label="Selecionar Todos"
+              />
               <q-checkbox
                 color="primary"
                 v-for="(r, index) in parameters.area"
@@ -86,10 +107,17 @@
           label="Cargo"
           text-color="white"
           no-caps
-          :disable="disableFilters"
+          :disable="disableFilters || parameters.role.length === 0"
+          :class="{ label: !disableFilters && parameters.role.length === 0 }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.role.length > 0"
+                v-model="selectAllRole"
+                label="Selecionar Todos"
+              />
               <q-checkbox
                 color="primary"
                 v-for="(r, index) in parameters.role"
@@ -411,6 +439,10 @@ export default {
       unity: [],
       userType: localStorage.getItem("userType"),
       lessThanFive: false,
+      selectAllPeriods: false,
+      selectAllUnity: false,
+      selectAllArea: false,
+      selectAllRole: false,
     };
   },
   props: ["companyId"],
@@ -449,6 +481,35 @@ export default {
     },
     unity(f) {
       this.loadNpsSurveyAnswers();
+    },
+    selectAllPeriods(value) {
+      console.log("teste");
+      if (value) {
+        this.period = this.parameters.period.slice();
+      } else {
+        this.period = [];
+      }
+    },
+    selectAllUnity(value) {
+      if (value) {
+        this.unity = this.parameters.unity.slice();
+      } else {
+        this.unity = [];
+      }
+    },
+    selectAllArea(value) {
+      if (value) {
+        this.area = this.parameters.area.slice();
+      } else {
+        this.area = [];
+      }
+    },
+    selectAllRole(value) {
+      if (value) {
+        this.role = this.parameters.role.slice();
+      } else {
+        this.role = [];
+      }
     },
   },
 
@@ -726,13 +787,16 @@ export default {
 .box__button-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Ajuste conforme sua necessidade */
-  gap: 20px; /* Ajuste conforme sua necessidade */
+  justify-content: space-between;
+  /* Ajuste conforme sua necessidade */
+  gap: 20px;
+  /* Ajuste conforme sua necessidade */
   margin: 20px 0px;
 }
 
 .box__button-actions-item {
-  flex: 1 0 100px; /* Ajuste conforme sua necessidade */
+  flex: 1 0 100px;
+  /* Ajuste conforme sua necessidade */
   box-sizing: border-box;
   padding: 10px;
   background: rgba(21, 170, 124, 1);
@@ -740,6 +804,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .box__button-actions-item p {
@@ -754,13 +819,16 @@ export default {
 .box__three-columns {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Ajuste conforme sua necessidade */
-  gap: 20px; /* Ajuste conforme sua necessidade */
+  justify-content: space-between;
+  /* Ajuste conforme sua necessidade */
+  gap: 20px;
+  /* Ajuste conforme sua necessidade */
   margin: 20px 0px;
 }
 
 .box__three-columns-item {
-  flex: 1 0 425px; /* Ajuste conforme sua necessidade */
+  flex: 1 0 425px;
+  /* Ajuste conforme sua necessidade */
   box-sizing: border-box;
   padding: 20px;
   background: white;
@@ -840,13 +908,16 @@ export default {
 .box__two-columns {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Ajuste conforme sua necessidade */
-  gap: 20px; /* Ajuste conforme sua necessidade */
+  justify-content: space-between;
+  /* Ajuste conforme sua necessidade */
+  gap: 20px;
+  /* Ajuste conforme sua necessidade */
   margin: 20px 0px;
 }
 
 .box__two-columns-item {
-  flex: 1 0 400px; /* Ajuste conforme sua necessidade */
+  flex: 1 0 400px;
+  /* Ajuste conforme sua necessidade */
   box-sizing: border-box;
   padding: 20px;
   background: white;
@@ -957,5 +1028,16 @@ export default {
 .tooltip-text {
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
+}
+
+.box__button-actions-item.label::before {
+  content: "* Não há filtros disponíveis";
+  position: absolute;
+  display: inline-block;
+  bottom: -9px;
+  left: 0;
+  height: 10px;
+  border-radius: 7.5px;
+  color: black;
 }
 </style>

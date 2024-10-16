@@ -86,6 +86,14 @@
                   </span>
                 </div>
               </q-td>
+              <q-td key="schedule" :props="props">
+                <q-btn
+                  color="blue"
+                  label="Agendar"
+                  :disable="!disableCancel(props.row)"
+                  @click="goUrl(`products/schedule/${props.row.productId}?userId=${props.row.userId}`)"
+                />
+              </q-td>
               <q-td key="reschedule" :props="props">
                 <q-btn
                   color="blue"
@@ -289,6 +297,13 @@ export default {
           sortable: true,
         },
         {
+          name: "schedule",
+          label: "Agendar mentoria",
+          field: "schedule",
+          align: "center",
+          sortable: true,
+        },
+        {
           name: "reschedule",
           label: "Reagendar",
           field: "reschedule",
@@ -345,6 +360,10 @@ export default {
     openEditCrud(this.id, this.editUrl, this.tables);
   },
   methods: {
+    goUrl: function (url) {    
+      this.$router.push({ path: `/${url}` });
+      this.$emit("close-mentoring-calendar");
+    },
     openSearchFileDialog(data) {
       this.searchDialog = true;
       console.log(this.$refs.searchFileDialog);

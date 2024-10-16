@@ -113,9 +113,9 @@ export default {
         for (const index in this.hourSchedules) {
           const specialistSchedule =
             this.hourSchedules[index].specialistSchedule;
-
+            
           specialistSchedule.productId = this.product.id;
-          specialistSchedule.userId = localStorage.getItem("userId");
+          specialistSchedule.userId = this.$router.history.current.query.userId ?? localStorage.getItem("userId");
           specialistSchedule.status = "UNAVAILABLE";
           specialistSchedule.specialistId = specialistSchedule.specialist.id;
           specialistSchedule.createEvent = index == 0 ? true : false;
@@ -141,6 +141,7 @@ export default {
 
             return;
           } else {
+            
             await saveCrud(
               `specialists/schedule/${this.hourSchedules[index].id}`,
               specialistSchedule,
@@ -152,7 +153,12 @@ export default {
                   message: "Agendado com sucesso",
                 });
 
-                this.$router.push({ path: "/platform" });
+                if (this.$router.history.current.query.userId) {
+                  this.$router.go(-1);
+                } else {
+                  this.$router.push({ path: "/platform" });
+                }
+                
               }
             });
           }

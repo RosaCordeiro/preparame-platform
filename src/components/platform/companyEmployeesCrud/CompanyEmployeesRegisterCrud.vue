@@ -135,6 +135,28 @@ export default {
               type: "Input",
               visible: true,
             },
+            /* subarea, level */
+            subarea: {
+              label: "Subárea",
+              name: "subarea",
+              size: "6",
+              row: 5,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            level: {
+              label: "Nível",
+              name: "level",
+              size: "6",
+              row: 5,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+
             department: {
               label: "Departamento",
               name: "department",
@@ -145,6 +167,7 @@ export default {
               type: "Input",
               visible: true,
             },
+
             planId: {
               label: "Plano",
               name: "planId",
