@@ -246,11 +246,11 @@
 
       <div class="box__two-columns">
         <div class="box__two-columns-item">
-          <IconInfo label="Quantidade de pessoas" />
+          <IconInfo label="Quantidade de pessoas recolocadas" />
 
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
-            :data="numberOfPeople"
+            :data="realocatedCount"
             :lessThanFive="lessThanFive"
           />
         </div>
@@ -456,7 +456,7 @@ export default {
       selectAllUnity: false,
       selectAllArea: false,
       selectAllRole: false,
-      numberOfPeople: 0,
+      realocatedCount: 0,
     };
   },
   props: ["companyId"],
@@ -742,7 +742,7 @@ export default {
       this.laborIssues = npsSurveyReport.laborIssues;
       this.shutDown = npsSurveyReport.shutDown;
       this.feelingMap = npsSurveyReport.feelingMap;
-      this.numberOfPeople = npsSurveyReport.numberOfPeople;
+      this.realocatedCount = npsSurveyReport.realocatedCount;
 
       if (npsSurveyReport.lessThanFive) {
         this.nps = "Sem informações";
