@@ -55,12 +55,12 @@
               @click="downloadAnswers"
             />
           
-            <!-- <q-btn
+            <q-btn
               style="background: #667997; color: black"
               label="Relatório visão de únicos"
               class="column btn"
               @click="downloadUsersReport"
-            /> -->
+            />
           </div>
           <div class="text">Filtro</div>
           <div class="column">
