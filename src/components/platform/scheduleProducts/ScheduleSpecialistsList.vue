@@ -109,10 +109,10 @@ export default {
             model: dateEnd,
           },
         ];
-
+        let userType = localStorage.getItem("userType");
         const specialistsSchedule = await filterCrud(
           filtersSpecialistSchedule,
-          `specialists/schedule`
+          userType.toUpperCase() === 'ADMIN' ? `specialists/schedule` : `specialists/schedule-to-user`
         );
 
         specialist.specialistSchedule = organizeSpecialistScheduleData(

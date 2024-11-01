@@ -87,22 +87,23 @@ export default {
     return {
       mobile: false,
       hours: [
-        { hour: "7:00", id: 7, available: false, scheduled: false },
-        { hour: "8:00", id: 8, available: false, scheduled: false },
-        { hour: "9:00", id: 9, available: false, scheduled: false },
-        { hour: "10:00", id: 10, available: false, scheduled: false },
-        { hour: "11:00", id: 11, available: false, scheduled: false },
-        { hour: "12:00", id: 12, available: false, scheduled: false },
-        { hour: "13:00", id: 13, available: false, scheduled: false },
-        { hour: "14:00", id: 14, available: false, scheduled: false },
-        { hour: "15:00", id: 15, available: false, scheduled: false },
-        { hour: "16:00", id: 16, available: false, scheduled: false },
-        { hour: "17:00", id: 17, available: false, scheduled: false },
-        { hour: "18:00", id: 18, available: false, scheduled: false },
-        { hour: "19:00", id: 19, available: false, scheduled: false },
-        { hour: "20:00", id: 20, available: false, scheduled: false },
-        { hour: "21:00", id: 21, available: false, scheduled: false },
-        { hour: "22:00", id: 22, available: false, scheduled: false },
+        { hour: "7:00", id: 70, available: false, scheduled: false },
+        { hour: "8:00", id: 80, available: false, scheduled: false },
+        { hour: "9:00", id: 90, available: false, scheduled: false },
+        { hour: "10:00", id: 100, available: false, scheduled: false },
+        { hour: "11:00", id: 110, available: false, scheduled: false },
+        { hour: "12:00", id: 120, available: false, scheduled: false },
+        { hour: "13:00", id: 130, available: false, scheduled: false },
+        { hour: "14:00", id: 140, available: false, scheduled: false },
+        { hour: "15:00", id: 150, available: false, scheduled: false },
+        { hour: "15:30", id: 153, available: false, scheduled: false },
+        { hour: "16:00", id: 160, available: false, scheduled: false },
+        { hour: "17:00", id: 170, available: false, scheduled: false },
+        { hour: "18:00", id: 180, available: false, scheduled: false },
+        { hour: "19:00", id: 190, available: false, scheduled: false },
+        { hour: "20:00", id: 200, available: false, scheduled: false },
+        { hour: "21:00", id: 210, available: false, scheduled: false },
+        { hour: "22:00", id: 220, available: false, scheduled: false },
       ],
     };
   },
@@ -201,8 +202,10 @@ export default {
       const actualDate = new Date();
 
       this.hours.forEach((hour) => {
-        const refDate = new Date(date).setHours(hour.id);
-
+        const [hours, minutes] = hour.hour.split(":");
+        const refDate = new Date(date).setHours(parseInt(hours), parseInt(minutes));
+        console.log('refDate', refDate, actualDate);
+        
         const disable = actualDate > refDate;
 
         Object.assign(hour, { dateSchedule: refDate });
