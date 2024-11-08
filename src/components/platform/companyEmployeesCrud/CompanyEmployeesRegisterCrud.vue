@@ -158,7 +158,7 @@ export default {
             },
 
             department: {
-              label: "Departamento",
+              label: "Área",
               name: "department",
               size: "6",
               row: 5,
