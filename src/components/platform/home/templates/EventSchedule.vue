@@ -256,7 +256,7 @@
             v-if="eventValid && !lessThen3Hours && userType === 'USER'"
           >
             <q-btn
-              v-if="eventValid && !lessThen3Hours && userType === 'USER'"
+              v-if="eventValid && !lessThen3Hours && userType === 'USER' && !onlyAdmin" 
               color="white"
               class="text-caption"
               flat
@@ -536,7 +536,7 @@ export default {
     this.lessThen3Hours = diffHours < 3;
     this.lessThen1Hour = diffHours < 2;
     this.moreThen1Hour = diffHours > 1;
-
+    this.onlyAdmin = this.eventSchedule.schedules[0].product.onlyAdmin;
     this.scheduleDay = dateSchedule.getDate();
 
     this.month = dateSchedule.toLocaleDateString(undefined, {

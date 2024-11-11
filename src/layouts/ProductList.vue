@@ -35,7 +35,7 @@ export default {
   methods: {
     loadProducts() {
       this.products = axios
-        .get(`${baseApiUrl}/products`)
+        .get(`${baseApiUrl}/products?onlyAdmin=false`)
         .then((products) => {
           this.products = products.data;
         })

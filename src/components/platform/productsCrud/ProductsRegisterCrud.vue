@@ -149,6 +149,26 @@ export default {
               type: "Input",
               visible: true,
             },
+            onlyAdmin: {
+              label: "Apenas administrador",
+              name: "onlyAdmin",
+              size: "3",
+              row: 3,
+              col: 2,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Não",
+                  value: "false",
+                },
+                {
+                  label: "Sim",
+                  value: "true",
+                },
+              ],
+              visible: true,
+            },
           },
         },
         childTable: {
