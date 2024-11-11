@@ -136,7 +136,17 @@ export default {
               row: 3,
               col: 1,
               model: "",
-              type: "Integer",
+              type: "Select",
+              options: [
+                {
+                  label: "30 minutos",
+                  value: "30",
+                },
+                {
+                  label: "1 hora",
+                  value: "60",
+                },
+              ],
               visible: true,
             },
             slug: {
