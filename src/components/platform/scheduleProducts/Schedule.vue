@@ -129,61 +129,16 @@ export default {
   },
   methods: {
     confirmSchedule: function (daySchedule, hourSchedule, dayIndex, hourIndex) {
-      let rangeDuration = {
-        from: 0,
-        to: this.product.duration - 1,
-        [Symbol.iterator]() {
-          return {
-            current: this.from,
-            last: this.to,
-            next() {
-              if (this.current <= this.last) {
-                return { done: false, value: this.current++ };
-              } else {
-                return { done: true };
-              }
-            },
-          };
-        },
-      };
+      const reschedule = this.$route.query.reschedule || false;
 
-      let allSchedulesAvailables = true;
-      let selectedSchedules = [];
-
-      for (let indexRangeDuration of rangeDuration) {
-        const validationHourIndex = hourIndex + indexRangeDuration;
-        if (
-          !this.specialistScheduleData[dayIndex].hours[validationHourIndex] ||
-          !this.specialistScheduleData[dayIndex].hours[validationHourIndex]
-            .available
-        ) {
-          allSchedulesAvailables = false;
-        } else {
-          selectedSchedules.push(
-            this.specialistScheduleData[dayIndex].hours[validationHourIndex]
-          );
-        }
-      }
-
-      if (!allSchedulesAvailables) {
-        this.$q.notify({
-          type: "error",
-          message: `São necessários ${this.product.duration} horários livres em sequência para poder agendar este produto. Por favor, escolha outro horário disponível.`,
-        });
-
-        return;
-      } else {
-        const reschedule = this.$route.query.reschedule || false;
-
-        this.confirmScheduleFunctions.$emit(
-          "showScheduleConfirmDialog",
-          daySchedule,
-          selectedSchedules,
-          this.specialist,
-          this.product,
-          reschedule
-        );
-      }
+      this.confirmScheduleFunctions.$emit(
+        "showScheduleConfirmDialog",
+        daySchedule,
+        [this.specialistScheduleData[dayIndex].hours[hourIndex]],
+        this.specialist,
+        this.product,
+        reschedule
+      );
     },
     priorWeek: function () {
       if (this.weekCount === 1) {
@@ -255,10 +210,10 @@ export default {
           model: dateEnd,
         },
       ];
-
+      let userType = localStorage.getItem("userType");
       const specialistsSchedule = await filterCrud(
         filtersSpecialistSchedule,
-        `specialists/schedule`
+        userType.toUpperCase() === 'ADMIN' ? `specialists/schedule` : `specialists/schedule-to-user`
       );
 
       this.specialistScheduleData = organizeSpecialistScheduleData(

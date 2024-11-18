@@ -136,7 +136,17 @@ export default {
               row: 3,
               col: 1,
               model: "",
-              type: "Integer",
+              type: "Select",
+              options: [
+                {
+                  label: "30 minutos",
+                  value: "30",
+                },
+                {
+                  label: "1 hora",
+                  value: "60",
+                },
+              ],
               visible: true,
             },
             slug: {
@@ -147,6 +157,26 @@ export default {
               col: 1,
               model: "",
               type: "Input",
+              visible: true,
+            },
+            onlyAdmin: {
+              label: "Apenas administrador",
+              name: "onlyAdmin",
+              size: "3",
+              row: 3,
+              col: 2,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Não",
+                  value: "false",
+                },
+                {
+                  label: "Sim",
+                  value: "true",
+                },
+              ],
               visible: true,
             },
           },
