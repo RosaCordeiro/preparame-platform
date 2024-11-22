@@ -398,6 +398,18 @@ export default {
 
       const data = this.$refs.mainTable.table.registerColumns[0].cols.map(
         (col) => {
+          if (col.name === "companyId") {
+            if (this.$router.history.current.params.id === undefined || this.$router.history.current.params.id === null) {
+              this.$q.notify({
+                color: "red-6",
+                textColor: "white",
+                icon: "cloud_done",
+                message: "Cadastre a empresa antes de salvar a página!",
+              });
+              this.$q.loading.hide();
+              return
+            }
+          }
           return {
             key: col.name,
             value: col.name === "companyId" ? this.id : col.model,
@@ -413,7 +425,7 @@ export default {
 
         formData.append(value.key, value.value);
       });
-
+      
       const response = await saveCrud("companies/page", formData);
       if (response.status === 201) {
         this.$q.notify({
