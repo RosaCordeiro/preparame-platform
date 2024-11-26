@@ -21,7 +21,7 @@
         ></div>
 
         <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data + "%" }}</p>
-        <p v-else>Informação insuficiente.</p>
+        <p :style="`fontSize: 16px`" v-else>Informação insuficiente.</p>
 
         <div class="emoji">
           <img
@@ -132,7 +132,7 @@ export default {
 .chart__row-one-emoji-expanded p {
   color: #fff;
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 50px;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
