@@ -229,7 +229,7 @@
           <RowChartOneEmojiWithoutIntersection
             :title="'Sua Empresa'"
             :data="removePercent(realocateds)"
-            :lessThanFive="lessThanFive"
+            :lessThanFive="false"
           />
         </div>
 
