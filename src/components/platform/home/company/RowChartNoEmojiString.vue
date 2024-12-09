@@ -9,9 +9,8 @@
           :style="`background: linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);`"
         ></div>
 
-        <p :style="`fontSize: 16px`" v-if="data === 'N/A'">Informação insuficiente.</p>
+        <p :style="`fontSize: 16px`" v-if="data === 'N/A'">0</p>
         <p v-else>{{ data }}</p>
-
       </div>
     </div>
   </div>
