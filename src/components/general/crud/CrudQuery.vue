@@ -112,7 +112,7 @@ export default {
     },
   },
   created() {
-    this.filter();
+    this.filter(this.filters);
 
     adjustColumnsAndRowsRegister(this.filters, this.rows);
   },

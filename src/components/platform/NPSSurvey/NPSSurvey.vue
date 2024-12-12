@@ -10,7 +10,8 @@
         </q-card>
       </div>
       <NPSQuestionsContainer v-else-if="page === 1" :questions="questions" />
-      <NPSFeelingsMap v-else-if="page === 2" :feelings="feelings" />
+      <NPSFeelingsMap v-else-if="page === 2" :feelings="feelings" :hasCompanyQuestions="hasCompanyQuestions"/>
+      <NPSCompanyQuestions v-else-if="page === 3" :companyQuestions="companyQuestions" />
       <q-dialog v-model="showConfirmEndSurvey" persistent>
         <q-card>
           <q-card-section class="row items-center">
@@ -43,6 +44,8 @@ import Breadcrumbs from "../../general/Breacrumbs.vue";
 import NPSQuestionsContainer from "./NPSQuestionsContainer.vue";
 import NPSFeelingsMap from "./NPSFeelingsMap.vue";
 import SurveyViewDialog from "src/components/SurveyViewDialog.vue";
+import NPSCompanyQuestions from "./NPSCompanyQuestions.vue";
+import { filterCrud } from "src/components/general/crud/utils/filterCrud.js";
 
 export default {
   components: {
@@ -50,6 +53,7 @@ export default {
     NPSQuestionsContainer,
     NPSFeelingsMap,
     SurveyViewDialog,
+    NPSCompanyQuestions,
   },
   methods: {
     goNPSSurvey: function () {
@@ -70,6 +74,11 @@ export default {
       } else {
         this.page++;
       }
+
+      window.scrollTo(0, 0);
+    },
+    goCompanyQuestions: function () {
+      this.page++;
 
       window.scrollTo(0, 0);
     },
@@ -192,6 +201,21 @@ export default {
         this.showConfirmEndSurvey = true;
       }
     },
+    searchCompanyQuestions: async function () {
+      const companyId = localStorage.getItem("companyId");
+      
+      if (!companyId) {
+        return;
+      }
+      const companyQuestions = await filterCrud(
+        [{
+          name: "companyId",
+          model: companyId,
+        }],
+       "companies/surveyquestions");
+      this.companyQuestions = companyQuestions;
+      this.hasCompanyQuestions = companyQuestions.length > 0;
+    },
   },
   data() {
     return {
@@ -199,6 +223,7 @@ export default {
       surveyAnswered: false,
       focusedQuestion: 1,
       feelingsSelected: [],
+      hasCompanyQuestions: false,
       breadcrumbs: [
         {
           title: "Pesquisa",
@@ -380,12 +405,15 @@ export default {
           category: "laborRisk",
         },
       ],
+      companyQuestions: []
     };
   },
-  mounted() {
+  async mounted() {
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;
+    await this.searchCompanyQuestions();
   },
+
 };
 </script>
 

@@ -30,10 +30,17 @@
           size="20px"
           @click="goNPSSurvey()"
         ></q-btn>
-        <q-btn
+        <q-btn v-if="hasCompanyQuestions"
+          label="Próximo"
+          color="secondary"
+          class="self-center"
+          size="20px"
+          @click="goCompanyQuestions()"
+        ></q-btn>
+        <q-btn v-else
           label="Finalizar"
           color="secondary"
-          class="self-center q-ml-md"
+          class="self-center"
           size="20px"
           @click="finishSurvey()"
         ></q-btn>
@@ -45,13 +52,16 @@
 
 <script>
 export default {
-  props: ["feelings"],
+  props: ["feelings", "hasCompanyQuestions"],
   methods: {
     goNPSSurvey: function () {
       this.$parent.$parent.goNPSSurvey();
     },
     finishSurvey: function () {
       this.$parent.$parent.finishSurvey();
+    },
+    goCompanyQuestions: function () {
+      this.$parent.$parent.goCompanyQuestions();
     },
   },
 };
