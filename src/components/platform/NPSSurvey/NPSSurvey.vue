@@ -11,7 +11,11 @@
       </div>
       <NPSQuestionsContainer v-else-if="page === 1" :questions="questions" />
       <NPSFeelingsMap v-else-if="page === 2" :feelings="feelings" :hasCompanyQuestions="hasCompanyQuestions"/>
-      <NPSCompanyQuestions v-else-if="page === 3" :companyQuestions="companyQuestions" />
+      <NPSCompanyQuestions v-else-if="page === 3" 
+      :companyQuestions="companyQuestions" 
+      :companyQuestionsAnswered="companyQuestionsAnswered"
+      @update:companyQuestionsAnswered="updateCompanyQuestionsAnswers"/>
+      />
       <q-dialog v-model="showConfirmEndSurvey" persistent>
         <q-card>
           <q-card-section class="row items-center">
@@ -91,6 +95,7 @@ export default {
         brandRisk: this.brandRisk,
         brandRiskJSON: this.brandRiskJSON,
         laborRiskJSON: this.laborRiskJSON,
+        surveyQuestion: JSON.stringify(this.companyQuestionsAnswered)
       };
 
       const userUpdated = await saveCrud(
@@ -215,6 +220,9 @@ export default {
        "companies/surveyquestions");
       this.companyQuestions = companyQuestions;
       this.hasCompanyQuestions = companyQuestions.length > 0;
+    },
+    updateCompanyQuestionsAnswers: function (companyQuestionsAnswered) {
+      this.companyQuestionsAnswered = companyQuestionsAnswered;
     },
   },
   data() {
@@ -405,7 +413,8 @@ export default {
           category: "laborRisk",
         },
       ],
-      companyQuestions: []
+      companyQuestions: [],
+      companyQuestionsAnswered: [],
     };
   },
   async mounted() {

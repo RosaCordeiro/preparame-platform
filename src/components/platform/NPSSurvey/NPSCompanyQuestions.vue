@@ -11,7 +11,12 @@
         <q-card-section class="column">
             <div v-for="(question, questionIndex) in companyQuestions" :key="questionIndex">
                 {{ question.questionText }}
-                <input type="text" placeholder="Resposta" class="input-nps-company-questions" />
+                <input 
+                type="text" 
+                placeholder="Resposta" 
+                class="input-nps-company-questions"
+                v-model="localCompanyQuestionsAnswered[questionIndex].answer" 
+                @input="updateAnswers"/>
             </div>
             <q-space></q-space>
             <div class="row self-center">
@@ -26,15 +31,28 @@
 <script>
 
 export default {
-    props: ["companyQuestions"],
+    props: ["companyQuestions", "companyQuestionsAnswered"],
     methods: {
         goNPSSurvey: function () {
             this.$parent.$parent.goNPSSurvey();
         },
         finishSurvey: function () {
-
             this.$parent.$parent.finishSurvey();
         },
+        updateAnswers: function () {
+            this.$emit('update:companyQuestionsAnswered', this.localCompanyQuestionsAnswered);
+        },
+    },
+    data() {
+        return {
+            localCompanyQuestionsAnswered: this.companyQuestions.map((question) => {
+                return {
+                    questionId: question.id,
+                    questionText: question.questionText,
+                    answer: "",
+                };
+            }),
+        };
     },
 };
 </script>
