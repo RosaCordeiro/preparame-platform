@@ -207,9 +207,9 @@ export default {
       }
     },
     searchCompanyQuestions: async function () {
-      const companyId = localStorage.getItem("companyId");
+      const companyId = localStorage.getItem("companyId");      
       
-      if (!companyId) {
+      if (!companyId || companyId === '' || companyId === null || companyId === 'null') {
         return;
       }
       const companyQuestions = await filterCrud(
