@@ -9,7 +9,7 @@
           :blockRemove="blockRemove"
         />
         <slot name="title"> </slot>
-        <CrudQueryFilter :rows="rows" v-if="filters.length > 0" />
+        <CrudQueryFilter :rows="rows" v-if="this.filters.length > 0 && this.filters.some((filter) => filter.visible)" />
         <CrudQueryTable
           ref="table"
           :result="{ columns, data }"
@@ -115,7 +115,7 @@ export default {
     this.filter(this.filters);
 
     adjustColumnsAndRowsRegister(this.filters, this.rows);
-  },
+  }
 };
 </script>
 

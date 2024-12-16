@@ -11,12 +11,8 @@
         <q-card-section class="column">
             <div v-for="(question, questionIndex) in companyQuestions" :key="questionIndex">
                 {{ question.questionText }}
-                <input 
-                type="text" 
-                placeholder="Resposta" 
-                class="input-nps-company-questions"
-                v-model="localCompanyQuestionsAnswered[questionIndex].answer" 
-                @input="updateAnswers"/>
+                <input type="text" placeholder="Resposta" class="input-nps-company-questions"
+                    v-model="localCompanyQuestionsAnswered[questionIndex].answer" @input="updateAnswers" />
             </div>
             <q-space></q-space>
             <div class="row self-center">
@@ -37,6 +33,16 @@ export default {
             this.$parent.$parent.goNPSSurvey();
         },
         finishSurvey: function () {
+            for (const question of this.localCompanyQuestionsAnswered) {
+                if (question.answer === "" || question.answer === null || question.answer === undefined) {
+                    this.$q.notify({
+                        type: "error",
+                        message: "É necessário responder a todas as perguntas da empresa.",
+                    });
+                    return;
+                }
+            }
+
             this.$parent.$parent.finishSurvey();
         },
         updateAnswers: function () {
