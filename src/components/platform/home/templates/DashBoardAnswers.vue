@@ -393,8 +393,15 @@
                 :textBold="false"
               />
             </div>
+
           </div>
         </div>
+      </div>
+      <div v-if="companyQuestions.length > 0" class="card">
+        <h2>Perguntas da Empresa</h2>
+        <CompanyQuestionsCard
+        :companyQuestions="companyQuestions"
+        />
       </div>
     </q-page>
 
@@ -411,6 +418,7 @@ import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
 import IconInfo from "src/components/general/IconInfo.vue";
 import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
 import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
+import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
 
 export default {
   components: {
@@ -421,6 +429,7 @@ export default {
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
     RowChartOneEmojiWithoutIntersection,
+    CompanyQuestionsCard
   },
   data() {
     return {
@@ -457,6 +466,7 @@ export default {
       selectAllArea: false,
       selectAllRole: false,
       realocatedCount: 0,
+      companyQuestions: []
     };
   },
   props: ["companyId"],
@@ -730,7 +740,7 @@ export default {
         filters,
         "reports/NPSSurveyAnswers"
       );
-
+      
       this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
@@ -759,6 +769,8 @@ export default {
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
 
       this.lessThanFive = npsSurveyReport.lessThanFive;
+      this.companyQuestions = npsSurveyReport.companyQuestions;
+      
 
       function compareFeelings(a, b) {
         if (a.feeling < b.feeling) {

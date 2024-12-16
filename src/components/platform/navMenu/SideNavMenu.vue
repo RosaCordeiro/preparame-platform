@@ -158,7 +158,14 @@ const menu = {
     ],
   },
   COMPANY_ADMIN: {
-    menuList: [],
+    menuList: [
+      {
+        icon: "open_in_new",
+        label: "Perguntas Qualitativas",
+        separator: false,
+        url: "surveyQuestions",
+      },
+    ],
   },
 };
 
