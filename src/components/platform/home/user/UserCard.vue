@@ -11,7 +11,7 @@
             <q-btn
               flat
               color="white"
-              label="Responder Pesquisa de Desligamento"
+              label="Avalie sua antiga empresa"
               class="col-12"
               @click="goUrl(`survey`)"
             />

@@ -112,7 +112,7 @@
             <img src="../../../assets/imgs/passou.png" />
             <div class="sub-title">Queremos saber como foi sua experiência</div>
             <div class="detail">é rapidinho</div>
-            <div class="buton" @click="answerSurvey()">Responder Pesquisa</div>
+            <div class="buton" @click="answerSurvey()">Avalie sua antiga empresa</div>
           </div>
         </div>
       </q-dialog>
