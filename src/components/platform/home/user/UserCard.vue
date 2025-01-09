@@ -11,7 +11,7 @@
             <q-btn
               flat
               color="white"
-              label="Responder Pesquisa de Desligamento"
+              label="Avalie sua antiga empresa"
               class="col-12"
               @click="goUrl(`survey`)"
             />
@@ -155,7 +155,7 @@
             <q-btn
               flat
               color="white"
-              label="Preciso de ajuda com pendências trabalhistas"
+              label="Tenho dúvidas sobre meu encerramento de contrato"
               class="col-12"
               @click="laborRiskAlertDialog = true"
             />
