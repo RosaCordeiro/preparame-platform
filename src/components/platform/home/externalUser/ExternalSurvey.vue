@@ -17,7 +17,7 @@
             <div class="col-12 card__texts">
               <div>
                 <div class="external-user-talent-bank-card-title">
-                  RESPONDA A PESQUISA DE DEMISSÃO E AJUDE A CONSTRUIR O MAIOR
+                  AVALIE A SUA ANTIGA EMPRESA E AJUDE A CONSTRUIR O MAIOR
                   ESTUDO DE DEMISSÃO DO BRASIL
                 </div>
 
