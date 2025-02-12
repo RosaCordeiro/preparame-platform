@@ -208,6 +208,8 @@ export default {
           status: "AVAILABLE",
           specialistId: this.specialist.id,
           dateSchedule: hour.dateSchedule,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          offset: hour.dateSchedule.getTimezoneOffset(),
         });
       } else {
         const url = `specialists/schedule`;
