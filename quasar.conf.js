@@ -9,6 +9,8 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 
 const ESLintPlugin = require("eslint-webpack-plugin");
+const dotenv = require("dotenv");
+dotenv.config();
 
 module.exports = function (ctx) {
   return {
@@ -49,7 +51,7 @@ module.exports = function (ctx) {
             API: "http://localhost:3334",
           }
         : {
-            API: "https://api.preparame.homolog.inf.br",
+            API: process.env.API_PROD_URL
           },
 
       // transpile: false,
