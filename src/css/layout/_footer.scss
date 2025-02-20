@@ -1,0 +1,23 @@
+.footer {
+    background: $green;
+    padding: 4.8rem 0;
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include max(860) {
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    &__dev {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        font-size: 1rem;
+        opacity: .5;
+    }
+}
