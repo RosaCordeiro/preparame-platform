@@ -26,7 +26,7 @@ module.exports = function (ctx) {
     boot: ["axios", "notification", "apex"],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ["app.scss", "new.scss"],
+    css: ["app.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -48,11 +48,11 @@ module.exports = function (ctx) {
 
       env: ctx.dev
         ? {
-            API: "http://localhost:3334",
-          }
+          API: "http://localhost:3334",
+        }
         : {
-            API: process.env.API_PROD_URL,
-          },
+          API: process.env.API_PROD_URL,
+        },
 
       // transpile: false,
 

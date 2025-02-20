@@ -38,7 +38,9 @@ body {
     position: relative;
     min-height: 100vh;
     font-family: $default-font;
-    background: #E9FFF8;
+    background: #fff;
+    color: #000;
+    line-height: unset;
 
     &::-webkit-scrollbar {
         width: 5px;

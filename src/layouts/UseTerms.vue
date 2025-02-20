@@ -474,7 +474,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .use-terms-article {
   padding: 2%;
 }

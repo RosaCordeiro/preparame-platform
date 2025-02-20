@@ -14,6 +14,7 @@
         @include max(860) {
             max-height: unset;
             padding-top: unset;
+            height: unset;
         }
 
         &__content {
@@ -43,10 +44,16 @@
                 @include max(860) {
                     font-size: 4rem;
                 }
+
+                @include max(560) {
+                    font-size: 3rem;
+                }
             }
 
             & .btn {
-                @include defaultButton(3rem, $fuchsia, $blue, #fff);
+                @include defaultButton(3rem, $fuchsia, $blue, #fff) {
+                    color: #fff;
+                }
             }
         }
 
@@ -60,6 +67,10 @@
                 height: 100%;
                 width: 100%;
                 object-fit: contain;
+
+                @include max(860) {
+                    margin-bottom: 4rem;
+                }
             }
         }
     }
@@ -111,6 +122,7 @@
                     width: 50%;
                     color: #000;
                     mix-blend-mode: difference;
+
 
                     &:first-of-type {
                         text-align: right;
@@ -173,13 +185,13 @@
                     display: block;
                     z-index: 3;
                     font-size: 2.4rem;
-                    font-weight: 500;
+                    font-weight: bold;
                     color: #fff;
                     text-align: center;
                     text-transform: lowercase;
-                    border: 1px solid #000;
+                    border: 2px solid #000;
                     border-radius: inherit;
-                    padding: .8rem;
+                    padding: 1.4rem .8rem;
                     width: 100%;
                     background: $fuchsia;
                     transition: .2s ease;
@@ -187,14 +199,14 @@
                     &::after {
                         content: '';
                         position: absolute;
-                        bottom: -1px;
-                        right: -1px;
-                        width: calc(50% + 1px);
-                        height: calc(100% + 2px);
+                        bottom: -2px;
+                        right: -2px;
+                        width: calc(50% + 2px);
+                        height: calc(100% + 4px);
                         border-top-right-radius: .8rem;
                         border-bottom-right-radius: .8rem;
                         background: transparent;
-                        border: 1px solid #fff;
+                        border: 2px solid #fff;
                         border-left: none;
                     }
                 }
@@ -227,7 +239,8 @@
                         text-align: center;
 
                         &.title {
-                            font-size: 3.2rem;
+                            font-size: 2.7rem;
+                            white-space: nowrap;
 
                             @include min(860) {
                                 display: none;
@@ -308,6 +321,11 @@
                     margin-bottom: 3rem;
                 }
 
+
+                @include max(560) {
+                    font-size: 3rem;
+                    margin-bottom: 2rem;
+                }
             }
         }
 
@@ -385,6 +403,14 @@
 
                     &>span {
                         font-size: 10.8rem;
+
+                        @include max(560) {
+                            font-size: 7rem;
+                        }
+                    }
+
+                    @include max(560) {
+                        font-size: 8rem;
                     }
                 }
             }
@@ -400,6 +426,11 @@
                 flex-direction: column;
             }
 
+            @include max(560) {
+                margin-top: 2rem;
+
+            }
+
             & p {
                 font-size: 1.8rem;
                 font-weight: 500;
@@ -412,7 +443,7 @@
             }
 
             & .btn {
-                @include defaultButton(3rem, $fuchsia, $green, #fff) {
+                @include defaultButton(2.4rem, $fuchsia, $green, #fff) {
                     color: #fff;
                 }
             }
@@ -453,6 +484,10 @@
                     font-size: 3rem;
                 }
 
+                @include max(560) {
+                    font-size: 2.5rem;
+                }
+
                 & *:not(:last-of-type) {
                     margin-bottom: 4rem;
                 }
@@ -491,6 +526,11 @@
                 width: unset;
                 text-align: center;
             }
+
+            @include max(560) {
+                font-size: 2.7rem;
+                padding: 1.4rem;
+            }
         }
 
         &__items {
@@ -520,7 +560,7 @@
                         aspect-ratio: 80 / 38;
                         width: 100%;
                         max-width: 8rem;
-                        background-image: url('../../src/assets/img/SVG/arrow.svg');
+                        background-image: url('../../assets/img/SVG/arrow.svg');
                         background-repeat: no-repeat;
                         background-size: contain;
                         background-position: center;
@@ -543,7 +583,7 @@
                     justify-content: center;
                     background: $green;
                     border-radius: 100%;
-                    background-image: url('../../src/assets/img/SVG/dotted-border.svg');
+                    background-image: url('../../assets/img/SVG/dotted-border.svg');
                     background-size: contain;
                     aspect-ratio: 1 / 1;
                     width: 100%;
@@ -554,6 +594,10 @@
                     font-weight: bold;
                     padding: 1.5rem;
                     text-align: center;
+
+                    @include max(560) {
+                        font-size: 1.8rem;
+                    }
                 }
             }
         }
@@ -569,7 +613,7 @@
                 & .item {
                     & span {
                         background: $blue;
-                        background-image: url('../../src/assets/img/SVG/dotted-border.svg');
+                        background-image: url('../../assets/img/SVG/dotted-border.svg');
                     }
                 }
             }

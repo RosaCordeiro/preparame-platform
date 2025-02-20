@@ -58,15 +58,20 @@
         display: block;
         z-index: 1;
         font-size: $fontSize;
-        font-weight: 500;
+        font-weight: bold;
         text-align: center;
         text-transform: lowercase;
-        border: 1px solid #000;
+        border: 2px solid #000;
         border-radius: inherit;
-        padding: .8rem;
+        padding: 1.4rem .8rem;
         width: 100%;
         background: $color;
         transition: .2s ease;
+
+        @include max(860) {
+            font-size: 2rem;
+        }
+
     }
 
     @content

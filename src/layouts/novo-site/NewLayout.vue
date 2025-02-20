@@ -27,9 +27,16 @@ export default {
       menuMobile: null,
       scrollClass: "scrolled",
       smoothScroll: null,
+      quasarStyles: [],
     };
   },
   mounted() {
+    this.quasarStyles = Array.from(
+      document.querySelectorAll("style, link")
+    ).filter((el) => el.innerText.includes("q-app") || el.href?.includes("quasar"));
+
+    this.quasarStyles.forEach((style) => style.remove());
+
     this.header = document.querySelector("header");
     this.menuToggle = document.querySelector(".header__interact .toggle-menu");
     this.menuMobile = document.querySelector(".header__nav .menu-mobile");
@@ -80,7 +87,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+
+@import "../../css/new.scss";
+
 @keyframes slide {
   to {
     transform: translateX(0px);

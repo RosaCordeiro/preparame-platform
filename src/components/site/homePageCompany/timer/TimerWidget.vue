@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .timer {
   display: flex;
   flex-direction: column;
