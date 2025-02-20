@@ -33,9 +33,11 @@ export default {
   mounted() {
     this.quasarStyles = Array.from(
       document.querySelectorAll("style, link")
-    ).filter((el) => el.innerText.includes("q-app") || el.href?.includes("quasar"));
+    ).filter(
+      (el) => el.innerText.includes("q-app") || el.href?.includes("quasar")
+    );
 
-    this.quasarStyles.forEach((style) => style.remove());
+    this.quasarStyles.forEach((style) => (style.disabled = true));
 
     this.header = document.querySelector("header");
     this.menuToggle = document.querySelector(".header__interact .toggle-menu");
@@ -88,7 +90,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 @import "../../css/new.scss";
 
 @keyframes slide {

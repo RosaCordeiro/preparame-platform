@@ -51,9 +51,12 @@
         </div>
       </nav>
       <div class="header__interact">
-        <router-link to="/login" class="login btn">
+        <!-- <router-link to="/login" class="login btn">
           <span>Entrar</span>
-        </router-link>
+        </router-link> -->
+        <a @click="toLogin" class="login btn">
+          <span>Entrar</span>
+        </a>
         <button class="btn toggle-menu">
           <span class="btn-hamb"> </span>
         </button>
@@ -63,7 +66,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    toLogin() {
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 
 <style></style>

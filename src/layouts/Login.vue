@@ -37,6 +37,15 @@ export default {
       }, 100);
     },
   },
+  mounted() {
+    this.quasarStyles = Array.from(
+      document.querySelectorAll("style, link")
+    ).filter(
+      (el) => el.innerText.includes("q-app") || el.href?.includes("quasar")
+    );
+
+    this.quasarStyles.forEach((style) => (style.disabled = false));
+  },
   created() {
     this.requestLogin();
   },
