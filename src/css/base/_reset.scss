@@ -37,7 +37,9 @@ body {
     box-sizing: border-box;
     position: relative;
     min-height: 100vh;
-    font-family: $default-font;
+    font-family: $default-font !important;
+    line-height: unset !important;
+    letter-spacing: unset !important;
     background: #fff;
     color: #000;
     line-height: unset;
@@ -62,6 +64,11 @@ body {
         background: #f9f9f9;
     }
 
+}
+
+h2 {
+    line-height: unset !important;
+    letter-spacing: unset !important;
 }
 
 main {
