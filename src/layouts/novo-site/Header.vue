@@ -9,7 +9,7 @@
       <nav class="header__nav">
         <ul class="menu">
           <li class="menu-item">
-            <router-link to="">demissão responsável</router-link>
+            <router-link to="/">demissão responsável</router-link>
           </li>
           <li class="menu-item">
             <router-link to="/treinamento">treinamento</router-link>
@@ -17,35 +17,17 @@
           <li class="menu-item">
             <router-link to="/clientes">clientes</router-link>
           </li>
-          <li class="menu-item">
-            <router-link to="">conteúdos</router-link>
-          </li>
-          <li class="menu-item">
-            <router-link to="">dúvidas</router-link>
-          </li>
-          <li class="menu-item">
-            <router-link to="">sobre nós</router-link>
-          </li>
         </ul>
         <div class="menu-mobile">
           <ul class="menu-mobile__items">
             <li class="mobile-item">
-              <router-link to="">demissão responsável</router-link>
+              <router-link to="/">demissão responsável</router-link>
             </li>
             <li class="mobile-item">
               <router-link to="/treinamento">treinamento</router-link>
             </li>
             <li class="mobile-item">
               <router-link to="clientes">clientes</router-link>
-            </li>
-            <li class="mobile-item">
-              <router-link to="">conteúdos</router-link>
-            </li>
-            <li class="mobile-item">
-              <router-link to="">dúvidas</router-link>
-            </li>
-            <li class="mobile-item">
-              <router-link to="">sobre nós</router-link>
             </li>
           </ul>
         </div>
