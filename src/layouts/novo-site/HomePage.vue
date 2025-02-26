@@ -6,7 +6,7 @@
           <h2>
             Apoie ex-colaboradores a continuarem suas carreiras após a demissão.
           </h2>
-          <a href="#" class="btn"><span>quero orçamento</span></a>
+          <a href="#" class="btn btn--form"><span>quero orçamento</span></a>
         </div>
         <figure class="h-banner__img">
           <img src="../../assets/img/PNG/h-banner.png" alt="Banner Cover" />
@@ -41,7 +41,7 @@
             </ul>
           </div>
         </div>
-        <a href="#" class="btn"><span>quero ver a plataforma</span></a>
+        <a href="#" class="btn btn--form"><span>quero ver a plataforma</span></a>
       </div>
     </section>
     <section class="h-percent">
@@ -67,7 +67,7 @@
             que foram demitidas e receberam apoio Prepara.me, comparado com
             pessoas que foram demitidas e não receberam nenhum apoio.
           </p>
-          <a href="#" class="btn"><span>quero saber mais</span></a>
+          <a href="#" class="btn btn--form"><span>quero saber mais</span></a>
         </div>
       </div>
     </section>
@@ -78,7 +78,7 @@
             <p>Pra quem demite a demissão acaba em 10 minutos.</p>
             <p>Pra pessoa demitida só acaba quando ela se recoloca.</p>
           </div>
-          <a href="#" class="btn"><span>quero saber mais</span></a>
+          <a href="#" class="btn btn--form"><span>quero saber mais</span></a>
         </div>
         <figure class="h-placement__img">
           <img
@@ -105,7 +105,7 @@
           <span>Outplacement</span>
         </div>
       </div>
-      <a href="#" class="btn"><span>conhecer pacotes</span></a>
+      <a href="#" class="btn btn--form"><span>conhecer pacotes</span></a>
     </section>
 
     <section class="h-solutions h-solutions--blue wrapper">
@@ -124,7 +124,50 @@
           <span>Treinamentos e cursos sobre demissão</span>
         </div>
       </div>
-      <a href="#" class="btn"><span>conhecer pacotes</span></a>
+      <a href="#" class="btn btn--form"><span>conhecer pacotes</span></a>
     </section>
+
+    <FormModal :isOpen="showModal" @close="showModal = false" />
   </main>
 </template>
+
+<script>
+
+import FormModal from "./FormModal.vue";
+
+export default {
+  components: {
+    FormModal,
+  },
+  
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  mounted() {
+
+    const buttons = document.querySelectorAll(".btn--form");
+
+    if (buttons.length > 0) {
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", this.openModal);
+      });
+}
+  },
+  beforeDestroy() {
+
+    const buttons = document.querySelectorAll(".btn--form");
+    buttons.forEach((btn) => {
+      btn.removeEventListener("click", this.openModal);
+    });
+
+  },
+  methods: {
+    openModal(event) {
+      event.preventDefault();
+      this.showModal = true;
+    },
+  },
+};
+</script>

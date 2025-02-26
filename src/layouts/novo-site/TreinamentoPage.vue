@@ -12,7 +12,7 @@
               Porque nem só de kit onboarding vive a experiência do colaborador.
             </p>
           </div>
-          <a href="#" class="btn"><span>quero saber mais</span></a>
+          <a href="#" class="btn btn--form"><span>quero saber mais</span></a>
         </div>
       </div>
     </section>
@@ -36,7 +36,7 @@
             <p>Treinamento de Demissão Responsável para RHs e líderes.</p>
           </div>
         </div>
-        <a href="#" class="btn"><span>quero orçamento</span></a>
+        <a href="#" class="btn btn--form"><span>quero orçamento</span></a>
       </div>
     </section>
     <section class="t-topics wrapper">
@@ -53,7 +53,7 @@
           <li>O que precisa ser feito após a demissão?</li>
         </ul>
       </div>
-      <a href="#" class="btn"><span>quero falar sobre isto</span></a>
+      <a href="#" class="btn btn--form"><span>quero falar sobre isto</span></a>
     </section>
     <section class="t-vs wrapper">
       <div class="t-vs__items">
@@ -68,7 +68,7 @@
           <p>Não tem como falar de gestão de pessoas sem falar de demissão.</p>
         </div>
       </div>
-      <a href="#" class="btn"><span>quero saber sobre treinamento</span></a>
+      <a href="#" class="btn btn--form"><span>quero saber sobre treinamento</span></a>
     </section>
     <section class="t-perm">
       <div class="t-perm__content wrapper">
@@ -79,15 +79,53 @@
               dia dela do que esta demissão.
             </p>
           </div>
-          <a href="#" class="btn"><span>me ajudem nisso</span></a>
+          <a href="#" class="btn btn--form"><span>me ajudem nisso</span></a>
         </div>
       </div>
     </section>
+    <FormModal :isOpen="showModal" @close="showModal = false" />
   </main>
 </template>
 
 <script>
-export default {};
+
+import FormModal from "./FormModal.vue";
+
+export default {
+  components: {
+    FormModal,
+  },
+  
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  mounted() {
+
+    const buttons = document.querySelectorAll(".btn--form");
+
+    if (buttons.length > 0) {
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", this.openModal);
+      });
+}
+  },
+  beforeDestroy() {
+
+    const buttons = document.querySelectorAll(".btn--form");
+    buttons.forEach((btn) => {
+      btn.removeEventListener("click", this.openModal);
+    });
+
+  },
+  methods: {
+    openModal(event) {
+      event.preventDefault();
+      this.showModal = true;
+    },
+  },
+};
 </script>
 
 <style></style>

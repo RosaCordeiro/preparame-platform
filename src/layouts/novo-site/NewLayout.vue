@@ -11,8 +11,10 @@
 </template>
 
 <script>
+
 import HeaderVue from "./Header.vue";
 import FooterVue from "./Footer.vue";
+
 import SmoothScroll from "smooth-scroll";
 
 export default {
@@ -20,6 +22,7 @@ export default {
     HeaderVue,
     FooterVue,
   },
+  
   data() {
     return {
       header: null,
@@ -31,6 +34,19 @@ export default {
     };
   },
   mounted() {
+
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = `(function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "qfw8gglx7o");`;
+    document.head.appendChild(script);
+
     this.quasarStyles = Array.from(
       document.querySelectorAll("style, link")
     ).filter(
@@ -45,11 +61,6 @@ export default {
 
     window.addEventListener("scroll", this.handleScroll);
 
-    this.smoothScroll = new SmoothScroll('a[href^="#"]', {
-      speed: 800,
-      offset: 0,
-      easing: "easeInOutCubic",
-    });
 
     this.menuToggle?.addEventListener("click", this.toggleMenu);
     document
@@ -59,6 +70,7 @@ export default {
       });
   },
   beforeDestroy() {
+
     window.removeEventListener("scroll", this.handleScroll);
     this.menuToggle?.removeEventListener("click", this.toggleMenu);
     document
@@ -69,11 +81,6 @@ export default {
   },
   methods: {
     handleScroll() {
-      if (window.scrollY > 50) {
-        this.header?.classList.add(this.scrollClass);
-      } else {
-        this.header?.classList.remove(this.scrollClass);
-      }
 
       if (this.menuMobile?.classList.contains("active")) {
         this.menuMobile.classList.remove("active");
