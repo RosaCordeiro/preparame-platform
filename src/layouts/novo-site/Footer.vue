@@ -14,7 +14,7 @@
     </div>
     <div class="footer__bottom">
       <div class="wrapper">
-        <a href="#" class="footer__lgpd">
+        <a href="https://www.privacidade.com.br/portal-de-privacidade?token=96e68d530e60530923326f874779b49a" class="footer__lgpd" target="blank">
           <img src="../../assets/img/PNG/lgpd.png" alt="LGPD" />
         </a>
       </div>
