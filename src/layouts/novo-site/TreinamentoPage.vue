@@ -59,13 +59,13 @@
       <div class="t-vs__items">
         <div class="item">
           <p>
-            Não tem como falar de jornada dos colaboradores, sem falar de
+            Não tem como falar de <b>jornada dos colaboradores</b>, sem falar de
             demissão.
           </p>
         </div>
         <div class="separator"></div>
         <div class="item">
-          <p>Não tem como falar de gestão de pessoas sem falar de demissão.</p>
+          <p>Não tem como falar de <b>gestão de pessoas</b> sem falar de demissão.</p>
         </div>
       </div>
       <a href="#" class="btn btn--form"><span>quero saber sobre treinamento</span></a>
