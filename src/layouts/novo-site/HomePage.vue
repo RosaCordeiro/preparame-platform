@@ -5,6 +5,7 @@
         <div class="h-banner__text">
           <h2>
             Apoie ex-colaboradores a continuarem suas carreiras após a demissão.
+            <span>Fácil e dentro do orçamento.</span>
           </h2>
           <a href="#" class="btn btn--form"><span>quero orçamento</span></a>
         </div>
