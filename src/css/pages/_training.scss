@@ -43,7 +43,7 @@
 
             & .desc {
                 font-family: 'Asap', sans-serif;
-                font-size: 3rem;
+                font-size: 2.5rem;
                 font-weight: 300;
                 margin-bottom: 10rem;
 
@@ -57,7 +57,7 @@
             }
 
             & .btn {
-                @include defaultButton(2.5rem, $blue, $green, #fff) {
+                @include defaultButton(2.3rem, $blue, $green, #fff) {
                     margin-left: -5rem;
                     color: #fff;
 
@@ -85,7 +85,7 @@
             max-width: 1000px;
 
             & .btn {
-                @include defaultButton(2.5rem, $blue, $fuchsia, #fff) {
+                @include defaultButton(2.3rem, $blue, $fuchsia, #fff) {
                     color: #fff;
                 }
             }
@@ -106,13 +106,9 @@
                 flex-direction: column;
                 justify-content: center;
                 font-family: 'Asap', sans-serif;
-                font-size: 4.4rem;
+                font-size: 4rem;
                 font-weight: bold;
                 flex-basis: 43.56060%;
-
-                @include min(1440) {
-                    font-size: 5.8rem;
-                }
 
                 @include max(860) {
                     font-size: 3rem;
@@ -199,7 +195,7 @@
 
             & .topics {
                 font-family: 'Asap', sans-serif;
-                font-size: 2.7rem;
+                font-size: 2.4rem;
                 list-style: none;
                 flex-basis: 53.33333%;
 
@@ -220,7 +216,7 @@
         }
 
         & .btn {
-            @include defaultButton(2.5rem, $fuchsia, $blue, #fff) {
+            @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
                 color: #fff;
             }
         }
@@ -254,15 +250,10 @@
                 flex-direction: column;
                 justify-content: center;
                 font-family: 'Asap', sans-serif;
-                font-size: 4.4rem;
+                font-size: 3.5rem;
                 font-weight: 400;
                 flex-basis: 43.56060%;
                 padding: 7.2rem 0;
-
-                @include min(1440) {
-                    font-size: 5.8rem;
-                }
-
 
                 @include max(860) {
                     padding: 4rem 0;
@@ -318,7 +309,7 @@
         }
 
         & .btn {
-            @include defaultButton(2.5rem, $fuchsia, $blue, #fff) {
+            @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
                 color: #fff;
             }
         }
@@ -345,13 +336,9 @@
                 background: #fff;
                 padding: 1.6rem;
                 font-family: 'Asap', sans-serif;
-                font-size: 4.4rem;
+                font-size: 3.5rem;
                 font-weight: 500;
                 margin-bottom: 10rem;
-
-                @include min(1440) {
-                    font-size: 5.2rem;
-                }
 
                 @include max(860) {
                     font-size: 3rem;
@@ -360,7 +347,7 @@
             }
 
             & .btn {
-                @include defaultButton(2.5rem, $fuchsia, $blue, #fff) {
+                @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
                     color: #fff;
                 }
             }
