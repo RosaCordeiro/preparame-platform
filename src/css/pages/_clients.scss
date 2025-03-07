@@ -14,20 +14,41 @@
         }
 
         &__grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
+
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            /* 3 equal columns */
+            /* Default row height */
+            gap: 10px;
 
             @include max(560) {
+                display: flex;
+                flex-wrap: wrap;
                 gap: 2rem;
                 justify-content: center;
 
             }
 
             & img {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 max-width: 200px;
-                max-height: 110px;
+                max-height: 170px;
+                height: 100%;
                 object-fit: contain;
+
+                &.big {
+                    grid-row: span 2;
+                    max-height: unset;
+                    max-width: unset;
+                    width: 100%;
+
+                    @include max(560) {
+                        max-height: unset;
+                        max-width: 170px;
+                    }
+                }
 
                 @include max(560) {
                     max-height: unset;

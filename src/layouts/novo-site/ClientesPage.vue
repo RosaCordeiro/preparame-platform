@@ -13,11 +13,11 @@
           <img src="../../assets/img/clients/logo-7.webp" />
           <img src="../../assets/img/clients/logo-8.jpg" />
           <img src="../../assets/img/clients/logo-9.png" />
+          <img src="../../assets/img/clients/logo-14.jpg" class="big"/>
           <img src="../../assets/img/clients/logo-10.webp" />
           <img src="../../assets/img/clients/logo-11.png" />
           <img src="../../assets/img/clients/logo-12.png" />
           <img src="../../assets/img/clients/logo-13.jpg" />
-          <img src="../../assets/img/clients/logo-14.jpg" />
           <img src="../../assets/img/clients/logo-15.png" />
           <img src="../../assets/img/clients/logo-16.webp" />
           <img src="../../assets/img/clients/logo-17.svg" />
@@ -25,7 +25,7 @@
           <img src="../../assets/img/clients/logo-19.avif" />
           <img src="../../assets/img/clients/logo-20.png" />
           <img src="../../assets/img/clients/logo-21.png" />
-          <img src="../../assets/img/clients/logo-22.webp" />
+          <img src="../../assets/img/clients/logo-22.png" />
           <img src="../../assets/img/clients/logo-23.jpg" />
           <img src="../../assets/img/clients/logo-24.png" />
         </div>
