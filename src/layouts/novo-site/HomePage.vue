@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="site-body">
     <section class="h-banner">
       <div class="h-banner__content wrapper">
         <div class="h-banner__text">
@@ -147,7 +147,7 @@ export default {
     };
   },
   mounted() {
-
+    document.documentElement.classList.add("site-body");
     const buttons = document.querySelectorAll(".btn--form");
 
     if (buttons.length > 0) {
@@ -163,6 +163,9 @@ export default {
       btn.removeEventListener("click", this.openModal);
     });
 
+  },
+  beforeUnmount() {
+    document.documentElement.classList.remove("site-body");
   },
   methods: {
     openModal(event) {

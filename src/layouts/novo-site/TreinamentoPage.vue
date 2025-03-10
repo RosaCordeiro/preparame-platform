@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="site-body">
     <section class="t-banner">
       <div class="t-banner__content wrapper">
         <figure class="t-banner__img">
@@ -102,7 +102,7 @@ export default {
     };
   },
   mounted() {
-
+    document.documentElement.classList.add("site-body");
     const buttons = document.querySelectorAll(".btn--form");
 
     if (buttons.length > 0) {
@@ -118,6 +118,9 @@ export default {
       btn.removeEventListener("click", this.openModal);
     });
 
+  },
+  beforeUnmount() {
+    document.documentElement.classList.remove("site-body");
   },
   methods: {
     openModal(event) {
