@@ -1,7 +1,7 @@
 import ProductDetails from "../../layouts/ProductDetails.vue";
 import ProductList from "../../layouts/ProductList.vue";
 import ProductSchedule from "../../layouts/ProductSchedule.vue";
-import HomePage from "../../layouts/HomePage.vue";
+import HomePage from "../../layouts/novo-site/HomePage.vue";
 import HomePageCompany from "../../layouts/HomePageCompany.vue";
 import MateriaisGratuitos from "../../layouts/MateriaisGratuitos.vue";
 
@@ -14,18 +14,33 @@ import UseTerms from "../../layouts/UseTerms.vue";
 import ResponsibleDemission from "../../layouts/ResponsibleDemission.vue";
 import PageNotFound from "../../pages/PageNotFound.vue";
 import KitPro from "../../components/site/kitProPage/KitProPage";
+import NewLayout from "src/layouts/novo-site/NewLayout.vue";
+import ClientesPage from "src/layouts/novo-site/ClientesPage.vue";
+import TreinamentoPage from "src/layouts/novo-site/TreinamentoPage.vue";
 
 const siteRoutes = [
   {
     path: "/",
     components: {
-      site: Site,
+      site: NewLayout,
     },
     children: [
       {
         path: "/",
         components: {
           content: HomePage,
+        },
+      },
+      {
+        path: "/clientes",
+        components: {
+          content: ClientesPage,
+        },
+      },
+      {
+        path: "/treinamento",
+        components: {
+          content: TreinamentoPage,
         },
       },
     ],

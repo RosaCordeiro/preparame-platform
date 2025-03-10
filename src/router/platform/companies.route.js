@@ -3,6 +3,8 @@ import CompanyEmployeesQueryCrud from "../../components/platform/companyEmployee
 import CompanyEmployeesRegisterCrud from "../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue"
 import CompaniesRegisterCrud from "../../components/platform/companiesCrud/CompaniesRegisterCrud.vue"
 import Platform from "../../layouts/Platform.vue"
+import SurveyQuestionsRegisterCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsRegisterCrud.vue"
+import SurveyQuestionsQueryCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue"
 
 const companyRoutes = [
     {
@@ -107,6 +109,57 @@ const companyRoutes = [
         props: {
             userTypes: [
                 'ADMIN'
+            ]
+        }
+    },
+    {
+        path: "/surveyQuestions",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: SurveyQuestionsQueryCrud
+            }
+        }],
+        props: {
+            userTypes: [
+                'COMPANY_ADMIN'
+            ]
+        }
+    },
+    {
+        path: "/surveyQuestions/new",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: SurveyQuestionsRegisterCrud
+            }
+        }],
+        props: {
+            userTypes: [
+                'COMPANY_ADMIN'
+            ]
+        }
+    },
+    {
+        path: "/surveyQuestions/:id",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: SurveyQuestionsRegisterCrud
+            }
+        }],
+        props: {
+            userTypes: [
+                'COMPANY_ADMIN'
             ]
         }
     },

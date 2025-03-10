@@ -1,0 +1,87 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-header {
+    background: $blue;
+    color: #fff;
+    padding: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 7px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 4rem;
+    font-weight: 300;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        color: $fuchsia;
+    }
+}
+
+.modal-content {
+    background: #fff;
+
+
+    /* Modern Scrollbar */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: $blue;
+    }
+}
+
+iframe {
+    border-radius: 8px;
+}
+
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -229,7 +229,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @keyframes slide {
   to {
     transform: translateX(0px);

@@ -109,7 +109,7 @@ const menu = {
         icon: "open_in_new",
         label: "Ver Objetivos dos Clientes",
         separator: false,
-        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+        url: "https://docs.google.com/spreadsheets/u/1/d/1a5cmeVaEFhiLUGiA2afVFQy9llyjy4QQJfrvNTTTbQk/edit?gid=776597408&pli=1&authuser=1",
       },
     ],
   },
@@ -147,7 +147,7 @@ const menu = {
         icon: "open_in_new",
         label: "Ver Objetivos dos Clientes",
         separator: false,
-        url: "https://docs.google.com/spreadsheets/d/1QwRXwjQPiYQnhM2-NJ9tE25JR4U7S2FzXw3rICjr2As/edit?usp=sharing",
+        url: "https://docs.google.com/spreadsheets/u/1/d/1a5cmeVaEFhiLUGiA2afVFQy9llyjy4QQJfrvNTTTbQk/edit?gid=776597408&pli=1&authuser=1",
       },
       {
         icon: "person",
@@ -158,7 +158,14 @@ const menu = {
     ],
   },
   COMPANY_ADMIN: {
-    menuList: [],
+    menuList: [
+      {
+        icon: "open_in_new",
+        label: "Perguntas Qualitativas",
+        separator: false,
+        url: "surveyQuestions",
+      },
+    ],
   },
 };
 

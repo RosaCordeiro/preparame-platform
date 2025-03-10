@@ -48,11 +48,12 @@ module.exports = function (ctx) {
 
       env: ctx.dev
         ? {
-            API: "http://localhost:3334",
-          }
+          API: "http://localhost:3334",
+        }
         : {
             API: process.env.API_PROD_URL
           },
+        },
 
       // transpile: false,
 

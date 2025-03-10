@@ -10,7 +10,12 @@
         </q-card>
       </div>
       <NPSQuestionsContainer v-else-if="page === 1" :questions="questions" />
-      <NPSFeelingsMap v-else-if="page === 2" :feelings="feelings" />
+      <NPSFeelingsMap v-else-if="page === 2" :feelings="feelings" :hasCompanyQuestions="hasCompanyQuestions"/>
+      <NPSCompanyQuestions v-else-if="page === 3" 
+      :companyQuestions="companyQuestions" 
+      :companyQuestionsAnswered="companyQuestionsAnswered"
+      @update:companyQuestionsAnswered="updateCompanyQuestionsAnswers"/>
+      />
       <q-dialog v-model="showConfirmEndSurvey" persistent>
         <q-card>
           <q-card-section class="row items-center">
@@ -43,6 +48,8 @@ import Breadcrumbs from "../../general/Breacrumbs.vue";
 import NPSQuestionsContainer from "./NPSQuestionsContainer.vue";
 import NPSFeelingsMap from "./NPSFeelingsMap.vue";
 import SurveyViewDialog from "src/components/SurveyViewDialog.vue";
+import NPSCompanyQuestions from "./NPSCompanyQuestions.vue";
+import { filterCrud } from "src/components/general/crud/utils/filterCrud.js";
 
 export default {
   components: {
@@ -50,6 +57,7 @@ export default {
     NPSQuestionsContainer,
     NPSFeelingsMap,
     SurveyViewDialog,
+    NPSCompanyQuestions,
   },
   methods: {
     goNPSSurvey: function () {
@@ -73,6 +81,11 @@ export default {
 
       window.scrollTo(0, 0);
     },
+    goCompanyQuestions: function () {
+      this.page++;
+
+      window.scrollTo(0, 0);
+    },
     saveSurvey: async function () {
       const userUpdate = {
         laborRisk: this.laborRisk,
@@ -82,6 +95,7 @@ export default {
         brandRisk: this.brandRisk,
         brandRiskJSON: this.brandRiskJSON,
         laborRiskJSON: this.laborRiskJSON,
+        surveyQuestion: JSON.stringify(this.companyQuestionsAnswered)
       };
 
       const userUpdated = await saveCrud(
@@ -192,6 +206,24 @@ export default {
         this.showConfirmEndSurvey = true;
       }
     },
+    searchCompanyQuestions: async function () {
+      const companyId = localStorage.getItem("companyId");      
+      
+      if (!companyId || companyId === '' || companyId === null || companyId === 'null') {
+        return;
+      }
+      const companyQuestions = await filterCrud(
+        [{
+          name: "companyId",
+          model: companyId,
+        }],
+       "companies/surveyquestions");
+      this.companyQuestions = companyQuestions;
+      this.hasCompanyQuestions = companyQuestions.length > 0;
+    },
+    updateCompanyQuestionsAnswers: function (companyQuestionsAnswered) {
+      this.companyQuestionsAnswered = companyQuestionsAnswered;
+    },
   },
   data() {
     return {
@@ -199,6 +231,7 @@ export default {
       surveyAnswered: false,
       focusedQuestion: 1,
       feelingsSelected: [],
+      hasCompanyQuestions: false,
       breadcrumbs: [
         {
           title: "Pesquisa",
@@ -380,12 +413,16 @@ export default {
           category: "laborRisk",
         },
       ],
+      companyQuestions: [],
+      companyQuestionsAnswered: [],
     };
   },
-  mounted() {
+  async mounted() {
     this.surveyAnswered =
       localStorage.getItem("surveyAnswered") == "true" ? true : false;
+    await this.searchCompanyQuestions();
   },
+
 };
 </script>
 
