@@ -35,7 +35,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {
+    document.documentElement.classList.add("site-body");
+  },
+  beforeUnmount() {
+    document.documentElement.classList.remove("site-body");
+  }
+};
 </script>
 
 <style></style>
