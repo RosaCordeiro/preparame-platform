@@ -254,7 +254,6 @@
             :lessThanFive="lessThanFive"
           />
         </div>
-
       </div>
 
       <div class="box__two-columns">
@@ -393,15 +392,13 @@
                 :textBold="false"
               />
             </div>
-
           </div>
         </div>
       </div>
+
       <div v-if="companyQuestions.length > 0" class="card">
         <h2>Perguntas da Empresa</h2>
-        <CompanyQuestionsCard
-        :companyQuestions="companyQuestions"
-        />
+        <CompanyQuestionsCard :companyQuestions="companyQuestions" />
       </div>
     </q-page>
 
@@ -429,7 +426,7 @@ export default {
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
     RowChartOneEmojiWithoutIntersection,
-    CompanyQuestionsCard
+    CompanyQuestionsCard,
   },
   data() {
     return {
@@ -466,7 +463,7 @@ export default {
       selectAllArea: false,
       selectAllRole: false,
       realocatedCount: 0,
-      companyQuestions: []
+      companyQuestions: [],
     };
   },
   props: ["companyId"],
@@ -740,7 +737,7 @@ export default {
         filters,
         "reports/NPSSurveyAnswers"
       );
-      
+
       this.$q.loading.hide();
 
       this.nps = npsSurveyReport.nps;
@@ -769,8 +766,10 @@ export default {
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
 
       this.lessThanFive = npsSurveyReport.lessThanFive;
-      this.companyQuestions = npsSurveyReport.companyQuestions;
-      
+      this.companyQuestions =
+        npsSurveyReport.companyQuestions == null
+          ? []
+          : npsSurveyReport.companyQuestions;
 
       function compareFeelings(a, b) {
         if (a.feeling < b.feeling) {
