@@ -27,7 +27,7 @@ deploy_homolog:
   tags:
     - nodedso_homolog
   only:
-    - develop
+    - develop # Run on branches starting with 'develop'
 
 deploy_production:
   stage: deploy
