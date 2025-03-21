@@ -4,8 +4,8 @@ stages:
 variables:
   projectName: Prepara.me - ADMIN
   shouldRunCompose: "false"
-  projetctFolderHomolog: admin/admin.preparame.n1.homolog.inf.br
-  projectPm2NameHomolog: admin.preparame.n1.homolog.inf.br
+  projetctFolderHomolog: preparame/admin
+  projectPm2NameHomolog: app-preparame-admin
   projetctFolderProduction: preparame_app
   projectPm2NameProduction: plataforma
 
@@ -25,7 +25,7 @@ deploy_homolog:
     - sudo pm2 restart $projectPm2NameHomolog
     - echo "Finalizando deploy..."
   tags:
-    - homolog_sso
+    - nodedso_homolog
   only:
     - develop # Run on branches starting with ''
 
