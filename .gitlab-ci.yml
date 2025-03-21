@@ -14,11 +14,11 @@ deploy_homolog:
   script:
     - echo "Deploying develop branch..."
     - echo "Acessando pasta do projeto..."
-    - cd /var/www/$projetctFolderHomolog
+    - cd /var/www/app/$projetctFolderHomolog
     - git checkout .
     - git pull origin develop
     - echo "Dando permissão para a pasta do projeto..."
-    - sudo chmod -R 777 /var/www/$projetctFolderHomolog
+    - sudo chmod -R 777 /var/www/app/$projetctFolderHomolog
     - echo "Gerando build..."
     - sudo npx quasar build
     - echo "Publicando $projectName"
