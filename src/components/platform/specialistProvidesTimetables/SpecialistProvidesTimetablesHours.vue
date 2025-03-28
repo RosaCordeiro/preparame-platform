@@ -87,8 +87,6 @@ export default {
     return {
       mobile: false,
       hours: [
-        { hour: "7:00", id: 70, available: false, scheduled: false },
-        { hour: "7:30", id: 73, available: false, scheduled: false },
         { hour: "8:00", id: 80, available: false, scheduled: false },
         { hour: "8:30", id: 83, available: false, scheduled: false },
         { hour: "9:00", id: 90, available: false, scheduled: false },
@@ -113,11 +111,7 @@ export default {
         { hour: "18:30", id: 183, available: false, scheduled: false },
         { hour: "19:00", id: 190, available: false, scheduled: false },
         { hour: "19:30", id: 193, available: false, scheduled: false },
-        { hour: "20:00", id: 200, available: false, scheduled: false },
-        { hour: "20:30", id: 203, available: false, scheduled: false },
-        { hour: "21:00", id: 210, available: false, scheduled: false },
-        { hour: "21:30", id: 213, available: false, scheduled: false },
-        { hour: "22:00", id: 220, available: false, scheduled: false }
+        { hour: "20:00", id: 200, available: false, scheduled: false }
       ],
     };
   },
