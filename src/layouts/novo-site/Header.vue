@@ -17,6 +17,9 @@
           <li class="menu-item">
             <router-link to="/clientes">clientes</router-link>
           </li>
+          <li class="menu-item">
+            <router-link to="/MateriaisGratuitos">materiais gratuitos</router-link>
+          </li>
         </ul>
         <div class="menu-mobile">
           <ul class="menu-mobile__items">
@@ -27,7 +30,10 @@
               <router-link to="/treinamento">treinamento</router-link>
             </li>
             <li class="mobile-item">
-              <router-link to="clientes">clientes</router-link>
+              <router-link to="/clientes">clientes</router-link>
+            </li>
+            <li class="mobile-item">
+              <router-link to="/MateriaisGratuitos">materiais gratuitos</router-link>
             </li>
           </ul>
         </div>

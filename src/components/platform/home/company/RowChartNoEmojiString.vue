@@ -11,7 +11,6 @@
 
         <p :style="`fontSize: 16px`" v-if="data === 'N/A'">0</p>
         <p v-else>{{ data }}</p>
-
       </div>
     </div>
   </div>
