@@ -96,6 +96,16 @@ export default {
               type: "InputFile",
               visible: true,
             },
+            image_url: {
+              label: "Imagem",
+              name: "image_url",
+              size: "12",
+              row: 3,
+              col: 2,
+              model: "",
+              type: "InputFile",
+              visible: true,
+            },
             created_at: {
               label: "Data de Criação",
               name: "created_at",
@@ -145,10 +155,13 @@ export default {
           ) {
             console.log(data.mainTable[key]);
 
-            formData.append(
-              key === "file_url" ? "file" : key,
-              data.mainTable[key]
-            );
+            if (key === "file_url" && data.mainTable.file_url) {
+              formData.append("file", data.mainTable.file_url);
+            } else if (key === "image_url" && data.mainTable.image_url) {
+              formData.append("image", data.mainTable.image_url);
+            } else {
+              formData.append(key, data.mainTable[key]);
+            }
           }
         });
 
