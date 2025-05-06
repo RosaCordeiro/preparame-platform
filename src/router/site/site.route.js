@@ -17,6 +17,7 @@ import KitPro from "../../components/site/kitProPage/KitProPage";
 import NewLayout from "src/layouts/novo-site/NewLayout.vue";
 import ClientesPage from "src/layouts/novo-site/ClientesPage.vue";
 import TreinamentoPage from "src/layouts/novo-site/TreinamentoPage.vue";
+import FreeMaterials from "src/layouts/novo-site/FreeMaterials.vue";
 
 const siteRoutes = [
   {
@@ -41,6 +42,12 @@ const siteRoutes = [
         path: "/treinamento",
         components: {
           content: TreinamentoPage,
+        },
+      },
+      {
+        path: "/MateriaisGratuitos",
+        components: {
+          content: FreeMaterials,
         },
       },
     ],
