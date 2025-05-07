@@ -1,7 +1,7 @@
 <template>
   <main class="fm">
     <h2>Materiais Gratuitos</h2>
-    <div class="fm__grid">
+    <div class="fm__flex">
       <a v-for="(item, index) in imageLinks" :key="index" :href="'/#/MateriaisGratuitos/' + item.slug"
         rel="noopener noreferrer" class="image-card">
         <img :src="item.image_url != null ? item.image_url : 'https://placehold.co/600x400?text=Sem+Imagem'" :alt="'Imagem ' + (index + 1)" />
