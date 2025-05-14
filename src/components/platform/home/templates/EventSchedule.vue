@@ -303,6 +303,7 @@
       ref="searchFileDialog"
       v-if="searchDialog"
       :identifier="Object.entries(this.schedulesGroup)[0][1][0].id"
+      :userType="userType"
     />
     <ViewFileDialog
       ref="viewFileDialog"

@@ -58,8 +58,8 @@
                   <q-btn
                     v-if="props.row.schedule !== null"
                     color="primary"
-                    label="Visualizar Arquivos"
-                    @click="viewFileDialog(props.row)"
+                    label="Adicionar Arquivos"
+                    @click="openSearchFileDialog(props.row, 'specialist')"
                   />
                   <span class="col-12" style="text-align: center" v-else>
                     N/A
@@ -79,7 +79,7 @@
                     v-if="props.row.schedule !== null"
                     color="primary"
                     label="Adicionar Arquivos"
-                    @click="openSearchFileDialog(props.row)"
+                    @click="openSearchFileDialog(props.row, 'user')"
                   />
                   <span class="col-12" style="text-align: center" v-else>
                     N/A
@@ -157,12 +157,14 @@
       </div>
     </CrudRegister>
     <SearchFileDialog
-      ref="searchFileDialog"
+      ref="searchFileDialogUser"
       :identifier="`AddProductToUserRegisterCrudSearchFileDialog`"
+      :userType="'USER'"
     />
-    <ViewFileDialogVue
-      ref="viewFileDialog"
+    <SearchFileDialog
+      ref="searchFileDialogSpecialist"
       :identifier="`AddProductToUserRegisterCrudViewFileDialog`"
+      :userType="'SPECIALIST'"
     />
   </div>
 </template>
@@ -176,13 +178,11 @@ import emitter from "src/config/event-bus";
 import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { removeCrud } from "src/components/general/crud/utils/removeCrud";
 import { formatDateToStringMentoringWithHour } from "src/utils/formatDate";
-import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
 import SearchFileDialog from "src/components/SearchFileDialog.vue";
 
 export default {
   components: {
     CrudRegister,
-    ViewFileDialogVue,
     SearchFileDialog,
   },
 
@@ -364,11 +364,17 @@ export default {
       this.$router.push({ path: `/${url}` });
       this.$emit("close-mentoring-calendar");
     },
-    openSearchFileDialog(data) {
+    openSearchFileDialog(data, type) {
       this.searchDialog = true;
-      console.log(this.$refs.searchFileDialog);
       setTimeout(() => {
-        this.$refs.searchFileDialog.show(data.id);
+        if (type === "specialist") {
+          this.$refs.searchFileDialogSpecialist.show(data.id);
+          return;
+        }
+        if (type === "user") {
+          this.$refs.searchFileDialogUser.show(data.id);
+          return;
+        }
       }, 10);
     },
     disableCancel(row) {
