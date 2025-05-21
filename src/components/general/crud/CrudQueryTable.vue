@@ -46,6 +46,32 @@
       </q-td>
     </template>
 
+    <template v-slot:body-cell-link="props">
+      <q-td :props="props">
+        <div v-if="!props.row.link">N/A</div>
+        <a
+          v-else
+          :href="props.row.link"
+          target="_blank"
+          style="color: blue; text-decoration: underline"
+          >Ir até a página</a>
+      </q-td>
+    </template>
+
+    <template v-slot:body-cell-image_url="props">
+      <q-td :props="props">
+        <div v-if="!props.row.image_url">N/A</div>
+        <q-btn
+          v-else
+          color="positive"
+          label="VISUALIZAR"
+          :href="props.row.image_url"
+          target="_blank"
+          :disable="blockRemove"
+        ></q-btn>
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-realocate="props">
       <q-td auto-width :props="props">
         <div v-if="props.row.realocate">REALOCADO</div>
