@@ -105,7 +105,6 @@
         id="documentId"
         class="login-form-signin-container"
         v-model="user.documentId"
-        mask="###.###.###-##"
         name="cpf"
         label="CPF"
       >
