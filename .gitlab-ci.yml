@@ -40,7 +40,7 @@ deploy_production:
     - echo "Dando permissão para a pasta do projeto..."
     - sudo chmod -R 777 /var/www/$projetctFolderProduction
     - echo "Gerando build..."
-    - sudo npx quasar build
+    - sudo npm run build
     - echo "Publicando $projectName"
     - sudo pm2 restart $projectPm2NameProduction
     - echo "Finalizando deploy..."
