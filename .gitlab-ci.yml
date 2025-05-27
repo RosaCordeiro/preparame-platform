@@ -4,28 +4,28 @@ stages:
 variables:
   projectName: Prepara.me - ADMIN
   shouldRunCompose: "false"
-  projetctFolderHomolog: admin/admin.preparame.n1.homolog.inf.br
-  projectPm2NameHomolog: admin.preparame.n1.homolog.inf.br
-  projetctFolderProduction: preparame_app
-  projectPm2NameProduction: plataforma
+  projetctFolderHomolog: preparame/admin
+  projectPm2NameHomolog: app-preparame-admin
+  projetctFolderProduction: preparame/app
+  projectPm2NameProduction: preparame-app
 
 deploy_homolog:
   stage: deploy
   script:
     - echo "Deploying develop branch..."
     - echo "Acessando pasta do projeto..."
-    - cd /var/www/$projetctFolderHomolog
+    - cd /var/www/app/$projetctFolderHomolog
     - git checkout .
     - git pull origin develop
     - echo "Dando permissão para a pasta do projeto..."
-    - sudo chmod -R 777 /var/www/$projetctFolderHomolog
+    - sudo chmod -R 777 /var/www/app/$projetctFolderHomolog
     - echo "Gerando build..."
     - sudo npx quasar build
     - echo "Publicando $projectName"
     - sudo pm2 restart $projectPm2NameHomolog
     - echo "Finalizando deploy..."
   tags:
-    - homolog_sso
+    - dsohomolog_v1
   only:
     - develop # Run on branches starting with ''
 
