@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="search-file-dialog-widget"
-    :id="`search-file-dialog-${identifier}`"
-  >
+  <div class="search-file-dialog-widget" :id="`search-file-dialog-${identifier}`">
     <div class="search-file-dialog-container">
       <div class="search-file-dialog-container-text">
         <div class="file-container" v-for="(file, index) in files" :key="index">
@@ -14,13 +11,7 @@
         <p v-if="files.length > 0">
           Você tem {{ files.length }} arquivos anexados
         </p>
-        <input
-          class="input__file"
-          type="file"
-          accept=".pdf, .docx, image/*"
-          @change="changeFile"
-          multiple
-        />
+        <input class="input__file" type="file" accept=".pdf, .docx, image/*" @change="changeFile" multiple />
       </div>
       <div class="button__cancel">
         <q-icon name="close" size="25px" color="grey" @click="close()" />
@@ -42,6 +33,13 @@ export default {
     identifier: {
       type: String,
       required: true,
+    },
+    userType: {
+      type: String,
+      default: () => (
+        localStorage.getItem("userType") === "ADMIN" ? "USER" :   
+        localStorage.getItem("userType")  
+      ),
     },
   },
   components: {
@@ -72,7 +70,7 @@ export default {
   },
   methods: {
     async changeFile(e) {
-      const maxFiles = localStorage.getItem("userType") == "SPECIALIST" ? 5 : 3;
+      const maxFiles = this.userType == "SPECIALIST" ? 5 : 3;
 
       if (this.files.length + e.target.files.length > maxFiles) {
         showError(`Você só pode enviar até ${maxFiles} arquivos`);
@@ -86,11 +84,9 @@ export default {
 
       formData.append("specialistScheduleId", this.id);
 
-      let userType = localStorage.getItem("userType");
-
-      if (userType == "ADMIN") {
-        formData.append("fileType", "USER");
-      }
+      formData.append("fileType", this.userType);
+      console.log('userType', this.userType);
+      
       this.$q.loading.show();
       await saveCrud(`specialists/schedule-files`, formData, "POST").then(
         (response) => {
@@ -134,13 +130,7 @@ export default {
         confirmDialog.classList.add("hide");
       }, 300);
 
-      let userType = localStorage.getItem("userType");
-
-      if (userType == "ADMIN") {
-        userType = "USER";
-      }
-
-      console.log(userType);
+      let userType = this.userType;
 
       filterCrud(
         [],
