@@ -107,6 +107,10 @@
         v-model="user.documentId"
         name="cpf"
         label="CPF"
+        pattern="[0-9]*"
+        maxlength="11"
+        inputmode="numeric"
+        @keydown="filterNumbers($event)"
       >
         <template v-slot:prepend>
           <q-icon name="mdi-card-account-details" />
@@ -229,6 +233,20 @@ export default {
     }
   },
   methods: {
+    filterNumbers(event) {
+      const allowedKeys = [
+        'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Tab'
+      ];
+
+      if (
+        !/[0-9]/.test(event.key) && 
+        !allowedKeys.includes(event.key) &&
+        !event.ctrlKey && !event.metaKey
+      ) {
+        event.preventDefault();
+      }
+
+    },
     ...mapActions("users", ["setUser"]),
     passwordValidate: function () {
       const forcePassword = passwordValidation(this.user.password);
@@ -407,6 +425,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .login-modal {
   margin: auto;
   width: 90%;

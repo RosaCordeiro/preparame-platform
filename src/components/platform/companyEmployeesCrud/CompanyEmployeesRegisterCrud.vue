@@ -73,6 +73,9 @@ export default {
               model: "",
               type: "Input",
               visible: true,
+              inputmode: "numeric",
+              maxlength: 11,
+              customKeydown: "filterNumbers",
             },
             subscribeToken: {
               label: "Token",
