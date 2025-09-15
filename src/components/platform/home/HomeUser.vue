@@ -74,10 +74,10 @@
                     />
                   </q-card>
                 </div>
-                <ExternalUserKitRealocationProCard
+                <!--  <ExternalUserKitRealocationProCard
                   v-if="!kitPro"
                   :class="{ 'col-12': true }"
-                />
+                /> -->
                 <ExternalUserIndividualMentorshipCard
                   v-if="false"
                   :class="{ 'col-12': true }"
@@ -112,7 +112,9 @@
             <img src="../../../assets/imgs/passou.png" />
             <div class="sub-title">Queremos saber como foi sua experiência</div>
             <div class="detail">é rapidinho</div>
-            <div class="buton" @click="answerSurvey()">Avalie sua antiga empresa</div>
+            <div class="buton" @click="answerSurvey()">
+              Avalie sua antiga empresa
+            </div>
           </div>
         </div>
       </q-dialog>
@@ -161,7 +163,7 @@ export default {
   },
   components: {
     ExternalUserWelcomeCard,
-    ExternalUserKitRealocationProCard,
+    /* ExternalUserKitRealocationProCard, */
     ExternalUserInterviewSimulatorCard,
     ExternalUserResumeCreatorCard,
     ExternalUserIndividualMentorshipCard,

@@ -106,7 +106,7 @@
           </div>
         </q-banner>
 
-        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
+        <!-- <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
           <div class="user-card-banner-content row">
             <q-btn
               flat
@@ -116,7 +116,7 @@
               @click="goUrl(`productList`)"
             />
           </div>
-        </q-banner>
+        </q-banner> -->
 
         <q-banner
           rounded
