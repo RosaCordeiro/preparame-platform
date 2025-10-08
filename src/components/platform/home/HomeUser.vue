@@ -6,18 +6,25 @@
           v-if="loadUserCard && !mobile"
           :products="products"
           :interviewSimulator="interviewSimulator"
+          :isRetirementPlan="isRetirementPlan"
         />
         <ExternalUserWelcomeCardMobile
           v-else-if="loadUserCard && mobile"
           :products="products"
           :interviewSimulator="interviewSimulator"
+          :isRetirementPlan="isRetirementPlan"
         />
         <div :class="{ row: !mobile }">
           <UserCard
             v-if="loadUserCard"
-            class="col-3"
+            :class="{
+              'col-3': !mobile,
+              'col-12': mobile,
+              'q-mb-md': mobile,
+            }"
             :products="products"
             :interviewSimulator="interviewSimulator"
+            :isRetirementPlan="isRetirementPlan"
             @open-mentoring-calendar="showMentoringCalendar = true"
             @close-mentoring-calendar="showMentoringCalendar = false"
           />
@@ -25,8 +32,9 @@
             :class="{
               col: true,
               'q-px-md': !mobile,
-              'q-px-lg': mobile,
-              'col-8': true,
+              'q-px-sm': mobile,
+              'col-8': !mobile,
+              'col-12': mobile,
             }"
           >
             <div
@@ -56,7 +64,7 @@
               >
                 <ExternalSurvey
                   :class="{ 'col-12': true }"
-                  v-if="!surveyAnswered"
+                  v-if="!surveyAnswered && !isRetirementPlan"
                 />
                 <div class="justify-around q-mb-sm">
                   <q-card class="row external-user-card-container q-pa-sm">
@@ -75,14 +83,14 @@
                   </q-card>
                 </div>
                 <ExternalUserKitRealocationProCard
-                  v-if="!kitPro"
+                  v-if="!kitPro && !isRetirementPlan"
                   :class="{ 'col-12': true }"
                 />
                 <ExternalUserIndividualMentorshipCard
                   v-if="false"
                   :class="{ 'col-12': true }"
                 />
-                <div class="justify-around q-mb-sm">
+                <div class="justify-around q-mb-sm" v-if="!isRetirementPlan">
                   <q-card class="row external-user-card-container q-pa-sm">
                     <ExternalUserResumeCreatorCard
                       :class="{
@@ -103,7 +111,7 @@
           </div>
         </div>
       </div>
-      <q-dialog v-model="showSurveySuggestion">
+      <q-dialog v-model="showSurveySuggestion" v-if="!isRetirementPlan">
         <div class="popup-recent-demission">
           <div class="container-img">
             <img src="../../../assets/imgs/popup-recent-demission.png" />
@@ -112,7 +120,9 @@
             <img src="../../../assets/imgs/passou.png" />
             <div class="sub-title">Queremos saber como foi sua experiência</div>
             <div class="detail">é rapidinho</div>
-            <div class="buton" @click="answerSurvey()">Avalie sua antiga empresa</div>
+            <div class="buton" @click="answerSurvey()">
+              Avalie sua antiga empresa
+            </div>
           </div>
         </div>
       </q-dialog>
@@ -157,6 +167,8 @@ export default {
       showSurveySuggestion: false,
       surveyPopupShowed: false,
       showMentoringCalendar: false,
+      isRetirementPlan: false,
+      userPlanData: null,
     };
   },
   components: {
@@ -181,10 +193,7 @@ export default {
     this.surveyPopupShowed =
       localStorage.getItem("surveyPopupShowed") == "true";
 
-    this.showSurveySuggestion =
-      this.b2cUser && !this.surveyAnswered && !this.surveyPopupShowed;
-
-    localStorage.setItem("surveyPopupShowed", true);
+    this.showSurveySuggestion = false;
 
     const userId = localStorage.getItem("userId");
 
@@ -198,6 +207,7 @@ export default {
       .then(async (user) => {
         await this.setUserDates(user.data[0]);
         this.getExpiresDate();
+        this.fetchCompanyUserData();
       })
       .catch((err) => {
         console.log(err);
@@ -240,20 +250,15 @@ export default {
     unirProdutos(array) {
       const produtosUnicos = {};
 
-      // Percorre o array de produtos
       array.forEach((produto) => {
-        // Verifica se o produto já está no objeto produtosUnicos
         if (produtosUnicos[produto.id]) {
-          // Se estiver, soma as quantidades
           produtosUnicos[produto.id].availableQuantity +=
             produto.availableQuantity;
         } else {
-          // Se não estiver, adiciona o produto ao objeto produtosUnicos
           produtosUnicos[produto.id] = produto;
         }
       });
 
-      // Retorna um array com os produtos únicos
       return Object.values(produtosUnicos);
     },
     updateSchedule() {
@@ -263,8 +268,62 @@ export default {
         console.log(e);
       }
     },
-    answerSurvey: function (url) {
+    answerSurvey: function () {
       this.$router.push({ path: `/survey` });
+    },
+    async fetchCompanyUserData() {
+      const companyId = localStorage.getItem("companyId");
+      const userId = localStorage.getItem("userId");
+
+      if (companyId && companyId !== "null") {
+        try {
+          const config = {
+            method: "GET",
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            url: `${baseApiUrl}/companies/employees`,
+          };
+
+          const response = await axios(config);
+          console.log("Resposta da API employees:", response.data);
+          if (response.data && response.data.length > 0) {
+            const currentUser = response.data.find(
+              (user) => user.user && user.user.id === userId
+            );
+            console.log("Usuário encontrado:", currentUser);
+            if (currentUser) {
+              this.userPlanData = currentUser;
+              console.log("Dados do plano:", currentUser.planId);
+              console.log("Nome do plano:", currentUser.plan);
+              this.checkRetirementPlan();
+            }
+          }
+        } catch (err) {
+          console.log("Erro ao buscar dados do usuário da empresa:", err);
+        }
+      }
+    },
+    checkRetirementPlan() {
+      console.log("Executando checkRetirementPlan", this.userPlanData);
+      if (this.userPlanData) {
+        const planName = this.userPlanData.plan;
+        this.isRetirementPlan = planName === "Pacote Acompanha (Aposentadoria)";
+        console.log("Plan check:", {
+          planName,
+          isRetirementPlan: this.isRetirementPlan,
+        });
+
+        if (!this.isRetirementPlan) {
+          this.showSurveySuggestion =
+            this.b2cUser && !this.surveyAnswered && !this.surveyPopupShowed;
+          if (this.showSurveySuggestion) {
+            localStorage.setItem("surveyPopupShowed", true);
+          }
+        }
+      } else {
+        console.log("UserPlanData não encontrado");
+      }
     },
     getExpiresDate: function () {
       this.daysToExpirePeriodTest =
@@ -311,7 +370,6 @@ h2 span:last-child {
   position: relative;
 }
 
-/* add  -webkit-mask-image: radial-gradient(circle 10px at 0 0, transparent 0, transparent 20px, black 21px) with before and after in last span */
 h2 span:last-child:before {
   z-index: -1;
   content: "";
@@ -323,6 +381,12 @@ h2 span:last-child:before {
   background-color: #16a085;
   border-radius: 25px;
   -webkit-mask-image: radial-gradient(
+    circle 1px at 0px 50px,
+    transparent 0,
+    transparent 30px,
+    black 21px
+  );
+  mask-image: radial-gradient(
     circle 1px at 0px 50px,
     transparent 0,
     transparent 30px,
@@ -346,10 +410,21 @@ h2 span:last-child:after {
     transparent 30px,
     black 21px
   );
+  mask-image: radial-gradient(
+    circle 1px at 50px 50px,
+    transparent 0,
+    transparent 30px,
+    black 21px
+  );
 }
 
 .home-external-user {
   height: 100%;
+  overflow-x: hidden;
+}
+
+#q-app {
+  overflow-x: hidden;
 }
 
 .popup-recent-demission {

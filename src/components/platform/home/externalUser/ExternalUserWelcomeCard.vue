@@ -10,11 +10,11 @@
             </div>
             <div class="text-icon">&#128522;</div>
           </div>
-          <div class="external-user-welcome-card-second-msg q-mt-sm">
+          <div class="external-user-welcome-card-second-msg q-mt-sm" v-if="!isRetirementPlan">
             É preciso de um final pra poder recomeçar, como é preciso cair pra
             poder se levantar. Nem sempre engatar a ré significa voltar.
           </div>
-          <div class="external-user-welcome-card-third-msg q-mt-sm">
+          <div class="external-user-welcome-card-third-msg q-mt-sm" v-if="!isRetirementPlan">
             Trecho da poesia Recomece, do Bráulio Bessa
           </div>
         </div>
@@ -45,7 +45,7 @@
 import { saveCrud } from "../../../general/crud/utils/saveCrud.js";
 
 export default {
-  props: ["products", "interviewSimulator"],
+  props: ["products", "interviewSimulator", "isRetirementPlan"],
   data() {
     return {
       userAvatarUrl: "",
@@ -109,18 +109,18 @@ export default {
 
 <style lang="scss">
 .external-user-welcome-card {
-  width: 98vw;
+  width: 100%;
+  max-width: 98vw;
   padding: 20px;
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
 }
 
 .external-user-welcome-card-container {
   border-radius: 15px;
-}
-
-.external-user-welcome-card-container {
   background: linear-gradient(90deg, #c4c7de 0%, #ebc6d5 100%);
+  overflow: hidden;
 }
 
 .external-user-welcome-card-first-msg {
@@ -133,6 +133,22 @@ export default {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 768px) {
+  .external-user-welcome-card {
+    padding: 10px;
+  }
+  
+  .external-user-welcome-card-first-msg {
+    font-size: 1.5rem;
+  }
+  
+  .external-user-welcome-card-info {
+    width: 100% !important;
+  }
 }
 
 .external-user-welcome-card-second-msg {

@@ -17,8 +17,8 @@
             <div class="col-12 card__texts">
               <div>
                 <div class="external-user-talent-bank-card-title">
-                  AVALIE A SUA ANTIGA EMPRESA E AJUDE A CONSTRUIR O MAIOR
-                  ESTUDO DE DEMISSÃO DO BRASIL
+                  AVALIE A SUA ANTIGA EMPRESA E AJUDE A CONSTRUIR O MAIOR ESTUDO
+                  DE DEMISSÃO DO BRASIL
                 </div>
 
                 <p style="text-align: center">
