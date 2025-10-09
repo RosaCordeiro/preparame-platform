@@ -3,17 +3,20 @@
     <q-page>
       <div>
         <ExternalUserWelcomeCard
-          v-if="loadUserCard && !mobile"
+          v-if="loadUserCard && !mobile && !loadingPlanData"
           :products="products"
           :interviewSimulator="interviewSimulator"
           :isRetirementPlan="isRetirementPlan"
         />
         <ExternalUserWelcomeCardMobile
-          v-else-if="loadUserCard && mobile"
+          v-else-if="loadUserCard && mobile && !loadingPlanData"
           :products="products"
           :interviewSimulator="interviewSimulator"
           :isRetirementPlan="isRetirementPlan"
         />
+        <div v-if="loadingPlanData" class="skeleton-container">
+          <q-skeleton height="200px" class="q-mb-md" />
+        </div>
         <div :class="{ row: !mobile }">
           <UserCard
             v-if="loadUserCard"
@@ -169,6 +172,7 @@ export default {
       showMentoringCalendar: false,
       isRetirementPlan: false,
       userPlanData: null,
+      loadingPlanData: true,
     };
   },
   components: {
@@ -282,34 +286,43 @@ export default {
             headers: {
               authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            url: `${baseApiUrl}/companies/employees`,
+            url: `${baseApiUrl}/companies/employees?userId=${userId}`,
           };
 
+          console.log("Fazendo requisição filtrada para userId:", userId);
           const response = await axios(config);
-          console.log("Resposta da API employees:", response.data);
+          console.log("Resposta completa da API filtrada:", response.data);
+
           if (response.data && response.data.length > 0) {
-            const currentUser = response.data.find(
-              (user) => user.user && user.user.id === userId
-            );
-            console.log("Usuário encontrado:", currentUser);
-            if (currentUser) {
-              this.userPlanData = currentUser;
-              console.log("Dados do plano:", currentUser.planId);
-              console.log("Nome do plano:", currentUser.plan);
-              this.checkRetirementPlan();
-            }
+            const currentUser = response.data[0];
+            console.log("Dados do usuário encontrado:", currentUser);
+            console.log("PlanId completo:", currentUser.planId);
+            console.log("Nome do plano:", currentUser.plan);
+
+            this.userPlanData = currentUser;
+            this.checkRetirementPlan();
+          } else {
+            console.log("Nenhum usuário encontrado na resposta filtrada");
           }
         } catch (err) {
           console.log("Erro ao buscar dados do usuário da empresa:", err);
+        } finally {
+          this.loadingPlanData = false;
         }
+      } else {
+        this.loadingPlanData = false;
       }
     },
     checkRetirementPlan() {
       console.log("Executando checkRetirementPlan", this.userPlanData);
-      if (this.userPlanData) {
-        const planName = this.userPlanData.plan;
-        this.isRetirementPlan = planName === "Pacote Acompanha (Aposentadoria)";
+      if (this.userPlanData && this.userPlanData.planId) {
+        const planId = this.userPlanData.planId.id;
+        const planName = this.userPlanData.planId.name;
+        this.isRetirementPlan =
+          planId === "491e313c-a9cc-4806-9a88-8b122e212b3d" ||
+          planName === "Pacote Acompanha (Aposentadoria)";
         console.log("Plan check:", {
+          planId,
           planName,
           isRetirementPlan: this.isRetirementPlan,
         });
@@ -322,7 +335,7 @@ export default {
           }
         }
       } else {
-        console.log("UserPlanData não encontrado");
+        console.log("PlanId não encontrado ou userPlanData inválido");
       }
     },
     getExpiresDate: function () {
@@ -420,11 +433,6 @@ h2 span:last-child:after {
 
 .home-external-user {
   height: 100%;
-  overflow-x: hidden;
-}
-
-#q-app {
-  overflow-x: hidden;
 }
 
 .popup-recent-demission {
@@ -532,5 +540,10 @@ h2 span:last-child:after {
 
 .external-user-card-container {
   border-radius: 15px;
+}
+
+.skeleton-container {
+  width: 100%;
+  padding: 20px;
 }
 </style>
