@@ -18,8 +18,8 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section>
-          <div class="column q-gutter-md">
+        <q-card-section class="flex flex-center">
+          <div class="column q-gutter-md" style="width: 80%; max-width: 300px;">
             <q-btn
               color="primary"
               icon="mdi-calendar-clock"
