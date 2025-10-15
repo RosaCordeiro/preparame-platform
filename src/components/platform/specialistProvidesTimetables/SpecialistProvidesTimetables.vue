@@ -30,6 +30,7 @@ export default {
     SpecialistProvidesTimetablesHours,
     SpecialistProvidesTimetablesCalendar,
   },
+
   data() {
     return {
       dateCalendar: new Date(),

@@ -111,7 +111,7 @@ export default {
         { hour: "18:30", id: 183, available: false, scheduled: false },
         { hour: "19:00", id: 190, available: false, scheduled: false },
         { hour: "19:30", id: 193, available: false, scheduled: false },
-        { hour: "20:00", id: 200, available: false, scheduled: false }
+        { hour: "20:00", id: 200, available: false, scheduled: false },
       ],
     };
   },
@@ -129,7 +129,8 @@ export default {
       );
 
       // Se for admin sem perfil de especialista, não carrega agenda existente
-      if (this.specialist.id === undefined || this.specialist.isAdminSpecialist) return;
+      if (this.specialist.id === undefined || this.specialist.isAdminSpecialist)
+        return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -155,10 +156,12 @@ export default {
         specialistSchedule.dateSchedule = dateSchedule;
 
         const hourRef = dateSchedule.getHours().toString();
-        const minutesRef = dateSchedule.getMinutes().toString().padStart(2, '0');
-        const timeFormatted = `${hourRef}:${minutesRef}`
-        
-        
+        const minutesRef = dateSchedule
+          .getMinutes()
+          .toString()
+          .padStart(2, "0");
+        const timeFormatted = `${hourRef}:${minutesRef}`;
+
         const hourFiltered = this.hours.find((hour) => {
           return timeFormatted === hour.hour;
         });
@@ -169,7 +172,7 @@ export default {
             product: specialistSchedule.product,
             user: specialistSchedule.user,
           });
-          
+
           if (
             specialistSchedule.status.value === "AVAILABLE" &&
             actualDate < dateSchedule
@@ -191,9 +194,10 @@ export default {
       // Se for admin sem perfil de especialista, mostra aviso
       if (this.specialist.isAdminSpecialist) {
         this.$q.notify({
-          type: 'warning',
-          message: 'Para disponibilizar horários, é necessário criar um perfil de especialista primeiro.',
-          timeout: 3000
+          type: "warning",
+          message:
+            "Para disponibilizar horários, é necessário criar um perfil de especialista primeiro.",
+          timeout: 3000,
         });
         hour.available = false;
         return;
@@ -226,9 +230,12 @@ export default {
 
       this.hours.forEach((hour) => {
         const [hours, minutes] = hour.hour.split(":");
-        const refDate = new Date(date).setHours(parseInt(hours), parseInt(minutes));
-        console.log('refDate', refDate, actualDate);
-        
+        const refDate = new Date(date).setHours(
+          parseInt(hours),
+          parseInt(minutes)
+        );
+        console.log("refDate", refDate, actualDate);
+
         const disable = actualDate > refDate;
 
         Object.assign(hour, { dateSchedule: refDate });

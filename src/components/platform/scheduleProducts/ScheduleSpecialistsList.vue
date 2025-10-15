@@ -94,6 +94,11 @@ export default {
         );
 
         const specialist = specialists[0];
+        
+        // Filtrar especialistas que são admins (não mostrar na área pública)
+        if (specialist && specialist.user && specialist.user.type === 'ADMIN') {
+          return; // Pula este especialista
+        }
 
         const filtersSpecialistSchedule = [
           {

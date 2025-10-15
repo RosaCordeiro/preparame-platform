@@ -113,9 +113,9 @@
           <q-btn
             v-if="isSpecialistPage"
             color="primary"
-            icon="mdi-calendar-clock"
-            @click="viewSpecialistSchedule(props.row)"
-            title="Visualizar Agenda"
+            icon="mdi-calendar-multiple"
+            @click="openSpecialistArea(props.row)"
+            title="Agenda e Disponibilizar Horários"
           ></q-btn>
         </q-btn-group>
       </q-td>
@@ -219,13 +219,14 @@ export default {
 
       this.$router.push({ path: `${actualUrl}/${id.id}` });
     },
-    viewSpecialistSchedule: function (specialist) {
-      console.log('[CrudQueryTable] Emitindo evento viewSpecialistSchedule:', specialist);
+
+    openSpecialistArea: function (specialist) {
+      console.log('[CrudQueryTable] Emitindo evento openSpecialistArea:', specialist);
       // Emite evento para o componente pai
-      this.$emit('viewSpecialistSchedule', specialist);
+      this.$emit('openSpecialistArea', specialist);
       // Também tenta chamar o método do componente pai como fallback
-      if (this.$parent.$parent && this.$parent.$parent.viewSpecialistSchedule) {
-        this.$parent.$parent.viewSpecialistSchedule(specialist);
+      if (this.$parent.$parent && this.$parent.$parent.openSpecialistArea) {
+        this.$parent.$parent.openSpecialistArea(specialist);
       }
     },
   },

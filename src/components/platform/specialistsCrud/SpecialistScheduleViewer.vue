@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="showDialog" persistent>
-    <q-card style="min-width: 800px; max-width: 90vw;">
+    <q-card style="min-width: 900px; max-width: 95vw;">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Agenda do Especialista: {{ specialist.name }}</div>
         <q-space />
@@ -39,6 +39,12 @@
             @click="loadSchedule"
             :loading="loading"
           />
+          <q-btn
+            color="secondary"
+            label="Disponibilizar Horários"
+            @click="goToProvidesTimetables"
+            icon="mdi-calendar-plus"
+          />
         </div>
 
         <q-table
@@ -47,21 +53,38 @@
           row-key="id"
           :loading="loading"
           no-data-label="Nenhum horário encontrado"
-          :pagination="{ rowsPerPage: 10 }"
+          :pagination="{ rowsPerPage: 15 }"
         >
-          <template v-slot:body-cell-date="props">
+          <template v-slot:body-cell-dateSchedule="props">
             <q-td :props="props">
-              {{ formatDate(props.value) }}
+              {{ formatDateTime(props.value) }}
             </q-td>
           </template>
           
-          <template v-slot:body-cell-status="props">
+          <template v-slot:body-cell-product="props">
             <q-td :props="props">
-              <q-chip
-                :color="getStatusColor(props.value)"
-                text-color="white"
-                :label="getStatusLabel(props.value)"
+              {{ props.row.product?.name || '-' }}
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-user="props">
+            <q-td :props="props">
+              {{ props.row.user?.name || 'Disponível' }}
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-hangoutLink="props">
+            <q-td :props="props">
+              <q-btn
+                v-if="props.value"
+                color="primary"
+                size="sm"
+                label="Meet"
+                :href="props.value"
+                target="_blank"
+                icon="mdi-video"
               />
+              <span v-else>-</span>
             </q-td>
           </template>
         </q-table>
@@ -102,31 +125,31 @@ export default {
       ],
       columns: [
         {
-          name: 'date',
-          label: 'Data',
+          name: 'dateSchedule',
+          label: 'Data e Horário',
           align: 'left',
-          field: 'date',
+          field: 'dateSchedule',
           sortable: true
         },
         {
-          name: 'time',
-          label: 'Horário',
+          name: 'product',
+          label: 'Produto',
           align: 'left',
-          field: 'time',
-          sortable: true
-        },
-        {
-          name: 'status',
-          label: 'Status',
-          align: 'center',
-          field: 'status',
-          sortable: true
+          field: 'product',
+          sortable: false
         },
         {
           name: 'user',
-          label: 'Usuário Agendado',
+          label: 'Usuário',
           align: 'left',
-          field: row => row.user?.name || '-',
+          field: 'user',
+          sortable: false
+        },
+        {
+          name: 'hangoutLink',
+          label: 'Link da Reunião',
+          align: 'center',
+          field: 'hangoutLink',
           sortable: false
         }
       ]
@@ -181,27 +204,21 @@ export default {
       }
     },
     
-    formatDate(dateString) {
+    goToProvidesTimetables() {
+      this.$router.push('/providesTimetables');
+      this.showDialog = false;
+    },
+    
+    formatDateTime(dateString) {
       if (!dateString) return '-';
-      return new Date(dateString).toLocaleDateString('pt-BR');
-    },
-    
-    getStatusColor(status) {
-      const colors = {
-        'AVAILABLE': 'green',
-        'UNAVAILABLE': 'red',
-        'SCHEDULED': 'blue'
-      };
-      return colors[status] || 'grey';
-    },
-    
-    getStatusLabel(status) {
-      const labels = {
-        'AVAILABLE': 'Disponível',
-        'UNAVAILABLE': 'Indisponível',
-        'SCHEDULED': 'Agendado'
-      };
-      return labels[status] || status;
+      const date = new Date(dateString);
+      return date.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     }
   }
 };

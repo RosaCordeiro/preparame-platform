@@ -104,15 +104,14 @@ const menu = {
         url: "materials",
       },
       {
-        icon: "mdi-calendar",
+        icon: "mdi-calendar-plus",
         label: "Disponibilizar Horários",
         separator: false,
         url: "providesTimetables",
       },
-
       {
-        icon: "person",
-        label: "Visualizar Produtos do Usuário",
+        icon: "mdi-eye",
+        label: "Ver Produtos do Usuário",
         separator: false,
         url: "viewProductsUser",
       },
@@ -149,22 +148,22 @@ const menu = {
   SPECIALIST: {
     menuList: [
       {
-        icon: "mdi-calendar",
+        icon: "mdi-calendar-plus",
         label: "Disponibilizar Horários",
-        separator: true,
+        separator: false,
         url: "providesTimetables",
+      },
+      {
+        icon: "mdi-eye",
+        label: "Ver Produtos do Usuário",
+        separator: false,
+        url: "viewProductsUser",
       },
       {
         icon: "open_in_new",
         label: "Ver Objetivos dos Clientes",
         separator: false,
         url: "https://docs.google.com/spreadsheets/u/1/d/1a5cmeVaEFhiLUGiA2afVFQy9llyjy4QQJfrvNTTTbQk/edit?gid=776597408&pli=1&authuser=1",
-      },
-      {
-        icon: "person",
-        label: "Visualizar Produtos do Usuário",
-        separator: false,
-        url: "viewProductsUser",
       },
     ],
   },

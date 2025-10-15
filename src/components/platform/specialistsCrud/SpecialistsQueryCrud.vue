@@ -7,8 +7,37 @@
       :columns="columns"
       :url="url"
       ref="crudQuery"
-      @viewSpecialistSchedule="viewSpecialistSchedule"
+      @openSpecialistArea="openSpecialistArea"
     />
+
+    <q-dialog v-model="showSpecialistOptionsDialog">
+      <q-card style="min-width: 400px">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">{{ selectedSpecialist.name }} - Opções</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <div class="column q-gutter-md">
+            <q-btn
+              color="primary"
+              icon="mdi-calendar-clock"
+              label="Visualizar Agenda"
+              @click="viewSpecialistSchedule"
+              class="full-width"
+            />
+            <q-btn
+              color="secondary"
+              icon="mdi-calendar-plus"
+              label="Disponibilizar Horários"
+              @click="openProvidesTimetables"
+              class="full-width"
+            />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
 
     <q-dialog v-model="showScheduleDialog" maximized>
       <q-card>
@@ -25,26 +54,52 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="showProvidesTimetablesDialog" maximized>
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">
+            Disponibilizar Horários: {{ selectedSpecialist.name }}
+          </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <SpecialistProvidesTimetables :specialist="selectedSpecialist" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import CrudQuery from "./../../general/crud/CrudQuery.vue";
 import ViewSpecialistSchedule from "../specialistSchedule/ViewSpecialistSchedule.vue";
+import SpecialistProvidesTimetables from "../specialistProvidesTimetables/SpecialistProvidesTimetables.vue";
 
 export default {
   components: {
     CrudQuery,
     ViewSpecialistSchedule,
+    SpecialistProvidesTimetables,
   },
   methods: {
-    viewSpecialistSchedule(specialist) {
+    openSpecialistArea(specialist) {
       console.log(
-        "[SpecialistsQueryCrud] Visualizando agenda do especialista:",
+        "[SpecialistsQueryCrud] Abrindo opções do especialista:",
         specialist
       );
       this.selectedSpecialist = specialist;
+      this.showSpecialistOptionsDialog = true;
+    },
+    viewSpecialistSchedule() {
+      this.showSpecialistOptionsDialog = false;
       this.showScheduleDialog = true;
+    },
+    openProvidesTimetables() {
+      this.showSpecialistOptionsDialog = false;
+      this.showProvidesTimetablesDialog = true;
     },
   },
   data() {
@@ -52,7 +107,9 @@ export default {
       title: "Especialistas",
       url: "specialists",
       selectedSpecialist: {},
+      showSpecialistOptionsDialog: false,
       showScheduleDialog: false,
+      showProvidesTimetablesDialog: false,
       breadcrumbs: [
         {
           title: "Especialistas",
