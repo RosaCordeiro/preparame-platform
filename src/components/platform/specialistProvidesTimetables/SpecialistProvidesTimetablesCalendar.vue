@@ -31,7 +31,14 @@ export default {
   },
   watch: {
     dateCalendar(newQuestion) {
-      this.$parent.$parent.dateCalendar = newQuestion;
+      // Emite evento para o componente pai
+      this.$emit('dateChanged', newQuestion);
+      // Fallback para o método antigo
+      if (this.$parent && this.$parent.$parent && this.$parent.$parent.dateCalendar !== undefined) {
+        this.$parent.$parent.dateCalendar = newQuestion;
+      } else if (this.$parent && this.$parent.dateCalendar !== undefined) {
+        this.$parent.dateCalendar = newQuestion;
+      }
     },
   },
 };

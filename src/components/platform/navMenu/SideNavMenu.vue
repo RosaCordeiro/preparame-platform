@@ -104,12 +104,6 @@ const menu = {
         url: "materials",
       },
       {
-        icon: "mdi-calendar-plus",
-        label: "Disponibilizar Horários",
-        separator: false,
-        url: "providesTimetables",
-      },
-      {
         icon: "mdi-eye",
         label: "Ver Produtos do Usuário",
         separator: false,

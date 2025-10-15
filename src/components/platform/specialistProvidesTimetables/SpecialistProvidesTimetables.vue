@@ -1,11 +1,11 @@
 <template>
   <div class="specialist-provides-timetable">
-    <q-page>
+    <q-page v-if="!selectedSpecialist">
       <Breadcrumbs :breadcrumbs="breadcrumbs" />
       <div class="specialist-provides-timetable-content">
         <PageTitle :title="title" />
         <div class="specialist-provides-timetable-select-content row">
-          <SpecialistProvidesTimetablesCalendar />
+          <SpecialistProvidesTimetablesCalendar @dateChanged="dateCalendar = $event" />
           <SpecialistProvidesTimetablesHours
             :dateCalendar="dateCalendar"
             :specialist="specialist"
@@ -13,6 +13,15 @@
         </div>
       </div>
     </q-page>
+    <div v-else class="specialist-provides-timetable-content">
+      <div class="specialist-provides-timetable-select-content row">
+        <SpecialistProvidesTimetablesCalendar @dateChanged="dateCalendar = $event" />
+        <SpecialistProvidesTimetablesHours
+          :dateCalendar="dateCalendar"
+          :specialist="selectedSpecialist"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,6 +39,12 @@ export default {
     SpecialistProvidesTimetablesHours,
     SpecialistProvidesTimetablesCalendar,
   },
+  props: {
+    selectedSpecialist: {
+      type: Object,
+      default: null
+    }
+  },
 
   data() {
     return {
@@ -45,7 +60,9 @@ export default {
     };
   },
   created() {
-    this.loadSpecialist();
+    if (!this.selectedSpecialist) {
+      this.loadSpecialist();
+    }
   },
   methods: {
     loadSpecialist: async function () {

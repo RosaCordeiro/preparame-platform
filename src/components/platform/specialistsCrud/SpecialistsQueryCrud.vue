@@ -66,7 +66,7 @@
         </q-card-section>
 
         <q-card-section>
-          <SpecialistProvidesTimetables :specialist="selectedSpecialist" />
+          <SpecialistProvidesTimetables :selectedSpecialist="selectedSpecialist" />
         </q-card-section>
       </q-card>
     </q-dialog>

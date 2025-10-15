@@ -128,9 +128,8 @@ export default {
         "yyyy-mm-dd"
       );
 
-      // Se for admin sem perfil de especialista, não carrega agenda existente
-      if (this.specialist.id === undefined || this.specialist.isAdminSpecialist)
-        return;
+      // Se não tiver ID do especialista, não carrega agenda
+      if (!this.specialist.id) return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -191,20 +190,11 @@ export default {
       });
     },
     providesHour: async function (hour) {
-      // Se for admin sem perfil de especialista, mostra aviso
-      if (this.specialist.isAdminSpecialist) {
-        this.$q.notify({
-          type: "warning",
-          message:
-            "Para disponibilizar horários, é necessário criar um perfil de especialista primeiro.",
-          timeout: 3000,
-        });
-        hour.available = false;
-        return;
-      }
-
       if (hour.available) {
-        const url = `specialists/schedule`;
+        // Se já existe um horário, não tenta criar novamente
+        if (hour.specialistScheduleId) {
+          return;
+        }
 
         hour.dateSchedule = new Date(hour.dateSchedule);
         hour.dateSchedule = new Date(
@@ -214,15 +204,21 @@ export default {
           )
         );
 
-        await saveCrud(url, {
+        const response = await saveCrud(`specialists/schedule`, {
           status: "AVAILABLE",
           specialistId: this.specialist.id,
           dateSchedule: hour.dateSchedule,
         });
-      } else {
-        const url = `specialists/schedule`;
 
-        await removeCrud(hour.specialistScheduleId, url);
+        // Armazena o ID retornado para poder remover depois
+        if (response && response.id) {
+          hour.specialistScheduleId = response.id;
+        }
+      } else {
+        if (hour.specialistScheduleId) {
+          await removeCrud(hour.specialistScheduleId, `specialists/schedule`);
+          hour.specialistScheduleId = null;
+        }
       }
     },
     adjustHours: function (date) {
