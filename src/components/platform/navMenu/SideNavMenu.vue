@@ -12,22 +12,21 @@
     >
       <q-scroll-area class="fit">
         <q-list>
-          <template v-for="(menuItem, index) in menuList">
-            <q-item
-              :key="index"
-              clickable
-              v-ripple
-              @click="goUrl(menuItem.url)"
-              class="side-nav-menu-item"
-            >
-              <q-item-section avatar>
-                <q-icon :name="menuItem.icon"></q-icon>
-              </q-item-section>
-              <q-item-section>
-                {{ menuItem.label }}
-              </q-item-section>
-            </q-item>
-          </template>
+          <q-item
+            v-for="(menuItem, index) in menuList"
+            :key="index"
+            clickable
+            v-ripple
+            @click="goUrl(menuItem.url)"
+            class="side-nav-menu-item"
+          >
+            <q-item-section avatar>
+              <q-icon :name="menuItem.icon"></q-icon>
+            </q-item-section>
+            <q-item-section>
+              {{ menuItem.label }}
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -104,7 +103,19 @@ const menu = {
         separator: false,
         url: "materials",
       },
+      {
+        icon: "mdi-calendar",
+        label: "Disponibilizar Horários",
+        separator: false,
+        url: "providesTimetables",
+      },
 
+      {
+        icon: "person",
+        label: "Visualizar Produtos do Usuário",
+        separator: false,
+        url: "viewProductsUser",
+      },
       {
         icon: "open_in_new",
         label: "Ver Objetivos dos Clientes",
@@ -179,13 +190,26 @@ export default {
   props: ["sideNavMenuComponent"],
   methods: {
     goUrl: function (url) {
+      console.log("[SideNavMenu] Navegando para URL:", url);
+      console.log(
+        "[SideNavMenu] Rota atual:",
+        this.$router.history.current.path
+      );
+
       if (String(url).startsWith("http")) {
+        console.log("[SideNavMenu] Abrindo URL externa:", url);
         this.goBlank(url);
         return;
       }
 
-      if (this.$router.history.current.path !== `/${url}`) {
-        this.$router.push({ path: `/${url}` });
+      const targetPath = `/${url}`;
+      if (this.$router.history.current.path !== targetPath) {
+        console.log("[SideNavMenu] Redirecionando para:", targetPath);
+        this.$router.push({ path: targetPath }).catch((err) => {
+          console.error("[SideNavMenu] Erro na navegação:", err);
+        });
+      } else {
+        console.log("[SideNavMenu] Já está na rota:", targetPath);
       }
     },
     goBlank: function (url) {
@@ -201,8 +225,19 @@ export default {
   },
   created() {
     const userType = localStorage.getItem("userType");
+    console.log("[SideNavMenu] Tipo de usuário:", userType);
 
-    this.menuList = menu[userType].menuList;
+    if (menu[userType]) {
+      this.menuList = menu[userType].menuList;
+      console.log(
+        "[SideNavMenu] Menu carregado:",
+        this.menuList.length,
+        "itens"
+      );
+    } else {
+      console.error("[SideNavMenu] Tipo de usuário não encontrado:", userType);
+      this.menuList = [];
+    }
   },
 };
 </script>

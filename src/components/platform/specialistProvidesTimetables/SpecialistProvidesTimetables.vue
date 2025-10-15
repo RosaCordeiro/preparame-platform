@@ -49,6 +49,7 @@ export default {
   methods: {
     loadSpecialist: async function () {
       const userId = localStorage.getItem("userId");
+      const userType = localStorage.getItem("userType");
 
       const filters = [
         { name: "userId", model: userId },
@@ -59,8 +60,17 @@ export default {
 
       const specialists = await filterCrud(filters, url);
 
-      if (specialists.length === 0 || specialists.length > 1) {
-      } else {
+      if (specialists.length === 0) {
+        // Se for admin e não tiver perfil de especialista, criar um temporário
+        if (userType === 'ADMIN') {
+          this.specialist = {
+            id: null,
+            userId: userId,
+            name: 'Admin (Perfil Especialista)',
+            isAdminSpecialist: true
+          };
+        }
+      } else if (specialists.length === 1) {
         this.specialist = specialists[0];
       }
     },

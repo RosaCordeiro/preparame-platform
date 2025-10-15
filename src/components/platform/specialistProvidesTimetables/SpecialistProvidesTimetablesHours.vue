@@ -128,7 +128,8 @@ export default {
         "yyyy-mm-dd"
       );
 
-      if (this.specialist.id === undefined) return;
+      // Se for admin sem perfil de especialista, não carrega agenda existente
+      if (this.specialist.id === undefined || this.specialist.isAdminSpecialist) return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -187,6 +188,17 @@ export default {
       });
     },
     providesHour: async function (hour) {
+      // Se for admin sem perfil de especialista, mostra aviso
+      if (this.specialist.isAdminSpecialist) {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Para disponibilizar horários, é necessário criar um perfil de especialista primeiro.',
+          timeout: 3000
+        });
+        hour.available = false;
+        return;
+      }
+
       if (hour.available) {
         const url = `specialists/schedule`;
 

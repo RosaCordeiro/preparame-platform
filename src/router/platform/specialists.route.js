@@ -1,6 +1,7 @@
 import SpecialistsQueryCrud from "../../components/platform/specialistsCrud/SpecialistsQueryCrud.vue"
 import SpecialistsRegisterCrud from "../../components/platform/specialistsCrud/SpecialistsRegisterCrud.vue"
 import SpecialistProvidesTimetables from "../../components/platform/specialistProvidesTimetables/SpecialistProvidesTimetables"
+import ViewSpecialistSchedule from "../../components/platform/specialistSchedule/ViewSpecialistSchedule.vue"
 import Platform from "../../layouts/Platform.vue"
 
 const specialistRoutes = [
@@ -65,6 +66,23 @@ const specialistRoutes = [
             userTypes: [
                 'ADMIN',
                 'SPECIALIST'
+            ]
+        }
+    },
+    {
+        path: "/viewSpecialistSchedule",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: ViewSpecialistSchedule
+            }
+        }],
+        props: {
+            userTypes: [
+                'ADMIN'
             ]
         }
     },

@@ -6,22 +6,53 @@
       :filters="filters"
       :columns="columns"
       :url="url"
+      ref="crudQuery"
+      @viewSpecialistSchedule="viewSpecialistSchedule"
     />
+
+    <q-dialog v-model="showScheduleDialog" maximized>
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">
+            Agenda do Especialista: {{ selectedSpecialist.name }}
+          </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <ViewSpecialistSchedule :specialist="selectedSpecialist" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import CrudQuery from "./../../general/crud/CrudQuery.vue";
+import ViewSpecialistSchedule from "../specialistSchedule/ViewSpecialistSchedule.vue";
 
 export default {
   components: {
     CrudQuery,
+    ViewSpecialistSchedule,
   },
-  methods: {},
+  methods: {
+    viewSpecialistSchedule(specialist) {
+      console.log(
+        "[SpecialistsQueryCrud] Visualizando agenda do especialista:",
+        specialist
+      );
+      this.selectedSpecialist = specialist;
+      this.showScheduleDialog = true;
+    },
+  },
   data() {
     return {
       title: "Especialistas",
       url: "specialists",
+      selectedSpecialist: {},
+      showScheduleDialog: false,
       breadcrumbs: [
         {
           title: "Especialistas",
@@ -51,8 +82,8 @@ export default {
           options: {
             table: "users",
             value: "id",
-            label: "name"
-          }
+            label: "name",
+          },
         },
         status: {
           label: "Situação",

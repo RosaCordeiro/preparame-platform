@@ -110,6 +110,13 @@
             icon="mdi-pencil"
             @click="editSelected({ id: props.row.id })"
           ></q-btn>
+          <q-btn
+            v-if="isSpecialistPage"
+            color="primary"
+            icon="mdi-calendar-clock"
+            @click="viewSpecialistSchedule(props.row)"
+            title="Visualizar Agenda"
+          ></q-btn>
         </q-btn-group>
       </q-td>
     </template>
@@ -127,6 +134,11 @@ export default {
       filter: "",
       visibleColumns: [],
     };
+  },
+  computed: {
+    isSpecialistPage() {
+      return this.$router.history.current.path.includes('/specialists');
+    }
   },
   created() {
     this.definesVisibleColumns();
@@ -206,6 +218,15 @@ export default {
       const actualUrl = this.$router.history.current.path;
 
       this.$router.push({ path: `${actualUrl}/${id.id}` });
+    },
+    viewSpecialistSchedule: function (specialist) {
+      console.log('[CrudQueryTable] Emitindo evento viewSpecialistSchedule:', specialist);
+      // Emite evento para o componente pai
+      this.$emit('viewSpecialistSchedule', specialist);
+      // Também tenta chamar o método do componente pai como fallback
+      if (this.$parent.$parent && this.$parent.$parent.viewSpecialistSchedule) {
+        this.$parent.$parent.viewSpecialistSchedule(specialist);
+      }
     },
   },
   mounted() {

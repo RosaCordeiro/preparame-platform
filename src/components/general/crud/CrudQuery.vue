@@ -14,6 +14,7 @@
           ref="table"
           :result="{ columns, data }"
           :blockRemove="blockRemove"
+          @viewSpecialistSchedule="$emit('viewSpecialistSchedule', $event)"
         >
           <slot> </slot>
         </CrudQueryTable>
