@@ -9,7 +9,6 @@
         rel="noopener noreferrer"
         class="image-card"
       >
-        {{ item }}
         <img
           :src="
             item.image_url != null
