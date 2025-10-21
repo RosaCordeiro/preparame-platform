@@ -8,11 +8,11 @@
         </div>
 
         <div class="external-user-welcome-card-info col-12">
-          <div class="external-user-welcome-card-second-msg q-mt-sm">
+          <div class="external-user-welcome-card-second-msg q-mt-sm" v-if="!isRetirementPlan">
             É preciso de um final pra poder recomeçar, como é preciso cair pra
             poder se levantar. Nem sempre engatar a ré significa voltar.
           </div>
-          <div class="external-user-welcome-card-third-msg q-mt-sm">
+          <div class="external-user-welcome-card-third-msg q-mt-sm" v-if="!isRetirementPlan">
             Trecho da poesia Recomece, do Bráulio Bessa
           </div>
           <q-btn
@@ -38,7 +38,7 @@
 import { saveCrud } from "../../../general/crud/utils/saveCrud.js";
 
 export default {
-  props: ["products", "interviewSimulator"],
+  props: ["products", "interviewSimulator", "isRetirementPlan"],
   data() {
     return {
       userAvatarUrl: "",

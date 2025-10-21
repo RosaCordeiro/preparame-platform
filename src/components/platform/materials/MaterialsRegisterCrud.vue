@@ -46,52 +46,22 @@ export default {
     "id": "22629f97-2729-4027-afb2-2876483009b5",
     "created_at": "2023-11-22T11:29:39.834Z"
             */
-            title: {
-              label: "Título",
-              name: "title",
-              size: "6",
-              row: 1,
-              col: 1,
-              model: "",
-              type: "Input",
-              visible: true,
-            },
-            slug: {
-              label: "Slug",
-              name: "slug",
-              size: "6",
-              row: 1,
-              col: 2,
-              model: "",
-              type: "Input",
-              visible: true,
-            },
-            backgroundColor: {
-              label: "Cor de Fundo",
-              name: "backgroundColor",
-              size: "6",
-              row: 2,
-              col: 1,
-              model: "",
-              type: "Color",
-              visible: true,
-            },
-            buttonColor: {
-              label: "Cor do Botão",
-              name: "buttonColor",
-              size: "6",
-              row: 2,
-              col: 1,
-              model: "",
-              type: "Color",
-              visible: true,
-            },
-            file_url: {
-              label: "Arquivo",
-              name: "file_url",
+            link: {
+              label: "Link",
+              name: "link",
               size: "12",
               row: 3,
               col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            image_url: {
+              label: "Imagem",
+              name: "image_url",
+              size: "12",
+              row: 3,
+              col: 2,
               model: "",
               type: "InputFile",
               visible: true,
@@ -145,10 +115,13 @@ export default {
           ) {
             console.log(data.mainTable[key]);
 
-            formData.append(
-              key === "file_url" ? "file" : key,
-              data.mainTable[key]
-            );
+            if (key === "file_url" && data.mainTable.file_url) {
+              formData.append("file", data.mainTable.file_url);
+            } else if (key === "image_url" && data.mainTable.image_url) {
+              formData.append("image", data.mainTable.image_url);
+            } else {
+              formData.append(key, data.mainTable[key]);
+            }
           }
         });
 

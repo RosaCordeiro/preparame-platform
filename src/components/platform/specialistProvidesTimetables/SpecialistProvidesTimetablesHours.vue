@@ -111,7 +111,7 @@ export default {
         { hour: "18:30", id: 183, available: false, scheduled: false },
         { hour: "19:00", id: 190, available: false, scheduled: false },
         { hour: "19:30", id: 193, available: false, scheduled: false },
-        { hour: "20:00", id: 200, available: false, scheduled: false }
+        { hour: "20:00", id: 200, available: false, scheduled: false },
       ],
     };
   },
@@ -128,7 +128,8 @@ export default {
         "yyyy-mm-dd"
       );
 
-      if (this.specialist.id === undefined) return;
+      // Se não tiver ID do especialista, não carrega agenda
+      if (!this.specialist.id) return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -154,10 +155,12 @@ export default {
         specialistSchedule.dateSchedule = dateSchedule;
 
         const hourRef = dateSchedule.getHours().toString();
-        const minutesRef = dateSchedule.getMinutes().toString().padStart(2, '0');
-        const timeFormatted = `${hourRef}:${minutesRef}`
-        
-        
+        const minutesRef = dateSchedule
+          .getMinutes()
+          .toString()
+          .padStart(2, "0");
+        const timeFormatted = `${hourRef}:${minutesRef}`;
+
         const hourFiltered = this.hours.find((hour) => {
           return timeFormatted === hour.hour;
         });
@@ -168,7 +171,7 @@ export default {
             product: specialistSchedule.product,
             user: specialistSchedule.user,
           });
-          
+
           if (
             specialistSchedule.status.value === "AVAILABLE" &&
             actualDate < dateSchedule
@@ -188,7 +191,10 @@ export default {
     },
     providesHour: async function (hour) {
       if (hour.available) {
-        const url = `specialists/schedule`;
+        // Se já existe um horário, não tenta criar novamente
+        if (hour.specialistScheduleId) {
+          return;
+        }
 
         hour.dateSchedule = new Date(hour.dateSchedule);
         hour.dateSchedule = new Date(
@@ -198,15 +204,21 @@ export default {
           )
         );
 
-        await saveCrud(url, {
+        const response = await saveCrud(`specialists/schedule`, {
           status: "AVAILABLE",
           specialistId: this.specialist.id,
           dateSchedule: hour.dateSchedule,
         });
-      } else {
-        const url = `specialists/schedule`;
 
-        await removeCrud(hour.specialistScheduleId, url);
+        // Armazena o ID retornado para poder remover depois
+        if (response && response.id) {
+          hour.specialistScheduleId = response.id;
+        }
+      } else {
+        if (hour.specialistScheduleId) {
+          await removeCrud(hour.specialistScheduleId, `specialists/schedule`);
+          hour.specialistScheduleId = null;
+        }
       }
     },
     adjustHours: function (date) {
@@ -214,9 +226,12 @@ export default {
 
       this.hours.forEach((hour) => {
         const [hours, minutes] = hour.hour.split(":");
-        const refDate = new Date(date).setHours(parseInt(hours), parseInt(minutes));
-        console.log('refDate', refDate, actualDate);
-        
+        const refDate = new Date(date).setHours(
+          parseInt(hours),
+          parseInt(minutes)
+        );
+        console.log("refDate", refDate, actualDate);
+
         const disable = actualDate > refDate;
 
         Object.assign(hour, { dateSchedule: refDate });

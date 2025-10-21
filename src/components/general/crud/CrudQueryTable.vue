@@ -46,6 +46,32 @@
       </q-td>
     </template>
 
+    <template v-slot:body-cell-link="props">
+      <q-td :props="props">
+        <div v-if="!props.row.link">N/A</div>
+        <a
+          v-else
+          :href="props.row.link"
+          target="_blank"
+          style="color: blue; text-decoration: underline"
+          >Ir até a página</a>
+      </q-td>
+    </template>
+
+    <template v-slot:body-cell-image_url="props">
+      <q-td :props="props">
+        <div v-if="!props.row.image_url">N/A</div>
+        <q-btn
+          v-else
+          color="positive"
+          label="VISUALIZAR"
+          :href="props.row.image_url"
+          target="_blank"
+          :disable="blockRemove"
+        ></q-btn>
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-realocate="props">
       <q-td auto-width :props="props">
         <div v-if="props.row.realocate">REALOCADO</div>
@@ -84,6 +110,13 @@
             icon="mdi-pencil"
             @click="editSelected({ id: props.row.id })"
           ></q-btn>
+          <q-btn
+            v-if="isSpecialistPage"
+            color="primary"
+            icon="mdi-calendar-multiple"
+            @click="openSpecialistArea(props.row)"
+            title="Agenda e Disponibilizar Horários"
+          ></q-btn>
         </q-btn-group>
       </q-td>
     </template>
@@ -101,6 +134,11 @@ export default {
       filter: "",
       visibleColumns: [],
     };
+  },
+  computed: {
+    isSpecialistPage() {
+      return this.$router.history.current.path.includes('/specialists');
+    }
   },
   created() {
     this.definesVisibleColumns();
@@ -180,6 +218,16 @@ export default {
       const actualUrl = this.$router.history.current.path;
 
       this.$router.push({ path: `${actualUrl}/${id.id}` });
+    },
+
+    openSpecialistArea: function (specialist) {
+      console.log('[CrudQueryTable] Emitindo evento openSpecialistArea:', specialist);
+      // Emite evento para o componente pai
+      this.$emit('openSpecialistArea', specialist);
+      // Também tenta chamar o método do componente pai como fallback
+      if (this.$parent.$parent && this.$parent.$parent.openSpecialistArea) {
+        this.$parent.$parent.openSpecialistArea(specialist);
+      }
     },
   },
   mounted() {

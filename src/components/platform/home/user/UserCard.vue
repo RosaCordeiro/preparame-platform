@@ -3,7 +3,7 @@
     <q-card class="row col-12 user-card-container q-py-md">
       <q-card-section class="col-12 user-card-profile-level-info">
         <q-banner
-          v-if="!surveyAnswered"
+          v-if="!surveyAnswered && !isRetirementPlan"
           rounded
           class="q-ma-sm text-white bg-prepara-me-blue"
         >
@@ -200,7 +200,7 @@
 import { saveCrud } from "./../../../general/crud/utils/saveCrud.js";
 
 export default {
-  props: ["products", "interviewSimulator"],
+  props: ["products", "interviewSimulator", "isRetirementPlan"],
   data() {
     return {
       userAvatarUrl: "",

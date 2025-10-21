@@ -14,6 +14,7 @@
           ref="table"
           :result="{ columns, data }"
           :blockRemove="blockRemove"
+          @openSpecialistArea="$emit('openSpecialistArea', $event)"
         >
           <slot> </slot>
         </CrudQueryTable>

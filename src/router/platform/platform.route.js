@@ -3,6 +3,7 @@ import HomeDynamicTemplate from "../../components/platform/home/HomeDynamicTempl
 import NPSSurvey from "../../components/platform/NPSSurvey/NPSSurvey.vue";
 import interviewSimulatorPresentation from "../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue";
 import interviewSimulator from "../../components/platform/interviewSimulator/InterviewSimulator.vue";
+import ReplacementsReport from "../../components/platform/replacementsReport/ReplacementsReport.vue";
 
 const platformRoutes = [
   {
@@ -57,6 +58,21 @@ const platformRoutes = [
         path: "/",
         components: {
           content: interviewSimulator,
+        },
+      },
+    ],
+  },
+  {
+    path: "/replacementsReport",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        name: "replacementsReport",
+        components: {
+          content: ReplacementsReport,
         },
       },
     ],

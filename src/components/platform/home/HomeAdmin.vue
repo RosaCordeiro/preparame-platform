@@ -54,13 +54,21 @@
               class="column btn"
               @click="downloadAnswers"
             />
-          
+
             <q-btn
               style="background: #667997; color: black"
               label="Relatório visão de únicos"
               class="column btn"
               @click="downloadUsersReport"
             />
+
+             <q-btn
+              style="background: #667997; color: black"
+              label="Recolocados"
+              class="column btn"
+              @click="goToReplacementsPage"
+            />
+
           </div>
           <div class="text">Filtro</div>
           <div class="column">
@@ -118,6 +126,9 @@ export default {
     };
   },
   methods: {
+    goToReplacementsPage() {
+      this.$router.push({ name: 'replacementsReport' });
+    },
     showDeuCerto,
     async generateReport() {
       const params = {};

@@ -137,7 +137,7 @@ export default {
     }
   },
   async created(){
-    const response = await filterCrud([], `products/listProductByUser?userId=${localStorage.getItem(`userId`)}&onlyAvailables=true`);
+    const response = await filterCrud([], `products/listProductsAvailableByUser?userId=${localStorage.getItem(`userId`)}&onlyAvailables=true`);
     console.log(response);
     this.optionsMentoring = response;
   },

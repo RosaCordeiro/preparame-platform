@@ -185,6 +185,14 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 20px;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .schedule {
+    margin-top: 15px;
+  }
 }
 
 .schedule-container {
@@ -200,15 +208,35 @@ export default {
 }
 
 .image-popup {
-  position: absolute;
-  left: 0;
-  top: -150px;
+  position: fixed;
+  left: 35%;
+  top: 60px;
+  transform: translateX(-50%);
   height: 200px;
+  z-index: 1000;
+  max-width: 300px;
 }
 
 .image-popup img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+  .image-popup {
+    left: 50%;
+    top: 50px;
+    height: 150px;
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .image-popup {
+    top: 40px;
+    height: 120px;
+    max-width: 200px;
+  }
 }
 </style>

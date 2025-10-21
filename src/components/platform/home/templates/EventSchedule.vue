@@ -349,6 +349,7 @@ export default {
       filesCountSpecialist: 0,
       searchDialog: false,
       viewDialog: false,
+      onlyAdmin: false,
       productsName: [
         "Reconstrução de Currículo Português",
         "Reconstrução de Curriculo Português + Inglês",
