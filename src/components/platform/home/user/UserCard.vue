@@ -3,7 +3,7 @@
     <q-card class="row col-12 user-card-container q-py-md">
       <q-card-section class="col-12 user-card-profile-level-info">
         <q-banner
-          v-if="!surveyAnswered && !isRetirementPlan"
+          v-if="!surveyAnswered && !isRetirementPlanProp"
           rounded
           class="q-ma-sm text-white bg-prepara-me-blue"
         >
@@ -106,7 +106,7 @@
           </div>
         </q-banner>
 
-        <!-- <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
+        <q-banner rounded class="q-ma-sm text-white bg-prepara-me-blue">
           <div class="user-card-banner-content row">
             <q-btn
               flat
@@ -116,7 +116,7 @@
               @click="goUrl(`productList`)"
             />
           </div>
-        </q-banner> -->
+        </q-banner>
 
         <q-banner
           rounded
@@ -147,7 +147,9 @@
         </section>
 
         <q-banner
-          v-if="!laborRiskAlert && companyId != 'null'"
+          v-if="
+            !laborRiskAlert && companyId != 'null' && !isRetirementPlanFinal
+          "
           rounded
           class="q-ma-sm text-white bg-negative"
         >
@@ -161,6 +163,7 @@
             />
           </div>
         </q-banner>
+
         <div class="terms row q-pa-sm">
           Ver
           <a @click="goUrl('PrivacyTerms')">Políticas de Privacidade</a>
@@ -215,6 +218,11 @@ export default {
       userId: "",
       companyNameSignIn: "",
       companyNameSignInLogo: "",
+
+      planId: null,
+      planName: null,
+      RETIREMENT_PLAN_ID: "491e313c-a9cc-4806-9a88-8b122e212b3d",
+      RETIREMENT_PLAN_NAME: "Pacote Acompanha (Aposentadoria)",
     };
   },
   created() {
@@ -224,19 +232,67 @@ export default {
     this.userId = localStorage.getItem("userId");
     this.companyNameSignIn = localStorage.getItem("companyNameSignIn");
     this.companyNameSignInLogo = localStorage.getItem("companyNameSignInLogo");
+
+    this.extractPlanInfoFromLocalStorage();
   },
   mounted() {
     console.log(this.products);
 
-    this.productsSchedulables = this.products.filter((product) => {
-      return product.type === "SCHEDULED";
-    });
+    this.productsSchedulables = Array.isArray(this.products)
+      ? this.products.filter((product) => product.type === "SCHEDULED")
+      : [];
 
-    this.surveyAnswered =
-      localStorage.getItem("surveyAnswered") == "true" ? true : false;
+    this.surveyAnswered = localStorage.getItem("surveyAnswered") == "true";
+    this.laborRiskAlert = localStorage.getItem("laborRiskAlert") == "ALERT";
 
-    this.laborRiskAlert =
-      localStorage.getItem("laborRiskAlert") == "ALERT" ? true : false;
+    this.extractPlanInfoFromLocalStorage();
+
+    window.addEventListener("storage", this.onStorageChange);
+  },
+  beforeDestroy() {
+    window.removeEventListener("storage", this.onStorageChange);
+  },
+  computed: {
+    isRetirementPlanProp() {
+      if (this.isRetirementPlan === true) return true;
+      if (this.isRetirementPlan === false) return false;
+      if (typeof this.isRetirementPlan === "string") {
+        return this.isRetirementPlan === "true";
+      }
+      return false;
+    },
+
+    isRetirementPlanComputed() {
+      if (this.planId && this.planId === this.RETIREMENT_PLAN_ID) return true;
+
+      if (this.planName) {
+        const nm = String(this.planName).toLowerCase();
+        if (
+          nm === this.RETIREMENT_PLAN_NAME.toLowerCase() ||
+          nm.includes("acompanha") ||
+          nm.includes("aposentadoria")
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    isRetirementPlanFinal() {
+      const finalVal =
+        this.isRetirementPlanProp || this.isRetirementPlanComputed;
+      if (!this.isRetirementPlanProp && !this.planId && !this.planName) {
+        console.warn(
+          "[user-card] sem dados de plan detectados localmente e prop isRetirementPlan não foi informada. Banner seguirá visível por padrão."
+        );
+      }
+      console.info("[user-card] plano detectado (final):", finalVal, {
+        prop: this.isRetirementPlanProp,
+        planId: this.planId,
+        planName: this.planName,
+      });
+      return finalVal;
+    },
   },
   methods: {
     goUrl: function (url) {
@@ -246,6 +302,88 @@ export default {
     goBlank: function (url) {
       window.open(url, "_blank");
     },
+
+    onStorageChange(e) {
+      if (!e) return;
+      if (
+        e.key === "planId" ||
+        e.key === "plan" ||
+        e.key === "user" ||
+        e.key === "userData" ||
+        e.key === "loggedUser"
+      ) {
+        this.extractPlanInfoFromLocalStorage();
+      }
+    },
+
+    extractPlanInfoFromLocalStorage() {
+      const possibleKeys = [
+        "planId",
+        "plan",
+        "user",
+        "userData",
+        "loggedUser",
+        "currentUser",
+      ];
+
+      let foundId = null;
+      let foundName = null;
+
+      for (const key of possibleKeys) {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+
+        let parsed = null;
+        try {
+          parsed = JSON.parse(raw);
+        } catch (err) {
+          parsed = raw;
+        }
+
+        if (parsed && typeof parsed === "object") {
+          if (parsed.planId) {
+            if (typeof parsed.planId === "object") {
+              if (parsed.planId.id) foundId = parsed.planId.id;
+              if (parsed.planId.name) foundName = parsed.planId.name;
+            } else if (typeof parsed.planId === "string") {
+              try {
+                const p = JSON.parse(parsed.planId);
+                if (p && p.id) foundId = p.id;
+                if (p && p.name) foundName = p.name;
+              } catch (e) {
+                foundId = parsed.planId;
+              }
+            }
+          }
+          if (parsed.plan) {
+            if (typeof parsed.plan === "string") foundName = parsed.plan;
+            else if (typeof parsed.plan === "object") {
+              if (parsed.plan.id) foundId = parsed.plan.id;
+              if (parsed.plan.name) foundName = parsed.plan.name;
+            }
+          }
+
+          if (parsed.id && parsed.name && !foundId) {
+            foundId = parsed.id;
+            foundName = parsed.name;
+          }
+        } else if (typeof parsed === "string") {
+          if (parsed.includes("-") && parsed.length >= 30) foundId = parsed;
+          else foundName = parsed;
+        }
+
+        if (foundId || foundName) break;
+      }
+
+      this.planId = foundId;
+      this.planName = foundName;
+
+      console.info("[user-card] plan info extraída:", {
+        planId: this.planId,
+        planName: this.planName,
+      });
+    },
+
     laborRiskAlertUpdate: async function () {
       const userUpdate = {
         laborRiskAlert: "ALERT",
@@ -257,7 +395,7 @@ export default {
         "put"
       );
 
-      if (userUpdated.status == 204) {
+      if (userUpdated && userUpdated.status == 204) {
         localStorage.setItem("laborRiskAlert", "ALERT");
 
         this.$q.notify({
