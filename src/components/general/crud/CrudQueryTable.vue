@@ -54,7 +54,8 @@
           :href="props.row.link"
           target="_blank"
           style="color: blue; text-decoration: underline"
-          >Ir até a página</a>
+          >Ir até a página</a
+        >
       </q-td>
     </template>
 
@@ -137,8 +138,8 @@ export default {
   },
   computed: {
     isSpecialistPage() {
-      return this.$router.history.current.path.includes('/specialists');
-    }
+      return this.$router.history.current.path.includes("/specialists");
+    },
   },
   created() {
     this.definesVisibleColumns();
@@ -150,21 +151,30 @@ export default {
       this.$q
         .dialog({
           title: "Realocar",
-          message: "Deseja realocar o usuário selecionado",
+          message: "Digite o nome da nova empresa:",
+          prompt: {
+            model: "",
+            label: "Nome da empresa",
+            isValid: (val) => val && val.length > 0,
+          },
           cancel: true,
           persistent: true,
         })
-        .onOk(() => {
-          saveCrud(`companies/employees/${row.id}/realocate`, {}, "put").then(
-            () => {
+        .onOk((manualCompany) => {
+          if (manualCompany && manualCompany.trim()) {
+            saveCrud(
+              `companies/employees/${row.id}/realocate`,
+              { manualCompany: manualCompany.trim() },
+              "put"
+            ).then(() => {
               this.$q.notify({
                 color: "positive",
                 message: "Realocado com sucesso!",
               });
 
               row.realocate = true;
-            }
-          );
+            });
+          }
         });
     },
     accept(row) {
@@ -221,9 +231,12 @@ export default {
     },
 
     openSpecialistArea: function (specialist) {
-      console.log('[CrudQueryTable] Emitindo evento openSpecialistArea:', specialist);
+      console.log(
+        "[CrudQueryTable] Emitindo evento openSpecialistArea:",
+        specialist
+      );
       // Emite evento para o componente pai
-      this.$emit('openSpecialistArea', specialist);
+      this.$emit("openSpecialistArea", specialist);
       // Também tenta chamar o método do componente pai como fallback
       if (this.$parent.$parent && this.$parent.$parent.openSpecialistArea) {
         this.$parent.$parent.openSpecialistArea(specialist);
