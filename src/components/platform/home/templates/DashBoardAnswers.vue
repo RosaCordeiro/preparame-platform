@@ -130,6 +130,36 @@
           </div>
         </q-btn-dropdown>
 
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Tipo de Demissão"
+          text-color="white"
+          no-caps
+          :disable="disableFilters || dismissalTypeOptions.length === 0"
+          :class="{
+            label: !disableFilters && dismissalTypeOptions.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="dismissalTypeOptions.length > 0">
+              <q-checkbox
+                color="primary"
+                v-if="dismissalTypeOptions.length > 0"
+                v-model="selectAllDismissalType"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in dismissalTypeOptions"
+                :key="index"
+                :label="r.label"
+                :val="r.value"
+                v-model="dismissalType"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
         <!--  <div
           class="box__button-actions-item box__button-actions-download"
           @click="gerarPDF()"
@@ -456,12 +486,14 @@ export default {
       area: [],
       role: [],
       unity: [],
+      dismissalType: [],
       userType: localStorage.getItem("userType"),
       lessThanFive: false,
       selectAllPeriods: false,
       selectAllUnity: false,
       selectAllArea: false,
       selectAllRole: false,
+      selectAllDismissalType: false,
       realocatedCount: 0,
       companyQuestions: [],
     };
@@ -476,7 +508,33 @@ export default {
       );
     },
     selectedFilters() {
-      return [...this.period, ...this.area, ...this.role, ...this.unity];
+      return [
+        ...this.period,
+        ...this.area,
+        ...this.role,
+        ...this.unity,
+        ...this.dismissalType,
+      ];
+    },
+    dismissalTypeOptions() {
+      const options = [
+        {
+          label: "Voluntária",
+          value: "voluntary",
+        },
+        {
+          label: "Involuntária",
+          value: "involuntary",
+        },
+      ];
+
+      if (!this.parameters.dismissalType) {
+        return [];
+      }
+
+      return options.filter((option) =>
+        this.parameters.dismissalType.includes(option.value)
+      );
     },
   },
   watch: {
@@ -485,6 +543,7 @@ export default {
       this.area = [];
       this.role = [];
       this.unity = [];
+      this.dismissalType = [];
 
       this.loadNpsSurveyAnswers();
     },
@@ -501,6 +560,9 @@ export default {
       this.loadNpsSurveyAnswers();
     },
     unity(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    dismissalType(f) {
       this.loadNpsSurveyAnswers();
     },
     selectAllPeriods(value) {
@@ -530,6 +592,15 @@ export default {
         this.role = this.parameters.role.slice();
       } else {
         this.role = [];
+      }
+    },
+    selectAllDismissalType(value) {
+      if (value) {
+        this.dismissalType = this.parameters.dismissalType
+          ? this.parameters.dismissalType.slice()
+          : [];
+      } else {
+        this.dismissalType = [];
       }
     },
   },
@@ -671,6 +742,13 @@ export default {
         });
       }
 
+      if (this.dismissalType.length > 0) {
+        filters.push({
+          name: "dismissalType",
+          model: JSON.stringify(this.dismissalType),
+        });
+      }
+
       const data = await filterCrud(
         filters,
         `companies/config/${this.companyId}`
@@ -682,6 +760,19 @@ export default {
         if (!this.parameters.role.includes(this.role[i])) {
           this.role = this.role.filter((role) => role !== this.role[i]);
         }
+      }
+
+      // Filtrar dismissalType baseado nos parâmetros recebidos
+      if (this.parameters.dismissalType) {
+        for (let i = 0; i < this.dismissalType.length; i++) {
+          if (!this.parameters.dismissalType.includes(this.dismissalType[i])) {
+            this.dismissalType = this.dismissalType.filter(
+              (type) => type !== this.dismissalType[i]
+            );
+          }
+        }
+      } else {
+        this.dismissalType = [];
       }
     },
     loadNpsSurveyAnswers: async function () {
@@ -728,6 +819,13 @@ export default {
         filters.push({
           name: "unity",
           model: JSON.stringify(this.unity),
+        });
+      }
+
+      if (this.dismissalType.length > 0) {
+        filters.push({
+          name: "dismissalType",
+          model: JSON.stringify(this.dismissalType),
         });
       }
 
