@@ -49,10 +49,19 @@ export default {
           });
 
           values.map((value) => {
+            console.log(
+              "Processing field:",
+              value.name,
+              "model:",
+              value.model,
+              "type:",
+              value.type
+            );
             if (
               (value.type === "Select" || value.type === "DialogSelect") &&
               value.model &&
-              value.model.value
+              typeof value.model === "object" &&
+              value.model.value !== undefined
             ) {
               value.model = value.model.value;
             }
@@ -60,7 +69,7 @@ export default {
 
           this.data[Object.keys(this.tables)[index]] = values.reduce(
             (array, value) => {
-              if (value.type === "Date") {
+              if (value.type === "Date" && value.model) {
                 const dateParts = value.model.split("/");
 
                 value.model = new Date(
@@ -68,7 +77,11 @@ export default {
                 );
               }
 
-              return { ...array, [value.name]: value.model };
+              console.log("Final field data:", value.name, "=", value.model);
+
+              const finalValue =
+                value.model === false ? false : value.model || null;
+              return { ...array, [value.name]: finalValue };
             },
             {}
           );
