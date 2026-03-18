@@ -130,6 +130,232 @@
           </div>
         </q-btn-dropdown>
 
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Tipo de Demissão"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters ||
+            (parameters.dismissalType && parameters.dismissalType.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.dismissalType &&
+              parameters.dismissalType.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div
+              class="column"
+              v-if="
+                parameters.dismissalType && parameters.dismissalType.length > 0
+              "
+            >
+              <q-checkbox
+                color="primary"
+                v-if="parameters.dismissalType.length > 0"
+                v-model="selectAllDismissalType"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.dismissalType"
+                :key="index"
+                :label="getOptionLabel(dismissalTypeOptions, r)"
+                :val="r"
+                v-model="dismissalType"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Gênero"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters ||
+            (parameters.gender && parameters.gender.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.gender &&
+              parameters.gender.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div
+              class="column"
+              v-if="parameters.gender && parameters.gender.length > 0"
+            >
+              <q-checkbox
+                color="primary"
+                v-if="parameters.gender.length > 0"
+                v-model="selectAllGender"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.gender"
+                :key="index"
+                :label="getOptionLabel(genderOptions, r)"
+                :val="r"
+                v-model="gender"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Etnia"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters ||
+            (parameters.etnia && parameters.etnia.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.etnia &&
+              parameters.etnia.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div
+              class="column"
+              v-if="parameters.etnia && parameters.etnia.length > 0"
+            >
+              <q-checkbox
+                color="primary"
+                v-if="parameters.etnia.length > 0"
+                v-model="selectAllEtnia"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.etnia"
+                :key="index"
+                :label="getOptionLabel(etniaOptions, r)"
+                :val="r"
+                v-model="etnia"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="PCD"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters || (parameters.pcd && parameters.pcd.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters && parameters.pcd && parameters.pcd.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div
+              class="column"
+              v-if="parameters.pcd && parameters.pcd.length > 0"
+            >
+              <q-checkbox
+                color="primary"
+                v-if="parameters.pcd.length > 0"
+                v-model="selectAllPcd"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.pcd"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="pcd"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Estado"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters ||
+            (parameters.state && parameters.state.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.state &&
+              parameters.state.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.state">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.state.length > 0"
+                v-model="selectAllState"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.state"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="state"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
+        <q-btn-dropdown
+          class="box__button-actions-item"
+          label="Cidade"
+          text-color="white"
+          no-caps
+          :disable="
+            disableFilters || (parameters.city && parameters.city.length === 0)
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.city &&
+              parameters.city.length === 0,
+          }"
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column" v-if="parameters.city">
+              <q-checkbox
+                color="primary"
+                v-if="parameters.city.length > 0"
+                v-model="selectAllCity"
+                label="Selecionar Todos"
+              />
+              <q-checkbox
+                color="primary"
+                v-for="(r, index) in parameters.city"
+                :key="index"
+                :label="r"
+                :val="r"
+                v-model="city"
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
         <!--  <div
           class="box__button-actions-item box__button-actions-download"
           @click="gerarPDF()"
@@ -238,7 +464,7 @@
 
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
-            :data="welcomed"
+            :data="welcomed.toString()"
             :lessThanFive="lessThanFive"
           />
         </div>
@@ -250,7 +476,7 @@
 
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
-            :data="realocatedCount"
+            :data="realocatedCount.toString()"
             :lessThanFive="lessThanFive"
           />
         </div>
@@ -456,14 +682,27 @@ export default {
       area: [],
       role: [],
       unity: [],
+      dismissalType: [],
+      gender: [],
+      etnia: [],
+      pcd: [],
+      state: [],
+      city: [],
       userType: localStorage.getItem("userType"),
       lessThanFive: false,
       selectAllPeriods: false,
       selectAllUnity: false,
       selectAllArea: false,
       selectAllRole: false,
+      selectAllDismissalType: false,
+      selectAllGender: false,
+      selectAllEtnia: false,
+      selectAllPcd: false,
+      selectAllState: false,
+      selectAllCity: false,
       realocatedCount: 0,
       companyQuestions: [],
+      isLoading: false,
     };
   },
   props: ["companyId"],
@@ -476,7 +715,85 @@ export default {
       );
     },
     selectedFilters() {
-      return [...this.period, ...this.area, ...this.role, ...this.unity];
+      const filters = [];
+
+      // Filtros simples (string)
+      filters.push(...this.period, ...this.area, ...this.role, ...this.unity);
+
+      // Estado - apenas sigla
+      this.state.forEach((value) => {
+        if (typeof value === "object" && value.value) {
+          filters.push(value.value);
+        } else {
+          filters.push(value);
+        }
+      });
+
+      // Cidade - apenas nome
+      this.city.forEach((value) => {
+        if (typeof value === "object" && value.label) {
+          filters.push(value.label.split(" (")[0]);
+        } else {
+          filters.push(value);
+        }
+      });
+
+      // Filtros com mapeamento de label
+      this.dismissalType.forEach((value) => {
+        const option = this.dismissalTypeOptions.find(
+          (opt) => opt.value === value
+        );
+        filters.push(option ? option.label : value);
+      });
+
+      this.gender.forEach((value) => {
+        const option = this.genderOptions.find((opt) => opt.value === value);
+        filters.push(option ? option.label : value);
+      });
+
+      this.etnia.forEach((value) => {
+        const option = this.etniaOptions.find((opt) => opt.value === value);
+        filters.push(option ? option.label : value);
+      });
+
+      // PCD com prefixo
+      this.pcd.forEach((value) => {
+        filters.push(`PCD: ${value}`);
+      });
+
+      return filters;
+    },
+    genderOptions() {
+      return [
+        { label: "Mulher Cisgênero", value: "cisgender_woman" },
+        { label: "Homem Cisgênero", value: "cisgender_man" },
+        { label: "Mulher Trans", value: "trans_woman" },
+        { label: "Homem Trans", value: "trans_man" },
+        { label: "Pessoa Não Binária", value: "non_binary" },
+        { label: "Sem informação", value: "not_informed" },
+      ];
+    },
+    etniaOptions() {
+      return [
+        { label: "Branca", value: "branca" },
+        { label: "Preta", value: "preta" },
+        { label: "Parda", value: "parda" },
+        { label: "Amarela", value: "amarela" },
+        { label: "Indígena", value: "indigena" },
+        { label: "Sem informação", value: "not_informed" },
+      ];
+    },
+    pcdOptions() {
+      return [
+        { label: "Sim", value: "Sim" },
+        { label: "Não", value: "Não" },
+      ];
+    },
+    dismissalTypeOptions() {
+      return [
+        { label: "Voluntária", value: "voluntary" },
+        { label: "Involuntária", value: "involuntary" },
+      ];
     },
   },
   watch: {
@@ -485,6 +802,12 @@ export default {
       this.area = [];
       this.role = [];
       this.unity = [];
+      this.dismissalType = [];
+      this.gender = [];
+      this.etnia = [];
+      this.pcd = [];
+      this.state = [];
+      this.city = [];
 
       this.loadNpsSurveyAnswers();
     },
@@ -501,6 +824,24 @@ export default {
       this.loadNpsSurveyAnswers();
     },
     unity(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    dismissalType(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    gender(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    etnia(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    pcd(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    state(f) {
+      this.loadNpsSurveyAnswers();
+    },
+    city(f) {
       this.loadNpsSurveyAnswers();
     },
     selectAllPeriods(value) {
@@ -532,9 +873,59 @@ export default {
         this.role = [];
       }
     },
+    selectAllDismissalType(value) {
+      if (value) {
+        this.dismissalType = this.parameters.dismissalType
+          ? this.parameters.dismissalType.slice()
+          : [];
+      } else {
+        this.dismissalType = [];
+      }
+    },
+    selectAllGender(value) {
+      if (value) {
+        this.gender = this.parameters.gender
+          ? this.parameters.gender.slice()
+          : [];
+      } else {
+        this.gender = [];
+      }
+    },
+    selectAllEtnia(value) {
+      if (value) {
+        this.etnia = this.parameters.etnia ? this.parameters.etnia.slice() : [];
+      } else {
+        this.etnia = [];
+      }
+    },
+    selectAllPcd(value) {
+      if (value) {
+        this.pcd = this.parameters.pcd ? this.parameters.pcd.slice() : [];
+      } else {
+        this.pcd = [];
+      }
+    },
+    selectAllState(value) {
+      if (value) {
+        this.state = this.parameters.state ? this.parameters.state.slice() : [];
+      } else {
+        this.state = [];
+      }
+    },
+    selectAllCity(value) {
+      if (value) {
+        this.city = this.parameters.city ? this.parameters.city.slice() : [];
+      } else {
+        this.city = [];
+      }
+    },
   },
 
   methods: {
+    getOptionLabel(options, value) {
+      const option = options.find((opt) => opt.value === value);
+      return option ? option.label : value;
+    },
     gerarPDF() {
       const doc = new jsPDF({
         orientation: "landscape",
@@ -671,6 +1062,48 @@ export default {
         });
       }
 
+      if (this.dismissalType.length > 0) {
+        filters.push({
+          name: "dismissalType",
+          model: JSON.stringify(this.dismissalType),
+        });
+      }
+
+      if (this.gender.length > 0) {
+        filters.push({
+          name: "gender",
+          model: JSON.stringify(this.gender),
+        });
+      }
+
+      if (this.etnia.length > 0) {
+        filters.push({
+          name: "etnia",
+          model: JSON.stringify(this.etnia),
+        });
+      }
+
+      if (this.pcd.length > 0) {
+        filters.push({
+          name: "pcd",
+          model: JSON.stringify(this.pcd),
+        });
+      }
+
+      if (this.state.length > 0) {
+        filters.push({
+          name: "state",
+          model: JSON.stringify(this.state),
+        });
+      }
+
+      if (this.city.length > 0) {
+        filters.push({
+          name: "city",
+          model: JSON.stringify(this.city),
+        });
+      }
+
       const data = await filterCrud(
         filters,
         `companies/config/${this.companyId}`
@@ -678,13 +1111,66 @@ export default {
 
       this.parameters = data;
 
+      // Garantir que os parâmetros tenham valores padrão
+      if (!this.parameters.dismissalType) this.parameters.dismissalType = [];
+      if (!this.parameters.gender) this.parameters.gender = [];
+      if (!this.parameters.etnia) this.parameters.etnia = [];
+      if (!this.parameters.pcd) this.parameters.pcd = [];
+      if (!this.parameters.state) this.parameters.state = [];
+      if (!this.parameters.city) this.parameters.city = [];
+
       for (let i = 0; i < this.role.length; i++) {
         if (!this.parameters.role.includes(this.role[i])) {
           this.role = this.role.filter((role) => role !== this.role[i]);
         }
       }
+
+      // Filtrar dismissalType baseado nos parâmetros recebidos
+      for (let i = this.dismissalType.length - 1; i >= 0; i--) {
+        if (!this.parameters.dismissalType.includes(this.dismissalType[i])) {
+          this.dismissalType.splice(i, 1);
+        }
+      }
+
+      // Filtrar gender baseado nos parâmetros recebidos
+      for (let i = this.gender.length - 1; i >= 0; i--) {
+        if (!this.parameters.gender.includes(this.gender[i])) {
+          this.gender.splice(i, 1);
+        }
+      }
+
+      // Filtrar etnia baseado nos parâmetros recebidos
+      for (let i = this.etnia.length - 1; i >= 0; i--) {
+        if (!this.parameters.etnia.includes(this.etnia[i])) {
+          this.etnia.splice(i, 1);
+        }
+      }
+
+      // Filtrar pcd baseado nos parâmetros recebidos
+      for (let i = this.pcd.length - 1; i >= 0; i--) {
+        if (!this.parameters.pcd.includes(this.pcd[i])) {
+          this.pcd.splice(i, 1);
+        }
+      }
+
+      // Filtrar state baseado nos parâmetros recebidos
+      for (let i = this.state.length - 1; i >= 0; i--) {
+        if (!this.parameters.state.includes(this.state[i])) {
+          this.state.splice(i, 1);
+        }
+      }
+
+      // Filtrar city baseado nos parâmetros recebidos
+      for (let i = this.city.length - 1; i >= 0; i--) {
+        if (!this.parameters.city.includes(this.city[i])) {
+          this.city.splice(i, 1);
+        }
+      }
     },
     loadNpsSurveyAnswers: async function () {
+      if (this.isLoading) return;
+      this.isLoading = true;
+
       this.loadParameters();
 
       if (this.companyId === "null") {
@@ -692,7 +1178,7 @@ export default {
           type: "error",
           message: "Nenhuma empresa selecionada para o usuário.",
         });
-
+        this.isLoading = false;
         return;
       }
 
@@ -728,6 +1214,48 @@ export default {
         filters.push({
           name: "unity",
           model: JSON.stringify(this.unity),
+        });
+      }
+
+      if (this.dismissalType.length > 0) {
+        filters.push({
+          name: "dismissalType",
+          model: JSON.stringify(this.dismissalType),
+        });
+      }
+
+      if (this.gender.length > 0) {
+        filters.push({
+          name: "gender",
+          model: JSON.stringify(this.gender),
+        });
+      }
+
+      if (this.etnia.length > 0) {
+        filters.push({
+          name: "etnia",
+          model: JSON.stringify(this.etnia),
+        });
+      }
+
+      if (this.pcd.length > 0) {
+        filters.push({
+          name: "pcd",
+          model: JSON.stringify(this.pcd),
+        });
+      }
+
+      if (this.state.length > 0) {
+        filters.push({
+          name: "state",
+          model: JSON.stringify(this.state),
+        });
+      }
+
+      if (this.city.length > 0) {
+        filters.push({
+          name: "city",
+          model: JSON.stringify(this.city),
         });
       }
 
@@ -771,6 +1299,31 @@ export default {
           ? []
           : npsSurveyReport.companyQuestions;
 
+      // Verificar se não há dados suficientes para os filtros aplicados
+      const hasNewFilters =
+        this.dismissalType.length > 0 ||
+        this.gender.length > 0 ||
+        this.etnia.length > 0 ||
+        this.pcd.length > 0;
+      const hasNoData =
+        !npsSurveyReport.nps ||
+        npsSurveyReport.nps === "" ||
+        npsSurveyReport.nps === "0%" ||
+        npsSurveyReport.nps === "Sem informações";
+
+      if (
+        npsSurveyReport.noData ||
+        (hasNewFilters && hasNoData) ||
+        (this.selectedFilters.length > 0 && hasNoData)
+      ) {
+        this.$q.notify({
+          type: "warning",
+          message: "Atenção\nNão há dados suficientes para este filtro.",
+          html: true,
+          timeout: 3000,
+        });
+      }
+
       function compareFeelings(a, b) {
         if (a.feeling < b.feeling) {
           return -1;
@@ -788,6 +1341,8 @@ export default {
 
       this.$refs.infoWidget.close();
       if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
+
+      this.isLoading = false;
     },
   },
   async mounted() {
