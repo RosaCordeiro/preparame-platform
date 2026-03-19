@@ -47,7 +47,7 @@
       </div>
       <div class="row-cards">
         <div class="filtro">
-          <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; flex-direction: column; gap: 10px">
             <q-btn
               style="background: #667997; color: black"
               label="Baixar respostas em excel"
@@ -57,18 +57,25 @@
 
             <q-btn
               style="background: #667997; color: black"
+              label="Importar Respostas do EXCEL"
+              class="column btn"
+              @click="importExcel"
+              :loading="importLoading"
+            />
+
+            <q-btn
+              style="background: #667997; color: black"
               label="Relatório visão de únicos"
               class="column btn"
               @click="downloadUsersReport"
             />
 
-             <q-btn
+            <q-btn
               style="background: #667997; color: black"
               label="Recolocados"
               class="column btn"
               @click="goToReplacementsPage"
             />
-
           </div>
           <div class="text">Filtro</div>
           <div class="column">
@@ -123,11 +130,12 @@ export default {
       finalDate: "",
       companies: [],
       selectedCompany: "TUDO",
+      importLoading: false,
     };
   },
   methods: {
     goToReplacementsPage() {
-      this.$router.push({ name: 'replacementsReport' });
+      this.$router.push({ name: "replacementsReport" });
     },
     showDeuCerto,
     async generateReport() {
@@ -211,6 +219,96 @@ export default {
           showError(err);
         });
     },
+    async importExcel() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".xlsx";
+
+      input.onchange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        this.$q
+          .dialog({
+            title: "Importar Respostas",
+            message: `
+            <div style="text-align: left;">
+              <p><strong>Arquivo:</strong> ${file.name}</p>
+
+              <p>Deseja continuar com a importação?</p>
+            </div>
+          `,
+            html: true,
+            cancel: true,
+            persistent: true,
+          })
+          .onOk(async () => {
+            await this.processImport(file);
+          });
+      };
+
+      input.click();
+    },
+    async processImport(file) {
+      this.importLoading = true;
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch(
+          `${baseApiUrl}/reports/npsSurveyAnswers/import`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: formData,
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Erro na importação");
+        }
+
+        // Mostrar resumo da importação
+        let message = `<div style="text-align: left;">`;
+        message += `<p><strong>${result.success} registros importados com sucesso</strong></p>`;
+
+        if (result.errors && result.errors.length > 0) {
+          message += `<p><strong>${result.errors.length} erros encontrados:</strong></p>`;
+          message += `<ul>`;
+          result.errors.forEach((error) => {
+            message += `<li>Linha ${error.row}: ${error.reason}</li>`;
+          });
+          message += `</ul>`;
+        }
+        message += `</div>`;
+
+        this.$q.dialog({
+          title: "Resultado da Importação",
+          message: message,
+          html: true,
+          ok: "Fechar",
+        });
+
+        // Notificar sucesso
+        this.$q.notify({
+          type: "positive",
+          message: `Importação concluída! ${result.success} registros processados.`,
+        });
+      } catch (error) {
+        console.error("Erro na importação:", error);
+        this.$q.notify({
+          type: "negative",
+          message: error.message || "Erro ao importar o arquivo",
+        });
+      } finally {
+        this.importLoading = false;
+      }
+    },
   },
   mounted() {
     this.listClicks();
@@ -244,7 +342,7 @@ export default {
   font-size: 0.8rem;
   font-weight: bold;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 6px;
   background-color: rgba(26, 39, 183, 1) !important;
   color: white !important;
   border-radius: 5px;
