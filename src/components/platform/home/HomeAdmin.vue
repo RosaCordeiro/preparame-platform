@@ -56,10 +56,10 @@
             />
 
             <q-btn
-              style="background: #667997; color: black"
-              label="Importar Respostas do EXCEL"
+              style="background: #1a27b7; color: white"
+              label="Importar Respostas"
               class="column btn"
-              @click="importExcel"
+              @click="showImportModal"
               :loading="importLoading"
             />
 
@@ -102,11 +102,84 @@
           </div>
         </div>
         <section class="dashboard">
-          <DashBoardAnswers :companyId="selectedCompany" />
+          <DashBoardAnswers
+            :companyId="selectedCompany"
+            :key="dashboardKey"
+            ref="dashboard"
+          />
         </section>
       </div>
 
       <ConfirmScheduleDialog ref="confirmScheduleDialog" />
+
+      <!-- Modal de Importação -->
+      <q-dialog v-model="showImportDialog" persistent>
+        <q-card style="min-width: 500px">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">Importar Respostas</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section>
+            <div class="text-body1 q-mb-lg">
+              Escolha uma das opções abaixo para importar respostas:
+            </div>
+
+            <div class="row q-gutter-md">
+              <q-btn
+                color="positive"
+                icon="mdi-download"
+                label="Baixar Modelo"
+                class="col"
+                @click="downloadTemplate"
+                :loading="downloadTemplateLoading"
+                no-caps
+              >
+                <q-tooltip
+                  >Baixa um arquivo Excel vazio com as colunas
+                  corretas</q-tooltip
+                >
+              </q-btn>
+
+              <q-btn
+                color="primary"
+                icon="mdi-upload"
+                label="Importar Existente"
+                class="col"
+                @click="importExistingFile"
+                :loading="importLoading"
+                no-caps
+              >
+                <q-tooltip>Importa um arquivo Excel já preenchido</q-tooltip>
+              </q-btn>
+            </div>
+
+            <q-separator class="q-my-md" />
+
+            <div class="text-subtitle2 q-mb-sm">Regras Importantes:</div>
+            <ul class="import-rules">
+              <li>Pode exportar, editar e reimportar o mesmo arquivo</li>
+              <li>
+                Pode criar um novo arquivo desde que as colunas sejam idênticas
+              </li>
+              <li>Sentimentos aceitam "Sim" ou "Não"</li>
+              <li>NPS e perguntas de risco aceitam valores de 0 a 10</li>
+              <li>
+                "Os cálculos da rescisão estão corretos?" aceita "Sim" ou "Não"
+              </li>
+              <li>
+                A dashboard atualiza automaticamente após importação
+                bem-sucedida
+              </li>
+            </ul>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Fechar" color="grey" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-page>
   </div>
 </template>
@@ -131,6 +204,9 @@ export default {
       companies: [],
       selectedCompany: "TUDO",
       importLoading: false,
+      showImportDialog: false,
+      downloadTemplateLoading: false,
+      dashboardKey: 0,
     };
   },
   methods: {
@@ -230,7 +306,7 @@ export default {
 
         this.$q
           .dialog({
-            title: "Importar Respostas",
+            title: "Confirmar Importação",
             message: `
             <div style="text-align: left;">
               <p><strong>Arquivo:</strong> ${file.name}</p>
@@ -299,6 +375,16 @@ export default {
           type: "positive",
           message: `Importação concluída! ${result.success} registros processados.`,
         });
+
+        // Notificar que o dashboard está sendo atualizado
+        this.$q.notify({
+          type: "info",
+          message: "Atualizando dashboard...",
+          timeout: 2000,
+        });
+
+        // Forçar atualização do dashboard
+        this.refreshDashboard();
       } catch (error) {
         console.error("Erro na importação:", error);
         this.$q.notify({
@@ -308,6 +394,77 @@ export default {
       } finally {
         this.importLoading = false;
       }
+    },
+    showImportModal() {
+      this.showImportDialog = true;
+    },
+    async downloadTemplate() {
+      this.downloadTemplateLoading = true;
+
+      try {
+        const response = await fetch(
+          `${baseApiUrl}/reports/npsSurveyAnswers/import/template`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao baixar o modelo");
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "modelo-respostas.xlsx";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        this.$q.notify({
+          type: "positive",
+          message: "Modelo baixado com sucesso!",
+        });
+
+        this.showImportDialog = false;
+      } catch (error) {
+        console.error("Erro ao baixar modelo:", error);
+        this.$q.notify({
+          type: "negative",
+          message: "Erro ao baixar o modelo Excel",
+        });
+      } finally {
+        this.downloadTemplateLoading = false;
+      }
+    },
+    importExistingFile() {
+      this.showImportDialog = false;
+      this.importExcel();
+    },
+    refreshDashboard() {
+      // Método 1: Força o re-render do componente DashBoardAnswers
+      this.dashboardKey += 1;
+
+      // Método 2: Aguarda um tick e chama o método de reload diretamente
+      this.$nextTick(() => {
+        if (this.$refs.dashboard && this.$refs.dashboard.loadNpsSurveyAnswers) {
+          this.$refs.dashboard.loadNpsSurveyAnswers();
+        }
+      });
+
+      // Método 3: Força o watch do companyId (fallback)
+      setTimeout(() => {
+        const currentCompany = this.selectedCompany;
+        this.selectedCompany = null;
+        this.$nextTick(() => {
+          this.selectedCompany = currentCompany;
+        });
+      }, 100);
     },
   },
   mounted() {
@@ -426,5 +583,32 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+}
+
+.import-rules {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.import-rules li {
+  margin-bottom: 4px;
+}
+
+.flow-steps {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.step {
+  background: #1a27b7;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 </style>
