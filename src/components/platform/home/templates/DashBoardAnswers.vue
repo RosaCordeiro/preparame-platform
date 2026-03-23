@@ -23,8 +23,17 @@
           label="Período"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.period.length === 0"
-          :class="{ label: !disableFilters && parameters.period.length === 0 }"
+          :disable="
+            disableFilters ||
+            !parameters.period ||
+            parameters.period.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.period &&
+              parameters.period.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
@@ -51,8 +60,15 @@
           label="Unidade"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.unity.length === 0"
-          :class="{ label: !disableFilters && parameters.unity.length === 0 }"
+          :disable="
+            disableFilters || !parameters.unity || parameters.unity.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.unity &&
+              parameters.unity.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
@@ -79,8 +95,15 @@
           label="Área"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.area.length === 0"
-          :class="{ label: !disableFilters && parameters.area.length === 0 }"
+          :disable="
+            disableFilters || !parameters.area || parameters.area.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.area &&
+              parameters.area.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
@@ -107,8 +130,15 @@
           label="Cargo"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.role.length === 0"
-          :class="{ label: !disableFilters && parameters.role.length === 0 }"
+          :disable="
+            disableFilters || !parameters.role || parameters.role.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.role &&
+              parameters.role.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
@@ -847,28 +877,30 @@ export default {
     selectAllPeriods(value) {
       console.log("teste");
       if (value) {
-        this.period = this.parameters.period.slice();
+        this.period = this.parameters.period
+          ? this.parameters.period.slice()
+          : [];
       } else {
         this.period = [];
       }
     },
     selectAllUnity(value) {
       if (value) {
-        this.unity = this.parameters.unity.slice();
+        this.unity = this.parameters.unity ? this.parameters.unity.slice() : [];
       } else {
         this.unity = [];
       }
     },
     selectAllArea(value) {
       if (value) {
-        this.area = this.parameters.area.slice();
+        this.area = this.parameters.area ? this.parameters.area.slice() : [];
       } else {
         this.area = [];
       }
     },
     selectAllRole(value) {
       if (value) {
-        this.role = this.parameters.role.slice();
+        this.role = this.parameters.role ? this.parameters.role.slice() : [];
       } else {
         this.role = [];
       }
@@ -1112,6 +1144,10 @@ export default {
       this.parameters = data;
 
       // Garantir que os parâmetros tenham valores padrão
+      if (!this.parameters.period) this.parameters.period = [];
+      if (!this.parameters.unity) this.parameters.unity = [];
+      if (!this.parameters.area) this.parameters.area = [];
+      if (!this.parameters.role) this.parameters.role = [];
       if (!this.parameters.dismissalType) this.parameters.dismissalType = [];
       if (!this.parameters.gender) this.parameters.gender = [];
       if (!this.parameters.etnia) this.parameters.etnia = [];
@@ -1119,9 +1155,12 @@ export default {
       if (!this.parameters.state) this.parameters.state = [];
       if (!this.parameters.city) this.parameters.city = [];
 
-      for (let i = 0; i < this.role.length; i++) {
-        if (!this.parameters.role.includes(this.role[i])) {
-          this.role = this.role.filter((role) => role !== this.role[i]);
+      // Filtrar roles baseado nos parâmetros recebidos
+      if (this.parameters.role && this.parameters.role.length > 0) {
+        for (let i = 0; i < this.role.length; i++) {
+          if (!this.parameters.role.includes(this.role[i])) {
+            this.role = this.role.filter((role) => role !== this.role[i]);
+          }
         }
       }
 
