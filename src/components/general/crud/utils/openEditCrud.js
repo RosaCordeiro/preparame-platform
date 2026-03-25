@@ -1,6 +1,7 @@
 import axios from "axios";
 import { baseApiUrl, showError } from "../../../../global";
 import { formatDateToString } from "../../../../utils/formatDate.js";
+import { filterCrud } from "./filterCrud.js";
 
 async function openEditCrud(id, url, fields) {
   if (id) {
@@ -24,24 +25,66 @@ async function openEditCrud(id, url, fields) {
     if (object.id) {
       const mainTableFields = fields.mainTable.registerColumns;
 
+      const dialogSelectCache = {};
+      for (const [key, field] of Object.entries(mainTableFields)) {
+        if (field.type === "DialogSelect" && field.options) {
+          dialogSelectCache[key] = await filterCrud("", field.options.table);
+        }
+      }
+
       Object.entries(object).forEach((values) => {
-        if (mainTableFields[values[0]]) {
-          if (mainTableFields[values[0]].type === "DialogSelect") {
-            if (values[1]) {
-              if (values[1][mainTableFields[values[0]].options.value]) {
-                mainTableFields[values[0]].model = {
-                  label: values[1][mainTableFields[values[0]].options.label],
-                  value: values[1][mainTableFields[values[0]].options.value],
-                };
-              }
+        const [fieldKey, fieldValue] = values;
+        if (!mainTableFields[fieldKey]) return;
+
+        const field = mainTableFields[fieldKey];
+
+        if (field.type === "DialogSelect") {
+          if (
+            fieldValue &&
+            typeof fieldValue === "object" &&
+            fieldValue[field.options.value]
+          ) {
+            field.model = {
+              label: fieldValue[field.options.label],
+              value: fieldValue[field.options.value],
+            };
+          } else if (
+            fieldValue &&
+            typeof fieldValue === "string" &&
+            dialogSelectCache[fieldKey]
+          ) {
+            const found = dialogSelectCache[fieldKey].find(
+              (item) => item[field.options.value] === fieldValue
+            );
+            if (found) {
+              field.model = {
+                label: found[field.options.label],
+                value: found[field.options.value],
+              };
             }
-          } else if (mainTableFields[values[0]].type === "Date") {
-            mainTableFields[values[0]].model = formatDateToString(values[1]);
-          } else {
-            mainTableFields[values[0]].model = values[1];
           }
+
+          if (field.name === "plan") {
+            field.readonly = field.model ? true : false;
+          }
+        } else if (field.type === "Date") {
+          field.model = formatDateToString(fieldValue);
+        } else {
+          field.model = fieldValue;
         }
       });
+
+      const planField = mainTableFields["plan"];
+      if (planField && planField.type === "DialogSelect") {
+        const planId = object.planId;
+        planField.model = planId
+          ? {
+              label: planId[planField.options.label],
+              value: planId[planField.options.value],
+            }
+          : null;
+        planField.readonly = !!planId;
+      }
 
       if (fields.childTable && fields.childTable.tableColumns) {
         fields.childTable.tableColumns.forEach((tableColumn) => {
