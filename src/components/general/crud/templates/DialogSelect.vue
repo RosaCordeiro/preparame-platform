@@ -9,11 +9,14 @@
     dense
     hide-dropdown-icon
     map-options
+    :readonly="col.readonly"
+    :disable="col.readonly"
     @filter="filterFn"
     :class="`col-${col.size} q-mb-sm q-mr-sm dialog-select`"
   >
     <template v-slot:append>
       <q-btn
+        v-if="!col.readonly"
         round
         dense
         flat
@@ -84,6 +87,7 @@ export default {
         this.altered = false;
       },
       deep: true,
+      immediate: true,
     },
     model: {
       handler(val) {

@@ -41,6 +41,34 @@ export default {
       }
     });
   },
+  mounted() {
+    setTimeout(() => {
+      if (
+        this.oldValue &&
+        typeof this.oldValue === "string" &&
+        !this.selectedState
+      ) {
+        for (const estado of this.allStatesData) {
+          if (estado.cidades.includes(this.oldValue)) {
+            this.selectedState = estado.sigla;
+            this.loadCitiesForState();
+            break;
+          }
+        }
+      }
+
+      if (this.oldValue && typeof this.oldValue === "string") {
+        const selectedCity = this.allCities.find(
+          (city) => city.value === this.oldValue
+        );
+        if (selectedCity) {
+          this.model = selectedCity;
+        }
+      } else if (this.oldValue && typeof this.oldValue === "object") {
+        this.model = this.oldValue;
+      }
+    }, 700);
+  },
   methods: {
     async loadStatesData() {
       try {
@@ -83,6 +111,30 @@ export default {
     },
   },
   watch: {
+    col: {
+      handler(val) {
+        if (val && val.model && typeof val.model === "string") {
+          for (const estado of this.allStatesData) {
+            if (estado.cidades.includes(val.model)) {
+              this.selectedState = estado.sigla;
+              this.loadCitiesForState();
+              setTimeout(() => {
+                const selectedCity = this.allCities.find(
+                  (city) => city.value === val.model
+                );
+                if (selectedCity) {
+                  this.model = selectedCity;
+                }
+              }, 100);
+              break;
+            }
+          }
+        } else if (val && val.model && typeof val.model === "object") {
+          this.model = val.model;
+        }
+      },
+      deep: true,
+    },
     model: {
       handler(val) {
         if (val && this.$parent && this.$parent.alterData) {

@@ -283,15 +283,16 @@ export default {
               type: "Input",
               visible: true,
             },
-            planId: {
+            plan: {
               label: "Plano",
-              name: "planId",
+              name: "plan",
               size: "6",
               row: 8,
               col: 2,
               model: "",
               type: "DialogSelect",
               visible: true,
+              readonly: false,
               options: {
                 table: "subscriptionPlans",
                 value: "id",
@@ -424,7 +425,6 @@ export default {
           return;
         }
 
-        // Filtrar dados de state e city para enviar apenas os valores
         if (data.mainTable.state && typeof data.mainTable.state === "object") {
           data.mainTable.state = data.mainTable.state.value;
         }
@@ -432,6 +432,18 @@ export default {
         if (data.mainTable.city && typeof data.mainTable.city === "object") {
           data.mainTable.city = data.mainTable.city.value;
         }
+
+        if (data.mainTable.plan && typeof data.mainTable.plan === "object") {
+          data.mainTable.planId = data.mainTable.plan.value;
+        } else if (
+          data.mainTable.plan &&
+          typeof data.mainTable.plan === "string"
+        ) {
+          data.mainTable.planId = data.mainTable.plan;
+        } else {
+          data.mainTable.planId = null;
+        }
+        delete data.mainTable.plan;
 
         const url = this.tables.mainTable.apiUrl.replace(
           ":companyId",
@@ -449,14 +461,11 @@ export default {
     },
   },
   mounted() {
-    console.log("id", this.$route.params.id);
-
-    if (this.$route.params.id) {
-      this.tables.mainTable.registerColumns.planId.visible = false;
-    }
-
     emitter.on("update_model", (data) => {
-      if (data.label === "Cadastro Simples") {
+      if (
+        data.label === "Cadastro Simples" &&
+        this.tables.mainTable.registerColumns.user
+      ) {
         this.tables.mainTable.registerColumns.user.visible =
           data.model.value === "NO";
       }

@@ -23,8 +23,17 @@
           label="Período"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.period.length === 0"
-          :class="{ label: !disableFilters && parameters.period.length === 0 }"
+          :disable="
+            disableFilters ||
+            !parameters.period ||
+            parameters.period.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.period &&
+              parameters.period.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.period">
@@ -51,8 +60,15 @@
           label="Unidade"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.unity.length === 0"
-          :class="{ label: !disableFilters && parameters.unity.length === 0 }"
+          :disable="
+            disableFilters || !parameters.unity || parameters.unity.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.unity &&
+              parameters.unity.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.unity">
@@ -79,8 +95,15 @@
           label="Área"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.area.length === 0"
-          :class="{ label: !disableFilters && parameters.area.length === 0 }"
+          :disable="
+            disableFilters || !parameters.area || parameters.area.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.area &&
+              parameters.area.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.area">
@@ -107,8 +130,15 @@
           label="Cargo"
           text-color="white"
           no-caps
-          :disable="disableFilters || parameters.role.length === 0"
-          :class="{ label: !disableFilters && parameters.role.length === 0 }"
+          :disable="
+            disableFilters || !parameters.role || parameters.role.length === 0
+          "
+          :class="{
+            label:
+              !disableFilters &&
+              parameters.role &&
+              parameters.role.length === 0,
+          }"
         >
           <div class="row no-wrap q-pa-md">
             <div class="column" v-if="parameters.role">
@@ -847,28 +877,30 @@ export default {
     selectAllPeriods(value) {
       console.log("teste");
       if (value) {
-        this.period = this.parameters.period.slice();
+        this.period = this.parameters.period
+          ? this.parameters.period.slice()
+          : [];
       } else {
         this.period = [];
       }
     },
     selectAllUnity(value) {
       if (value) {
-        this.unity = this.parameters.unity.slice();
+        this.unity = this.parameters.unity ? this.parameters.unity.slice() : [];
       } else {
         this.unity = [];
       }
     },
     selectAllArea(value) {
       if (value) {
-        this.area = this.parameters.area.slice();
+        this.area = this.parameters.area ? this.parameters.area.slice() : [];
       } else {
         this.area = [];
       }
     },
     selectAllRole(value) {
       if (value) {
-        this.role = this.parameters.role.slice();
+        this.role = this.parameters.role ? this.parameters.role.slice() : [];
       } else {
         this.role = [];
       }
@@ -1112,6 +1144,10 @@ export default {
       this.parameters = data;
 
       // Garantir que os parâmetros tenham valores padrão
+      if (!this.parameters.period) this.parameters.period = [];
+      if (!this.parameters.unity) this.parameters.unity = [];
+      if (!this.parameters.area) this.parameters.area = [];
+      if (!this.parameters.role) this.parameters.role = [];
       if (!this.parameters.dismissalType) this.parameters.dismissalType = [];
       if (!this.parameters.gender) this.parameters.gender = [];
       if (!this.parameters.etnia) this.parameters.etnia = [];
@@ -1119,9 +1155,12 @@ export default {
       if (!this.parameters.state) this.parameters.state = [];
       if (!this.parameters.city) this.parameters.city = [];
 
-      for (let i = 0; i < this.role.length; i++) {
-        if (!this.parameters.role.includes(this.role[i])) {
-          this.role = this.role.filter((role) => role !== this.role[i]);
+      // Filtrar roles baseado nos parâmetros recebidos
+      if (this.parameters.role && this.parameters.role.length > 0) {
+        for (let i = 0; i < this.role.length; i++) {
+          if (!this.parameters.role.includes(this.role[i])) {
+            this.role = this.role.filter((role) => role !== this.role[i]);
+          }
         }
       }
 
@@ -1343,6 +1382,229 @@ export default {
       if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
 
       this.isLoading = false;
+    },
+    async downloadExcel() {
+      this.downloadLoading = true;
+
+      try {
+        const filters = [
+          {
+            name: "companyId",
+            model: this.companyId,
+          },
+        ];
+
+        if (this.area.length > 0) {
+          filters.push({
+            name: "area",
+            model: JSON.stringify(this.area),
+          });
+        }
+
+        if (this.role.length > 0) {
+          filters.push({
+            name: "role",
+            model: JSON.stringify(this.role),
+          });
+        }
+
+        if (this.period.length > 0) {
+          filters.push({
+            name: "period",
+            model: JSON.stringify(this.period),
+          });
+        }
+
+        if (this.unity.length > 0) {
+          filters.push({
+            name: "unity",
+            model: JSON.stringify(this.unity),
+          });
+        }
+
+        if (this.dismissalType.length > 0) {
+          filters.push({
+            name: "dismissalType",
+            model: JSON.stringify(this.dismissalType),
+          });
+        }
+
+        if (this.gender.length > 0) {
+          filters.push({
+            name: "gender",
+            model: JSON.stringify(this.gender),
+          });
+        }
+
+        if (this.etnia.length > 0) {
+          filters.push({
+            name: "etnia",
+            model: JSON.stringify(this.etnia),
+          });
+        }
+
+        if (this.pcd.length > 0) {
+          filters.push({
+            name: "pcd",
+            model: JSON.stringify(this.pcd),
+          });
+        }
+
+        if (this.state.length > 0) {
+          filters.push({
+            name: "state",
+            model: JSON.stringify(this.state),
+          });
+        }
+
+        if (this.city.length > 0) {
+          filters.push({
+            name: "city",
+            model: JSON.stringify(this.city),
+          });
+        }
+
+        const queryParams = new URLSearchParams();
+        filters.forEach((filter) => {
+          queryParams.append(filter.name, filter.model);
+        });
+
+        const response = await fetch(
+          `${baseApiUrl}/reports/npsSurveyAnswers/export?${queryParams.toString()}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao baixar o arquivo");
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "respostas-nps.xlsx";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        this.$q.notify({
+          type: "positive",
+          message: "Arquivo baixado com sucesso!",
+        });
+      } catch (error) {
+        console.error("Erro ao baixar Excel:", error);
+        this.$q.notify({
+          type: "negative",
+          message: "Erro ao baixar o arquivo Excel",
+        });
+      } finally {
+        this.downloadLoading = false;
+      }
+    },
+    async importExcel() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".xlsx";
+
+      input.onchange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        this.$q
+          .dialog({
+            title: "Importar Respostas",
+            message: `
+            <div style="text-align: left;">
+              <p><strong>Arquivo:</strong> ${file.name}</p>
+              <p><strong>Regras importantes:</strong></p>
+              <ul>
+                <li>CPF deve ser enviado sem pontos e traços</li>
+                <li>Ao menos CPF ou Email deve estar preenchido</li>
+                <li>Valores numéricos (NPS, riscos) devem estar entre 0 e 10</li>
+                <li>Campos JSON devem ser JSON válido ou deixados em branco</li>
+                <li>Tipo de Demissão: voluntary ou involuntary</li>
+                <li>Alerta: ALERT ou NORMAL</li>
+                <li>Realocado: REALOCATED ou NOT_REALOCATED</li>
+              </ul>
+              <p>Deseja continuar com a importação?</p>
+            </div>
+          `,
+            html: true,
+            cancel: true,
+            persistent: true,
+          })
+          .onOk(async () => {
+            await this.processImport(file);
+          });
+      };
+
+      input.click();
+    },
+    async processImport(file) {
+      this.importLoading = true;
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch(
+          `${baseApiUrl}/reports/npsSurveyAnswers/import`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: formData,
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Erro na importação");
+        }
+
+        // Mostrar resumo da importação
+        let message = `<div style="text-align: left;">`;
+        message += `<p><strong>${result.success} registros importados com sucesso</strong></p>`;
+
+        if (result.errors && result.errors.length > 0) {
+          message += `<p><strong>${result.errors.length} erros encontrados:</strong></p>`;
+          message += `<ul>`;
+          result.errors.forEach((error) => {
+            message += `<li>Linha ${error.row}: ${error.reason}</li>`;
+          });
+          message += `</ul>`;
+        }
+        message += `</div>`;
+
+        this.$q.dialog({
+          title: "Resultado da Importação",
+          message: message,
+          html: true,
+          ok: "Fechar",
+        });
+
+        // Recarregar os dados do dashboard
+        await this.loadNpsSurveyAnswers();
+      } catch (error) {
+        console.error("Erro na importação:", error);
+        this.$q.notify({
+          type: "negative",
+          message: error.message || "Erro ao importar o arquivo",
+        });
+      } finally {
+        this.importLoading = false;
+      }
+    },
+    showImportInfo() {
+      this.$refs.excelImportInfo.show();
     },
   },
   async mounted() {
@@ -1620,5 +1882,28 @@ export default {
   height: 10px;
   border-radius: 7.5px;
   color: black;
+}
+
+.action-button {
+  min-width: 200px;
+  padding: 12px 24px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .action-button {
+    min-width: 150px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
 }
 </style>

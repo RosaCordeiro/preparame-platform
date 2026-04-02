@@ -90,10 +90,10 @@ export default {
 
       const result = await this.$parent.$parent.$parent.save(this.data);
 
-      if (result && result.status === 201) {
+      if (result && (result.status === 200 || result.status === 201)) {
         this.$q.notify({
           type: "success",
-          message: "Cadastrado com sucesso.",
+          message: result.status === 201 ? "Cadastrado com sucesso." : "Atualizado com sucesso.",
         });
 
         this.onReset();

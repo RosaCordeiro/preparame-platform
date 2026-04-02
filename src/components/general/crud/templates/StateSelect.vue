@@ -30,6 +30,20 @@ export default {
     this.model = this.oldValue;
     this.loadStates();
   },
+  mounted() {
+    setTimeout(() => {
+      if (this.oldValue && typeof this.oldValue === "string") {
+        const selectedState = this.allStates.find(
+          (state) => state.value === this.oldValue
+        );
+        if (selectedState) {
+          this.model = selectedState;
+        }
+      } else if (this.oldValue && typeof this.oldValue === "object") {
+        this.model = this.oldValue;
+      }
+    }, 500);
+  },
   methods: {
     async loadStates() {
       try {
@@ -58,6 +72,21 @@ export default {
     },
   },
   watch: {
+    col: {
+      handler(val) {
+        if (val && val.model && typeof val.model === "string") {
+          const selectedState = this.allStates.find(
+            (state) => state.value === val.model
+          );
+          if (selectedState) {
+            this.model = selectedState;
+          }
+        } else if (val && val.model && typeof val.model === "object") {
+          this.model = val.model;
+        }
+      },
+      deep: true,
+    },
     model: {
       handler(val) {
         if (val && this.$parent && this.$parent.alterData) {
