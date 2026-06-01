@@ -6,16 +6,117 @@
       :filters="filters"
       :columns="columns"
       :url="url"
-    />
+    >
+      <template #title>
+        <div class="row justify-end">
+          <q-btn
+            color="positive"
+            label="Download Modelo"
+            icon="mdi-download"
+            class="crud-new-button q-mr-sm"
+            no-caps
+            @click="downloadModelo()"
+          ></q-btn>
+          <q-btn
+            color="primary"
+            icon="mdi-upload"
+            label="Importar"
+            class="crud-new-button"
+            no-caps
+            @click="importFile()"
+          ></q-btn>
+        </div>
+      </template>
+    </CrudQuery>
   </div>
 </template>
 
 <script>
+import { downloadFile } from "src/utils/downloadFile";
 import CrudQuery from "./../../general/crud/CrudQuery.vue";
+import axios from "axios";
+import { baseApiUrl, showError } from "src/global";
 
 export default {
   components: {
     CrudQuery,
+  },
+  data() {
+    return {
+      showDialog: true,
+    };
+  },
+  methods: {
+    importFile: function () {
+      /* import file */
+      let file = document.createElement("input");
+      file.type = "file";
+      file.accept = ".xlsx";
+      file.click();
+
+      file.onchange = async () => {
+        let formData = new FormData();
+        formData.append("file", file.files[0]);
+
+        this.$q
+          .dialog({
+            title: "Importar",
+            message: `Desseja realmente importar o arquivo ${file.files[0].name}?`,
+            cancel: true,
+            persistent: true,
+          })
+          .onOk(async () => {
+            let config = {
+              method: "POST",
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "multipart/form-data",
+              },
+              url: `${baseApiUrl}/companies/employees/batch`,
+              data: formData,
+            };
+
+            this.$q.loading.show();
+
+            try {
+              const data = await axios(config);
+              this.$q.notify({
+                color: "positive",
+                message: "Importado com sucesso!",
+              });
+
+              window.location.reload(true);
+            } catch (error) {
+              console.log(error);
+
+              showError(error);
+            }
+
+            this.$q.loading.hide();
+          });
+      };
+    },
+    downloadModelo: async function () {
+      let config = {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        url: `${baseApiUrl}/companies/employees/batch/download`,
+        responseType: "blob",
+      };
+
+      this.$q.loading.show();
+
+      try {
+        const data = await axios(config);
+        downloadFile(data.data, "Modelo Funcionários.xlsx");
+      } catch (error) {
+        console.log(error);
+
+        showError(error);
+      }
+
+      this.$q.loading.hide();
+    },
   },
   data() {
     return {
@@ -177,11 +278,40 @@ export default {
           visible: true,
         },
         {
+          name: "plan",
+          align: "left",
+          label: "Plano",
+          field: "plan",
+          sortable: true,
+          visible: true,
+          format: (val) => {
+            return !val ? "N/A" : val;
+          },
+        },
+        {
           name: "easyRegister",
           align: "left",
           label: "Cadastro Simples",
           field: "easyRegister.label",
           sortable: true,
+          visible: true,
+        },
+        {
+          name: "accepted",
+          label: "Acolhido",
+          align: "center",
+          field: "accepted",
+          sortable: false,
+          style: "width: 10px;",
+          visible: true,
+        },
+        {
+          name: "realocate",
+          label: "Realocado",
+          align: "center",
+          field: "realocate",
+          sortable: false,
+          style: "width: 10px;",
           visible: true,
         },
         {

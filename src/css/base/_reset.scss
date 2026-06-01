@@ -1,0 +1,96 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html.site-body {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+    min-height: 100vh;
+    font-family: $default-font !important;
+    line-height: unset !important;
+    letter-spacing: unset !important;
+    background: #fff;
+    color: #000;
+    line-height: unset;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $fuchsia;
+    }
+
+    &.no-scroll {
+        overflow: hidden;
+    }
+
+    &.woocommerce-checkout {
+        background: #f9f9f9;
+    }
+
+}
+
+h2,
+h1 {
+    line-height: unset !important;
+    letter-spacing: unset !important;
+    font-weight: bold !important;
+}
+
+main {
+    position: relative;
+    display: block;
+    flex: 1 0 auto;
+    overflow: hidden;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1320px;
+}

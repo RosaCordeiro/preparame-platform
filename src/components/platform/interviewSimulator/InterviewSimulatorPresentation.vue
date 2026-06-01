@@ -19,14 +19,14 @@
       >
         <div v-if="daysToExpireUse > 0">
           {{
-            `Faltam ${(daysToExpireUse + 1).toFixed(
+            `Faltam ${daysToExpireUse.toFixed(
               0
             )} dia(s) para o uso do seu Simulador de Entrevistas ser interrompido.`
           }}
         </div>
         <div v-else-if="daysToExpirePeriodTest > 0">
           {{
-            `Faltam ${(daysToExpirePeriodTest + 1).toFixed(
+            `Faltam ${daysToExpirePeriodTest.toFixed(
               0
             )} dia(s) para o período de teste do seu Simulador de Entrevistas finalizar.`
           }}
@@ -99,6 +99,7 @@ export default {
           to: "",
         },
       ],
+      free: false,
     };
   },
   components: {

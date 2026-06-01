@@ -1,11 +1,11 @@
 <template>
   <div class="specialist-provides-timetable">
-    <q-page>
+    <q-page v-if="!selectedSpecialist">
       <Breadcrumbs :breadcrumbs="breadcrumbs" />
       <div class="specialist-provides-timetable-content">
         <PageTitle :title="title" />
         <div class="specialist-provides-timetable-select-content row">
-          <SpecialistProvidesTimetablesCalendar />
+          <SpecialistProvidesTimetablesCalendar @dateChanged="dateCalendar = $event" />
           <SpecialistProvidesTimetablesHours
             :dateCalendar="dateCalendar"
             :specialist="specialist"
@@ -13,6 +13,15 @@
         </div>
       </div>
     </q-page>
+    <div v-else class="specialist-provides-timetable-content">
+      <div class="specialist-provides-timetable-select-content row">
+        <SpecialistProvidesTimetablesCalendar @dateChanged="dateCalendar = $event" />
+        <SpecialistProvidesTimetablesHours
+          :dateCalendar="dateCalendar"
+          :specialist="selectedSpecialist"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,6 +39,13 @@ export default {
     SpecialistProvidesTimetablesHours,
     SpecialistProvidesTimetablesCalendar,
   },
+  props: {
+    selectedSpecialist: {
+      type: Object,
+      default: null
+    }
+  },
+
   data() {
     return {
       dateCalendar: new Date(),
@@ -44,11 +60,14 @@ export default {
     };
   },
   created() {
-    this.loadSpecialist();
+    if (!this.selectedSpecialist) {
+      this.loadSpecialist();
+    }
   },
   methods: {
     loadSpecialist: async function () {
       const userId = localStorage.getItem("userId");
+      const userType = localStorage.getItem("userType");
 
       const filters = [
         { name: "userId", model: userId },
@@ -59,8 +78,17 @@ export default {
 
       const specialists = await filterCrud(filters, url);
 
-      if (specialists.length === 0 || specialists.length > 1) {
-      } else {
+      if (specialists.length === 0) {
+        // Se for admin e não tiver perfil de especialista, criar um temporário
+        if (userType === 'ADMIN') {
+          this.specialist = {
+            id: null,
+            userId: userId,
+            name: 'Admin (Perfil Especialista)',
+            isAdminSpecialist: true
+          };
+        }
+      } else if (specialists.length === 1) {
         this.specialist = specialists[0];
       }
     },

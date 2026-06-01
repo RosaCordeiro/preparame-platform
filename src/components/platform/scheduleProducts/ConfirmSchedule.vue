@@ -1,45 +1,54 @@
 <template>
-  <q-dialog v-model="confirmSchedule">
-    <q-card class="my-card">
-      <q-card-section>
-        <div class="col no-wrap items-center">
-          <div class="col text-h4 ellipsis">Agendamento</div>
-          <div class="col text-h6 ellipsis text-grey-8">{{ product.name }}</div>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">Informações do agendamento:</div>
-        <div class="text-body2 text-grey-8">
-          {{ this.dateSchedule }}
-        </div>
-        <div class="text-body2 text-grey-8">
-          Especialista: {{ specialist.name }}
-        </div>
-        <br />
-        <div class="text-caption text-grey-8">
-          O cancelamento do agendamento pode ser feito até 24 horas antes da
-          hora marcada. Após isso não poderá ser cancelado ou remarcado.
-        </div>
-      </q-card-section>
+  <div>
+    <q-dialog v-model="confirmSchedule">
+      <q-card class="my-card">
+        <q-card-section>
+          <div class="col no-wrap items-center">
+            <div class="col text-h4 ellipsis">Agendamento</div>
+            <div class="col text-h6 ellipsis text-grey-8">
+              {{ product.name }}
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <div class="text-subtitle1">Informações do agendamento:</div>
+          <div class="text-body2 text-grey-8">
+            {{ this.dateSchedule }}
+          </div>
+          <div class="text-body2 text-grey-8">
+            Especialista: {{ specialist.name }}
+          </div>
+          <br />
+          <div class="text-caption text-grey-8">
+            O cancelamento do agendamento pode ser feito até 24 horas antes da
+            hora marcada. Após isso não poderá ser cancelado ou remarcado.
+          </div>
+        </q-card-section>
 
-      <q-separator></q-separator>
+        <q-separator></q-separator>
 
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          color="primary"
-          label="Agendar"
-          @click="scheduleConfirmation"
-        ></q-btn>
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            color="primary"
+            label="Agendar"
+            @click="scheduleConfirmation"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <ConfirmScheduleDialog ref="confirmScheduleDialog" />
+  </div>
 </template>
 
 <script>
+import ConfirmScheduleDialog from "src/components/ConfirmScheduleDialog.vue";
 import { saveCrud } from "./../../general/crud/utils/saveCrud.js";
 
 export default {
+  components: {
+    ConfirmScheduleDialog,
+  },
   data() {
     return {
       confirmSchedule: false,
@@ -48,6 +57,7 @@ export default {
       product: {},
       dateSchedule: "",
       specialist: {},
+      reschedule: false,
     };
   },
   props: ["confirmScheduleFunctions"],
@@ -62,13 +72,15 @@ export default {
       daySchedule,
       hourSchedules,
       specialist,
-      product
+      product,
+      reschedule
     ) {
-      this.confirmSchedule = true;
+      //this.confirmSchedule = true;
       this.daySchedule = daySchedule;
       this.hourSchedules = hourSchedules;
       this.specialist = specialist;
       this.product = product;
+      this.reschedule = reschedule;
 
       let endHour = new Date(this.hourSchedules[0].dateSchedule);
 
@@ -89,32 +101,69 @@ export default {
         hour: "numeric",
         minute: "numeric",
       })}.`;
+
+      this.scheduleConfirmation();
+      /* if (!reschedule) {
+      } else {
+        console.log("reschedule aq");
+      } */
     },
     scheduleConfirmation: async function () {
-      for (const index in this.hourSchedules) {
-        const specialistSchedule = this.hourSchedules[index].specialistSchedule;
+      this.$refs.confirmScheduleDialog.show(async () => {
+        for (const index in this.hourSchedules) {
+          const specialistSchedule =
+            this.hourSchedules[index].specialistSchedule;
+            
+          specialistSchedule.productId = this.product.id;
+          specialistSchedule.userId = this.$router.history.current.query.userId ?? localStorage.getItem("userId");
+          specialistSchedule.status = "UNAVAILABLE";
+          specialistSchedule.specialistId = specialistSchedule.specialist.id;
+          specialistSchedule.createEvent = index == 0 ? true : false;
 
-        specialistSchedule.productId = this.product.id;
-        specialistSchedule.userId = localStorage.getItem("userId");
-        specialistSchedule.status = "UNAVAILABLE";
-        specialistSchedule.specialistId = specialistSchedule.specialist.id;
-        specialistSchedule.createEvent = index == 0 ? true : false;
+          if (this.reschedule) {
+            await saveCrud(
+              `specialists/reschedule/${this.hourSchedules[index].id}`,
+              {
+                ...specialistSchedule,
+                oldScheduleId: this.$route.query.scheduleId,
+              },
+              "put"
+            ).then(() => {
+              if (index == this.hourSchedules.length - 1) {
+                this.$q.notify({
+                  type: "success",
+                  message: "Agendado com sucesso",
+                });
 
-        await saveCrud(
-          `specialists/schedule/${this.hourSchedules[index].id}`,
-          specialistSchedule,
-          "put"
-        ).then(() => {
-          if (index == this.hourSchedules.length - 1) {
-            this.$q.notify({
-              type: "success",
-              message: "Agendado com sucesso",
+                this.$router.push({ path: "/platform" });
+              }
             });
 
-            this.$router.push({ path: "/platform" });
+            return;
+          } else {
+            
+            await saveCrud(
+              `specialists/schedule/${this.hourSchedules[index].id}`,
+              specialistSchedule,
+              "put"
+            ).then(() => {
+              if (index == this.hourSchedules.length - 1) {
+                this.$q.notify({
+                  type: "success",
+                  message: "Agendado com sucesso",
+                });
+
+                if (this.$router.history.current.query.userId) {
+                  this.$router.go(-1);
+                } else {
+                  this.$router.push({ path: "/platform" });
+                }
+                
+              }
+            });
           }
-        });
-      }
+        }
+      }, this.reschedule);
     },
   },
 };

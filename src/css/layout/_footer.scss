@@ -1,0 +1,53 @@
+.footer {
+    background: $green;
+
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4.8rem 0;
+
+        @include max(860) {
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    &__bottom {
+
+        background: #000;
+        padding: 1rem 0;
+
+        & .wrapper {
+            display: flex;
+            justify-content: flex-end;
+
+            @include max(860) {
+                justify-content: center;
+                gap: 2rem;
+            }
+        }
+    }
+
+    &__lgpd {
+        & img {
+            max-width: 170px;
+            border-radius: 1rem;
+            filter: invert(1) brightness(1);
+            mix-blend-mode: luminosity;
+
+            @include max(860) {
+                max-width: 140px;
+            }
+        }
+    }
+
+    &__dev {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        font-size: 1rem;
+        opacity: .5;
+    }
+}

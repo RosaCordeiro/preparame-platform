@@ -57,13 +57,14 @@ export default {
   async created() {
     this.productId = this.$route.params.productId;
 
-    await this.loadSpecialists();
     await this.loadProduct();
+    await this.loadSpecialists();
   },
   methods: {
     loadProduct: async function () {
       const products = await filterCrud([], `products/${this.productId}`);
       this.product = products[0];
+      this.productId = this.product.id;
     },
     loadSpecialists: async function () {
       const filtersProductSpecialist = [
@@ -93,6 +94,11 @@ export default {
         );
 
         const specialist = specialists[0];
+        
+        // Filtrar especialistas que são admins (não mostrar na área pública)
+        if (specialist && specialist.user && specialist.user.type === 'ADMIN') {
+          return; // Pula este especialista
+        }
 
         const filtersSpecialistSchedule = [
           {
@@ -108,10 +114,10 @@ export default {
             model: dateEnd,
           },
         ];
-
+        let userType = localStorage.getItem("userType");
         const specialistsSchedule = await filterCrud(
           filtersSpecialistSchedule,
-          `specialists/schedule`
+          userType.toUpperCase() === 'ADMIN' ? `specialists/schedule` : `specialists/schedule-to-user`
         );
 
         specialist.specialistSchedule = organizeSpecialistScheduleData(

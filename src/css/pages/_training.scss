@@ -1,0 +1,356 @@
+.t {
+    &-banner {
+        background: #fff;
+
+        &__content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            padding-top: 6.4rem;
+
+            @include max(860) {
+                flex-direction: column-reverse;
+                padding-top: 3rem;
+            }
+        }
+
+        &__img {
+            flex-basis: 65.9574%;
+
+            & img {
+                display: block;
+            }
+        }
+
+        &__text {
+            flex-basis: 31.91489%;
+
+            @include max(860) {
+                margin-bottom: 5rem;
+            }
+
+            & h2 {
+                font-family: 'Asap', sans-serif;
+                font-size: 4rem;
+                margin-bottom: 2.4rem;
+
+
+                @include max(560) {
+                    font-size: 3.5rem;
+                }
+            }
+
+            & .desc {
+                font-family: 'Asap', sans-serif;
+                font-size: 2.5rem;
+                font-weight: 300;
+                margin-bottom: 10rem;
+
+                @include max(860) {
+                    margin-bottom: 5rem;
+                }
+
+                @include max(560) {
+                    font-size: 2.5rem;
+                }
+            }
+
+            & .btn {
+                @include defaultButton(2.3rem, $blue, $green, #fff) {
+                    margin-left: -5rem;
+                    color: #fff;
+
+                    @include max(860) {
+                        margin-left: unset;
+                    }
+                }
+            }
+        }
+    }
+
+    &-train {
+        padding: 8rem 0;
+        background: $green;
+
+        @include max(860) {
+            padding: 5rem 0;
+        }
+
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1000px;
+
+            & .btn {
+                @include defaultButton(2.3rem, $blue, $fuchsia, #fff) {
+                    color: #fff;
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8rem;
+
+            @include max(860) {
+                flex-direction: column;
+                margin-bottom: 4rem;
+            }
+
+            & .item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-family: 'Asap', sans-serif;
+                font-size: 4rem;
+                font-weight: bold;
+                flex-basis: 43.56060%;
+
+                @include max(860) {
+                    font-size: 3rem;
+                }
+
+                @include max(560) {
+                    font-size: 2.5rem;
+                }
+
+                &--left {
+                    & ul {
+                        list-style: none;
+
+                        & li {
+                            display: flex;
+                            align-items: center;
+
+                            &:not(:last-of-type) {
+                                margin-bottom: 3.2rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .separator {
+                display: block;
+                width: 100%;
+                max-width: .6rem;
+                background-image: url('../../assets/img/SVG/dotted-line.svg');
+                background-position: top;
+
+                @include max(860) {
+                    flex-direction: column;
+                    background-image: url('../../assets/img/SVG/dotted-line-horizontal.svg');
+                    height: .6rem;
+                    max-width: unset;
+                    background-position: left;
+                    margin: 4rem 0;
+                }
+            }
+        }
+    }
+
+    &-topics {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8rem 0;
+
+        @include max(860) {
+            padding: 4rem 0;
+            align-items: start;
+        }
+
+        &__content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6.4rem;
+            max-width: 1000px;
+
+            @include max(860) {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            @include max(560) {
+                margin-bottom: 3rem;
+            }
+
+            & h2 {
+                font-family: 'Asap', sans-serif;
+                font-size: 3.5rem;
+                flex-basis: 44.242424%;
+
+                @include max(860) {
+                    flex-basis: 100%;
+                    margin-bottom: 2rem;
+                }
+
+
+            }
+
+            & .topics {
+                font-family: 'Asap', sans-serif;
+                font-size: 2.4rem;
+                list-style: none;
+                flex-basis: 53.33333%;
+
+                @include max(860) {
+                    flex-basis: 100%;
+                }
+
+                @include max(560) {
+                    font-size: 2.2rem;
+                }
+
+                & li {
+                    &:not(:last-of-type) {
+                        margin-bottom: 2rem;
+                    }
+                }
+            }
+        }
+
+        & .btn {
+            @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
+                color: #fff;
+            }
+        }
+    }
+
+    &-vs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8rem 0rem;
+        max-width: 1000px;
+
+        @include max(860) {
+            padding: 4rem 0;
+            align-items: start;
+        }
+
+        &__items {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8rem;
+
+
+            @include max(860) {
+                flex-direction: column;
+                margin-bottom: 4rem;
+            }
+
+            & .item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-family: 'Asap', sans-serif;
+                font-size: 3.5rem;
+                font-weight: 400;
+                flex-basis: 43.56060%;
+                padding: 7.2rem 0;
+
+                @include max(860) {
+                    padding: 4rem 0;
+                    font-size: 2.5rem;
+                }
+
+                @include max(560) {
+                    font-size: 2rem;
+                }
+
+                & span {
+                    font-weight: bold;
+                }
+
+                &--left {
+                    & ul {
+                        list-style: none;
+
+                        & li {
+                            display: flex;
+                            align-items: center;
+
+                            &:not(:last-of-type) {
+                                margin-bottom: 3.2rem;
+
+
+                                @include max(860) {
+                                    padding: 4rem 0;
+                                    align-items: start;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .separator {
+                display: block;
+                width: 100%;
+                max-width: .6rem;
+                background-image: url('../../assets/img/SVG/dotted-line.svg');
+                background-position: top;
+
+                @include max(860) {
+                    flex-direction: column;
+                    background-image: url('../../assets/img/SVG/dotted-line-horizontal.svg');
+                    height: .6rem;
+                    max-width: unset;
+                    background-position: left;
+                    margin: 2rem 0;
+                }
+            }
+        }
+
+        & .btn {
+            @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
+                color: #fff;
+            }
+        }
+
+    }
+
+    &-perm {
+        background-image: url('../../assets/img/PNG/t-perm.png');
+        background-size: cover;
+        padding: 8rem 0;
+
+        @include max(860) {
+            padding: 4rem 0;
+        }
+
+        &__content {
+            max-width: 1000px;
+        }
+
+        &__text {
+            max-width: 782px;
+
+            & .desc {
+                background: #fff;
+                padding: 1.6rem;
+                font-family: 'Asap', sans-serif;
+                font-size: 3.5rem;
+                font-weight: 500;
+                margin-bottom: 10rem;
+
+                @include max(860) {
+                    font-size: 3rem;
+                    margin-bottom: 5rem;
+                }
+            }
+
+            & .btn {
+                @include defaultButton(2.3rem, $fuchsia, $blue, #fff) {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

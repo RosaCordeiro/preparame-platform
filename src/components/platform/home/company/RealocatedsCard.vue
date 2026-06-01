@@ -1,12 +1,18 @@
 <template>
-  <q-card class="home-company-realocated-card q-pb-md q-px-md q-ma-md">
+  <q-card class="home-company-realocated-card q-ma-md">
     <div class="home-company-realocated-card-header">
       <div class="home-company-realocated-card-info-container">
         <q-card-section class="home-company-realocated-card-title"
           >Realocados</q-card-section
         >
-        <q-card-section class="home-company-realocated-card-realocated"
-          >{{ realocatedPercent }}%</q-card-section
+        <q-card-section class="home-company-nps-card-geral">
+          -
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
+        <q-card-section class="home-company-realocated-card-realocated" style="font-weight: bold"
+          >{{ realocateds }}</q-card-section
         >
       </div>
     </div>
@@ -15,28 +21,18 @@
 
 <script>
 export default {
-  props: ["realocateds", "totalUsers"],
-  data() {
-    return {
-      realocatedPercent: 0,
-    };
-  },
-  mounted() {
-    this.realocatedPercent = ((this.realocateds / this.totalUsers) * 100).toFixed(2);
-  },
+  props: ["realocateds", "realocatedsGeneral"],
 };
 </script>
 
 <style lang="scss">
 .home-company-realocated-card {
   width: 18vw;
-  height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-realocated-card-header {
-  height: 16vh;
 }
 
 .home-company-realocated-card-title {
@@ -49,7 +45,6 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-realocated-card-realocated {
@@ -108,7 +103,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-realocated-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

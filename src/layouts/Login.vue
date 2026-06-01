@@ -25,8 +25,9 @@ export default {
 
       const loginInterval = setInterval(() => {
         if (loginControl.isLogged && loginControl.loggedFrom == "LOGIN") {
-          if (this.redirectToSurvey) {
-            this.$router.push("/survey");
+          if (sessionStorage.getItem("redirect") != null) {
+            this.$router.push(sessionStorage.getItem("redirect"));
+            sessionStorage.removeItem("redirect");
           } else {
             this.$router.push("/platform");
           }
@@ -36,13 +37,16 @@ export default {
       }, 100);
     },
   },
+  mounted() {
+    this.quasarStyles = Array.from(
+      document.querySelectorAll("style, link")
+    ).filter(
+      (el) => el.innerText.includes("q-app") || el.href?.includes("quasar")
+    );
+
+    this.quasarStyles.forEach((style) => (style.disabled = false));
+  },
   created() {
-    const queryString = window.location.hash;
-
-    if (queryString.indexOf("pesquisa") > 0) {
-      this.redirectToSurvey = true;
-    }
-
     this.requestLogin();
   },
 };

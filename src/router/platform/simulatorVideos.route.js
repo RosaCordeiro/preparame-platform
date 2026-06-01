@@ -1,102 +1,106 @@
-import SimulatorVideosGroupsQueryCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupQueryCrud.vue"
-import SimulatorVideosGroupsRegisterCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupRegisterCrud.vue"
-import SimulatorVideoQueryCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoQueryCrud.vue"
-import SimulatorVideoRegisterCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoRegisterCrud.vue"
-import Platform from "../../layouts/Platform.vue"
+import SimulatorVideosGroupsQueryCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupQueryCrud.vue";
+import SimulatorVideosGroupsRegisterCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupRegisterCrud.vue";
+import SimulatorVideoQueryCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoQueryCrud.vue";
+import SimulatorVideoRegisterCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoRegisterCrud.vue";
+import Platform from "../../layouts/Platform.vue";
 
 const simulatorVideosGroupRoutes = [
-    {
-        path: "/simulatorVideosGroups",
-        components: {
-            site: Platform
-        },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideosGroupsQueryCrud
-            }
-        }]
+  {
+    path: "/simulatorVideosGroups",
+    components: {
+      site: Platform,
     },
-    {
-        path: "/simulatorVideosGroups/new",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: SimulatorVideosGroupsQueryCrud,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideosGroupsRegisterCrud
-            }
-        }],
-        props: {
-            userTypes: [
-                'ADMIN',
-            ]
-        }
+      },
+    ],
+  },
+  {
+    path: "/simulatorVideosGroups/new",
+    components: {
+      site: Platform,
     },
-    {
-        path: "/simulatorVideosGroups/:id",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: SimulatorVideosGroupsRegisterCrud,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideosGroupsRegisterCrud
-            }
-        }],
-        props: {
-            userTypes: [
-                'ADMIN',
-            ]
-        }
+      },
+    ],
+    props: {
+      userTypes: ["ADMIN"],
     },
-    {
-        path: "/simulatorVideos",
-        components: {
-            site: Platform
-        },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideoQueryCrud
-            }
-        }]
+  },
+  {
+    path: "/simulatorVideosGroups/:id",
+    components: {
+      site: Platform,
     },
-    {
-        path: "/simulatorVideos/new",
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: SimulatorVideosGroupsRegisterCrud,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideoRegisterCrud
-            }
-        }],
-        props: {
-            userTypes: [
-                'ADMIN',
-            ]
-        }
+      },
+    ],
+    props: {
+      userTypes: ["ADMIN"],
     },
-    {
-        path: "/simulatorVideos/:id",
+  },
+  {
+    path: "/simulatorVideos",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
         components: {
-            site: Platform
+          content: SimulatorVideoQueryCrud,
         },
-        children: [{
-            path: "/",
-            components: {
-                content: SimulatorVideoRegisterCrud
-            }
-        }],
-        props: {
-            userTypes: [
-                'ADMIN',
-            ]
-        }
-    }
-]
+      },
+    ],
+  },
+  {
+    path: "/simulatorVideos/new",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: SimulatorVideoRegisterCrud,
+        },
+      },
+    ],
+    props: {
+      userTypes: ["ADMIN"],
+    },
+  },
+  {
+    path: "/simulatorVideos/:id",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: SimulatorVideoRegisterCrud,
+        },
+      },
+    ],
+    props: {
+      userTypes: ["ADMIN"],
+    },
+  },
+];
 
-export { simulatorVideosGroupRoutes }
+export { simulatorVideosGroupRoutes };

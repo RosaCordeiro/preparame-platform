@@ -1,45 +1,55 @@
 <template>
-  <q-card class="crud-register-form q-pa-md">
-    <q-card-section>
-      <q-form class="col crud-register">
+  <div>
+    <CrudRegisterTitle :title="title" />
+
+    <q-card class="crud-register-form q-pa-md">
+      <q-card-section>
+        <q-form class="col crud-register">
+          <div
+            v-for="fields in data.registerColumns"
+            :key="fields.row"
+            class="row"
+          >
+            <FieldCrudDynamicTemplate
+              v-for="col in fields.cols"
+              :key="col.name"
+              :col="col"
+            />
+          </div>
+        </q-form>
+
         <div
-          v-for="fields in data.registerColumns"
-          :key="fields.row"
-          class="row"
+          class="row crud-filter-buttons-row"
+          v-if="data.registerColumns.length > 0"
         >
-          <FieldCrudDynamicTemplate
-            v-for="col in fields.cols"
-            :key="col.name"
-            :col="col"
+          <q-space></q-space>
+          <q-btn
+            label="Adicionar"
+            @click="addNewRowData()"
+            color="primary"
+            class="q-ma-sm"
+          />
+          <q-btn
+            label="Limpar"
+            @click="clearData()"
+            color="negative"
+            flat
+            class="q-ma-sm"
           />
         </div>
-      </q-form>
-      <div class="row crud-filter-buttons-row">
-        <q-space></q-space>
-        <q-btn
-          label="Adicionar"
-          @click="addNewRowData()"
-          color="primary"
-          class="q-ma-sm"
+
+        <CrudRegisterChildTable
+          :result="{ columns: data.tableColumns, data: tableData }"
         />
-        <q-btn
-          label="Limpar"
-          @click="clearData()"
-          color="negative"
-          flat
-          class="q-ma-sm"
-        />
-      </div>
-      <CrudRegisterChildTable
-        :result="{ columns: data.tableColumns, data: tableData }"
-      />
-    </q-card-section>
-  </q-card>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 
 <script>
 import FieldCrudDynamicTemplate from "./templates/FieldCrudDynamicTemplate.vue";
 import CrudRegisterChildTable from "./CrudRegisterChildTable.vue";
+import CrudRegisterTitle from "./CrudRegisterTitle.vue";
 
 import { removeCrud } from "./utils/removeCrud.js";
 
@@ -49,8 +59,9 @@ export default {
   components: {
     FieldCrudDynamicTemplate,
     CrudRegisterChildTable,
+    CrudRegisterTitle,
   },
-  props: ["data"],
+  props: ["data", "removeAction", "title"],
   data: () => {
     return {
       tableData: [],
@@ -70,15 +81,19 @@ export default {
       visible: false,
     });
 
-    this.tableColumns.push({
-      name: "actions",
-      label: "Ações",
-      align: "center",
-      field: "actions",
-      sortable: false,
-      style: "width: 10px;",
-      visible: true,
-    });
+    console.log(this.removeAction);
+
+    if (!this.removeAction) {
+      this.tableColumns.push({
+        name: "actions",
+        label: "Ações",
+        align: "center",
+        field: "actions",
+        sortable: false,
+        style: "width: 10px;",
+        visible: true,
+      });
+    }
   },
   methods: {
     addNewRowData: function () {

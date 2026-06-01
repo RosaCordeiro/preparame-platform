@@ -2,7 +2,7 @@
   <q-card class="q-ma-md">
     <q-card-section>
       <div class="column no-wrap">
-        <div class="col q-ml-md q-mt-md text-h5">Pesquisa de Satisfação</div>
+        <div class="col q-ml-md q-mt-md text-h5">Pesquisa de Demissão</div>
         <div class="col q-ml-md q-mt-md text-h6 wrap">
           Selecione um valor para cada pergunta.
         </div>
@@ -28,15 +28,19 @@
         @click="goFeelingsMap()"
       ></q-btn>
     </q-card-section>
+
+    <AnonymousDialog />
   </q-card>
 </template>
 
 <script>
+import AnonymousDialog from "src/components/AnonymousDialog.vue";
 import NPSQuestion from "./NPSQuestion.vue";
 
 export default {
   components: {
     NPSQuestion,
+    AnonymousDialog,
   },
   props: ["questions"],
   data() {
@@ -54,8 +58,8 @@ export default {
       }
 
       question.answer = question.options[optionIndex];
-      question.answerIndex = optionIndex
-      
+      question.answerIndex = optionIndex;
+
       const element = document.getElementById(`${question.index + 1}`);
 
       if (element) {

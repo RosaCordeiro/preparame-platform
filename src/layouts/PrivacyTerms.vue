@@ -3,142 +3,536 @@
     <article class="privacy-terms-article">
       <h4 class="privacy-terms-title">Política de Privacidade</h4>
       <p class="privacy-terms-desc">
-        A sua privacidade é importante para nós. É política do prepara.me respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site prepara.me, e outros sites que possuímos e operamos.
+        Nós da <b>Prepara.me</b> nos preocupamos com a sua privacidade e com a
+        proteção de seus dados em toda a sua jornada em nossa Plataforma.
       </p>
       <p class="privacy-terms-desc">
-        Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento.
+        Esta <b>Política de Privacidade e Proteção de Dados</b> (“Política”)
+        deve ser lida em conjunto com os <b>Termos de Uso</b> (“Termos”).
       </p>
       <p class="privacy-terms-desc">
-        Também informamos por que estamos coletando e como será usado. Apenas retemos as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando armazenamos dados, protegemos dentro de meios comercialmente aceitáveis para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados.
+        O <b>Tratamento de Dados Pessoais</b> é uma condição para utilizar os
+        serviços do site (“Plataforma”) da <b>Prepara.me</b>, não sendo possível
+        o acesso a serviços disponíveis na <b>Plataforma</b> de forma adequada
+        sem o tratamento dos seus dados pessoais.
       </p>
       <p class="privacy-terms-desc">
-        Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.
+        Nós sabemos que seus <b>Dados Pessoais</b> (“Dados”) são bens valiosos e
+        devem ser mantidos em segurança. Por isso, nesta <b>Política</b>, vamos
+        nos esforçar para deixar bem claro como e porque utilizamos seus dados.
       </p>
       <p class="privacy-terms-desc">
-        O nosso site pode ter links para sites externos que não são operados por nós. Esteja ciente de que não temos controle sobre o conteúdo e práticas desses sites e não podemos aceitar responsabilidade por suas respectivas políticas de privacidade. Você é livre para recusar a nossa solicitação de informações pessoais, entendendo que talvez não possamos fornecer alguns dos serviços desejados. O uso continuado de nosso site será considerado como aceitação de nossas práticas em torno de privacidade e informações pessoais. Se você tiver alguma dúvida sobre como lidamos com dados do usuário e informações pessoais, entre em contacto conosco.
-      </p>
-      <h4 class="privacy-terms-title">Política de Cookies Prepara.me</h4>
-      <h5 class="privacy-terms-title">O que são cookies?</h5>
-      <p
-        class="privacy-terms-desc"
-      >Como é prática comum em quase todos os sites profissionais, este site usa cookies, que são pequenos arquivos baixados no seu computador, para melhorar sua experiência. Esta página descreve quais informações eles coletam, como as usamos e por que às vezes precisamos armazenar esses cookies. Também compartilharemos como você pode impedir que esses cookies sejam armazenados, no entanto, isso pode fazer o downgrade ou 'quebrar' certos elementos da funcionalidade do site.</p>
-      <h5 class="privacy-terms-title">Como usamos os cookies?</h5>
-      <p
-        class="privacy-terms-desc"
-      >Utilizamos cookies por vários motivos, detalhados abaixo. Infelizmente, na maioria dos casos, não existem opções padrão do setor para desativar os cookies sem desativar completamente a funcionalidade e os recursos que eles adicionam a este site. É recomendável que você deixe todos os cookies se não tiver certeza se precisa ou não deles, caso sejam usados para fornecer um serviço que você usa.</p>
-      <h5 class="privacy-terms-title">Desativar cookies</h5>
-      <p class="privacy-terms-desc">
-        Você pode impedir a configuração de cookies ajustando as configurações do seu navegador (consulte a Ajuda do navegador para saber como fazer isso). Esteja ciente de que a desativação de cookies afetará a funcionalidade deste e de muitos outros sites que você visita.
+        Esta <b>Política</b> foi elaborada em conformidade com as legislações
+        que regem o tratamento de dados pessoais e a segurança da informação na
+        internet, em especial a <b>Lei de Proteção de Dados Pessoais - LGPD</b>.
       </p>
       <p class="privacy-terms-desc">
-        A desativação de cookies geralmente resultará na desativação de determinadas funcionalidades e recursos deste site. Portanto, é recomendável que você não desative os cookies.
+        Quando esta <b>Política</b> mencionar "nós" ou "nosso", refere-se à
+        <b>Prepara.me</b>, que é responsável pelo tratamento de suas informações
+        pessoais (“Controladora").
       </p>
-      <h5 class="privacy-terms-title">Cookies que definimos</h5>
-      <h6 class="privacy-terms-title">Cookies relacionados à conta</h6>
-      <p
-        class="privacy-terms-desc"
-      >Se você criar uma conta conosco, usaremos cookies para o gerenciamento do processo de inscrição e administração geral. Esses cookies geralmente serão excluídos quando você sair do sistema, porém, em alguns casos, eles poderão permanecer posteriormente para lembrar as preferências do seu site ao sair.</p>
-      <h6 class="privacy-terms-title">Cookies relacionados ao login</h6>
-      <p
-        class="privacy-terms-desc"
-      >Utilizamos cookies quando você está logado, para que possamos lembrar dessa ação. Isso evita que você precise fazer login sempre que visitar uma nova página. Esses cookies são normalmente removidos ou limpos quando você efetua logout para garantir que você possa acessar apenas a recursos e áreas restritas ao efetuar login.</p>
-      <h6 class="privacy-terms-title">Cookies relacionados a newsletters por e-mail</h6>
-      <p
-        class="privacy-terms-desc"
-      >Este site oferece serviços de assinatura de boletim informativo ou e-mail e os cookies podem ser usados para lembrar se você já está registrado e se deve mostrar determinadas notificações válidas apenas para usuários inscritos / não inscritos.</p>
-      <h6 class="privacy-terms-title">Cookies relacionados ao processamento de pedidos</h6>
-      <p
-        class="privacy-terms-desc"
-      >Este site oferece facilidades de comércio eletrônico ou pagamento e alguns cookies são essenciais para garantir que seu pedido seja lembrado entre as páginas, para que possamos processá-lo adequadamente.</p>
-      <h6 class="privacy-terms-title">Cookies relacionados a pesquisas</h6>
-      <p
-        class="privacy-terms-desc"
-      >Periodicamente, oferecemos pesquisas e questionários para fornecer informações interessantes, ferramentas úteis ou para entender nossa base de usuários com mais precisão. Essas pesquisas podem usar cookies para lembrar quem já participou numa pesquisa ou para fornecer resultados precisos após a alteração das páginas.</p>
-      <h6 class="privacy-terms-title">Cookies relacionados a formulários</h6>
-      <p
-        class="privacy-terms-desc"
-      >Quando você envia dados por meio de um formulário como os encontrados nas páginas de contacto ou nos formulários de comentários, os cookies podem ser configurados para lembrar os detalhes do usuário para correspondência futura.</p>
-      <h6 class="privacy-terms-title">Cookies de preferências do site</h6>
-      <p
-        class="privacy-terms-desc"
-      >Para proporcionar uma ótima experiência neste site, fornecemos a funcionalidade para definir suas preferências de como esse site é executado quando você o usa. Para lembrar suas preferências, precisamos definir cookies para que essas informações possam ser chamadas sempre que você interagir com uma página for afetada por suas preferências.</p>
-      <h5 class="privacy-terms-title">Cookies de Terceiros</h5>
-      <p class="privacy-terms-desc">
-        Em alguns casos especiais, também usamos cookies fornecidos por terceiros confiáveis. A seção a seguir detalha quais cookies de terceiros você pode encontrar através deste site. Este site usa o Google Analytics, que é uma das soluções de análise mais difundidas e confiáveis da Web, para nos ajudar a entender como você usa o site e como podemos melhorar sua experiência. Esses cookies podem rastrear itens como quanto tempo você gasta no site e as páginas visitadas, para que possamos continuar produzindo conteúdo atraente. Para mais informações sobre cookies do Google Analytics, consulte a página oficial do Google Analytics.
-      </p>
-      <p class="privacy-terms-desc">
-        As análises de terceiros são usadas para rastrear e medir o uso deste site, para que possamos continuar produzindo conteúdo atrativo. Esses cookies podem rastrear itens como o tempo que você passa no site ou as páginas visitadas, o que nos ajuda a entender como podemos melhorar o site para você. Periodicamente, testamos novos recursos e fazemos alterações sutis na maneira como o site se apresenta. Quando ainda estamos testando novos recursos, esses cookies podem ser usados para garantir que você receba uma experiência consistente enquanto estiver no site, enquanto entendemos quais otimizações os nossos usuários mais apreciam.
-      </p>
-      <p class="privacy-terms-desc">
-        À medida que vendemos produtos, é importante entendermos as estatísticas sobre quantos visitantes de nosso site realmente compram e, portanto, esse é o tipo de dados que esses cookies rastrearão. Isso é importante para você, pois significa que podemos fazer previsões de negócios com precisão que nos permitem analizar nossos custos de publicidade e produtos para garantir o melhor preço possível.
-      </p>
-      <p class="privacy-terms-desc">
-        O serviço Google AdSense que usamos para veicular publicidade usa um cookie DoubleClick para veicular anúncios mais relevantes em toda a Web e limitar o número de vezes que um determinado anúncio é exibido para você. Para mais informações sobre o Google AdSense, consulte as FAQs oficiais sobre privacidade do Google AdSense.
-      </p>
-      <p class="privacy-terms-desc">
-        Utilizamos anúncios para compensar os custos de funcionamento deste site e fornecer financiamento para futuros desenvolvimentos.
-      </p>
-      <p class="privacy-terms-desc">
-        Os cookies de publicidade comportamental usados por este site foram projetados para garantir que você forneça os anúncios mais relevantes sempre que possível, rastreando anonimamente seus interesses e apresentando coisas semelhantes que possam ser do seu interesse. Vários parceiros anunciam em nosso nome e os cookies de rastreamento de afiliados simplesmente nos permitem ver se nossos clientes acessaram o site através de um dos sites de nossos parceiros, para que possamos creditá-los adequadamente e, quando aplicável, permitir que nossos parceiros afiliados ofereçam qualquer promoção que pode fornecê-lo para fazer uma compra.
-      </p>
-      <h5 class="privacy-terms-title">Compromisso do Usuário</h5>
-      <p
-        class="privacy-terms-desc"
-      >O usuário se compromete a fazer uso adequado dos conteúdos e da informação que o prepara.me oferece no site e com caráter enunciativo, mas não limitativo:</p>
-      <br>
       <ol>
-        <li class="privacy-terms-desc">Não se envolver em atividades que sejam ilegais ou contrárias à boa fé a à ordem pública;</li>
-        <li class="privacy-terms-desc">Não difundir propaganda ou conteúdo de natureza racista, xenofóbica, qualquer tipo de pornografia ilegal, de apologia ao terrorismo ou contra os direitos humanos;</li>
-        <li class="privacy-terms-desc">Não causar danos aos sistemas físicos (hardwares) e lógicos (softwares) do prepara.me, de seus fornecedores ou terceiros, para introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de hardware ou software que sejam capazes de causar danos anteriormente mencionados.</li>
+        <li class="privacy-terms-title">
+          Conceitos importantes para esta Política
+          <ol>
+            <li class="privacy-terms-desc">
+              <u><b>LGPD.</b></u> Lei n° 13.709/2018, rege o tratamento e proteção de dados
+              no território nacional e dos cidadãos brasileiros.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Dados Pessoais.</b></u> Informações que identificam uma pessoa natural,
+              como por exemplo: e-mail, CPF, telefone e endereço.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Dados Pessoais Sensíveis.</b></u> Dados que se referem à origem racial
+              ou étnica, convicção religiosa, opinião política, filiação a sindicato
+              ou a organização de caráter religioso, filosófico ou político, dado
+              referente à saúde ou à vida sexual, dado genético ou biométrico.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Tratamento de Dados.</b></u> Toda operação realizada com dados
+              pessoais, como as que se referem à coleta, produção, recepção,
+              classificação, utilização, acesso, reprodução, transmissão,
+              distribuição, processamento, arquivamento, armazenamento, eliminação,
+              avaliação ou controle da informação, modificação, comunicação,
+              transferência, difusão ou extração.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Controlador.</b></u> O responsável pelas decisões referentes ao
+              tratamento de dados. Neste caso, a <b>Prepara.me</b>.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Operador.</b></u> Quem realiza o tratamento de dados segundo as
+              orientações do
+              <b>Controlador.</b>
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Cookies.</b></u> Pequenos arquivos de texto (cookies) enviados do site
+              acessado para o seu navegador, que registram o seu comportamento no
+              site de forma a personalizar as suas preferências e experiência para
+              aprimorá-la em sua próxima visita, exibir anúncios personalizados e
+              viabilizar melhorias na navegação.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Anonimização.</b></u> Processo pelo qual os dados pessoais coletados se
+              tornam arquivos armazenados pelo <b>Controlador</b> nos quais é
+              impossível identificar a quem tais dados pertencem.
+            </li>
+            <li class="privacy-terms-desc">
+              <u><b>Encarregado de Dados.</b></u> Responsável interno da
+              <b>Prepara.me</b> por assegurar a proteção dos dados pessoais.
+            </li>
+          </ol>
+        </li>
+        <li class="privacy-terms-title">Qual o objetivo dessa Política?
+          <p class="privacy-terms-desc">
+            Por meio desta <b>Política</b> você é informado como coletamos,
+            utilizamos, processamos e divulgamos suas informações e dados pessoais
+            fornecidos no seu acesso e uso da <b>Plataforma</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Aqui, descrevemos as nossas práticas de privacidade para a plataforma e
+            serviços vinculados ou fornecidos pela <b>Prepara.me.</b>
+          </p>
+          <p class="privacy-terms-desc">
+            Caso você seja redirecionado para a página ou serviços de terceiros,
+            leia as políticas desses fornecedores, uma vez que a
+            <b>Prepara.me</b> não controla como terceiros tratam seus dados
+            pessoais.
+          </p>
+          <p class="privacy-terms-desc">
+            Ao contratar os serviços prestados pela <b>Prepara.me</b>, você concorda
+            com todas as condições desta <b>Política</b> sem qualquer indução,
+            coação ou obrigação imposta.
+          </p>
+          <p class="privacy-terms-desc">
+            Recomendamos que você leia esta <b>Política</b> na íntegra antes de
+            utilizar os nossos serviços ou fornecer os seus dados pessoais, para
+            entender como a <b>Prepara.me</b> trata esses dados, e porque os
+            coletamos.
+          </p>
+        </li>
+        <li class="privacy-terms-title">A quem se aplica esta Política?
+          <p class="privacy-terms-desc">
+            Esta <b>Política</b> se aplica a qualquer indivíduo que acesse, se
+            cadastre ou utilize os serviços fornecidos pela <b>Prepara.me</b>, seja
+            em seu site, plataforma ou em qualquer ambiente utilizado oficialmente
+            por nós ao prestar serviços.
+          </p>
+          <p class="privacy-terms-desc">
+            Esta <b>Política de Privacidade e Proteção de Dados</b> se aplica apenas
+            ao uso dos <b>Serviços</b> oferecidos pela <b>Prepara.me</b>, em sua
+            plataforma ou em qualquer site de seu domínio.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Como e quais dados a Prepara.me coleta?
+          <p class="privacy-terms-desc">
+            A maioria dos dados coletados são fornecidos por você no cadastro da
+            <b>Plataforma</b>, mas também podem ser coletados automaticamente pela
+            <b>Prepara.me</b>.
+          </p>
+          <p class="privacy-terms-desc">Os dados coletados por nós são:</p>
+          <ol>
+            <li class="privacy-terms-desc-alpha">
+              <b>Dados de cadastro</b>: nome, e-mail, CPF, senha.
+            </li>
+          </ol>
+          <br />
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> não coleta dados sensíveis ou biométricos. Ainda que
+            os profissionais prestem mentorias através de chamada de vídeo, seu
+            rosto ou sua foto não é armazenada por nosso banco de dados, e,
+            consequentemente, não há qualquer tratamento desses dados.
+          </p>
+          <p class="privacy-terms-desc">
+            Na navegação geral na <b>Plataforma</b>, nós poderemos coletar dados de
+            identificação digital como:
+          </p>
+          <ol>
+            <li class="privacy-terms-desc-alpha">
+              <b>Preferências</b>: registros de suas interações com a
+              <b>Plataforma</b>, informações sobre suas preferências e interesses.
+            </li>
+            <li class="privacy-terms-desc-alpha">
+              <b>Dados de navegação na plataforma</b>: informações sobre suas
+              visitas e atividades, conteúdos com os quais você visualiza e
+              interage, informações sobre o navegador e o dispositivo que você está
+              usando, seu endereço IP, sua localização, o endereço do site a partir
+              do qual você chegou.
+            </li>
+          </ol>
+        </li>
+        <li class="privacy-terms-title">Por que coletamos os seus dados?
+          <p class="privacy-terms-desc">
+            A coleta de dados é essencial para o seu cadastro na <b>Prepara.me</b>,
+            para que você possa acessar nossos serviços.
+          </p>
+          <p class="privacy-terms-desc">
+            Esses dados também permitem que a <b>Prepara.me</b> personalize sua
+            experiência, para torná-la cada vez mais funcional e adequada à você.
+          </p>
+          <p class="privacy-terms-desc">
+            Além disso, através dos dados coletados, é possível aplicar melhorias e
+            aprimoramentos da plataforma, promovendo uma melhor experiência ao
+            navegar e utilizar a plataforma da <b>Prepara.me</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            A coleta dos dados nos permite aumentar a segurança e proteção dos seus
+            direitos, prevenindo atividades ilegais ou suspeitas, bem como para
+            cumprir obrigações legais, regulatórias ou judiciais/administrativas.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Bases legais para coleta e tratamento dos seus dados
+          <p class="privacy-terms-desc">
+            As bases legais de tratamento são os fundamentos jurídicos que permitem
+            que a <b>Prepara.me</b> colete e trate seus dados de forma segura e
+            conforme as diretrizes de proteção de dados.
+          </p>
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> coleta e trata dados conforme as seguintes bases
+            legais trazidas pela <b>LGPD</b>:
+          </p>
+          <ol>
+            <li class="privacy-terms-desc-alpha">
+              Pelo consentimento do titular (art. 7º, I);
+            </li>
+            <li class="privacy-terms-desc-alpha">
+              Para execução de contrato ou de procedimentos preliminares (art. 7º,
+              V);
+            </li>
+            <li class="privacy-terms-desc-alpha">
+              Para o interesse legítimo do Controlador (art. 7º, IX).
+            </li>
+          </ol>
+        </li>
+        <li class="privacy-terms-title">Política de Cookies
+          <ol>
+            <li class="privacy-terms-desc">
+              Cookies são pequenos arquivos baixados em seu dispositivo para coletar
+              dados, que serão utilizados com a finalidade de aprimorar a
+              experiência do Usuário. A <b>Prepara.me</b> realiza a coleta de
+              cookies essenciais e não essenciais.
+            </li>
+            <li class="privacy-terms-desc">
+              Caso você deseje, você poderá recusar os cookies coletados pela
+              <b>Prepara.me</b>, ciente de que isto pode piorar ou inviabilizar sua
+              experiência na plataforma.
+            </li>
+            <li class="privacy-terms-desc">
+            <u>Como utilizamos os cookies?</u>
+              <ol>
+                <li class="privacy-terms-desc">
+                <u>Conta.</u> A <b>Prepara.me</b> utiliza cookies no momento da
+                  inscrição, para gerenciar este processo, e lembrar suas
+                  preferências ao utilizar o site e a plataforma.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Login.</u> Utilizamos cookies para lembrar de seu login e senha ao
+                  navegar pela nossa plataforma e site, evitando que você tenha de
+                  logar toda vez que acessa uma nova página ou funcionalidade. Esses
+                  cookies são removidos quando você efetua logout para garantir que
+                  você possa acessar apenas a recursos e áreas restritas ao efetuar
+                  login.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Newsletter.</u> Utilizamos cookies para identificar se você já é
+                  cadastrado em nossa newsletter, e para gerenciar as notificações e
+                  pop-ups caso você seja inscrito ou não.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Carrinho.</u> Utilizamos cookies para viabilizar que seu pedido seja
+                  registrado conforme você navega por entre as páginas do site e da
+                  plataforma.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Pesquisas.</u> Podemos utilizar cookies para saber se você já
+                  participou de nossas pesquisas, e para personalizar os resultados
+                  e sugestões conforme sua disposição a participar delas.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Formulários.</u> Podemos utilizar cookies para lembrar seus dados
+                  posteriormente, quando você preenche um formulário.
+                </li>
+                <li class="privacy-terms-desc">
+                <u>Funcionalidades do Site.</u> Fornecemos a funcionalidade para definir
+                  suas preferências de como esse site é executado quando você o usa.
+                  Para lembrar suas preferências, precisamos definir cookies para
+                  que essas informações possam ser chamadas sempre que você
+                  interagir com uma página for afetada por suas preferências.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li class="privacy-terms-title">Como protegemos os seus dados?
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> é comprometida com a segurança de todos seus
+            <b>Usuários</b>, e, por isso, adota procedimentos físicos, eletrônicos e
+            administrativos que garantem a privacidade e segurança dos seus dados.
+          </p>
+          <p class="privacy-terms-desc">
+            O banco de dados da <b>Prepara.me</b> é protegido e gerenciado com
+            controle de acesso de segurança digital e adota práticas de segurança e
+            proteção de dados conforme o estabelecido pela
+            <b>Lei Geral de Proteção de Dados</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> armazena os seus dados em servidor seguro, com
+            políticas de segurança implementadas que se destinam a proteger os dados
+            pessoais contra acesso não autorizado e uso indevido.
+          </p>
+          <p class="privacy-terms-desc">
+            Além disso, todos os colaboradores atuam constantemente observando seus
+            direitos de privacidade.
+          </p>
+          <p class="privacy-terms-desc">
+            Sempre que possível, os seus dados serão tratados de forma anônima
+            (inclusive para a Pesquisa de Demissão), o que quer dizer que não será
+            possível identificá-los no conjunto de dados que estamos tratando.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Como os dados são compartilhados?
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> pode compartilhar seus dados com sites parceiros
+            para aperfeiçoar a sua experiência na <b>Plataforma</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Apenas compartilhamos com <b>Parceiros</b> que possuam padrões de
+            segurança e confidencialidade adequados e, portanto, aptos a proteger os
+            seus <b>Dados</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Além disso, podemos compartilhar alguns dos Dados com prestadores de
+            serviços de marketing e publicidade, autoridades judiciais, policiais ou
+            governamentais, prestadores de serviços para manutenção de nossa
+            plataforma, análise de dados visando o enriquecimento da base de dados
+            para personalização e melhoria dos serviços.
+          </p>
+          <p class="privacy-terms-desc">
+            Todos os prestadores de serviços estão contratualmente obrigados ao
+            sigilo, bem como a respeitar a Lei aplicável e nos termos desta
+            <b>Política</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            No tratamento de dados pessoais, a <b>Prepara.me</b> poderá, até o
+            limite permitido pela <b>LGPD</b>, compartilhar os dados para fora do
+            Brasil.
+          </p>
+          <p class="privacy-terms-desc">
+            Ao fazer isso, a <b>Prepara.me</b> tomará todas as medidas cabíveis para
+            assegurar que os seus dados sejam tratados e compartilhados de forma
+            segura e em conformidade com esta <b>Política de Privacidade</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Essa transferência ocorre quando utilizamos serviços em nuvem para
+            processamento ou armazenamento de dados, localizados fora do Brasil.
+          </p>
+          <p class="privacy-terms-desc">
+            Fique tranquilo, nestas situações, atendemos a todos os requisitos
+            estabelecidos na Lei vigente e nesta <b>Política</b>, além de adotarmos
+            as melhores práticas de mercado a fim de garantir a proteção e
+            privacidade dos seus <b>Dados</b>.
+          </p>
+          <ol>
+            <li class="privacy-terms-title">
+              Sobre o acesso fornecido pela Empresa:
+              <ol>
+                <li class="privacy-terms-desc">
+                  Quando uma Empresa contrata nossos serviços, ela nos fornece seus
+                  dados pessoais de cadastro (nome, CPF, telefone, e-mail) e nós criamos
+                  um login temporário para você.
+                </li>
+                <li class="privacy-terms-desc">
+                  Nessa hipótese, a <b>Prepara.me</b> atua como <b>Operadora</b> dos
+                  dados pessoais, e a Empresa como <b>Controladora</b>, uma vez que a
+                  Empresa coletou os dados originalmente e a <b>Prepara.me</b> realizou
+                  o tratamento conforme as instruções da Empresa.
+                </li>
+                <li class="privacy-terms-desc">
+                  <b>É importante que, no seu primeiro acesso, você crie uma nova senha
+                    para acessar a Plataforma</b>.
+                </li>
+                <li class="privacy-terms-desc">
+                  A <b>Prepara.me</b> somente aceita criar logins e senhas temporários
+                  para Empresas comprometidas com o tratamento correto de dados, e cujos
+                  colaboradores consentiram contratualmente com tal compartilhamento.
+                </li>
+              </ol>
+            </li>
+            <br/>
+          </ol>
+        </li>
+        <li class="privacy-terms-title">Sobre sites de terceiros
+          <p class="privacy-terms-desc">
+            A <b>Prepara.me</b> não controla e não é responsável por quaisquer sites
+            de terceiros que possuem links disponibilizados no <b>Plataforma</b>,
+            uma vez que o <b>Usuário</b> poderá ser direcionado para um desses sites
+            para finalizar sua compra.
+          </p>
+          <p class="privacy-terms-desc">
+            A coleta e tratamento de dados pessoais em tais sites não está sujeita a
+            esta <b>Política</b> e se realizará inteiramente por conta e risco do
+            <b>Usuário</b>, bem como conforme a
+            <b>Política de Privacidade</b> adotada pelo site em que se encontra.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Saiba os seus direitos e como exercê-los
+          <p class="privacy-terms-desc">
+            <b>Acesso e confirmação de tratamento</b>. Você pode solicitar à
+            <b>Prepara.me</b> o acesso a relação completa de dados coletados e
+            tratados, bem como a confirmação do tratamento de seus dados pessoais.
+          </p>
+          <p class="privacy-terms-desc">
+            <b>Correção de dados pessoais</b>. Você pode solicitar à
+            <b>Prepara.me</b> a correção de dados que estão incompletos, inexatos ou
+            desatualizados. Na aba do seu perfil pessoal também é possível alterar,
+            complementar e corrigir os dados necessários.
+          </p>
+          <p class="privacy-terms-desc">
+            <b>Anonimização, bloqueio ou eliminação</b>. Todos os dados coletados e
+            tratados pela <b>Prepara.me</b> têm como finalidade a prestação de
+            serviços e o bom desempenho da <b>Plataforma</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Caso você acredite que algum dado seu está sendo tratado de forma
+            desnecessária, em excesso ou o tratamento não esteja em conformidade com
+            a LGPD, você poderá solicitar a anonimização, bloqueio ou eliminação,
+            caso prove que houve excesso, desnecessidade ou desconformidade com a
+            <b>LGPD</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            <b>Informação acerca do compartilhamento</b>. Você pode solicitar à
+            <b>Prepara.me</b>
+            informações sobre nossos parceiros e fornecedores com os quais
+            compartilhamos os dados.
+          </p>
+          <p class="privacy-terms-desc">
+            Já verificamos e todos os nossos parceiros também estão preocupados com
+            sua segurança, e adequados à <b>LGPD</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            <b>Decisões automatizadas</b>. Você pode solicitar a revisão de decisões
+            tomadas unicamente com base no tratamento automatizado de dados e os
+            critérios utilizados nessas decisões, observados sempre os segredos
+            comerciais e industriais da <b>Prepara.me</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            <b>Portabilidade de dados</b>. Você poderá solicitar a portabilidade dos
+            seus dados pessoais a outro fornecedor dos serviços prestados pela
+            <b>Prepara.me</b>, em atendimento ao disposto na <b>LGPD</b>.
+          </p>
+          <p class="privacy-terms-desc">
+            Para exercer qualquer um dos seus direitos como <b>Titular</b>, entre em
+            contato com a <b>Prepara.me</b> através do e-mail
+            <b>contato@prepara.me</b>.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Por quanto tempo armazenamos seus dados?
+          <p class="privacy-terms-desc">
+            Os dados fornecidos por você à <b>Prepara.me</b> serão armazenados e
+            tratados enquanto você permanecer com seu cadastro na plataforma
+            <b>Prepara.me</b>
+            ativo.
+          </p>
+          <p class="privacy-terms-desc">
+            Ao desativar sua conta, nós guardamos os seus dados pelo período
+            necessário para desempenhar as finalidades pelas quais foram coletados,
+            cumprir com obrigações legais ou regulatórias e exercer direitos em
+            processos judiciais, administrativos ou arbitrais.
+          </p>
+          <p class="privacy-terms-desc">
+            Os dados fornecidos por você, após o término do tratamento poderão ser
+            anonimizados e utilizados conforme a necessidade da <b>Prepara.me</b>.
+          </p>
+        </li>
+        <li class="privacy-terms-title">Fale com a Prepara.me!
+          <p class="privacy-terms-desc">
+            Ao fornecer seus dados e consentir com esta <b>Política</b>, a
+            <b>Prepara.me</b> se torna <b>Controladora</b> dos seus dados para as
+            finalidades aqui especificadas.
+          </p>
+          <p class="privacy-terms-desc">
+            Para aprimorar os nossos serviços e garantir a comunicação com o
+            <b>Titular</b>, ficamos à disposição para esclarecer suas dúvidas,
+            receber feedbacks ou reclamações através do seguinte e-mail:
+            <b>contato@prepara.me</b>.
+          </p>
+        </li>
       </ol>
-      <h4 class="privacy-terms-title">Mais informações</h4>
-      <p class="privacy-terms-desc">
-        Esperemos que esteja esclarecido e, como mencionado anteriormente, se houver algo que você não tem certeza se precisa ou não, geralmente é mais seguro deixar os cookies ativados, caso interaja com um dos recursos que você usa em nosso site.
-        <br><br>Esta política é efetiva a partir de Maio/2022.
-        <br><br>Atenciosamente equipe Prepara.me,
-      </p>
     </article>
   </div>
 </template>
 
 <script>
-  export default {
-    provide: function() {
-      return {};
-    },
-    data() {
-      return {};
-    },
-    created() {
-      window.scrollTo(0, 0);
-    }
-  };
+export default {
+  provide: function () {
+    return {};
+  },
+  data() {
+    return {};
+  },
+  created() {
+    window.scrollTo(0, 0);
+  },
+};
 </script>
 
-<style lang="scss">
-  .privacy-terms-article {
-    padding: 2%;
-  }
+<style lang="scss" scoped>
+.privacy-terms-article {
+  padding: 2%;
+}
 
-  .privacy-terms-title {
-    font-family: "Nunito", sans-serif;
-    font-weight: 400;
-    color: $back-dis;
-    margin: 1rem;
-  }
+.privacy-terms-title {
+  font-family: "Nunito", sans-serif;
+  font-weight: 400;
+  color: $back-dis;
+  margin: 1rem;
+}
 
-  .privacy-terms-desc {
-    font-family: "Nunito", sans-serif;
-    text-align: justify;
-    font-weight: 300;
-  }
+.privacy-terms-desc {
+  font-family: "Nunito", sans-serif;
+  text-align: justify;
+  font-weight: 300;
+  color: $back-dis;
+}
 
-  p.privacy-terms-desc{
-    text-indent: 2em;
-  }
+p.privacy-terms-desc {
+  text-indent: 2em;
+}
 
-  li.privacy-terms-desc{
-    margin-left: 4em;
-    list-style-type: upper-alpha;
-  }
+li.privacy-terms-desc {
+  margin-left: 1.5em;
+  list-style-type: decimal;
+}
+
+.privacy-terms-desc {
+  font-weight: 300;
+  font-family: "Nunito", sans-serif;
+  text-align: justify;
+}
+
+p.privacy-terms-desc-alpha {
+  text-indent: 2em;
+}
+
+li.privacy-terms-desc-alpha {
+  margin-left: 1.5em;
+  list-style-type: lower-alpha;
+}
+
+ol {
+  counter-reset: item
+}
+li {
+  display: block
+}
+li:before {
+  content: counters(item, ".") ". ";
+  counter-increment: item
+}
+
+li.privacy-terms-desc-alpha:before {
+  content: counter(item, lower-alpha) ". ";
+  counter-increment: item;
+}
 </style>

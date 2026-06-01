@@ -54,11 +54,25 @@
         </q-card>
       </q-dialog>
 
-      <div class="login-form-signin-in" @click="login()">Entrar</div>
+      <div class="row-buttons">
+        <div class="login-form-signin-in" @click="login()">
+          <p>Entrar</p>
+          <p>Já sou de casa &#128522;</p>
+        </div>
+        <div class="login-form-register" @click="loggingIn = false">
+          Cadastro Rápido
+        </div>
+      </div>
+
       <div class="login-others-links">
+        Esqueceu sua senha?
+        <a @click="resetPasswordDialog = true">Clique aqui!</a>
+      </div>
+
+      <!-- <div class="login-others-links">
         Ainda não tem cadastro?
         <a @click="loggingIn = false">Clique aqui!</a>
-      </div>
+      </div> -->
     </div>
     <div v-else class="login-form-signin">
       <div class="login-modal-title">Cadastre-se em nossa plataforma</div>
@@ -91,9 +105,12 @@
         id="documentId"
         class="login-form-signin-container"
         v-model="user.documentId"
-        mask="###.###.###-##"
         name="cpf"
         label="CPF"
+        pattern="[0-9]*"
+        maxlength="11"
+        inputmode="numeric"
+        @keydown="filterNumbers($event)"
       >
         <template v-slot:prepend>
           <q-icon name="mdi-card-account-details" />
@@ -152,9 +169,9 @@
         </template>
       </q-input>
 
-      <div class="login-form-accept-terms-container">
-        <q-checkbox v-model="acceptTerms" class="login-form-accept-terms" />
-        <div class="login-form-accept-terms-text">
+      <div class="container-login">
+        <q-checkbox v-model="acceptTerms"/>
+        <div class="text-login">
           Aceito a
           <a @click="goUrl('PrivacyTerms')">Política de Privacidade</a> e os
           <a @click="goUrl('useTerms')">Termos de Uso</a> deste site.
@@ -193,7 +210,7 @@ export default {
       passwordValidPercentual: 0,
       forcePassword: "Fraca",
       acceptTerms: false,
-      needLogin: false
+      needLogin: false,
     };
   },
   async beforeCreate() {
@@ -202,8 +219,8 @@ export default {
         return token.status === 200;
       });
 
-      loginControl.isLogged = loggedUser
-      this.needLogin  = !loggedUser
+      loginControl.isLogged = loggedUser;
+      this.needLogin = !loggedUser;
 
       this.token = this.$router.history.current.query.token;
 
@@ -212,9 +229,24 @@ export default {
       }
     } catch (err) {
       console.log(err);
+      this.needLogin = true;
     }
   },
   methods: {
+    filterNumbers(event) {
+      const allowedKeys = [
+        'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Tab'
+      ];
+
+      if (
+        !/[0-9]/.test(event.key) && 
+        !allowedKeys.includes(event.key) &&
+        !event.ctrlKey && !event.metaKey
+      ) {
+        event.preventDefault();
+      }
+
+    },
     ...mapActions("users", ["setUser"]),
     passwordValidate: function () {
       const forcePassword = passwordValidation(this.user.password);
@@ -270,7 +302,7 @@ export default {
 
           await this.setUser(user.data);
 
-          loginControl.isLogged = true
+          loginControl.isLogged = true;
         })
         .catch(showError);
 
@@ -368,7 +400,8 @@ export default {
         .then(() => {
           this.$q.notify({
             type: "success",
-            message: "Sucesso",
+            message:
+              "Email enviado com sucesso, verifique sua caixa de entrada.",
           });
 
           this.resetPasswordDialog = false;
@@ -392,6 +425,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .login-modal {
   margin: auto;
   width: 90%;
@@ -478,7 +512,8 @@ export default {
   }
 }
 
-.login-form-signin-in {
+.login-form-signin-in,
+.login-form-register {
   height: 50px;
   width: 220px;
   margin: 15px auto 30px auto;
@@ -495,30 +530,29 @@ export default {
   user-select: none;
 }
 
-.login-form-signin-in:hover {
+/* .login-form-signin-in:hover {
   border: 1px solid #fff;
   color: #fff;
   background-color: #667998;
-}
+} */
 
 .login-form-signin-container-hint-password {
   font-size: 1.5rem;
 }
 
-.login-form-accept-terms-container {
+.container-login {
   display: flex;
   flex-direction: row;
-  margin: 0 5vh;
 }
 
-.login-form-accept-terms-text {
+.text-login {
   line-height: 40px;
   text-align: center;
   color: #667998;
   font-size: 13px;
 }
 
-.login-form-accept-terms-text a {
+.text-login a {
   color: #667998;
   font-weight: 700;
   text-decoration: none;
@@ -530,5 +564,45 @@ export default {
     height: 60px;
     width: 100%;
   }
+}
+
+.row-buttons {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.login-form-signin-in,
+.login-form-register {
+  flex: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.login-form-signin-in {
+  background-color: #f54690;
+  color: #fff;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form-signin-in p {
+  margin: 0px !important;
+  line-height: initial;
+}
+
+/* last p */
+.login-form-signin-in p:last-child {
+  font-size: 9px;
+}
+
+.login-form-register {
+  background-color: #1a27b7;
+  color: #fff;
 }
 </style>

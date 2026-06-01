@@ -59,14 +59,14 @@
               >
                 Indisponível
               </div>
-              <div v-if="hour.scheduled" class="text-subtitle2">
+              <!-- <div v-if="hour.scheduled" class="text-subtitle2">
                 <q-btn
                   color="blue-10"
                   icon-right="mdi-file"
                   label="Informações"
                   size="sm"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -87,22 +87,31 @@ export default {
     return {
       mobile: false,
       hours: [
-        { hour: "7:00", id: 7, available: false, scheduled: false },
-        { hour: "8:00", id: 8, available: false, scheduled: true },
-        { hour: "9:00", id: 9, available: false, scheduled: false },
-        { hour: "10:00", id: 10, available: false, scheduled: false },
-        { hour: "11:00", id: 11, available: false, scheduled: false },
-        { hour: "12:00", id: 12, available: false, scheduled: false },
-        { hour: "13:00", id: 13, available: false, scheduled: false },
-        { hour: "14:00", id: 14, available: false, scheduled: false },
-        { hour: "15:00", id: 15, available: false, scheduled: false },
-        { hour: "16:00", id: 16, available: false, scheduled: false },
-        { hour: "17:00", id: 17, available: false, scheduled: false },
-        { hour: "18:00", id: 18, available: false, scheduled: false },
-        { hour: "19:00", id: 19, available: false, scheduled: false },
-        { hour: "20:00", id: 20, available: false, scheduled: false },
-        { hour: "21:00", id: 21, available: false, scheduled: false },
-        { hour: "22:00", id: 22, available: false, scheduled: false },
+        { hour: "8:00", id: 80, available: false, scheduled: false },
+        { hour: "8:30", id: 83, available: false, scheduled: false },
+        { hour: "9:00", id: 90, available: false, scheduled: false },
+        { hour: "9:30", id: 93, available: false, scheduled: false },
+        { hour: "10:00", id: 100, available: false, scheduled: false },
+        { hour: "10:30", id: 103, available: false, scheduled: false },
+        { hour: "11:00", id: 110, available: false, scheduled: false },
+        { hour: "11:30", id: 113, available: false, scheduled: false },
+        { hour: "12:00", id: 120, available: false, scheduled: false },
+        { hour: "12:30", id: 123, available: false, scheduled: false },
+        { hour: "13:00", id: 130, available: false, scheduled: false },
+        { hour: "13:30", id: 133, available: false, scheduled: false },
+        { hour: "14:00", id: 140, available: false, scheduled: false },
+        { hour: "14:30", id: 143, available: false, scheduled: false },
+        { hour: "15:00", id: 150, available: false, scheduled: false },
+        { hour: "15:30", id: 153, available: false, scheduled: false },
+        { hour: "16:00", id: 160, available: false, scheduled: false },
+        { hour: "16:30", id: 163, available: false, scheduled: false },
+        { hour: "17:00", id: 170, available: false, scheduled: false },
+        { hour: "17:30", id: 173, available: false, scheduled: false },
+        { hour: "18:00", id: 180, available: false, scheduled: false },
+        { hour: "18:30", id: 183, available: false, scheduled: false },
+        { hour: "19:00", id: 190, available: false, scheduled: false },
+        { hour: "19:30", id: 193, available: false, scheduled: false },
+        { hour: "20:00", id: 200, available: false, scheduled: false },
       ],
     };
   },
@@ -118,6 +127,9 @@ export default {
         this.dateCalendar,
         "yyyy-mm-dd"
       );
+
+      // Se não tiver ID do especialista, não carrega agenda
+      if (!this.specialist.id) return;
 
       const filters = [
         { name: "specialistId", model: this.specialist.id },
@@ -142,10 +154,15 @@ export default {
 
         specialistSchedule.dateSchedule = dateSchedule;
 
-        const hourRef = dateSchedule.getHours();
+        const hourRef = dateSchedule.getHours().toString();
+        const minutesRef = dateSchedule
+          .getMinutes()
+          .toString()
+          .padStart(2, "0");
+        const timeFormatted = `${hourRef}:${minutesRef}`;
 
         const hourFiltered = this.hours.find((hour) => {
-          return hourRef === hour.id;
+          return timeFormatted === hour.hour;
         });
 
         if (hourFiltered) {
@@ -174,7 +191,10 @@ export default {
     },
     providesHour: async function (hour) {
       if (hour.available) {
-        const url = `specialists/schedule`;
+        // Se já existe um horário, não tenta criar novamente
+        if (hour.specialistScheduleId) {
+          return;
+        }
 
         hour.dateSchedule = new Date(hour.dateSchedule);
         hour.dateSchedule = new Date(
@@ -184,22 +204,33 @@ export default {
           )
         );
 
-        await saveCrud(url, {
+        const response = await saveCrud(`specialists/schedule`, {
           status: "AVAILABLE",
           specialistId: this.specialist.id,
           dateSchedule: hour.dateSchedule,
         });
-      } else {
-        const url = `specialists/schedule`;
 
-        await removeCrud(hour.specialistScheduleId, url);
+        // Armazena o ID retornado para poder remover depois
+        if (response && response.id) {
+          hour.specialistScheduleId = response.id;
+        }
+      } else {
+        if (hour.specialistScheduleId) {
+          await removeCrud(hour.specialistScheduleId, `specialists/schedule`);
+          hour.specialistScheduleId = null;
+        }
       }
     },
     adjustHours: function (date) {
       const actualDate = new Date();
 
       this.hours.forEach((hour) => {
-        const refDate = new Date(date).setHours(hour.id);
+        const [hours, minutes] = hour.hour.split(":");
+        const refDate = new Date(date).setHours(
+          parseInt(hours),
+          parseInt(minutes)
+        );
+        console.log("refDate", refDate, actualDate);
 
         const disable = actualDate > refDate;
 
@@ -215,10 +246,14 @@ export default {
       });
     },
   },
+
   watch: {
     dateCalendar(newQuestion) {
       this.loadSchedule(new Date(newQuestion));
       this.adjustHours(newQuestion);
+    },
+    specialist() {
+      this.loadSchedule(new Date());
     },
   },
 };
@@ -238,6 +273,6 @@ export default {
 }
 
 .specialist-provides-timetable-timetable-mobile {
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 </style>

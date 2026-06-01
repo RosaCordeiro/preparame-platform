@@ -9,15 +9,19 @@
     dense
     hide-dropdown-icon
     map-options
+    :readonly="col.readonly"
+    :disable="col.readonly"
+    @filter="filterFn"
     :class="`col-${col.size} q-mb-sm q-mr-sm dialog-select`"
   >
     <template v-slot:append>
       <q-btn
+        v-if="!col.readonly"
         round
         dense
         flat
         icon="mdi-magnify"
-        @click="openDialog = true"
+        @click="openDialogFunc()"
       ></q-btn>
 
       <q-dialog v-model="openDialog">
@@ -38,7 +42,7 @@
                 <q-item
                   clickable
                   v-ripple
-                  v-for="option in options"
+                  v-for="option in filteredOptions"
                   :key="option[col.options.value]"
                   @click="selectValue(option)"
                 >
@@ -73,6 +77,7 @@ export default {
     this.model = this.oldValue;
 
     this.options = await filterCrud("", this.col.options.table);
+    this.filteredOptions = this.options;
   },
   watch: {
     col: {
@@ -82,6 +87,7 @@ export default {
         this.altered = false;
       },
       deep: true,
+      immediate: true,
     },
     model: {
       handler(val) {
@@ -95,12 +101,34 @@ export default {
     },
   },
   methods: {
+    openDialogFunc() {
+      this.openDialog = true;
+    },
+    filterFn: function (val, update) {
+      console.log(this.col.name);
+
+      if (this.col.name !== "userId") return;
+
+      if (val === "") {
+        this.filteredOptions = this.options;
+        return;
+      }
+
+      try {
+        const needle = val.toLowerCase();
+        this.filteredOptions = this.options.filter((v) =>
+          v[this.col.options.label].toLowerCase().includes(needle)
+        );
+      } catch (error) {
+        this.filteredOptions = this.options;
+      }
+    },
     selectValue: function (selected) {
       this.model = {
         value: selected[this.col.options.value],
         label: selected[this.col.options.label],
       };
-      
+
       this.openDialog = false;
     },
   },

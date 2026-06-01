@@ -1,13 +1,17 @@
 <template>
-  <q-card
-    class="home-company-employeer-brand-risk-card q-pb-md q-px-md q-ma-md"
-  >
-    <div class="home-company-employeer-brand-risk-card-header">
-      <div class="home-company-employeer-brand-risk-card-info-container">
-        <q-card-section class="home-company-employeer-brand-risk-card-title"
+  <q-card class="home-company-realocated-card q-ma-md">
+    <div class="home-company-realocated-card-header">
+      <div class="home-company-realocated-card-info-container">
+        <q-card-section class="home-company-realocated-card-title"
           >Risco de Marca</q-card-section
         >
-        <q-card-section class="home-company-employeer-brand-risk-card-nps">{{
+        <q-card-section class="home-company-nps-card-geral">
+          Geral: {{ employeerBrandRiskGeneral }}
+        </q-card-section>
+        <q-card-section class="home-company-nps-card-company">
+          Sua empresa:
+        </q-card-section>
+        <q-card-section class="home-company-realocated-card-realocated" style="font-weight: bold">{{
           employeerBrandRisk
         }}</q-card-section>
       </div>
@@ -17,28 +21,18 @@
 
 <script>
 export default {
-  props: ["employeerBrandRisk"],
-  data() {
-    return {
-      employeerBrandRiskPercent: 0,
-    };
-  },
-  mounted() {
-    this.employeerBrandRiskPercent = (this.employeerBrandRisk * 10).toFixed(2);
-  },
+  props: ["employeerBrandRisk", "employeerBrandRiskGeneral"],
 };
 </script>
 
 <style lang="scss">
 .home-company-employeer-brand-risk-card {
   width: 18vw;
-  height: 20vh;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: none;
 }
 
 .home-company-employeer-brand-risk-card-header {
-  height: 16vh;
 }
 
 .home-company-employeer-brand-risk-card-info-container {
@@ -52,14 +46,13 @@ export default {
 .home-company-employeer-brand-risk-card-title {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   vertical-align: center;
   color: $text-dark-grey;
   text-align: center;
   width: 100%;
   font-size: 1.5rem;
   line-height: 1.2rem;
-  height: 4rem;
 }
 
 .home-company-employeer-brand-risk-card-nps {
@@ -118,7 +111,6 @@ export default {
 @media (orientation: portrait) {
   .home-company-employeer-brand-risk-card {
     width: 90vw;
-    height: 20vh;
   }
 }
 </style>

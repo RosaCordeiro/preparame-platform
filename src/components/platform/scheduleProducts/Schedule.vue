@@ -113,72 +113,32 @@ export default {
   created() {
     this.specialistScheduleData = this.specialistSchedule;
 
-    this.specialistScheduleData.forEach(specialistSchedule => {
-      specialistSchedule.hours.forEach(hour => {
+    let userType = localStorage.getItem("userType");
+
+    this.specialistScheduleData.forEach((specialistSchedule) => {
+      specialistSchedule.hours.forEach((hour) => {
         if (hour.dateSchedule) {
           const diffHours = Math.abs(new Date() - hour.dateSchedule) / 36e5;
 
-          if (diffHours < 24) {
-            hour.available = false
+          if (diffHours < 3 && userType.toUpperCase() !== "ADMIN") {
+            hour.available = false;
           }
         }
-      })
-    })
+      });
+    });
   },
   methods: {
     confirmSchedule: function (daySchedule, hourSchedule, dayIndex, hourIndex) {
-      let rangeDuration = {
-        from: 0,
-        to: this.product.duration - 1,
-        [Symbol.iterator]() {
-          return {
-            current: this.from,
-            last: this.to,
-            next() {
-              if (this.current <= this.last) {
-                return { done: false, value: this.current++ };
-              } else {
-                return { done: true };
-              }
-            },
-          };
-        },
-      };
+      const reschedule = this.$route.query.reschedule || false;
 
-      let allSchedulesAvailables = true;
-      let selectedSchedules = [];
-
-      for (let indexRangeDuration of rangeDuration) {
-        const validationHourIndex = hourIndex + indexRangeDuration;
-        if (
-          !this.specialistScheduleData[dayIndex].hours[validationHourIndex] ||
-          !this.specialistScheduleData[dayIndex].hours[validationHourIndex]
-            .available
-        ) {
-          allSchedulesAvailables = false;
-        } else {
-          selectedSchedules.push(
-            this.specialistScheduleData[dayIndex].hours[validationHourIndex]
-          );
-        }
-      }
-
-      if (!allSchedulesAvailables) {
-        this.$q.notify({
-          type: "error",
-          message: `São necessários ${this.product.duration} horários livres em sequência para poder agendar este produto. Por favor, escolha outro horário disponível.`,
-        });
-
-        return;
-      } else {
-        this.confirmScheduleFunctions.$emit(
-          "showScheduleConfirmDialog",
-          daySchedule,
-          selectedSchedules,
-          this.specialist,
-          this.product
-        );
-      }
+      this.confirmScheduleFunctions.$emit(
+        "showScheduleConfirmDialog",
+        daySchedule,
+        [this.specialistScheduleData[dayIndex].hours[hourIndex]],
+        this.specialist,
+        this.product,
+        reschedule
+      );
     },
     priorWeek: function () {
       if (this.weekCount === 1) {
@@ -195,7 +155,7 @@ export default {
       this.weekCount--;
     },
     nextWeek: function () {
-      if (this.weekCount === 2) {
+      if (this.weekCount === 4) {
         this.$q.notify({
           type: "error",
           message:
@@ -211,6 +171,8 @@ export default {
     async loadNextWeekSchedules() {
       const actualDate = new Date();
 
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 1) * 7);
+
       const dateBegin = getDayOfNextWeek(
         actualDate,
         1,
@@ -222,6 +184,8 @@ export default {
     },
     async loadPriorWeekSchedules() {
       const actualDate = new Date();
+
+      actualDate.setDate(actualDate.getDate() + (this.weekCount - 2) * 7);
 
       const dateBegin = getDayOfWeek(actualDate, 1, actualDate.getDay() <= 5);
       const dateEnd = getDayOfWeek(actualDate, 5, actualDate.getDay() <= 5);
@@ -246,10 +210,12 @@ export default {
           model: dateEnd,
         },
       ];
-
+      let userType = localStorage.getItem("userType");
       const specialistsSchedule = await filterCrud(
         filtersSpecialistSchedule,
-        `specialists/schedule`
+        userType.toUpperCase() === "ADMIN"
+          ? `specialists/schedule`
+          : `specialists/schedule-to-user`
       );
 
       this.specialistScheduleData = organizeSpecialistScheduleData(
@@ -303,6 +269,7 @@ export default {
 .schedule-day-header-month-data {
   line-height: 6px;
   margin-bottom: 4px;
+  color: black;
 }
 
 .schedule-day-header-weekday {

@@ -1,56 +1,42 @@
 <template>
-  <div class="external-user-resume-creator-card justify-around q-mb-sm">
-    <q-card class="external-user-resume-creator-card-container q-pa-sm">
-      <q-card-section class="external-user-resume-creator-card-header">
-        <div class="external-user-resume-creator-card-info space-around">
-          <div class="row">
-            <div
-              :class="{
-                column: true,
-                'external-user-resume-creator-card-info-container': true,
-                'q-mt-md': true,
-                'col-10': true,
-              }"
-            >
-              <div class="external-user-resume-creator-card-title">
-                MODELO DE CURRÍCULO GRÁTIS
-              </div>
-              <div
-                class="external-user-resume-creator-card-info-container-msg q-mb-sm"
-              >
-                Aumente as chances de ter seu CV selecionado com nosso modelo e
-                dicas para preenchimento!
-              </div>
-              <div
-                class="external-user-resume-creator-card-info-container-msg q-mb-md"
-              >
-                <b>É fácil. É rápido. É gratuito!</b>
-              </div>
-              <div v-if="!mobile" class="q-mb-sm">
-                <q-btn
-                  color="secondary"
-                  label="BAIXAR MODELO"
-                  href="https://preparame-backend.s3.sa-east-1.amazonaws.com/others/Modelo+1+-+CV+Nome+Sobrenome+-+%C3%81rea++(1).docx"
-                />
-              </div>
-            </div>
-            <img
-              :class="{
-                'external-user-resume-creator-card-img': true,
-              }"
-              src="./../../../../assets/imgs/check.png"
+  <div>
+    <div  class="q-ma-md">
+      <div class="external-user-most-common-questions-card-title">
+        MODELO DE CURRÍCULO GRÁTIS
+      </div>
+      <div class="row col-12">
+        <div class="q-mt-sm col-9">
+          Aumente as chances de ter seu CV selecionado com nosso modelo e dicas para preenchimento!
+          <div>
+            <b><br>É fácil. É rápido. É gratuito!</b>
+          </div>
+          <div v-if="!mobile" class="q-my-sm">
+            <q-btn
+              color="secondary"
+              label="BAIXAR MODELO"
+              href="https://preparame-backend.s3.sa-east-1.amazonaws.com/others/Modelo+1+-+CV+Nome+Sobrenome+-+%C3%81rea++(1).docx"
+            />
+          </div>
+          <div v-if="mobile" class="q-my-sm">
+            <q-btn
+              color="secondary"
+              label="BAIXAR MODELO"
+              href="https://preparame-backend.s3.sa-east-1.amazonaws.com/others/Modelo+1+-+CV+Nome+Sobrenome+-+%C3%81rea++(1).docx"
             />
           </div>
         </div>
-        <div v-if="mobile" class="q-mt-md">
-          <q-btn
-            color="secondary"
-            label="BAIXAR MODELO"
-            href="https://preparame-backend.s3.sa-east-1.amazonaws.com/others/Modelo+1+-+CV+Nome+Sobrenome+-+%C3%81rea++(1).docx"
-          />
-        </div>
-      </q-card-section>
-    </q-card>
+        <img
+          v-if="!mobile"
+          class="external-user-most-common-questions-card-img col-3"
+          src="./../../../../assets/imgs/check.png"
+        />
+        <img
+          v-if="mobile"
+          class="external-user-most-common-questions-card-img col-3"
+          src="./../../../../assets/imgs/check.png"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -64,15 +50,16 @@ export default {
   mounted() {
     this.mobile = window.mobileAndTabletCheck();
   },
+  methods: {
+    goURL: function () {
+      this.$router.push({ path: `/` });
+    },
+  },
 };
 </script>
 
 <style>
-.external-user-resume-creator-card-container {
-  border-radius: 15px;
-}
-
-.external-user-resume-creator-card-title {
+.external-user-most-common-questions-card-title {
   font-weight: 700;
   font-size: 1.5rem;
   font-family: "Nunito";
@@ -84,17 +71,8 @@ export default {
   background-clip: text;
 }
 
-.external-user-resume-creator-card-img {
+.external-user-most-common-questions-card-img {
   height: 100px;
-}
-
-.external-user-resume-creator-card-btn-container {
-  width: 100%;
-  position: relative;
-}
-
-.external-user-resume-creator-card-btn-know-more {
-  height: 40px;
   margin: 10px auto;
 }
 </style>

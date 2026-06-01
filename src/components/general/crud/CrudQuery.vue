@@ -8,12 +8,16 @@
           :blockCreateNew="blockCreateNew"
           :blockRemove="blockRemove"
         />
-        <CrudQueryFilter :rows="rows" />
+        <slot name="title"> </slot>
+        <CrudQueryFilter :rows="rows" v-if="this.filters.length > 0 && this.filters.some((filter) => filter.visible)" />
         <CrudQueryTable
           ref="table"
           :result="{ columns, data }"
           :blockRemove="blockRemove"
-        />
+          @openSpecialistArea="$emit('openSpecialistArea', $event)"
+        >
+          <slot> </slot>
+        </CrudQueryTable>
       </div>
     </q-page>
   </div>
@@ -97,14 +101,22 @@ export default {
       }
     },
     filter: async function (filters) {
-      this.data = await filterCrud(filters, this.url, this.columns);
+      const response = await filterCrud(filters, this.url, this.columns);
+
+      if (response.data) {
+        this.data = response.data;
+        console.log(this.data);
+        return;
+      }
+
+      this.data = response;
     },
   },
   created() {
-    this.filter();
+    this.filter(this.filters);
 
     adjustColumnsAndRowsRegister(this.filters, this.rows);
-  },
+  }
 };
 </script>
 

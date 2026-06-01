@@ -11,7 +11,8 @@ async function removeCrud(selected, url) {
         headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
         url: `${baseApiUrl}${url}/${removeId}`,
     };
-
+    console.log('config', config);
+    
     return await axios(config)
         .catch(showError);
 }

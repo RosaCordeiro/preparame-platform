@@ -14,6 +14,7 @@ import CrudRegister from "./../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "./../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "./../../general/crud/utils/saveCrud.js";
 import { showError } from "../../../global.js";
+import emitter from "src/config/event-bus";
 
 export default {
   components: {
@@ -72,6 +73,9 @@ export default {
               model: "",
               type: "Input",
               visible: true,
+              inputmode: "numeric",
+              maxlength: 11,
+              customKeydown: "filterNumbers",
             },
             subscribeToken: {
               label: "Token",
@@ -93,36 +97,233 @@ export default {
               type: "Input",
               visible: true,
             },
+            state: {
+              label: "Estado",
+              name: "state",
+              size: "6",
+              row: 3,
+              col: 4,
+              model: "",
+              type: "StateSelect",
+              visible: true,
+            },
+
             email: {
               label: "E-Mail",
               name: "email",
               size: "6",
-              row: 3,
+              row: 4,
               col: 2,
               model: "",
               type: "Input",
               visible: true,
             },
-            user: {
-              label: "Usuário",
-              name: "userId",
+
+            city: {
+              label: "Cidade",
+              name: "city",
               size: "6",
               row: 4,
               col: 1,
-              model: null,
+              model: "",
+              type: "CitySelect",
+              visible: true,
+            },
+
+            gender: {
+              label: "Gênero",
+              name: "gender",
+              size: "6",
+              row: 5,
+              col: 1,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Mulher Cisgênero",
+                  value: "cisgender_woman",
+                },
+                {
+                  label: "Homem Cisgênero",
+                  value: "cisgender_man",
+                },
+                {
+                  label: "Mulher Trans",
+                  value: "trans_woman",
+                },
+                {
+                  label: "Homem Trans",
+                  value: "trans_man",
+                },
+                {
+                  label: "Pessoa Não Binária",
+                  value: "non_binary",
+                },
+                {
+                  label: "Sem informação",
+                  value: "not_informed",
+                },
+              ],
+              visible: true,
+            },
+            etnia: {
+              label: "Etnia/Pessoa autodeclarada",
+              name: "etnia",
+              size: "6",
+              row: 5,
+              col: 2,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Branca",
+                  value: "branca",
+                },
+                {
+                  label: "Preta",
+                  value: "preta",
+                },
+                {
+                  label: "Parda",
+                  value: "parda",
+                },
+                {
+                  label: "Amarela",
+                  value: "amarela",
+                },
+                {
+                  label: "Indígena",
+                  value: "indigena",
+                },
+                {
+                  label: "Sem informação",
+                  value: "not_informed",
+                },
+              ],
+              visible: true,
+            },
+            pcd: {
+              label: "Pcd",
+              name: "pcd",
+              size: "6",
+              row: 6,
+              col: 1,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Sim",
+                  value: true,
+                },
+                {
+                  label: "Não",
+                  value: false,
+                },
+              ],
+              visible: true,
+            },
+
+            entryDate: {
+              label: "Data de Entrada",
+              name: "entryDate",
+              size: "4",
+              row: 6,
+              col: 2,
+              model: "",
+              type: "Date",
+              visible: true,
+            },
+            unity: {
+              label: "Unidade",
+              name: "unity",
+              size: "6",
+              row: 7,
+              col: 3,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            position: {
+              label: "Cargo",
+              name: "position",
+              size: "6",
+              row: 7,
+              col: 4,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            department: {
+              label: "Área",
+              name: "department",
+              size: "6",
+              row: 7,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            subarea: {
+              label: "Subárea",
+              name: "subarea",
+              size: "6",
+              row: 7,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            level: {
+              label: "Nível",
+              name: "level",
+              size: "6",
+              row: 8,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            plan: {
+              label: "Plano",
+              name: "plan",
+              size: "6",
+              row: 8,
+              col: 2,
+              model: "",
               type: "DialogSelect",
               visible: true,
+              readonly: false,
               options: {
-                table: "users",
+                table: "subscriptionPlans",
                 value: "id",
                 label: "name",
               },
             },
+            dismissalType: {
+              label: "Tipo de Demissão",
+              name: "dismissalType",
+              size: "6",
+              row: 9,
+              col: 1,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Voluntária",
+                  value: "voluntary",
+                },
+                {
+                  label: "Involuntária",
+                  value: "involuntary",
+                },
+              ],
+              visible: true,
+            },
             easyRegister: {
               label: "Cadastro Simples",
               name: "easyRegister",
-              size: "3",
-              row: 4,
+              size: "6",
+              row: 9,
               col: 2,
               model: "",
               type: "Select",
@@ -138,9 +339,66 @@ export default {
               ],
               visible: true,
             },
+            packageDeclined: {
+              label: "Pacote Recusado",
+              name: "packageDeclined",
+              size: "6",
+              row: 10,
+              col: 1,
+              model: "",
+              type: "Select",
+              options: [
+                {
+                  label: "Sim",
+                  value: true,
+                },
+                {
+                  label: "Não",
+                  value: false,
+                },
+              ],
+              visible: true,
+            },
+            manualCompany: {
+              label: "Empresa Manual",
+              name: "manualCompany",
+              size: "6",
+              row: 10,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+              editable: false,
+            },
+            user: {
+              label: "Usuário",
+              name: "userId",
+              size: "6",
+              row: 11,
+              col: 1,
+              model: null,
+              type: "DialogSelect",
+              visible: false,
+              options: {
+                table: "users",
+                value: "id",
+                label: "name",
+              },
+            },
+            accepted: {
+              label: "Aceito",
+              name: "accepted",
+              size: "6",
+              row: 11,
+              col: 2,
+              model: false,
+              type: "Input",
+              visible: false,
+            },
           },
         },
       },
+
       breadcrumbs: [
         {
           title: "Funcionarios",
@@ -163,9 +421,29 @@ export default {
     save: async function (data) {
       try {
         if (!data.mainTable.companyId) {
-          showError("Necessário informar a empresa")
-          return 
+          showError("Necessário informar a empresa");
+          return;
         }
+
+        if (data.mainTable.state && typeof data.mainTable.state === "object") {
+          data.mainTable.state = data.mainTable.state.value;
+        }
+
+        if (data.mainTable.city && typeof data.mainTable.city === "object") {
+          data.mainTable.city = data.mainTable.city.value;
+        }
+
+        if (data.mainTable.plan && typeof data.mainTable.plan === "object") {
+          data.mainTable.planId = data.mainTable.plan.value;
+        } else if (
+          data.mainTable.plan &&
+          typeof data.mainTable.plan === "string"
+        ) {
+          data.mainTable.planId = data.mainTable.plan;
+        } else {
+          data.mainTable.planId = null;
+        }
+        delete data.mainTable.plan;
 
         const url = this.tables.mainTable.apiUrl.replace(
           ":companyId",
@@ -181,6 +459,22 @@ export default {
         return false;
       }
     },
+  },
+  mounted() {
+    emitter.on("update_model", (data) => {
+      if (
+        data.label === "Cadastro Simples" &&
+        this.tables.mainTable.registerColumns.user
+      ) {
+        this.tables.mainTable.registerColumns.user.visible =
+          data.model.value === "NO";
+      }
+    });
+  },
+  destroyed() {
+    try {
+      emitter.off("update_model");
+    } catch (error) {}
   },
 };
 </script>

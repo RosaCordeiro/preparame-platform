@@ -102,6 +102,16 @@ export default {
                 label: "name",
               },
             },
+            image: {
+              label: "Imagem",
+              name: "image",
+              size: "12",
+              row: 3,
+              col: 1,
+              model: "",
+              type: "InputFile",
+              visible: true,
+            },
           },
         },
         childTable: {
@@ -198,10 +208,20 @@ export default {
   },
   methods: {
     save: async function (data) {
+      if (typeof data.mainTable.image === "string") {
+        delete data.mainTable.image;
+      }
+
+      const formData = new FormData();
+
+      Object.keys(data.mainTable).forEach((key) => {
+        formData.append(key, data.mainTable[key]);
+      });
+
       try {
         const specialistCreated = await saveCrud(
           this.tables.mainTable.apiUrl,
-          data.mainTable
+          formData
         );
 
         if (specialistCreated.status === 201) {

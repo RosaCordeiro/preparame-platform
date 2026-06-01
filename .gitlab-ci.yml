@@ -1,0 +1,50 @@
+stages:
+  - deploy
+
+variables:
+  projectName: Prepara.me - ADMIN
+  shouldRunCompose: "false"
+  projetctFolderHomolog: preparame/admin
+  projectPm2NameHomolog: app-preparame-admin
+  projetctFolderProduction: preparame/app
+  projectPm2NameProduction: preparame-app
+
+deploy_homolog:
+  stage: deploy
+  script:
+    - echo "Deploying develop branch..."
+    - echo "Acessando pasta do projeto..."
+    - cd /var/www/app/$projetctFolderHomolog
+    - git checkout .
+    - git pull origin develop
+    - echo "Dando permissão para a pasta do projeto..."
+    - sudo chmod -R 777 /var/www/app/$projetctFolderHomolog
+    - echo "Gerando build..."
+    - sudo npm run build
+    - echo "Publicando $projectName"
+    - sudo pm2 restart $projectPm2NameHomolog
+    - echo "Finalizando deploy..."
+  tags:
+    - dsohomolog_v1
+  only:
+    - develop # Run on branches starting with 'develop'
+
+deploy_production:
+  stage: deploy
+  script:
+    - echo "Deploying master branch..."
+    - echo "Acessando pasta do projeto..."
+    - cd /var/www/$projetctFolderProduction
+    - git checkout .
+    - git pull origin main
+    - echo "Dando permissão para a pasta do projeto..."
+    - sudo chmod -R 777 /var/www/$projetctFolderProduction
+    - echo "Gerando build..."
+    - sudo npm run build
+    - echo "Publicando $projectName"
+    - sudo pm2 restart $projectPm2NameProduction
+    - echo "Finalizando deploy..."
+  tags:
+    - preparame_prod
+  only:
+    - main # Run on branches starting with ''
