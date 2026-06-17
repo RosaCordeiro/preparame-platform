@@ -40,6 +40,13 @@ Status e prioridade das skills de desenvolvimento Prepara.me.
 | `preparame-nps-relatorios` | ✅ | Survey NPS, dashboard RH, replacements |
 | `preparame-pagamentos-pedidos` | ✅ | Orders, carrinho, Pagar.me helper |
 
+## Qualidade e bugs
+
+| Skill | Status | Descrição |
+|---|---|---|
+| `bug-founder` | ✅ | Varredura proativa de bugs no sistema (código existente) |
+| `review-bugbot` | ✅ | Review de mudanças locais/branch (built-in Cursor) |
+
 ## Fase 3 — Opcionais
 
 | Skill | Status | Descrição |

@@ -17,7 +17,8 @@ Você é o **agente principal** para tarefas **já especificadas**. O usuário *
 | Tipo | Skill |
 |---|---|
 | Nova feature, ideia, "vamos planejar", brainstorm | **`preparame-novas-demandas`** — NÃO codar |
-| Bug, ajuste, tarefa já aprovada/especificada | **Este orquestrador** |
+| Bug fix, ajuste, tarefa já aprovada/especificada | **Este orquestrador** |
+| Caçar bugs, varredura, auditoria de qualidade (sem diff) | **`bug-founder`** |
 
 ## Fluxo obrigatório
 
@@ -43,6 +44,7 @@ Você é o **agente principal** para tarefas **já especificadas**. O usuário *
 | Task ampla, refactor cross-cutting, "onde mexer?" | Orquestrador | `preparame-vue-quasar-base` + skill do domínio |
 | Doc de produto / entender plataforma | — | `docs/` (não `docs/desenvolvimento/`) |
 | **Nova feature / nova demanda / brainstorm / RFC** | **Novas demandas** | **`preparame-novas-demandas`** |
+| Caçar bugs, varredura, "tem bug em…", instabilidade | Bug Founder | **`bug-founder`** |
 
 ### Tarefas compostas
 

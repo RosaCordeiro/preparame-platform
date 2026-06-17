@@ -55,6 +55,7 @@ O orquestrador escolhe um destes conforme a tarefa. Só consulte manualmente se 
 | Painel ex-colaborador, agenda, simulador | [Ex-colaborador](docs/desenvolvimento/agents/ex-colaborador.md) | `preparame-ex-colaborador` |
 | NPS, dashboard RH, recolocação | [Pesquisas e relatórios](docs/desenvolvimento/agents/pesquisas-relatorios.md) | `preparame-nps-relatorios` |
 | API, pagamento, analytics | [Integrações](docs/desenvolvimento/agents/integracoes.md) | `preparame-pagamentos-pedidos` |
+| Caçar bugs, varredura de qualidade (código existente) | — | `bug-founder` |
 
 ## Regras gerais
 

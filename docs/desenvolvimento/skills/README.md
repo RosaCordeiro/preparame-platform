@@ -23,6 +23,7 @@ Exemplo manual: *"Use a skill preparame-crud-usar-componentes para…"*
 | `preparame-ex-colaborador` | 2 | Ex-colaborador |
 | `preparame-nps-relatorios` | 2 | Pesquisas e relatórios |
 | `preparame-pagamentos-pedidos` | 2 | Integrações |
+| `bug-founder` | QA | Caça proativa de bugs no sistema |
 
 ## Inventário completo
 
