@@ -4,6 +4,8 @@ Bem-vindo à documentação da plataforma **Prepara.me | Demissão Responsável*
 
 Esta pasta reúne tudo o que você precisa saber para entender como a plataforma funciona — o que ela oferece, quem usa cada parte e como os fluxos se conectam. A documentação foi escrita em linguagem acessível, pensada para times de produto, operação, suporte e parceiros de RH, sem necessidade de conhecimento técnico.
 
+> **Desenvolvimento:** para agentes de IA, skills Cursor e arquitetura técnica do frontend, veja [`desenvolvimento/`](desenvolvimento/README.md) e [`AGENTS.md`](../AGENTS.md) na raiz.
+
 ## O que é a Prepara.me
 
 A Prepara.me apoia empresas e ex-colaboradores no processo de **demissão responsável** e **recolocação profissional**. A plataforma combina um site público (institucional e loja de serviços) com uma área logada onde cada perfil de usuário acessa ferramentas específicas: mentorias, revisão de currículo, simulador de entrevistas, pesquisas pós-demissão e dashboards para RH.
