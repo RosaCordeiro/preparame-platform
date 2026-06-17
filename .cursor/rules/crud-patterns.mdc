@@ -1,0 +1,37 @@
+---
+description: Padrões CRUD administrativo Prepara.me — CrudQuery, CrudRegister e utils.
+globs: "**/crud/**,**/*Crud.vue"
+alwaysApply: false
+---
+
+# Padrões CRUD
+
+Skills dedicadas:
+- **Usar componentes existentes:** `preparame-crud-usar-componentes`
+- **Criar nova entidade:** `preparame-crud-criar-componentes`
+
+## Arquitetura
+
+- **Listagem:** `*QueryCrud.vue` → `<CrudQuery :title :url :filters :columns :breadcrumbs>`
+- **Formulário:** `*RegisterCrud.vue` → `<CrudRegister :tables :registerType :breadcrumbs>`
+- **Utils:** `saveCrud`, `filterCrud`, `openEditCrud`, `removeCrud` em `components/general/crud/utils/`
+
+## Novo CRUD — checklist
+
+1. Criar `DomainQueryCrud.vue` e `DomainRegisterCrud.vue` em `components/platform/`
+2. Definir `url` sem barra inicial (ex.: `"products"`)
+3. `registerColumns` com type: Input, Select, Decimal, DialogSelect, Date…
+4. Rotas em `router/platform/domain.route.js`
+5. Importar em `router/platform/index.js`
+6. `props.userTypes` se restrito a ADMIN ou outro perfil
+7. Item em `SideNavMenu.vue` se visível no menu
+
+## registerColumns
+
+- `visible: true/false` controla exibição
+- Select: `options: [{ label, value }]`
+- DialogSelect: `options.table` para lookup via `filterCrud`
+
+## Referência
+
+Copiar estrutura de `ProductsQueryCrud.vue` / `ProductsRegisterCrud.vue`.

@@ -1,0 +1,40 @@
+---
+description: Convenções base Vue 2 e Quasar 1 do Prepara.me. Aplica em todo o frontend.
+globs: "**/*.{vue,js}"
+alwaysApply: true
+---
+
+# Prepara.me — Vue 2 + Quasar 1
+
+## Stack fixa
+
+- Vue **2.6** + Quasar **1** — não migrar para Vue 3 sem decisão explícita
+- Options API (padrão) — Composition API instalada mas uso limitado
+- Sem TypeScript
+
+## Estrutura
+
+- `components/site/` — site público
+- `components/platform/` — área logada
+- `components/general/` — compartilhados (CRUD, dialogs)
+- `router/site/` vs `router/platform/` — não misturar responsabilidades
+
+## Convenções de código
+
+- Match estilo existente: imports relativos, nomes em português na UI
+- Erros API: `showError()` de `src/global.js`
+- Sucesso: `showSuccess()` ou `showSucess()` (typo legado — manter consistência local)
+- API base: `baseApiUrl` — nunca hardcodar URL
+- Minimizar escopo — não refatorar código não relacionado
+
+## Componentes Vue
+
+- SFC `.vue` com `<template>`, `<script>`, `<style>` ou `<style lang="scss">`
+- Quasar components: `q-page`, `q-btn`, `q-input`, `q-card`, etc.
+- Ícones: MDI (`mdi-*`) via @quasar/extras
+
+## Antes de concluir
+
+- Rodar `yarn lint` em arquivos alterados
+- Consultar doc de produto em `docs/` se mudar fluxo de negócio
+- Consultar `docs/desenvolvimento/` para padrões técnicos
