@@ -216,7 +216,7 @@ export default {
   async beforeCreate() {
     try {
       const loggedUser = await refreshToken().then((token) => {
-        return token.status === 200;
+        return token && token.status === 200;
       });
 
       loginControl.isLogged = loggedUser;

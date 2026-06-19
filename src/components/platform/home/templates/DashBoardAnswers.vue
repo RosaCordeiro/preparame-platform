@@ -1306,6 +1306,11 @@ export default {
       );
 
       this.$q.loading.hide();
+      this.isLoading = false;
+
+      if (!npsSurveyReport) {
+        return;
+      }
 
       this.nps = npsSurveyReport.nps;
       this.brandRisk = npsSurveyReport.brandRisk;
