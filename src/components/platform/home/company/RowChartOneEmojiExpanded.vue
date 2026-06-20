@@ -9,43 +9,10 @@
           :style="`width: ${
             isNaN(data) ? 0 : ((data - minValue) * 100) / (maxValue - minValue)
           }%;
-          }; background: ${
-            data >= intersectionValue
-              ? invertedColors
-                ? 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-                : 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : invertedColors
-              ? 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-          }`"
+          }; background: ${barGradient}`"
         ></div>
 
-        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data + "%" }}</p>
-        <p :style="`fontSize: 16px`" v-else>Informação insuficiente.</p>
-
-        <div class="emoji">
-          <img
-            v-if="data >= intersectionValue && !invertedColors"
-            src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="57"
-            height="57"
-          />
-          <img
-            v-else-if="data <= intersectionValue && invertedColors"
-            src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="57"
-            height="57"
-          />
-          <img
-            v-else
-            src="../../../../assets/icons/triste.png"
-            alt="before"
-            width="57"
-            height="57"
-          />
-        </div>
+        <p>{{ displayValue }}</p>
       </div>
     </div>
   </div>
@@ -53,12 +20,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      beforeIcon: "../../../../assets/icons/triste.png",
-      afterIcon: "../../../../assets/icons/alegre.png",
-    };
-  },
   props: {
     title: {
       type: String,
@@ -89,6 +50,32 @@ export default {
       default: false,
     },
   },
+  computed: {
+    isPositive() {
+      if (this.invertedColors) {
+        return this.data <= this.intersectionValue;
+      }
+
+      return this.data >= this.intersectionValue;
+    },
+    barGradient() {
+      const positive = "linear-gradient(90deg, #b8e8d8 0%, #8fd9c0 100%)";
+      const negative = "linear-gradient(90deg, #f8caca 0%, #f4a5a5 100%)";
+
+      if (this.data >= this.intersectionValue) {
+        return this.invertedColors ? negative : positive;
+      }
+
+      return this.invertedColors ? positive : negative;
+    },
+    displayValue() {
+      if (this.lessThanFive) {
+        return "Informação insuficiente";
+      }
+
+      return isNaN(this.data) ? "N/A" : `${this.data}%`;
+    },
+  },
 };
 </script>
 
@@ -100,54 +87,35 @@ export default {
 }
 
 .chart-row-one-emoji-expanded h1 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  line-height: 20px;
-  color: rgba(91, 91, 91, 1);
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  color: #1a2744;
 }
 
 .chart__row-one-emoji-expanded {
-  height: 50px;
-  width: 50%;
-  border-radius: 5px;
-  background-color: rgba(120, 120, 120, 1);
+  height: 36px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #eef1f5;
   position: relative;
-}
-
-.chart__row-one-emoji-expanded-scale {
-  height: 50px;
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 2px;
-  margin-top: 3px;
 }
 
 .chart__row-one-emoji-expanded__value {
   height: 100%;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .chart__row-one-emoji-expanded p {
-  color: #fff;
+  color: #1a2744;
   margin: 0;
-  font-size: 22px;
-  line-height: 50px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   position: absolute;
-  left: 15px;
-  top: 0;
-}
-
-.chart__row-one-emoji-expanded .emoji {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(65%, -8%);
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>

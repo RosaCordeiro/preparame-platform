@@ -123,7 +123,47 @@ export const menuByUserType = {
   COMPANY_ADMIN: {
     items: [
       {
-        icon: "open_in_new",
+        icon: "mdi-view-dashboard-outline",
+        label: "Painel Riscos e Impactos",
+        url: "/",
+      },
+      {
+        icon: "mdi-alert-outline",
+        label: "Indicadores de Riscos",
+        url: "/",
+      },
+      {
+        icon: "mdi-file-document-outline",
+        label: "Relatórios NR1",
+        comingSoon: true,
+      },
+      {
+        icon: "mdi-account-group-outline",
+        label: "Gestão de Conflitos",
+        comingSoon: true,
+      },
+      {
+        icon: "mdi-shield-alert-outline",
+        label: "Canal de Denúncias",
+        comingSoon: true,
+      },
+      {
+        icon: "mdi-briefcase-outline",
+        label: "Contrate Open to Work",
+        url: "replacementsReport",
+      },
+      {
+        icon: "mdi-account-check-outline",
+        label: "Ver Pessoas do Programa",
+        url: "companies/employees",
+      },
+      {
+        icon: "mdi-account-plus-outline",
+        label: "Adicionar Pessoas ao Programa",
+        comingSoon: true,
+      },
+      {
+        icon: "mdi-comment-question-outline",
         label: "Perguntas Qualitativas",
         url: "surveyQuestions",
       },
