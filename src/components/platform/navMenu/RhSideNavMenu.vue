@@ -30,7 +30,7 @@
             :key="'item-' + index"
             clickable
             v-ripple="!menuItem.comingSoon"
-            class="rh-side-nav-menu-item side-nav-menu-item"
+            class="rh-side-nav-menu-item"
             :class="{
               'rh-side-nav-menu-item--active': isActive(menuItem),
               'rh-side-nav-menu-item--soon': menuItem.comingSoon,
@@ -122,11 +122,7 @@ export default {
       }
 
       const currentPath = this.$router.history.current.path;
-      const targetPath = menuItem.url === "/" ? "/" : `/${menuItem.url}`;
-
-      if (menuItem.url === "/") {
-        return currentPath === "/" || currentPath === "/platform";
-      }
+      const targetPath = `/${menuItem.url}`;
 
       return (
         currentPath === targetPath ||
@@ -154,7 +150,7 @@ export default {
         return;
       }
 
-      const targetPath = url === "/" ? "/" : `/${url}`;
+      const targetPath = `/${url}`;
       if (this.$router.history.current.path !== targetPath) {
         this.$router.push({ path: targetPath }).catch((err) => {
           console.error("[RhSideNavMenu] Erro na navegação:", err);
