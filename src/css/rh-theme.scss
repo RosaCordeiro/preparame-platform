@@ -1,0 +1,81 @@
+$rh-bg: #f7f7f7;
+$rh-card: #ffffff;
+$rh-border: #e6e6e6;
+$rh-sidebar-bg: #f7f7f7;
+$rh-sidebar-border: #e0e0e0;
+$rh-sidebar-active: #15aa7c;
+$rh-sidebar-active-text: #ffffff;
+$rh-muted: #667998;
+$rh-radius: 12px;
+$rh-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$rh-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+.rh-card {
+  background: $rh-card;
+  border: 1px solid $rh-border;
+  border-radius: $rh-radius;
+  padding: 20px;
+  box-shadow: $rh-shadow-sm;
+}
+
+.rh-page-title {
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: #1a2744;
+}
+
+.rh-filter-panel {
+  background: $rh-card;
+  border: 1px solid $rh-border;
+  border-radius: $rh-radius;
+  padding: 16px 20px;
+  box-shadow: $rh-shadow-sm;
+  margin-bottom: 24px;
+}
+
+.rh-filter-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1a2744;
+}
+
+.rh-badge-soon {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: lowercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: $rh-sidebar-active;
+  color: $rh-sidebar-active-text;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.rh-badge-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid $rh-muted;
+  color: $rh-muted;
+  font-family: "Nunito", sans-serif;
+}
+
+.rh-page-container {
+  background: $rh-bg;
+}
+
+.platform--rh {
+  .platform-content {
+    background-color: $rh-bg;
+  }
+}

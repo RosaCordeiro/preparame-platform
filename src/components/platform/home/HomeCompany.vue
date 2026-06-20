@@ -1,25 +1,18 @@
 <template>
-  <DashBoardAnswers
-  :companyId="companyId"
-  >
-  </DashBoardAnswers>
+  <DashBoardAnswers :companyId="companyId" variant="rh" />
 </template>
 
 <script>
-import DashBoardAnswers from './templates/DashBoardAnswers.vue';
+import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
+
 export default {
   components: {
     DashBoardAnswers,
-
   },
-  data(){
-    return{
-      companyId: localStorage.getItem("companyId")
-    }
+  data() {
+    return {
+      companyId: localStorage.getItem("companyId"),
+    };
   },
-}
+};
 </script>
-
-<style>
-
-</style>

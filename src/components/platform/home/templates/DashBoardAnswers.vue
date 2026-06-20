@@ -1,12 +1,59 @@
 <template>
   <div
     id="q-app"
-    class="home-company"
-    :style="{
-      padding: this.userType === 'ADMIN' ? '0' : '20px',
-    }"
+    :class="[
+      'home-company',
+      isRhVariant ? 'home-company--rh' : 'home-company--legacy',
+    ]"
+    :style="legacyPaddingStyle"
   >
     <q-page>
+      <div v-if="isRhVariant" class="rh-page-header">
+        <div class="rh-page-header__content">
+          <span class="rh-page-header__eyebrow">Programa de Demissão Responsável</span>
+          <h1 class="rh-page-title">Indicadores de Riscos</h1>
+          <p class="rh-page-subtitle">
+            Monitoramento completo com comparativo de mercado
+          </p>
+        </div>
+        <span class="rh-badge-info">
+          <q-icon name="mdi-chart-bar" size="14px" />
+          Dados comparados ao benchmark de mercado
+        </span>
+      </div>
+
+      <RhFilterPanel
+        v-if="isRhVariant"
+        :disable-filters="disableFilters"
+        :parameters="parameters"
+        :period.sync="period"
+        :unity.sync="unity"
+        :area.sync="area"
+        :role.sync="role"
+        :dismissal-type.sync="dismissalType"
+        :gender.sync="gender"
+        :etnia.sync="etnia"
+        :pcd.sync="pcd"
+        :state.sync="state"
+        :city.sync="city"
+        :select-all-periods.sync="selectAllPeriods"
+        :select-all-unity.sync="selectAllUnity"
+        :select-all-area.sync="selectAllArea"
+        :select-all-role.sync="selectAllRole"
+        :select-all-dismissal-type.sync="selectAllDismissalType"
+        :select-all-gender.sync="selectAllGender"
+        :select-all-etnia.sync="selectAllEtnia"
+        :select-all-pcd.sync="selectAllPcd"
+        :select-all-state.sync="selectAllState"
+        :select-all-city.sync="selectAllCity"
+        :selected-filters="selectedFilters"
+        :dismissal-type-options="dismissalTypeOptions"
+        :gender-options="genderOptions"
+        :etnia-options="etniaOptions"
+        :get-option-label="getOptionLabel"
+      />
+
+      <template v-else>
       <div class="box__button-actions">
         <q-tooltip
           anchor="top middle"
@@ -408,8 +455,49 @@
         </div>
         <div v-else class="nofilter">Nenhum filtro selecionado</div>
       </div>
+      </template>
 
-      <div class="box__three-columns">
+      <div v-if="isRhVariant" class="rh-dashboard-grid">
+        <RhMetricCard
+          title="e-NPS"
+          subtitle="Recomendação da empresa pelos ex-colaboradores"
+          :company-value="removePercent(nps)"
+          :general-value="removePercent(npsGeneral)"
+          :min-value="-100"
+          :max-value="100"
+          :intersection-value="0"
+          :less-than-five="lessThanFive"
+          @info="openMetricInfo('e-NPS')"
+        />
+
+        <RhMetricCard
+          title="Risco Trabalhista"
+          subtitle="Exposição a riscos de ações trabalhistas"
+          :company-value="removePercent(laborRisk)"
+          :general-value="removePercent(laborRiskGeneral)"
+          :min-value="0"
+          :max-value="10"
+          :intersection-value="4"
+          :inverted-colors="true"
+          :less-than-five="lessThanFive"
+          @info="openMetricInfo('Risco Trabalhista')"
+        />
+
+        <RhMetricCard
+          title="Marca"
+          subtitle="Percepção da marca empregadora"
+          :company-value="removePercent(brandRisk)"
+          :general-value="removePercent(brandRiskGeneral)"
+          :min-value="0"
+          :max-value="10"
+          :intersection-value="4"
+          :inverted-colors="true"
+          :less-than-five="lessThanFive"
+          @info="openMetricInfo('Marca')"
+        />
+      </div>
+
+      <div v-else class="box__three-columns">
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
 
@@ -478,6 +566,116 @@
         </div>
       </div>
 
+      <template v-if="isRhVariant">
+        <div class="rh-dashboard-grid">
+          <RhMetricCard
+            title="Realocados"
+            subtitle="Percentual de ex-colaboradores recolocados"
+            :company-value="removePercent(realocateds)"
+            :general-value="removePercent(realocatedsGeneral)"
+            :min-value="0"
+            :max-value="100"
+            :intersection-value="50"
+            suffix="%"
+            @info="openMetricInfo('Realocados')"
+          />
+
+          <RhStatCard
+            title="Acolhidos"
+            subtitle="Total de pessoas acolhidas no programa"
+            info-label="Acolhidos"
+            :company-value="welcomed"
+            :general-value="welcomedGeneral"
+            :insufficient="lessThanFive"
+            @info="openMetricInfo"
+          />
+
+          <RhStatCard
+            title="Pessoas recolocadas"
+            subtitle="Quantidade absoluta no período"
+            info-label="Quantidade de pessoas recolocadas"
+            :company-value="realocatedCount"
+            :insufficient="lessThanFive"
+          />
+        </div>
+
+        <div class="rh-dashboard-grid">
+          <RhMetricCard
+            title="Cálculos da rescisão"
+            subtitle="Ex-colaboradores que consideram os cálculos corretos"
+            :company-value="removePercent(termination)"
+            :general-value="removePercent(terminationGeneral)"
+            suffix="%"
+            :intersection-value="50"
+            :less-than-five="lessThanFive"
+            @info="openMetricInfo('Cálculos da rescisão estão corretos?')"
+          />
+
+          <RhMetricCard
+            title="Pendências trabalhistas"
+            subtitle="Incidência de pendências reportadas"
+            :company-value="removePercent(laborIssues)"
+            :general-value="removePercent(laborIssuesGeneral)"
+            suffix="%"
+            :min-value="0"
+            :max-value="10"
+            :intersection-value="3"
+            :inverted-colors="true"
+            :less-than-five="lessThanFive"
+            @info="openMetricInfo('Pendências trabalhistas')"
+          />
+        </div>
+
+        <RhSurveyPanel
+          v-if="showShutdownSurvey"
+          title="Avaliação pós demissão"
+          subtitle="Notas atribuídas pelos ex-colaboradores"
+          info-label="Avaliação pós demissão"
+          :columns="shutdownSurveyColumns"
+          :min-value="1"
+          :max-value="10"
+          :intersection-value="7"
+          @info="openMetricInfo"
+        />
+
+        <RhSectionCard
+          v-if="showFeelingMapSurvey"
+          title="Mapa de sentimentos"
+          subtitle="Distribuição emocional após o desligamento"
+          badge="Sua empresa"
+          info-label="Mapa de sentimentos"
+          @info="openMetricInfo"
+        >
+          <apexchart
+            type="polarArea"
+            height="360px"
+            style="width: 100%"
+            :options="chartOptions"
+            :series="displayFeelingMapChart.map((item) => item.count)"
+          />
+        </RhSectionCard>
+
+        <RhSurveyPanel
+          v-if="showFeelingMapSurvey"
+          title="Comparativo mapa de sentimentos"
+          subtitle="Sua empresa versus média geral de mercado"
+          :columns="feelingSurveyColumns"
+          :min-value="1"
+          :max-value="100"
+          :intersection-value="50"
+          suffix="%"
+        />
+
+        <RhSectionCard
+          v-if="companyQuestions.length > 0"
+          title="Perguntas da Empresa"
+          subtitle="Respostas qualitativas registradas"
+        >
+          <CompanyQuestionsCard :companyQuestions="companyQuestions" />
+        </RhSectionCard>
+      </template>
+
+      <template v-else>
       <div class="box__two-columns">
         <div class="box__two-columns-item">
           <IconInfo label="Realocados" />
@@ -656,9 +854,11 @@
         <h2>Perguntas da Empresa</h2>
         <CompanyQuestionsCard :companyQuestions="companyQuestions" />
       </div>
+      </template>
     </q-page>
 
     <TextDialogWidget ref="infoWidget" />
+    <InformationDialogWidget ref="metricInfoWidget" />
   </div>
 </template>
 
@@ -669,9 +869,15 @@ import RowChartNoEmojiString from "../company/RowChartNoEmojiString.vue";
 import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
 import IconInfo from "src/components/general/IconInfo.vue";
+import InformationDialogWidget from "src/components/general/InformationDialogWidget.vue";
 import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
 import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
 import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
+import RhFilterPanel from "../company/RhFilterPanel.vue";
+import RhMetricCard from "../company/RhMetricCard.vue";
+import RhStatCard from "../company/RhStatCard.vue";
+import RhSurveyPanel from "../company/RhSurveyPanel.vue";
+import RhSectionCard from "../company/RhSectionCard.vue";
 
 export default {
   components: {
@@ -679,10 +885,16 @@ export default {
     TextDialogWidget,
     RowChartOneEmoji,
     IconInfo,
+    InformationDialogWidget,
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
     RowChartOneEmojiWithoutIntersection,
     CompanyQuestionsCard,
+    RhFilterPanel,
+    RhMetricCard,
+    RhStatCard,
+    RhSurveyPanel,
+    RhSectionCard,
   },
   data() {
     return {
@@ -735,14 +947,94 @@ export default {
       isLoading: false,
     };
   },
-  props: ["companyId"],
+  props: {
+    companyId: [String, Number],
+    variant: {
+      type: String,
+      default: "legacy",
+    },
+  },
   computed: {
+    isRhVariant() {
+      return this.variant === "rh";
+    },
+    legacyPaddingStyle() {
+      if (this.isRhVariant) {
+        return {};
+      }
+
+      return {
+        padding: this.userType === "ADMIN" ? "0" : "20px",
+      };
+    },
     disableFilters() {
       return (
         this.companyId === "TUDO" ||
         this.companyId === "B2B" ||
         this.companyId === "B2C"
       );
+    },
+    shutdownSurveyColumns() {
+      const merged = this.buildSurveyItems(
+        this.shutDown,
+        this.shutDownGeneral,
+        "question"
+      );
+
+      return [
+        {
+          key: "company",
+          title: "Sua empresa",
+          hint: "Notas de 1 a 10",
+          items: merged.companyItems,
+        },
+        {
+          key: "general",
+          title: "Média geral",
+          hint: "Notas de 1 a 10",
+          items: merged.generalItems,
+        },
+      ];
+    },
+    feelingSurveyColumns() {
+      const merged = this.buildSurveyItems(
+        this.feelingMap,
+        this.feelingMapGeneral,
+        "feeling"
+      );
+
+      return [
+        {
+          key: "company",
+          title: "Sua empresa",
+          hint: "Notas de 1 a 100",
+          items: merged.companyItems,
+        },
+        {
+          key: "general",
+          title: "Média geral",
+          hint: "Notas de 1 a 100",
+          items: merged.generalItems,
+        },
+      ];
+    },
+    displayFeelingMapChart() {
+      return this.buildSurveyItems(
+        this.feelingMap,
+        this.feelingMapGeneral,
+        "feeling"
+      ).companyItems.map((item) => ({
+        feeling: item.label,
+        count: item.value,
+      }));
+    },
+    showShutdownSurvey() {
+      return this.shutdownSurveyColumns.some(
+        (column) => column.items.length > 0
+      );
+    },
+    showFeelingMapSurvey() {
+      return this.feelingSurveyColumns.some((column) => column.items.length > 0);
     },
     selectedFilters() {
       const filters = [];
@@ -842,6 +1134,9 @@ export default {
       this.loadNpsSurveyAnswers();
     },
     feelingMap() {
+      this.setChartOptions();
+    },
+    feelingMapGeneral() {
       this.setChartOptions();
     },
     area(f) {
@@ -1006,12 +1301,61 @@ export default {
 
       return feeling.toString().split(".")[0].toLowerCase().split("(")[0];
     },
+    openMetricInfo(label) {
+      if (this.$refs.metricInfoWidget) {
+        this.$refs.metricInfoWidget.open(label);
+      }
+    },
+    buildSurveyItems(companyItems, generalItems, labelKey) {
+      const company = companyItems || [];
+      const general = generalItems || [];
+
+      const companyMap = {};
+      company.forEach((item) => {
+        companyMap[item[labelKey]] = item;
+      });
+
+      const generalMap = {};
+      general.forEach((item) => {
+        generalMap[item[labelKey]] = item;
+      });
+
+      const labels = [];
+      const seen = new Set();
+
+      [...general, ...company].forEach((item) => {
+        const label = item[labelKey];
+
+        if (!seen.has(label)) {
+          seen.add(label);
+          labels.push(label);
+        }
+      });
+
+      return {
+        labels,
+        companyItems: labels.map((label) => ({
+          label,
+          value: companyMap[label]
+            ? this.removePercent(companyMap[label].count)
+            : 0,
+          insufficient: false,
+        })),
+        generalItems: labels.map((label) => ({
+          label,
+          value: generalMap[label]
+            ? this.removePercent(generalMap[label].count)
+            : 0,
+          insufficient: false,
+        })),
+      };
+    },
     setChartOptions() {
       this.chartOptions = {
         chart: {
           type: "polarArea",
         },
-        labels: this.feelingMap.map((c) => c.feeling.toString()),
+        labels: this.displayFeelingMapChart.map((item) => item.feeling.toString()),
         stroke: {
           colors: ["#fff"],
         },
@@ -1626,7 +1970,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-.home-company {
+.home-company--legacy {
   width: 100vw;
   height: 100%;
   overflow: auto;

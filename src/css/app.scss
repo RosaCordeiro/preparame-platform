@@ -367,3 +367,7 @@ a {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
+
+@import "rh-theme.scss";
+@import "layout/rh-shell";
+@import "pages/rh-dashboard";
