@@ -125,12 +125,12 @@ export const menuByUserType = {
       {
         icon: "mdi-view-dashboard-outline",
         label: "Painel Riscos e Impactos",
-        url: "/",
+        url: "platform",
       },
       {
         icon: "mdi-alert-outline",
         label: "Indicadores de Riscos",
-        url: "/",
+        comingSoon: true,
       },
       {
         icon: "mdi-file-document-outline",

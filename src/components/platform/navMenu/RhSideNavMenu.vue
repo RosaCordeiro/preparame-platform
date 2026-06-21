@@ -1,36 +1,23 @@
 <template>
-  <div id="q-app">
+  <div id="q-app" class="rh-side-nav-root">
+    <!-- Desktop: barra fixa só com ícones -->
     <q-drawer
-      v-if="hasMenu"
-      v-model="drawerOpen"
+      v-if="hasMenu && !isOverlayMode"
+      v-model="railOpen"
       show-if-above
-      :mini="isMiniMode"
-      :mini-width="57"
-      :width="280"
+      :width="57"
       :breakpoint="1024"
       bordered
-      :overlay="isOverlayMode"
-      content-class="rh-side-nav-menu side-nav-menu"
-      @hide="onDrawerHide"
+      content-class="rh-side-nav-menu rh-side-nav-menu--rail"
     >
       <q-scroll-area class="fit">
-        <div v-if="!isMiniMode" class="rh-sidebar-header">
-          <img
-            src="../../../assets/rh/painel-demissao.png"
-            alt="Painel Demissão Responsável"
-          />
-          <h2>Olá,<br />{{ userName }}!</h2>
-        </div>
-
-        <div v-if="!isMiniMode" class="rh-sidebar-label">Menu</div>
-
-        <q-list>
+        <q-list class="rh-side-nav-menu-rail-list">
           <q-item
             v-for="(menuItem, index) in menuList"
-            :key="'item-' + index"
+            :key="'rail-' + index"
             clickable
             v-ripple="!menuItem.comingSoon"
-            class="rh-side-nav-menu-item side-nav-menu-item"
+            class="rh-side-nav-menu-item"
             :class="{
               'rh-side-nav-menu-item--active': isActive(menuItem),
               'rh-side-nav-menu-item--soon': menuItem.comingSoon,
@@ -40,14 +27,7 @@
             <q-item-section avatar>
               <q-icon :name="menuItem.icon"></q-icon>
             </q-item-section>
-            <q-item-section v-if="!isMiniMode">
-              <q-item-label>{{ menuItem.label }}</q-item-label>
-            </q-item-section>
-            <q-item-section v-if="!isMiniMode && menuItem.comingSoon" side>
-              <span class="rh-badge-soon">em breve</span>
-            </q-item-section>
             <q-tooltip
-              v-if="isMiniMode"
               anchor="center right"
               self="center left"
               :offset="[10, 0]"
@@ -59,23 +39,66 @@
         </q-list>
       </q-scroll-area>
     </q-drawer>
+
+    <!-- Mobile: drawer overlay com menu completo -->
+    <q-drawer
+      v-if="hasMenu && isOverlayMode"
+      v-model="drawerOpen"
+      show-if-above
+      :width="280"
+      :breakpoint="1024"
+      bordered
+      overlay
+      content-class="rh-side-nav-menu"
+      @hide="onDrawerHide"
+    >
+      <rh-side-nav-menu-panel
+        :menu-list="menuList"
+        :user-name="userName"
+        @item-click="onMenuClick"
+      />
+    </q-drawer>
+
+    <!-- Desktop: menu completo em overlay -->
+    <transition name="rh-nav-panel">
+      <div
+        v-if="hasMenu && !isOverlayMode && expanded"
+        class="rh-nav-overlay"
+      >
+        <div
+          class="rh-nav-overlay__backdrop"
+          @click="expanded = false"
+        ></div>
+        <aside class="rh-nav-overlay__panel rh-side-nav-menu">
+          <rh-side-nav-menu-panel
+            :menu-list="menuList"
+            :user-name="userName"
+            @item-click="onMenuClick"
+          />
+        </aside>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { menuByUserType } from "./menuConfig.js";
+import RhSideNavMenuPanel from "./RhSideNavMenuPanel.vue";
 
 export default {
+  components: {
+    RhSideNavMenuPanel,
+  },
   props: ["sideNavMenuComponent"],
   data() {
     const isMobileUA = window.mobileAndTabletCheck();
 
     return {
       menuList: [],
-      menuGroups: [],
       isMobileUA,
-      drawerOpen: true,
-      mini: false,
+      railOpen: true,
+      drawerOpen: false,
+      expanded: false,
       userName: localStorage.getItem("userName") || "Usuário",
     };
   },
@@ -89,9 +112,6 @@ export default {
 
       return this.isMobileUA || narrowViewport;
     },
-    isMiniMode() {
-      return !this.isOverlayMode && this.mini;
-    },
   },
   watch: {
     isOverlayMode: {
@@ -99,11 +119,12 @@ export default {
       handler(isOverlay) {
         if (isOverlay) {
           this.drawerOpen = false;
+          this.expanded = false;
           return;
         }
 
-        this.drawerOpen = true;
-        this.mini = false;
+        this.railOpen = true;
+        this.expanded = false;
       },
     },
     "$route.path"() {
@@ -112,8 +133,8 @@ export default {
   },
   methods: {
     onDrawerHide() {
-      if (!this.isOverlayMode) {
-        this.drawerOpen = true;
+      if (this.isOverlayMode) {
+        this.drawerOpen = false;
       }
     },
     isActive(menuItem) {
@@ -122,11 +143,7 @@ export default {
       }
 
       const currentPath = this.$router.history.current.path;
-      const targetPath = menuItem.url === "/" ? "/" : `/${menuItem.url}`;
-
-      if (menuItem.url === "/") {
-        return currentPath === "/" || currentPath === "/platform";
-      }
+      const targetPath = `/${menuItem.url}`;
 
       return (
         currentPath === targetPath ||
@@ -154,7 +171,7 @@ export default {
         return;
       }
 
-      const targetPath = url === "/" ? "/" : `/${url}`;
+      const targetPath = `/${url}`;
       if (this.$router.history.current.path !== targetPath) {
         this.$router.push({ path: targetPath }).catch((err) => {
           console.error("[RhSideNavMenu] Erro na navegação:", err);
@@ -163,6 +180,8 @@ export default {
 
       if (this.isOverlayMode) {
         this.drawerOpen = false;
+      } else {
+        this.expanded = false;
       }
     },
     goBlank(url) {
@@ -174,19 +193,17 @@ export default {
         return;
       }
 
-      this.mini = !this.mini;
+      this.expanded = !this.expanded;
     },
     loadMenu(userType) {
       const config = menuByUserType[userType];
 
       if (!config) {
         this.menuList = [];
-        this.menuGroups = [];
         return;
       }
 
       this.menuList = config.items || [];
-      this.menuGroups = [];
     },
   },
   mounted() {
