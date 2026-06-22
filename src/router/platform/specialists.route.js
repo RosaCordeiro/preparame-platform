@@ -1,8 +1,13 @@
-import SpecialistsQueryCrud from "../../components/platform/specialistsCrud/SpecialistsQueryCrud.vue"
-import SpecialistsRegisterCrud from "../../components/platform/specialistsCrud/SpecialistsRegisterCrud.vue"
-import SpecialistProvidesTimetables from "../../components/platform/specialistProvidesTimetables/SpecialistProvidesTimetables"
-import ViewProductsUser from "../../components/platform/viewProductsUser/ViewProductsUser.vue"
-import Platform from "../../layouts/Platform.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const SpecialistsQueryCrud = () =>
+  import("../../components/platform/specialistsCrud/SpecialistsQueryCrud.vue");
+const SpecialistsRegisterCrud = () =>
+  import("../../components/platform/specialistsCrud/SpecialistsRegisterCrud.vue");
+const SpecialistProvidesTimetables = () =>
+  import("../../components/platform/specialistProvidesTimetables/SpecialistProvidesTimetables");
+const ViewProductsUser = () =>
+  import("../../components/platform/viewProductsUser/ViewProductsUser.vue");
 
 const specialistRoutes = [
     {

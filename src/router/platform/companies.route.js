@@ -1,10 +1,17 @@
-import CompaniesQueryCrud from "../../components/platform/companiesCrud/CompaniesQueryCrud.vue"
-import CompanyEmployeesQueryCrud from "../../components/platform/companyEmployeesCrud/CompanyEmployeesQueryCrud.vue"
-import CompanyEmployeesRegisterCrud from "../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue"
-import CompaniesRegisterCrud from "../../components/platform/companiesCrud/CompaniesRegisterCrud.vue"
-import Platform from "../../layouts/Platform.vue"
-import SurveyQuestionsRegisterCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsRegisterCrud.vue"
-import SurveyQuestionsQueryCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const CompaniesQueryCrud = () =>
+  import("../../components/platform/companiesCrud/CompaniesQueryCrud.vue");
+const CompanyEmployeesQueryCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyEmployeesQueryCrud.vue");
+const CompanyEmployeesRegisterCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue");
+const CompaniesRegisterCrud = () =>
+  import("../../components/platform/companiesCrud/CompaniesRegisterCrud.vue");
+const SurveyQuestionsRegisterCrud = () =>
+  import("../../components/platform/surveyQuestionsCrud/SurveyQuestionsRegisterCrud.vue");
+const SurveyQuestionsQueryCrud = () =>
+  import("../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue");
 
 const companyRoutes = [
     {

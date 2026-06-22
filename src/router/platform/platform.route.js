@@ -1,9 +1,15 @@
 import Platform from "../../layouts/Platform.vue";
-import HomeDynamicTemplate from "../../components/platform/home/HomeDynamicTemplate.vue";
-import NPSSurvey from "../../components/platform/NPSSurvey/NPSSurvey.vue";
-import interviewSimulatorPresentation from "../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue";
-import interviewSimulator from "../../components/platform/interviewSimulator/InterviewSimulator.vue";
-import ReplacementsReport from "../../components/platform/replacementsReport/ReplacementsReport.vue";
+
+const HomeDynamicTemplate = () =>
+  import("../../components/platform/home/HomeDynamicTemplate.vue");
+const NPSSurvey = () =>
+  import("../../components/platform/NPSSurvey/NPSSurvey.vue");
+const interviewSimulatorPresentation = () =>
+  import("../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue");
+const interviewSimulator = () =>
+  import("../../components/platform/interviewSimulator/InterviewSimulator.vue");
+const ReplacementsReport = () =>
+  import("../../components/platform/replacementsReport/ReplacementsReport.vue");
 
 const platformRoutes = [
   {

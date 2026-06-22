@@ -6,7 +6,7 @@
           <h4>Mapa de Sentimentos - {{ title }}</h4>
         </q-card-section>
         <q-card-section v-if="feelingMap.length !== 0">
-          <apexchart
+          <ChartApex
             type="polarArea"
             height="400px"
             style="width: 100%; height: 100%"
@@ -23,7 +23,12 @@
 </template>
 
 <script>
+import ChartApex from "../../../general/charts/ChartApex.vue";
+
 export default {
+  components: {
+    ChartApex,
+  },
   props: ["feelingMap", "title"],
   data() {
     return {

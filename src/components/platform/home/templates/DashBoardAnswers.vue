@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <RhFilterPanel
+      <DashBoardRhFilters
         v-if="isRhVariant"
         :disable-filters="disableFilters"
         :parameters="parameters"
@@ -457,45 +457,27 @@
       </div>
       </template>
 
-      <div v-if="isRhVariant" class="rh-dashboard-grid">
-        <RhMetricCard
-          title="e-NPS"
-          subtitle="Recomendação da empresa pelos ex-colaboradores"
-          :company-value="removePercent(nps)"
-          :general-value="removePercent(npsGeneral)"
-          :min-value="-100"
-          :max-value="100"
-          :intersection-value="0"
-          :less-than-five="lessThanFive"
-          @info="openMetricInfo('e-NPS')"
-        />
-
-        <RhMetricCard
-          title="Risco Trabalhista"
-          subtitle="Exposição a riscos de ações trabalhistas"
-          :company-value="removePercent(laborRisk)"
-          :general-value="removePercent(laborRiskGeneral)"
-          :min-value="0"
-          :max-value="10"
-          :intersection-value="4"
-          :inverted-colors="true"
-          :less-than-five="lessThanFive"
-          @info="openMetricInfo('Risco Trabalhista')"
-        />
-
-        <RhMetricCard
-          title="Marca"
-          subtitle="Percepção da marca empregadora"
-          :company-value="removePercent(brandRisk)"
-          :general-value="removePercent(brandRiskGeneral)"
-          :min-value="0"
-          :max-value="10"
-          :intersection-value="4"
-          :inverted-colors="true"
-          :less-than-five="lessThanFive"
-          @info="openMetricInfo('Marca')"
-        />
-      </div>
+      <DashBoardRhMetrics
+        v-if="isRhVariant"
+        :nps="nps"
+        :nps-general="npsGeneral"
+        :brand-risk="brandRisk"
+        :brand-risk-general="brandRiskGeneral"
+        :labor-risk="laborRisk"
+        :labor-risk-general="laborRiskGeneral"
+        :realocateds="realocateds"
+        :realocateds-general="realocatedsGeneral"
+        :welcomed="welcomed"
+        :welcomed-general="welcomedGeneral"
+        :realocated-count="realocatedCount"
+        :termination="termination"
+        :termination-general="terminationGeneral"
+        :labor-issues="laborIssues"
+        :labor-issues-general="laborIssuesGeneral"
+        :less-than-five="lessThanFive"
+        :remove-percent="removePercent"
+        @metric-info="openMetricInfo"
+      />
 
       <div v-else class="box__three-columns">
         <div class="box__three-columns-item">
@@ -566,114 +548,17 @@
         </div>
       </div>
 
-      <template v-if="isRhVariant">
-        <div class="rh-dashboard-grid">
-          <RhMetricCard
-            title="Realocados"
-            subtitle="Percentual de ex-colaboradores recolocados"
-            :company-value="removePercent(realocateds)"
-            :general-value="removePercent(realocatedsGeneral)"
-            :min-value="0"
-            :max-value="100"
-            :intersection-value="50"
-            suffix="%"
-            @info="openMetricInfo('Realocados')"
-          />
-
-          <RhStatCard
-            title="Acolhidos"
-            subtitle="Total de pessoas acolhidas no programa"
-            info-label="Acolhidos"
-            :company-value="welcomed"
-            :general-value="welcomedGeneral"
-            :insufficient="lessThanFive"
-            @info="openMetricInfo"
-          />
-
-          <RhStatCard
-            title="Pessoas recolocadas"
-            subtitle="Quantidade absoluta no período"
-            info-label="Quantidade de pessoas recolocadas"
-            :company-value="realocatedCount"
-            :insufficient="lessThanFive"
-          />
-        </div>
-
-        <div class="rh-dashboard-grid">
-          <RhMetricCard
-            title="Cálculos da rescisão"
-            subtitle="Ex-colaboradores que consideram os cálculos corretos"
-            :company-value="removePercent(termination)"
-            :general-value="removePercent(terminationGeneral)"
-            suffix="%"
-            :intersection-value="50"
-            :less-than-five="lessThanFive"
-            @info="openMetricInfo('Cálculos da rescisão estão corretos?')"
-          />
-
-          <RhMetricCard
-            title="Pendências trabalhistas"
-            subtitle="Incidência de pendências reportadas"
-            :company-value="removePercent(laborIssues)"
-            :general-value="removePercent(laborIssuesGeneral)"
-            suffix="%"
-            :min-value="0"
-            :max-value="10"
-            :intersection-value="3"
-            :inverted-colors="true"
-            :less-than-five="lessThanFive"
-            @info="openMetricInfo('Pendências trabalhistas')"
-          />
-        </div>
-
-        <RhSurveyPanel
-          v-if="showShutdownSurvey"
-          title="Avaliação pós demissão"
-          subtitle="Notas atribuídas pelos ex-colaboradores"
-          info-label="Avaliação pós demissão"
-          :columns="shutdownSurveyColumns"
-          :min-value="1"
-          :max-value="10"
-          :intersection-value="7"
-          @info="openMetricInfo"
-        />
-
-        <RhSectionCard
-          v-if="showFeelingMapSurvey"
-          title="Mapa de sentimentos"
-          subtitle="Distribuição emocional após o desligamento"
-          badge="Sua empresa"
-          info-label="Mapa de sentimentos"
-          @info="openMetricInfo"
-        >
-          <apexchart
-            type="polarArea"
-            height="360px"
-            style="width: 100%"
-            :options="chartOptions"
-            :series="displayFeelingMapChart.map((item) => item.count)"
-          />
-        </RhSectionCard>
-
-        <RhSurveyPanel
-          v-if="showFeelingMapSurvey"
-          title="Comparativo mapa de sentimentos"
-          subtitle="Sua empresa versus média geral de mercado"
-          :columns="feelingSurveyColumns"
-          :min-value="1"
-          :max-value="100"
-          :intersection-value="50"
-          suffix="%"
-        />
-
-        <RhSectionCard
-          v-if="companyQuestions.length > 0"
-          title="Perguntas da Empresa"
-          subtitle="Respostas qualitativas registradas"
-        >
-          <CompanyQuestionsCard :companyQuestions="companyQuestions" />
-        </RhSectionCard>
-      </template>
+      <DashBoardRhSurveys
+        v-if="isRhVariant"
+        :show-shutdown-survey="showShutdownSurvey"
+        :show-feeling-map-survey="showFeelingMapSurvey"
+        :shutdown-survey-columns="shutdownSurveyColumns"
+        :feeling-survey-columns="feelingSurveyColumns"
+        :chart-options="chartOptions"
+        :display-feeling-map-chart="displayFeelingMapChart"
+        :company-questions="companyQuestions"
+        @metric-info="openMetricInfo"
+      />
 
       <template v-else>
       <div class="box__two-columns">
@@ -795,7 +680,7 @@
           <div class="tag">Sua empresa</div>
         </div>
 
-        <apexchart
+        <ChartApex
           type="polarArea"
           height="400px"
           style="width: 100%; height: 100%"
@@ -873,14 +758,17 @@ import InformationDialogWidget from "src/components/general/InformationDialogWid
 import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
 import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
 import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
-import RhFilterPanel from "../company/RhFilterPanel.vue";
-import RhMetricCard from "../company/RhMetricCard.vue";
-import RhStatCard from "../company/RhStatCard.vue";
-import RhSurveyPanel from "../company/RhSurveyPanel.vue";
-import RhSectionCard from "../company/RhSectionCard.vue";
+import ChartApex from "../../../general/charts/ChartApex.vue";
+import DashBoardRhFilters from "./DashBoardRhFilters.vue";
+import DashBoardRhMetrics from "./DashBoardRhMetrics.vue";
+import DashBoardRhSurveys from "./DashBoardRhSurveys.vue";
 
 export default {
   components: {
+    ChartApex,
+    DashBoardRhFilters,
+    DashBoardRhMetrics,
+    DashBoardRhSurveys,
     RowChart,
     TextDialogWidget,
     RowChartOneEmoji,
@@ -890,11 +778,6 @@ export default {
     RowChartOneEmojiExpanded,
     RowChartOneEmojiWithoutIntersection,
     CompanyQuestionsCard,
-    RhFilterPanel,
-    RhMetricCard,
-    RhStatCard,
-    RhSurveyPanel,
-    RhSectionCard,
   },
   data() {
     return {
