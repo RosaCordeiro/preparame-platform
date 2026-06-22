@@ -1,38 +1,30 @@
 <template>
   <div>
-    <RhSurveyPanel
+    <RhSurveyComparePanel
       v-if="showShutdownSurvey"
       title="Avaliação pós demissão"
       subtitle="Notas atribuídas pelos ex-colaboradores"
       info-label="Avaliação pós demissão"
-      :columns="shutdownSurveyColumns"
+      :groups="shutdownCompareGroups"
       :min-value="1"
       :max-value="10"
       :intersection-value="7"
       @info="$emit('metric-info', $event)"
     />
 
-    <RhSectionCard
-      v-if="showFeelingMapSurvey"
+    <RhFeelingMapCompare
+      v-if="showFeelingMapSurvey && feelingMapCharts.length > 0"
       title="Mapa de sentimentos"
-      subtitle="Distribuição emocional após o desligamento"
-      badge="Sua empresa"
+      subtitle="Distribuição emocional por conjunto de filtros"
       info-label="Mapa de sentimentos"
+      :charts="feelingMapCharts"
       @info="$emit('metric-info', $event)"
-    >
-      <ChartApex
-        type="polarArea"
-        height="360px"
-        style="width: 100%"
-        :options="chartOptions"
-        :series="displayFeelingMapChart.map((item) => item.count)"
-      />
-    </RhSectionCard>
+    />
 
     <RhSurveyPanel
       v-if="showFeelingMapSurvey"
       title="Comparativo mapa de sentimentos"
-      subtitle="Sua empresa versus média geral de mercado"
+      subtitle="Percentual por sentimento"
       :columns="feelingSurveyColumns"
       :min-value="1"
       :max-value="100"
@@ -51,25 +43,32 @@
 </template>
 
 <script>
-import ChartApex from "../../../general/charts/ChartApex.vue";
 import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
+import RhFeelingMapCompare from "../company/RhFeelingMapCompare.vue";
 import RhSectionCard from "../company/RhSectionCard.vue";
+import RhSurveyComparePanel from "../company/RhSurveyComparePanel.vue";
 import RhSurveyPanel from "../company/RhSurveyPanel.vue";
 
 export default {
   components: {
-    ChartApex,
     CompanyQuestionsCard,
+    RhFeelingMapCompare,
     RhSectionCard,
+    RhSurveyComparePanel,
     RhSurveyPanel,
   },
   props: {
     showShutdownSurvey: Boolean,
     showFeelingMapSurvey: Boolean,
-    shutdownSurveyColumns: Array,
+    shutdownCompareGroups: {
+      type: Array,
+      default: () => [],
+    },
     feelingSurveyColumns: Array,
-    chartOptions: Object,
-    displayFeelingMapChart: Array,
+    feelingMapCharts: {
+      type: Array,
+      default: () => [],
+    },
     companyQuestions: Array,
   },
 };

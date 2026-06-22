@@ -1,5 +1,4 @@
 <script>
-import UiFilterField from "../../../general/ui/UiFilterField.vue";
+import RhFilterSelect from "./RhFilterSelect.vue";
 
-export default UiFilterField;
-</script>
+export default RhFilterSelect;

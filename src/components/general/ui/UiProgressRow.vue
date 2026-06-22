@@ -1,7 +1,10 @@
 <template>
   <div class="rh-progress-row" :class="`rh-progress-row--${size}`">
-    <div v-if="label" class="rh-progress-row__label-row">
-      <span class="rh-progress-row__label">{{ label }}</span>
+    <div v-if="label || subtitle" class="rh-progress-row__label-row">
+      <div class="rh-progress-row__label-wrap">
+        <span v-if="label" class="rh-progress-row__label">{{ label }}</span>
+        <span v-if="subtitle" class="rh-progress-row__subtitle">{{ subtitle }}</span>
+      </div>
       <span
         v-if="showHeadValue"
         class="rh-progress-row__head-value"
@@ -44,6 +47,10 @@
 export default {
   props: {
     label: {
+      type: String,
+      default: "",
+    },
+    subtitle: {
       type: String,
       default: "",
     },
@@ -177,6 +184,21 @@ export default {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+}
+
+.rh-progress-row__label-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rh-progress-row__subtitle {
+  font-family: "Nunito", sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #99a5b8;
+  line-height: 1.3;
 }
 
 .rh-progress-row__label {

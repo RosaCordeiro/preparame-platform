@@ -77,6 +77,14 @@
     margin: 0 0 20px;
   }
 
+  .rh-metric-slot {
+    min-width: 0;
+  }
+
+  .rh-metric-slot--expanded {
+    grid-column: 1 / -1;
+  }
+
   .rh-section-card + .rh-section-card,
   .rh-survey-panel + .rh-section-card,
   .rh-section-card + .rh-survey-panel,

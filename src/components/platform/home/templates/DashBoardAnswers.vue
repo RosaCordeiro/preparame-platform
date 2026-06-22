@@ -22,35 +22,18 @@
         </span>
       </div>
 
-      <DashBoardRhFilters
+      <RhCompareFilters
         v-if="isRhVariant"
+        :compare-filter-sets.sync="compareFilterSets"
         :disable-filters="disableFilters"
         :parameters="parameters"
-        :period.sync="period"
-        :unity.sync="unity"
-        :area.sync="area"
-        :role.sync="role"
-        :dismissal-type.sync="dismissalType"
-        :gender.sync="gender"
-        :etnia.sync="etnia"
-        :pcd.sync="pcd"
-        :state.sync="state"
-        :city.sync="city"
-        :select-all-periods.sync="selectAllPeriods"
-        :select-all-unity.sync="selectAllUnity"
-        :select-all-area.sync="selectAllArea"
-        :select-all-role.sync="selectAllRole"
-        :select-all-dismissal-type.sync="selectAllDismissalType"
-        :select-all-gender.sync="selectAllGender"
-        :select-all-etnia.sync="selectAllEtnia"
-        :select-all-pcd.sync="selectAllPcd"
-        :select-all-state.sync="selectAllState"
-        :select-all-city.sync="selectAllCity"
-        :selected-filters="selectedFilters"
         :dismissal-type-options="dismissalTypeOptions"
         :gender-options="genderOptions"
         :etnia-options="etniaOptions"
         :get-option-label="getOptionLabel"
+        @change="loadNpsSurveyAnswers"
+        @add-set="addCompareFilterSet"
+        @remove-set="removeCompareFilterSet"
       />
 
       <template v-else>
@@ -459,24 +442,22 @@
 
       <DashBoardRhMetrics
         v-if="isRhVariant"
-        :nps="nps"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
         :nps-general="npsGeneral"
-        :brand-risk="brandRisk"
         :brand-risk-general="brandRiskGeneral"
-        :labor-risk="laborRisk"
         :labor-risk-general="laborRiskGeneral"
-        :realocateds="realocateds"
         :realocateds-general="realocatedsGeneral"
-        :welcomed="welcomed"
         :welcomed-general="welcomedGeneral"
-        :realocated-count="realocatedCount"
-        :termination="termination"
         :termination-general="terminationGeneral"
-        :labor-issues="laborIssues"
         :labor-issues-general="laborIssuesGeneral"
-        :less-than-five="lessThanFive"
         :remove-percent="removePercent"
+        :expanded-metric-key="expandedMetricKey"
+        :metric-timelines="metricTimelines"
+        :timeline-loading="timelineLoading"
         @metric-info="openMetricInfo"
+        @metric-toggle="toggleMetricExpand"
       />
 
       <div v-else class="box__three-columns">
@@ -552,10 +533,9 @@
         v-if="isRhVariant"
         :show-shutdown-survey="showShutdownSurvey"
         :show-feeling-map-survey="showFeelingMapSurvey"
-        :shutdown-survey-columns="shutdownSurveyColumns"
-        :feeling-survey-columns="feelingSurveyColumns"
-        :chart-options="chartOptions"
-        :display-feeling-map-chart="displayFeelingMapChart"
+        :shutdown-compare-groups="shutdownCompareGroups"
+        :feeling-survey-columns="feelingSurveyColumnsRh"
+        :feeling-map-charts="feelingMapCharts"
         :company-questions="companyQuestions"
         @metric-info="openMetricInfo"
       />
@@ -759,16 +739,26 @@ import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWith
 import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
 import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
 import ChartApex from "../../../general/charts/ChartApex.vue";
-import DashBoardRhFilters from "./DashBoardRhFilters.vue";
+import RhCompareFilters from "../company/RhCompareFilters.vue";
 import DashBoardRhMetrics from "./DashBoardRhMetrics.vue";
 import DashBoardRhSurveys from "./DashBoardRhSurveys.vue";
+import {
+  buildFeelingMapCharts,
+  buildFeelingSurveyColumns,
+  buildQuestionCompareGroups,
+  applyTimelineSeriesFill,
+  formatPeriodAxisLabel,
+  getTimelineSeriesLabel,
+  omitPeriod,
+  summarizeActiveFilters,
+} from "../../../../utils/rhMetricDisplay";
 
 export default {
   components: {
     ChartApex,
-    DashBoardRhFilters,
     DashBoardRhMetrics,
     DashBoardRhSurveys,
+    RhCompareFilters,
     RowChart,
     TextDialogWidget,
     RowChartOneEmoji,
@@ -828,6 +818,12 @@ export default {
       realocatedCount: 0,
       companyQuestions: [],
       isLoading: false,
+      compareFilterSets: [],
+      compareResults: [],
+      expandedMetricKey: null,
+      metricTimelines: {},
+      timelineLoading: false,
+      loadRequestId: 0,
     };
   },
   props: {
@@ -856,6 +852,32 @@ export default {
         this.companyId === "B2B" ||
         this.companyId === "B2C"
       );
+    },
+    shutdownCompareGroups() {
+      return buildQuestionCompareGroups({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.shutDownGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+        parseValue: (value) => this.removePercent(value),
+      });
+    },
+    feelingSurveyColumnsRh() {
+      return buildFeelingSurveyColumns({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.feelingMapGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+        parseValue: (value) => this.removePercent(value),
+      });
+    },
+    feelingMapCharts() {
+      return buildFeelingMapCharts({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.feelingMapGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+      });
     },
     shutdownSurveyColumns() {
       const merged = this.buildSurveyItems(
@@ -912,11 +934,22 @@ export default {
       }));
     },
     showShutdownSurvey() {
+      if (this.isRhVariant) {
+        return this.shutdownCompareGroups.length > 0;
+      }
+
       return this.shutdownSurveyColumns.some(
         (column) => column.items.length > 0
       );
     },
     showFeelingMapSurvey() {
+      if (this.isRhVariant) {
+        return (
+          this.feelingSurveyColumnsRh.some((column) => column.items.length > 0) ||
+          this.feelingMapCharts.length > 0
+        );
+      }
+
       return this.feelingSurveyColumns.some((column) => column.items.length > 0);
     },
     selectedFilters() {
@@ -1014,6 +1047,12 @@ export default {
       this.state = [];
       this.city = [];
 
+      if (this.isRhVariant) {
+        this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        this.expandedMetricKey = null;
+        this.metricTimelines = {};
+      }
+
       this.loadNpsSurveyAnswers();
     },
     feelingMap() {
@@ -1023,37 +1062,56 @@ export default {
       this.setChartOptions();
     },
     area(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     role(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     period(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     unity(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     dismissalType(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     gender(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     etnia(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     pcd(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     state(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     city(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     selectAllPeriods(value) {
-      console.log("teste");
       if (value) {
         this.period = this.parameters.period
           ? this.parameters.period.slice()
@@ -1295,159 +1353,120 @@ export default {
       }, 500);
     },
     removePercent(value) {
-      return value.toString().replace("%", "") * 1;
+      if (value === null || value === undefined || value === "") {
+        return NaN;
+      }
+
+      const raw = String(value).replace("%", "").replace(",", ".").trim();
+
+      if (raw === "N/A" || raw === "Sem informações") {
+        return NaN;
+      }
+
+      const parsed = Number(raw);
+
+      return Number.isFinite(parsed) ? parsed : NaN;
     },
-    loadParameters: async function () {
-      let filters = [];
-
-      if (this.period.length > 0) {
-        filters.push({
-          name: "period",
-          model: JSON.stringify(this.period),
-        });
-      }
-
-      if (this.unity.length > 0) {
-        filters.push({
-          name: "unity",
-          model: JSON.stringify(this.unity),
-        });
-      }
-
-      if (this.area.length > 0) {
-        filters.push({
-          name: "area",
-          model: JSON.stringify(this.area),
-        });
-      }
-
-      if (this.dismissalType.length > 0) {
-        filters.push({
-          name: "dismissalType",
-          model: JSON.stringify(this.dismissalType),
-        });
-      }
-
-      if (this.gender.length > 0) {
-        filters.push({
-          name: "gender",
-          model: JSON.stringify(this.gender),
-        });
-      }
-
-      if (this.etnia.length > 0) {
-        filters.push({
-          name: "etnia",
-          model: JSON.stringify(this.etnia),
-        });
-      }
-
-      if (this.pcd.length > 0) {
-        filters.push({
-          name: "pcd",
-          model: JSON.stringify(this.pcd),
-        });
-      }
-
-      if (this.state.length > 0) {
-        filters.push({
-          name: "state",
-          model: JSON.stringify(this.state),
-        });
-      }
-
-      if (this.city.length > 0) {
-        filters.push({
-          name: "city",
-          model: JSON.stringify(this.city),
-        });
-      }
-
-      const data = await filterCrud(
-        filters,
-        `companies/config/${this.companyId}`
-      );
-
-      this.parameters = data;
-
-      // Garantir que os parâmetros tenham valores padrão
-      if (!this.parameters.period) this.parameters.period = [];
-      if (!this.parameters.unity) this.parameters.unity = [];
-      if (!this.parameters.area) this.parameters.area = [];
-      if (!this.parameters.role) this.parameters.role = [];
-      if (!this.parameters.dismissalType) this.parameters.dismissalType = [];
-      if (!this.parameters.gender) this.parameters.gender = [];
-      if (!this.parameters.etnia) this.parameters.etnia = [];
-      if (!this.parameters.pcd) this.parameters.pcd = [];
-      if (!this.parameters.state) this.parameters.state = [];
-      if (!this.parameters.city) this.parameters.city = [];
-
-      // Filtrar roles baseado nos parâmetros recebidos
-      if (this.parameters.role && this.parameters.role.length > 0) {
-        for (let i = 0; i < this.role.length; i++) {
-          if (!this.parameters.role.includes(this.role[i])) {
-            this.role = this.role.filter((role) => role !== this.role[i]);
-          }
-        }
-      }
-
-      // Filtrar dismissalType baseado nos parâmetros recebidos
-      for (let i = this.dismissalType.length - 1; i >= 0; i--) {
-        if (!this.parameters.dismissalType.includes(this.dismissalType[i])) {
-          this.dismissalType.splice(i, 1);
-        }
-      }
-
-      // Filtrar gender baseado nos parâmetros recebidos
-      for (let i = this.gender.length - 1; i >= 0; i--) {
-        if (!this.parameters.gender.includes(this.gender[i])) {
-          this.gender.splice(i, 1);
-        }
-      }
-
-      // Filtrar etnia baseado nos parâmetros recebidos
-      for (let i = this.etnia.length - 1; i >= 0; i--) {
-        if (!this.parameters.etnia.includes(this.etnia[i])) {
-          this.etnia.splice(i, 1);
-        }
-      }
-
-      // Filtrar pcd baseado nos parâmetros recebidos
-      for (let i = this.pcd.length - 1; i >= 0; i--) {
-        if (!this.parameters.pcd.includes(this.pcd[i])) {
-          this.pcd.splice(i, 1);
-        }
-      }
-
-      // Filtrar state baseado nos parâmetros recebidos
-      for (let i = this.state.length - 1; i >= 0; i--) {
-        if (!this.parameters.state.includes(this.state[i])) {
-          this.state.splice(i, 1);
-        }
-      }
-
-      // Filtrar city baseado nos parâmetros recebidos
-      for (let i = this.city.length - 1; i >= 0; i--) {
-        if (!this.parameters.city.includes(this.city[i])) {
-          this.city.splice(i, 1);
-        }
-      }
+    createCompareFilterSet(label) {
+      return {
+        id: `filter-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        label,
+        period: null,
+        unity: null,
+        area: null,
+        role: null,
+        dismissalType: null,
+        gender: null,
+        etnia: null,
+        pcd: null,
+        state: null,
+        city: null,
+      };
     },
-    loadNpsSurveyAnswers: async function () {
-      if (this.isLoading) return;
-      this.isLoading = true;
-
-      this.loadParameters();
-
-      if (this.companyId === "null") {
-        this.$q.notify({
-          type: "error",
-          message: "Nenhuma empresa selecionada para o usuário.",
-        });
-        this.isLoading = false;
-        return;
+    hasFilterValue(value) {
+      if (Array.isArray(value)) {
+        return value.length > 0;
       }
 
+      return value !== null && value !== undefined && value !== "";
+    },
+    shouldWarnInsufficientFilterData(report) {
+      if (!report) {
+        return false;
+      }
+
+      const hasFilters = this.isRhVariant
+        ? this.hasAnyCompareFilterSelected()
+        : this.selectedFilters.length > 0;
+
+      if (!hasFilters) {
+        return false;
+      }
+
+      const nps = report.nps;
+      const noMetricData =
+        nps === undefined ||
+        nps === null ||
+        nps === "" ||
+        nps === "N/A" ||
+        nps === "0%" ||
+        nps === "Sem informações";
+
+      return Boolean(report.lessThanFive || report.noData || noMetricData);
+    },
+    normalizeFilterValues(values) {
+      if (!this.hasFilterValue(values)) {
+        return [];
+      }
+
+      if (Array.isArray(values)) {
+        return values;
+      }
+
+      return [values];
+    },
+    getLegacyFilterSet() {
+      return {
+        period: this.period,
+        unity: this.unity,
+        area: this.area,
+        role: this.role,
+        dismissalType: this.dismissalType,
+        gender: this.gender,
+        etnia: this.etnia,
+        pcd: this.pcd,
+        state: this.state,
+        city: this.city,
+      };
+    },
+    getPrimaryFilterSet() {
+      if (this.isRhVariant) {
+        if (!this.compareFilterSets.length) {
+          this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        }
+
+        return this.compareFilterSets[0];
+      }
+
+      return this.getLegacyFilterSet();
+    },
+    getReportFilterSets() {
+      if (this.isRhVariant) {
+        if (!this.compareFilterSets.length) {
+          this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        }
+
+        return this.compareFilterSets;
+      }
+
+      return [
+        {
+          label: "Sua Empresa",
+          ...this.getLegacyFilterSet(),
+        },
+      ];
+    },
+    buildReportFilters(filterSet) {
       const filters = [
         {
           name: "companyId",
@@ -1455,90 +1474,57 @@ export default {
         },
       ];
 
-      if (this.area.length > 0) {
-        filters.push({
-          name: "area",
-          model: JSON.stringify(this.area),
-        });
-      }
+      const fields = [
+        ["area", filterSet.area],
+        ["role", filterSet.role],
+        ["period", filterSet.period],
+        ["unity", filterSet.unity],
+        ["dismissalType", filterSet.dismissalType],
+        ["gender", filterSet.gender],
+        ["etnia", filterSet.etnia],
+        ["pcd", filterSet.pcd],
+        ["state", filterSet.state],
+        ["city", filterSet.city],
+      ];
 
-      if (this.role.length > 0) {
-        filters.push({
-          name: "role",
-          model: JSON.stringify(this.role),
-        });
-      }
+      fields.forEach(([name, values]) => {
+        const normalizedValues = this.normalizeFilterValues(values);
 
-      if (this.period.length > 0) {
-        filters.push({
-          name: "period",
-          model: JSON.stringify(this.period),
-        });
-      }
+        if (normalizedValues.length > 0) {
+          filters.push({
+            name,
+            model: JSON.stringify(normalizedValues),
+          });
+        }
+      });
 
-      if (this.unity.length > 0) {
-        filters.push({
-          name: "unity",
-          model: JSON.stringify(this.unity),
-        });
-      }
-
-      if (this.dismissalType.length > 0) {
-        filters.push({
-          name: "dismissalType",
-          model: JSON.stringify(this.dismissalType),
-        });
-      }
-
-      if (this.gender.length > 0) {
-        filters.push({
-          name: "gender",
-          model: JSON.stringify(this.gender),
-        });
-      }
-
-      if (this.etnia.length > 0) {
-        filters.push({
-          name: "etnia",
-          model: JSON.stringify(this.etnia),
-        });
-      }
-
-      if (this.pcd.length > 0) {
-        filters.push({
-          name: "pcd",
-          model: JSON.stringify(this.pcd),
-        });
-      }
-
-      if (this.state.length > 0) {
-        filters.push({
-          name: "state",
-          model: JSON.stringify(this.state),
-        });
-      }
-
-      if (this.city.length > 0) {
-        filters.push({
-          name: "city",
-          model: JSON.stringify(this.city),
-        });
-      }
-
-      this.$q.loading.show();
-
-      const npsSurveyReport = await filterCrud(
-        filters,
-        "reports/NPSSurveyAnswers"
-      );
-
-      this.$q.loading.hide();
-      this.isLoading = false;
-
-      if (!npsSurveyReport) {
-        return;
-      }
-
+      return filters;
+    },
+    extractCompareResult(report, label) {
+      return {
+        label,
+        nps: report.nps,
+        brandRisk: report.brandRisk,
+        laborRisk: report.laborRisk,
+        realocateds: report.realocateds,
+        welcomed: report.welcomed,
+        termination: report.termination,
+        laborIssues: report.laborIssues,
+        realocatedCount: report.realocatedCount,
+        lessThanFive: report.lessThanFive,
+        shutDown: report.shutDown || [],
+        feelingMap: report.feelingMap || [],
+      };
+    },
+    summarizeFilterSet(filterSet) {
+      return summarizeActiveFilters(filterSet, {
+        dismissalType: (value) =>
+          this.getOptionLabel(this.dismissalTypeOptions, value),
+        gender: (value) => this.getOptionLabel(this.genderOptions, value),
+        etnia: (value) => this.getOptionLabel(this.etniaOptions, value),
+      });
+    },
+    assignPrimaryReport(npsSurveyReport) {
       this.nps = npsSurveyReport.nps;
       this.brandRisk = npsSurveyReport.brandRisk;
       this.laborRisk = npsSurveyReport.laborRisk;
@@ -1563,57 +1549,378 @@ export default {
       this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
       this.shutDownGeneral = npsSurveyReport.general.shutDown;
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
-
       this.lessThanFive = npsSurveyReport.lessThanFive;
       this.companyQuestions =
         npsSurveyReport.companyQuestions == null
           ? []
           : npsSurveyReport.companyQuestions;
+    },
+    addCompareFilterSet() {
+      if (this.compareFilterSets.length >= 3) {
+        return;
+      }
 
-      // Verificar se não há dados suficientes para os filtros aplicados
-      const hasNewFilters =
-        this.dismissalType.length > 0 ||
-        this.gender.length > 0 ||
-        this.etnia.length > 0 ||
-        this.pcd.length > 0;
-      const hasNoData =
-        !npsSurveyReport.nps ||
-        npsSurveyReport.nps === "" ||
-        npsSurveyReport.nps === "0%" ||
-        npsSurveyReport.nps === "Sem informações";
+      this.compareFilterSets.push(
+        this.createCompareFilterSet(`Filtro ${this.compareFilterSets.length + 1}`)
+      );
+      this.loadNpsSurveyAnswers();
+    },
+    removeCompareFilterSet(index) {
+      if (index === 0) {
+        return;
+      }
+
+      this.compareFilterSets.splice(index, 1);
+      this.compareFilterSets.forEach((set, setIndex) => {
+        set.label = `Filtro ${setIndex + 1}`;
+      });
+      this.loadNpsSurveyAnswers();
+    },
+    extractTimelineValue(report, metricKey, useGeneral) {
+      if (!report) {
+        return null;
+      }
+
+      const source = useGeneral ? report.general : report;
+      const rawMap = {
+        nps: source.nps,
+        laborRisk: source.laborRisk,
+        brandRisk: source.brandRisk,
+        realocateds: source.realocateds,
+        welcomed: source.welcomed,
+        realocatedCount: source.realocatedCount,
+        termination: source.termination,
+        laborIssues: source.laborIssues,
+      };
+      const raw = rawMap[metricKey];
 
       if (
-        npsSurveyReport.noData ||
-        (hasNewFilters && hasNoData) ||
-        (this.selectedFilters.length > 0 && hasNoData)
+        raw === undefined ||
+        raw === null ||
+        raw === "" ||
+        raw === "N/A" ||
+        raw === "Sem informações"
       ) {
-        this.$q.notify({
-          type: "warning",
-          message: "Atenção\nNão há dados suficientes para este filtro.",
-          html: true,
-          timeout: 3000,
+        return null;
+      }
+
+      if (metricKey === "welcomed") {
+        if (String(raw).includes("/")) {
+          return parseInt(String(raw).split("/")[0], 10);
+        }
+      }
+
+      if (metricKey === "realocatedCount") {
+        return Number(raw);
+      }
+
+      return this.removePercent(raw);
+    },
+    async loadMetricTimeline(metricKey) {
+      const periods = (this.parameters.period || []).slice();
+
+      if (!periods.length) {
+        this.$set(this.metricTimelines, metricKey, {
+          categories: [],
+          series: [],
         });
+        return;
       }
 
-      function compareFeelings(a, b) {
-        if (a.feeling < b.feeling) {
-          return -1;
-        }
-        if (a.feeling > b.feeling) {
-          return 1;
-        }
-        return 0;
+      this.timelineLoading = true;
+      const filterSets = this.getReportFilterSets();
+
+      try {
+        const reportsByPeriod = await Promise.all(
+          periods.map(async (period) => {
+            const reports = await Promise.all(
+              filterSets.map((set) =>
+                filterCrud(
+                  this.buildReportFilters({
+                    ...omitPeriod(set),
+                    period,
+                  }),
+                  "reports/NPSSurveyAnswers"
+                )
+              )
+            );
+
+            return {
+              period,
+              reports,
+            };
+          })
+        );
+
+        const series = filterSets.map((set, setIndex) => ({
+          name: getTimelineSeriesLabel(set, setIndex, this.compareFilterSets),
+          data: applyTimelineSeriesFill(
+            metricKey,
+            reportsByPeriod.map(({ reports }) =>
+              this.extractTimelineValue(reports[setIndex], metricKey, false)
+            )
+          ),
+        }));
+
+        series.push({
+          name: "Média Geral",
+          data: applyTimelineSeriesFill(
+            metricKey,
+            reportsByPeriod.map(({ reports }) =>
+              this.extractTimelineValue(reports[0], metricKey, true)
+            )
+          ),
+        });
+
+        this.$set(this.metricTimelines, metricKey, {
+          categories: periods.map((period) => formatPeriodAxisLabel(period)),
+          rawPeriods: periods,
+          series,
+        });
+      } finally {
+        this.timelineLoading = false;
+      }
+    },
+    async toggleMetricExpand(metricKey) {
+      if (this.expandedMetricKey === metricKey) {
+        this.expandedMetricKey = null;
+        return;
       }
 
-      this.feelingMap.sort(compareFeelings);
-      this.feelingMapGeneral.sort(compareFeelings);
+      this.expandedMetricKey = metricKey;
+      await this.loadMetricTimeline(metricKey);
+    },
+    hasAnyCompareFilterSelected() {
+      if (!this.isRhVariant) {
+        return this.selectedFilters.length > 0;
+      }
 
-      this.dashboardsLoaded = true;
+      return this.compareFilterSets.some((set) => {
+        return [
+          set.period,
+          set.unity,
+          set.area,
+          set.role,
+          set.dismissalType,
+          set.gender,
+          set.etnia,
+          set.pcd,
+          set.state,
+          set.city,
+        ].some((value) => this.hasFilterValue(value));
+      });
+    },
+    pruneScalarFilter(set, field, options) {
+      const value = set[field];
 
-      this.$refs.infoWidget.close();
-      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
+      if (!this.hasFilterValue(value) || !options || options.length === 0) {
+        set[field] = Array.isArray(value) ? [] : null;
+        return;
+      }
 
-      this.isLoading = false;
+      if (Array.isArray(value)) {
+        set[field] = value.filter((item) => options.includes(item));
+        return;
+      }
+
+      if (!options.includes(value)) {
+        set[field] = null;
+      }
+    },
+    pruneFilterSet(set) {
+      this.pruneScalarFilter(set, "period", this.parameters.period);
+      this.pruneScalarFilter(set, "unity", this.parameters.unity);
+      this.pruneScalarFilter(set, "area", this.parameters.area);
+      this.pruneScalarFilter(set, "role", this.parameters.role);
+      this.pruneScalarFilter(set, "dismissalType", this.parameters.dismissalType);
+      this.pruneScalarFilter(set, "gender", this.parameters.gender);
+      this.pruneScalarFilter(set, "etnia", this.parameters.etnia);
+      this.pruneScalarFilter(set, "pcd", this.parameters.pcd);
+      this.pruneScalarFilter(set, "state", this.parameters.state);
+      this.pruneScalarFilter(set, "city", this.parameters.city);
+    },
+    loadParameters: async function () {
+      let filters = [];
+
+      if (!this.isRhVariant) {
+        const activeSet = this.getPrimaryFilterSet();
+
+        if (activeSet.period && activeSet.period.length > 0) {
+          filters.push({
+            name: "period",
+            model: JSON.stringify(activeSet.period),
+          });
+        }
+
+        if (activeSet.unity && activeSet.unity.length > 0) {
+          filters.push({
+            name: "unity",
+            model: JSON.stringify(activeSet.unity),
+          });
+        }
+
+        if (activeSet.area && activeSet.area.length > 0) {
+          filters.push({
+            name: "area",
+            model: JSON.stringify(activeSet.area),
+          });
+        }
+
+        if (activeSet.dismissalType && activeSet.dismissalType.length > 0) {
+          filters.push({
+            name: "dismissalType",
+            model: JSON.stringify(activeSet.dismissalType),
+          });
+        }
+
+        if (activeSet.gender && activeSet.gender.length > 0) {
+          filters.push({
+            name: "gender",
+            model: JSON.stringify(activeSet.gender),
+          });
+        }
+
+        if (activeSet.etnia && activeSet.etnia.length > 0) {
+          filters.push({
+            name: "etnia",
+            model: JSON.stringify(activeSet.etnia),
+          });
+        }
+
+        if (activeSet.pcd && activeSet.pcd.length > 0) {
+          filters.push({
+            name: "pcd",
+            model: JSON.stringify(activeSet.pcd),
+          });
+        }
+
+        if (activeSet.state && activeSet.state.length > 0) {
+          filters.push({
+            name: "state",
+            model: JSON.stringify(activeSet.state),
+          });
+        }
+
+        if (activeSet.city && activeSet.city.length > 0) {
+          filters.push({
+            name: "city",
+            model: JSON.stringify(activeSet.city),
+          });
+        }
+      }
+
+      const data = await filterCrud(
+        filters,
+        `companies/config/${this.companyId}`
+      );
+
+      this.parameters = data;
+
+      // Garantir que os parâmetros tenham valores padrão
+      if (!this.parameters.period) this.parameters.period = [];
+      if (!this.parameters.unity) this.parameters.unity = [];
+      if (!this.parameters.area) this.parameters.area = [];
+      if (!this.parameters.role) this.parameters.role = [];
+      if (!this.parameters.dismissalType) this.parameters.dismissalType = [];
+      if (!this.parameters.gender) this.parameters.gender = [];
+      if (!this.parameters.etnia) this.parameters.etnia = [];
+      if (!this.parameters.pcd) this.parameters.pcd = [];
+      if (!this.parameters.state) this.parameters.state = [];
+      if (!this.parameters.city) this.parameters.city = [];
+
+      if (this.isRhVariant) {
+        this.compareFilterSets.forEach((set) => this.pruneFilterSet(set));
+      } else {
+        this.pruneFilterSet(this.getPrimaryFilterSet());
+      }
+    },
+    loadNpsSurveyAnswers: async function () {
+      const requestId = ++this.loadRequestId;
+      this.isLoading = true;
+
+      try {
+        await this.loadParameters();
+
+        if (requestId !== this.loadRequestId) {
+          return;
+        }
+
+        if (this.companyId === "null") {
+          this.$q.notify({
+            type: "error",
+            message: "Nenhuma empresa selecionada para o usuário.",
+          });
+          return;
+        }
+
+        const filterSets = this.getReportFilterSets();
+
+        this.$q.loading.show();
+
+        const reports = await Promise.all(
+          filterSets.map((set) =>
+            filterCrud(this.buildReportFilters(set), "reports/NPSSurveyAnswers")
+          )
+        );
+
+        if (requestId !== this.loadRequestId) {
+          return;
+        }
+
+        const npsSurveyReport = reports[0];
+
+        if (!npsSurveyReport) {
+          return;
+        }
+
+        this.assignPrimaryReport(npsSurveyReport);
+        this.compareResults = reports.map((report, index) =>
+          this.extractCompareResult(report, filterSets[index].label)
+        );
+
+        if (this.expandedMetricKey) {
+          await this.loadMetricTimeline(this.expandedMetricKey);
+        }
+
+        // Avisar somente quando há filtro ativo e o relatório não retorna métricas
+        if (this.shouldWarnInsufficientFilterData(npsSurveyReport)) {
+          this.$q.notify({
+            type: "warning",
+            message: "Atenção\nNão há dados suficientes para este filtro.",
+            html: true,
+            timeout: 3000,
+          });
+        }
+
+        function compareFeelings(a, b) {
+          if (a.feeling < b.feeling) {
+            return -1;
+          }
+          if (a.feeling > b.feeling) {
+            return 1;
+          }
+          return 0;
+        }
+
+        this.feelingMap.sort(compareFeelings);
+        this.feelingMapGeneral.sort(compareFeelings);
+
+        this.dashboardsLoaded = true;
+
+        this.$refs.infoWidget.close();
+        if (
+          !this.isRhVariant &&
+          npsSurveyReport.lessThanFive &&
+          this.shouldWarnInsufficientFilterData(npsSurveyReport)
+        ) {
+          this.$refs.infoWidget.open();
+        }
+      } finally {
+        if (requestId === this.loadRequestId) {
+          this.$q.loading.hide();
+          this.isLoading = false;
+        }
+      }
     },
     async downloadExcel() {
       this.downloadLoading = true;
@@ -1841,6 +2148,10 @@ export default {
   },
   async mounted() {
     this.mobile = window.mobileAndTabletCheck();
+
+    if (this.isRhVariant) {
+      this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+    }
 
     if (this.userType !== "ADMIN") {
       this.loadParameters();
