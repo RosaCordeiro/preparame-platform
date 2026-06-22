@@ -11,9 +11,9 @@ function urlQueryBuilder(url, cols) {
                 }
 
                 if (filter.model.label) {
-                    queryString += `${filter.name}=${filter.model.value}`;
+                    queryString += `${filter.name}=${encodeURIComponent(filter.model.value)}`;
                 } else {
-                    queryString += `${filter.name}=${filter.model}`;
+                    queryString += `${filter.name}=${encodeURIComponent(filter.model)}`;
                 }
             }
         });

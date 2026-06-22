@@ -1,27 +1,43 @@
 <template>
-  <UiSectionCard
-    :title="title"
-    :subtitle="subtitle"
-    :info-label="infoLabel"
-    @info="$emit('info', $event)"
+  <div
+    class="rh-stat-card-wrap"
+    :class="{
+      'rh-stat-card-wrap--clickable': clickable,
+      'rh-stat-card-wrap--expanded': expanded,
+    }"
+    @click="handleCardClick"
   >
+    <UiSectionCard
+      :title="title"
+      :subtitle="subtitle"
+      :info-label="infoLabel"
+      @info="$emit('info', $event)"
+    >
     <div class="rh-stat-card__grid">
-      <div class="rh-stat-card__item">
-        <span class="rh-stat-card__item-label">{{ companyLabel }}</span>
+      <div
+        v-for="(row, index) in displayRows"
+        :key="`${row.label}-${index}`"
+        class="rh-stat-card__item"
+        :class="{ 'rh-stat-card__item--muted': row.muted }"
+      >
+        <div class="rh-stat-card__item-head">
+          <span class="rh-stat-card__item-label">{{ row.label }}</span>
+          <span v-if="row.subtitle" class="rh-stat-card__item-subtitle">
+            {{ row.subtitle }}
+          </span>
+        </div>
         <span
           class="rh-stat-card__item-value"
-          :class="{ 'rh-stat-card__item-value--muted': insufficient }"
+          :class="{ 'rh-stat-card__item-value--muted': row.insufficient }"
         >
-          {{ displayCompanyValue }}
+          {{ formatValue(row) }}
         </span>
       </div>
-
-      <div v-if="hasGeneral" class="rh-stat-card__item rh-stat-card__item--muted">
-        <span class="rh-stat-card__item-label">{{ generalLabel }}</span>
-        <span class="rh-stat-card__item-value">{{ displayGeneralValue }}</span>
-      </div>
     </div>
-  </UiSectionCard>
+
+    <slot />
+    </UiSectionCard>
+  </div>
 </template>
 
 <script>
@@ -60,6 +76,10 @@ export default {
       type: [Number, String],
       default: "",
     },
+    compareRows: {
+      type: Array,
+      default: () => [],
+    },
     insufficient: {
       type: Boolean,
       default: false,
@@ -67,6 +87,14 @@ export default {
     suffix: {
       type: String,
       default: "",
+    },
+    clickable: {
+      type: Boolean,
+      default: false,
+    },
+    expanded: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -77,29 +105,87 @@ export default {
         this.generalValue !== undefined
       );
     },
-    displayCompanyValue() {
-      if (this.insufficient) {
+    displayRows() {
+      const rows = [];
+
+      if (this.compareRows.length > 0) {
+        this.compareRows.forEach((row) => {
+          rows.push({
+            label: row.label,
+            subtitle: row.subtitle || "",
+            value: row.value,
+            insufficient: row.insufficient || false,
+            muted: false,
+          });
+        });
+      } else {
+        rows.push({
+          label: this.companyLabel,
+          value: this.companyValue,
+          insufficient: this.insufficient,
+          muted: false,
+        });
+      }
+
+      if (this.hasGeneral) {
+        rows.push({
+          label: this.generalLabel,
+          value: this.generalValue,
+          insufficient: false,
+          muted: true,
+        });
+      }
+
+      return rows;
+    },
+  },
+  methods: {
+    formatValue(row) {
+      if (row.insufficient) {
         return "Informação insuficiente";
       }
 
-      if (this.companyValue === "" || this.companyValue === null) {
+      if (
+        row.value === "" ||
+        row.value === null ||
+        row.value === undefined ||
+        (typeof row.value === "number" && Number.isNaN(row.value))
+      ) {
         return "N/A";
       }
 
-      return `${this.companyValue}${this.suffix}`;
+      return `${row.value}${this.suffix}`;
     },
-    displayGeneralValue() {
-      if (this.generalValue === "" || this.generalValue === null) {
-        return "N/A";
+    handleCardClick(event) {
+      if (!this.clickable) {
+        return;
       }
 
-      return `${this.generalValue}${this.suffix}`;
+      if (event.target.closest(".q-btn")) {
+        return;
+      }
+
+      this.$emit("toggle");
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.rh-stat-card-wrap--clickable {
+  cursor: pointer;
+}
+
+.rh-stat-card-wrap--clickable:hover :deep(.rh-section-card) {
+  border-color: #c9e8dc;
+  box-shadow: 0 4px 16px rgba(21, 170, 124, 0.08);
+}
+
+.rh-stat-card-wrap--expanded :deep(.rh-section-card) {
+  border-color: #15aa7c;
+  box-shadow: 0 6px 20px rgba(21, 170, 124, 0.12);
+}
+
 .rh-stat-card__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -125,6 +211,12 @@ export default {
   }
 }
 
+.rh-stat-card__item-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .rh-stat-card__item-label {
   font-family: "Nunito", sans-serif;
   font-size: 0.6875rem;
@@ -132,6 +224,16 @@ export default {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #667998;
+}
+
+.rh-stat-card__item-subtitle {
+  font-family: "Nunito", sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: #99a5b8;
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .rh-stat-card__item-value {

@@ -12,16 +12,6 @@
     :pcd.sync="pcd"
     :state.sync="state"
     :city.sync="city"
-    :select-all-periods.sync="selectAllPeriods"
-    :select-all-unity.sync="selectAllUnity"
-    :select-all-area.sync="selectAllArea"
-    :select-all-role.sync="selectAllRole"
-    :select-all-dismissal-type.sync="selectAllDismissalType"
-    :select-all-gender.sync="selectAllGender"
-    :select-all-etnia.sync="selectAllEtnia"
-    :select-all-pcd.sync="selectAllPcd"
-    :select-all-state.sync="selectAllState"
-    :select-all-city.sync="selectAllCity"
     :selected-filters="selectedFilters"
     :dismissal-type-options="dismissalTypeOptions"
     :gender-options="genderOptions"
@@ -50,16 +40,6 @@ export default {
     pcd: Array,
     state: Array,
     city: Array,
-    selectAllPeriods: Boolean,
-    selectAllUnity: Boolean,
-    selectAllArea: Boolean,
-    selectAllRole: Boolean,
-    selectAllDismissalType: Boolean,
-    selectAllGender: Boolean,
-    selectAllEtnia: Boolean,
-    selectAllPcd: Boolean,
-    selectAllState: Boolean,
-    selectAllCity: Boolean,
     selectedFilters: Array,
     dismissalTypeOptions: Array,
     genderOptions: Array,
