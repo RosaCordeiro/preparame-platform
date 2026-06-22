@@ -57,6 +57,22 @@ Telas admin usam componentes genéricos em `components/general/crud/`:
 
 Cada domínio expõe `*QueryCrud.vue` e `*RegisterCrud.vue` com config declarativa (columns, filters, registerColumns).
 
+### Componentes UI genéricos (`components/general/ui/`)
+
+Primitivos reutilizáveis da plataforma (cards, filtros, barras de progresso):
+- `UiFilterPanel` / `UiFilterField` — shell e campo de filtro multi-select
+- `UiMetricCard` / `UiStatCard` — cards de indicadores
+- `UiProgressRow` — barra de progresso comparativa
+- `UiSectionCard` / `UiSurveyPanel` — seções e painéis de pesquisa
+
+Wrappers de domínio RH em `platform/home/company/Rh*` reexportam os `Ui*` (ex.: `RhMetricCard` → `UiMetricCard`). Telas específicas compõem os genéricos (ex.: `RhFilterPanel` usa `UiFilterPanel` + campos RH).
+
+### Performance (rotas)
+
+Rotas da plataforma em `src/router/platform/` usam lazy loading (`() => import(...)`) para code-splitting. Shell `Platform.vue` permanece estático.
+
+Gráficos ApexCharts carregam via `components/general/charts/ChartApex.vue` (não no boot global).
+
 ### Autenticação
 
 - Token JWT + refresh em `localStorage`

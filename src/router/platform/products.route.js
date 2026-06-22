@@ -1,11 +1,18 @@
-import ScheduleProductsList from "../../components/platform/scheduleProducts/ScheduleProductsList.vue";
-import ProductsQueryCrud from "../../components/platform/productsCrud/ProductsQueryCrud.vue";
-import ProductsRegisterCrud from "../../components/platform/productsCrud/ProductsRegisterCrud.vue";
-import AddProductToUserRegisterCrud from "../../components/platform/addProductToUserCrud/AddProductToUserRegisterCrud";
-import ScheduleSpecialistsList from "../../components/platform/scheduleProducts/ScheduleSpecialistsList.vue";
-import ViewProductsUser from "../../components/platform/viewProductsUser/ViewProductsUser.vue";
-import Orders from "../../components/platform/orders/Orders.vue";
 import Platform from "../../layouts/Platform.vue";
+
+const ScheduleProductsList = () =>
+  import("../../components/platform/scheduleProducts/ScheduleProductsList.vue");
+const ProductsQueryCrud = () =>
+  import("../../components/platform/productsCrud/ProductsQueryCrud.vue");
+const ProductsRegisterCrud = () =>
+  import("../../components/platform/productsCrud/ProductsRegisterCrud.vue");
+const AddProductToUserRegisterCrud = () =>
+  import("../../components/platform/addProductToUserCrud/AddProductToUserRegisterCrud");
+const ScheduleSpecialistsList = () =>
+  import("../../components/platform/scheduleProducts/ScheduleSpecialistsList.vue");
+const ViewProductsUser = () =>
+  import("../../components/platform/viewProductsUser/ViewProductsUser.vue");
+const Orders = () => import("../../components/platform/orders/Orders.vue");
 
 const productRoutes = [
   {

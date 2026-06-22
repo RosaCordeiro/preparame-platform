@@ -1,5 +1,5 @@
-import Login from "../../layouts/Login.vue"
-import ResetPassword from "../../layouts/ResetPassword.vue"
+const Login = () => import("../../layouts/Login.vue");
+const ResetPassword = () => import("../../layouts/ResetPassword.vue");
 
 const loginRoutes = [
     {

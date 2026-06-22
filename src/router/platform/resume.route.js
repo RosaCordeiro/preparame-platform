@@ -1,6 +1,9 @@
-import Platform from "../../layouts/Platform.vue"
-import ResumeCreatorPresentations from "./../../components/platform/resumeCreator/ResumeCreatorPresentations.vue"
-import ResumeCreator from "./../../components/platform/resumeCreator/ResumeCreator.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const ResumeCreatorPresentations = () =>
+  import("../../components/platform/resumeCreator/ResumeCreatorPresentations.vue");
+const ResumeCreator = () =>
+  import("../../components/platform/resumeCreator/ResumeCreator.vue");
 
 const resumeRoutes = [
     {
