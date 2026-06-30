@@ -143,6 +143,20 @@
               </q-btn>
 
               <q-btn
+                color="positive"
+                icon="mdi-download"
+                label="Baixar modelo voluntária"
+                class="col"
+                @click="downloadVoluntaryTemplate"
+                :loading="downloadVoluntaryTemplateLoading"
+                no-caps
+              >
+                <q-tooltip
+                  >Baixa o modelo Excel para pesquisas voluntárias</q-tooltip
+                >
+              </q-btn>
+
+              <q-btn
                 color="primary"
                 icon="mdi-upload"
                 label="Importar Existente"
@@ -206,6 +220,7 @@ export default {
       importLoading: false,
       showImportDialog: false,
       downloadTemplateLoading: false,
+      downloadVoluntaryTemplateLoading: false,
       dashboardKey: 0,
     };
   },
@@ -440,6 +455,46 @@ export default {
         });
       } finally {
         this.downloadTemplateLoading = false;
+      }
+    },
+    async downloadVoluntaryTemplate() {
+      this.downloadVoluntaryTemplateLoading = true;
+
+      try {
+        const response = await fetch(
+          `${baseApiUrl}/reports/npsSurveyAnswers/import/template/voluntary`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!response.ok) throw new Error("Erro ao baixar o modelo");
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "Modelo Voluntária.xlsx";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        this.$q.notify({
+          type: "positive",
+          message: "Modelo voluntária baixado com sucesso!",
+        });
+        this.showImportDialog = false;
+      } catch (error) {
+        this.$q.notify({
+          type: "negative",
+          message: "Erro ao baixar o modelo voluntária",
+        });
+      } finally {
+        this.downloadVoluntaryTemplateLoading = false;
       }
     },
     importExistingFile() {

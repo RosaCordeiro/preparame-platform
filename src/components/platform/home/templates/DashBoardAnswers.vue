@@ -590,41 +590,105 @@
         </div>
       </div>
 
-      <div class="card mapa" v-if="feelingMap.length > 0">
-        <div class="card-top">
-          <IconInfo label="Mapa de sentimentos" />
+      <template v-if="!isVoluntaryOnly">
+        <div class="card mapa" v-if="feelingMap.length > 0">
+          <div class="card-top">
+            <IconInfo label="Mapa de sentimentos" />
 
-          <div class="tag">Sua empresa</div>
+            <div class="tag">Sua empresa</div>
+          </div>
+
+          <apexchart
+            type="polarArea"
+            height="400px"
+            style="width: 100%; height: 100%"
+            :options="chartOptions"
+            :series="feelingMap.map((c) => c.count)"
+          />
         </div>
 
+        <div class="card">
+          <h2>Comparativo mapa de sentimentos</h2>
+
+          <div class="row">
+            <div class="card-col" v-if="feelingMap.length > 0">
+              <div class="row">
+                <h3 class="your-company">Sua empresa</h3>
+
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div v-for="(i, number) in feelingMap" :key="number">
+                <RowChartOneEmoji
+                  :minValue="1"
+                  :maxValue="100"
+                  :title="i.feeling"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :icon="formatFeeling(i.feeling)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+
+            <div class="card-col">
+              <div class="row">
+                <h3 class="your-company">Geral</h3>
+
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div v-for="(i, number) in feelingMapGeneral" :key="number">
+                <RowChartOneEmoji
+                  :minValue="1"
+                  :maxValue="100"
+                  :title="i.feeling"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :icon="formatFeeling(i.feeling)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <div
+        class="card mapa"
+        v-if="isVoluntaryOnly && voluntaryReasonsMap.length > 0"
+      >
+        <div class="card-top">
+          <IconInfo label="Mapa de motivos de pedido de demissão" />
+          <div class="tag">Sua empresa</div>
+        </div>
         <apexchart
           type="polarArea"
           height="400px"
           style="width: 100%; height: 100%"
-          :options="chartOptions"
-          :series="feelingMap.map((c) => c.count)"
+          :options="reasonsChartOptions"
+          :series="voluntaryReasonsMap.map((c) => removePercent(c.count))"
         />
       </div>
 
-      <div class="card">
-        <h2>Comparativo mapa de sentimentos</h2>
+      <div class="card" v-if="isVoluntaryOnly">
+        <h2>Comparativo mapa de motivos de pedido de demissão</h2>
 
         <div class="row">
-          <div class="card-col" v-if="feelingMap.length > 0">
+          <div class="card-col" v-if="voluntaryReasonsMap.length > 0">
             <div class="row">
               <h3 class="your-company">Sua empresa</h3>
 
               <p class="score-description">notas de 1 a 100</p>
             </div>
 
-            <div v-for="(i, number) in feelingMap" :key="number">
+            <div v-for="(i, number) in voluntaryReasonsMap" :key="number">
               <RowChartOneEmoji
-                :minValue="1"
+                :minValue="0"
                 :maxValue="100"
-                :title="i.feeling"
+                :title="i.reason"
                 :width="'100%'"
                 :data="removePercent(i.count)"
-                :icon="formatFeeling(i.feeling)"
                 :textBold="false"
               />
             </div>
@@ -637,14 +701,16 @@
               <p class="score-description">notas de 1 a 100</p>
             </div>
 
-            <div v-for="(i, number) in feelingMapGeneral" :key="number">
+            <div
+              v-for="(i, number) in voluntaryReasonsMapGeneral"
+              :key="number"
+            >
               <RowChartOneEmoji
-                :minValue="1"
+                :minValue="0"
                 :maxValue="100"
-                :title="i.feeling"
+                :title="i.reason"
                 :width="'100%'"
                 :data="removePercent(i.count)"
-                :icon="formatFeeling(i.feeling)"
                 :textBold="false"
               />
             </div>
@@ -704,6 +770,9 @@ export default {
       shutDownGeneral: [],
       feelingMap: [],
       feelingMapGeneral: [],
+      voluntaryReasonsMap: [],
+      voluntaryReasonsMapGeneral: [],
+      reasonsChartOptions: {},
       dashboardsLoaded: false,
       mobile: false,
       chartOptions: {},
@@ -737,6 +806,11 @@ export default {
   },
   props: ["companyId"],
   computed: {
+    isVoluntaryOnly() {
+      return (
+        this.dismissalType.length === 1 && this.dismissalType[0] === "voluntary"
+      );
+    },
     disableFilters() {
       return (
         this.companyId === "TUDO" ||
@@ -840,6 +914,9 @@ export default {
       this.city = [];
 
       this.loadNpsSurveyAnswers();
+    },
+    voluntaryReasonsMap() {
+      this.setReasonsChartOptions();
     },
     feelingMap() {
       this.setChartOptions();
@@ -1066,6 +1143,33 @@ export default {
           ); */
         });
       }, 500);
+    },
+    setReasonsChartOptions() {
+      this.reasonsChartOptions = {
+        chart: { type: "polarArea" },
+        labels: this.voluntaryReasonsMap.map((c) => c.reason.toString()),
+        stroke: { colors: ["#fff"] },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shade: "dark",
+            type: "horizontal",
+            shadeIntensity: 0.5,
+            gradientToColors: ["#f54890", "#35a97d", "#1a27b7", "#f54890"],
+            inverseColors: false,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 70, 100],
+            colorStops: [],
+          },
+        },
+        yaxis: { show: false },
+        legend: { position: "right" },
+        responsive: [
+          { breakpoint: 480, options: { legend: { position: "bottom" } } },
+        ],
+        tooltip: { y: { formatter: (val) => val + "%" } },
+      };
     },
     removePercent(value) {
       return value.toString().replace("%", "") * 1;
@@ -1317,6 +1421,15 @@ export default {
       this.shutDown = npsSurveyReport.shutDown;
       this.feelingMap = npsSurveyReport.feelingMap;
       this.realocatedCount = npsSurveyReport.realocatedCount;
+      this.voluntaryReasonsMap = npsSurveyReport.voluntaryReasonsMap || [];
+      console.log(
+        "[voluntaryReasonsMap]",
+        JSON.stringify(this.voluntaryReasonsMap)
+      );
+      console.log(
+        "[voluntaryReasonsMapGeneral]",
+        JSON.stringify(this.voluntaryReasonsMapGeneral)
+      );
 
       if (npsSurveyReport.lessThanFive) {
         this.nps = "Sem informações";
@@ -1331,6 +1444,8 @@ export default {
       this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
       this.shutDownGeneral = npsSurveyReport.general.shutDown;
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
+      this.voluntaryReasonsMapGeneral =
+        npsSurveyReport.general.voluntaryReasonsMap || [];
 
       this.lessThanFive = npsSurveyReport.lessThanFive;
       this.companyQuestions =
