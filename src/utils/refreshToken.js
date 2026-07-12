@@ -30,7 +30,7 @@ async function refreshToken(error) {
                     localStorage.removeItem("token");
                     localStorage.removeItem("refresh_token");
 
-                    return resolve(false);
+                    return reject(err);
                 });
         } catch (err) {
             return reject(err);

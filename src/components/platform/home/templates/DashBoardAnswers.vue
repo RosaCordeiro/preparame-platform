@@ -653,6 +653,7 @@
         </div>
       </div>
 
+      <template v-if="!isVoluntaryOnly">
       <div class="card mapa" v-if="feelingMap.length > 0">
         <div class="card-top">
           <IconInfo label="Mapa de sentimentos" />
@@ -714,11 +715,76 @@
           </div>
         </div>
       </div>
+      </template>
 
       <div v-if="companyQuestions.length > 0" class="card">
         <h2>Perguntas da Empresa</h2>
         <CompanyQuestionsCard :companyQuestions="companyQuestions" />
       </div>
+      </template>
+
+      <template v-if="isVoluntaryOnly">
+        <div
+          class="card mapa"
+          v-if="voluntaryReasonsMap.length > 0"
+        >
+          <div class="card-top">
+            <IconInfo label="Mapa de motivos de pedido de demissão" />
+            <div class="tag">Sua empresa</div>
+          </div>
+          <ChartApex
+            type="polarArea"
+            height="400px"
+            style="width: 100%; height: 100%"
+            :options="reasonsChartOptions"
+            :series="voluntaryReasonsMap.map((c) => removePercent(c.count))"
+          />
+        </div>
+
+        <div class="card">
+          <h2>Comparativo mapa de motivos de pedido de demissão</h2>
+
+          <div class="row">
+            <div class="card-col" v-if="voluntaryReasonsMap.length > 0">
+              <div class="row">
+                <h3 class="your-company">Sua empresa</h3>
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div v-for="(i, number) in voluntaryReasonsMap" :key="number">
+                <RowChartOneEmoji
+                  :minValue="0"
+                  :maxValue="100"
+                  :title="i.reason"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+
+            <div class="card-col">
+              <div class="row">
+                <h3 class="your-company">Geral</h3>
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div
+                v-for="(i, number) in voluntaryReasonsMapGeneral"
+                :key="number"
+              >
+                <RowChartOneEmoji
+                  :minValue="0"
+                  :maxValue="100"
+                  :title="i.reason"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
     </q-page>
 
@@ -789,6 +855,9 @@ export default {
       shutDownGeneral: [],
       feelingMap: [],
       feelingMapGeneral: [],
+      voluntaryReasonsMap: [],
+      voluntaryReasonsMapGeneral: [],
+      reasonsChartOptions: {},
       dashboardsLoaded: false,
       mobile: false,
       chartOptions: {},
@@ -836,6 +905,15 @@ export default {
   computed: {
     isRhVariant() {
       return this.variant === "rh";
+    },
+    isVoluntaryOnly() {
+      const dismissalFilter = this.isRhVariant
+        ? (this.compareFilterSets[0] && this.compareFilterSets[0].dismissalType) || []
+        : this.dismissalType;
+
+      return (
+        dismissalFilter.length === 1 && dismissalFilter[0] === "voluntary"
+      );
     },
     legacyPaddingStyle() {
       if (this.isRhVariant) {
@@ -943,6 +1021,10 @@ export default {
       );
     },
     showFeelingMapSurvey() {
+      if (this.isVoluntaryOnly) {
+        return false;
+      }
+
       if (this.isRhVariant) {
         return (
           this.feelingSurveyColumnsRh.some((column) => column.items.length > 0) ||
@@ -1060,6 +1142,9 @@ export default {
     },
     feelingMapGeneral() {
       this.setChartOptions();
+    },
+    voluntaryReasonsMap() {
+      this.setReasonsChartOptions();
     },
     area(f) {
       if (!this.isRhVariant) {
@@ -1352,6 +1437,33 @@ export default {
         });
       }, 500);
     },
+    setReasonsChartOptions() {
+      this.reasonsChartOptions = {
+        chart: { type: "polarArea" },
+        labels: this.voluntaryReasonsMap.map((c) => c.reason.toString()),
+        stroke: { colors: ["#fff"] },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shade: "dark",
+            type: "horizontal",
+            shadeIntensity: 0.5,
+            gradientToColors: ["#f54890", "#35a97d", "#1a27b7", "#f54890"],
+            inverseColors: false,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 70, 100],
+            colorStops: [],
+          },
+        },
+        yaxis: { show: false },
+        legend: { position: "right" },
+        responsive: [
+          { breakpoint: 480, options: { legend: { position: "bottom" } } },
+        ],
+        tooltip: { y: { formatter: (val) => val + "%" } },
+      };
+    },
     removePercent(value) {
       if (value === null || value === undefined || value === "") {
         return NaN;
@@ -1534,6 +1646,7 @@ export default {
       this.laborIssues = npsSurveyReport.laborIssues;
       this.shutDown = npsSurveyReport.shutDown;
       this.feelingMap = npsSurveyReport.feelingMap;
+      this.voluntaryReasonsMap = npsSurveyReport.voluntaryReasonsMap || [];
       this.realocatedCount = npsSurveyReport.realocatedCount;
 
       if (npsSurveyReport.lessThanFive) {
@@ -1549,6 +1662,8 @@ export default {
       this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
       this.shutDownGeneral = npsSurveyReport.general.shutDown;
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
+      this.voluntaryReasonsMapGeneral =
+        npsSurveyReport.general.voluntaryReasonsMap || [];
       this.lessThanFive = npsSurveyReport.lessThanFive;
       this.companyQuestions =
         npsSurveyReport.companyQuestions == null
