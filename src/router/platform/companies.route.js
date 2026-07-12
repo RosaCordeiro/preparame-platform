@@ -4,6 +4,8 @@ const CompaniesQueryCrud = () =>
   import("../../components/platform/companiesCrud/CompaniesQueryCrud.vue");
 const CompanyEmployeesQueryCrud = () =>
   import("../../components/platform/companyEmployeesCrud/CompanyEmployeesQueryCrud.vue");
+const CompanyProgramPeopleQueryCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyProgramPeopleQueryCrud.vue");
 const CompanyEmployeesRegisterCrud = () =>
   import("../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue");
 const CompaniesRegisterCrud = () =>
@@ -14,6 +16,23 @@ const SurveyQuestionsQueryCrud = () =>
   import("../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue");
 
 const companyRoutes = [
+    {
+        path: "/program-people",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: CompanyProgramPeopleQueryCrud
+            }
+        }],
+        props: {
+            userTypes: [
+                'COMPANY_ADMIN'
+            ]
+        }
+    },
     {
         path: "/companies/employees",
         components: {
@@ -27,8 +46,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -45,8 +63,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -63,8 +80,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },

@@ -9,7 +9,7 @@
     no-data-label="Sem dados para mostrar."
     no-results-label="Não foi encontrado nenhum dado a partir de sua pesquisa."
     :filter="filter"
-    selection="multiple"
+    :selection="blockRemove ? undefined : 'multiple'"
     dense
     title="Resultado(s) Pesquisa"
     title-class="text-white bg-secondary crud-query-title"
