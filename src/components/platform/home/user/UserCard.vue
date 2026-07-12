@@ -1,6 +1,6 @@
 <template>
-  <div class="row user-card q-mx-lg q-mb-md">
-    <q-card class="row col-12 user-card-container q-py-md">
+  <div class="user-card q-mb-md">
+    <q-card class="col-12 user-card-container q-py-md">
       <q-card-section class="col-12 user-card-profile-level-info">
         <q-banner
           v-if="!surveyAnswered && !isRetirementPlanProp"
@@ -134,16 +134,9 @@
           </div>
         </q-banner>
 
-        <section
-          class="section__companyName"
-          v-if="
-            companyNameSignIn !== '' &&
-            companyNameSignIn !== null &&
-            companyNameSignIn !== 'null'
-          "
-        >
+        <section class="section__companyName" v-if="hasCompanySponsorship">
           <p>Mentoria Coletiva é um patrocínio da:</p>
-          <img :src="companyNameSignInLogo" alt="" />
+          <img :src="companyNameSignInLogo" :alt="companyNameSignIn" />
         </section>
 
         <q-banner
@@ -292,6 +285,19 @@ export default {
         planName: this.planName,
       });
       return finalVal;
+    },
+
+    hasCompanySponsorship() {
+      const isValidValue = (value) => {
+        if (value === null || value === undefined) return false;
+        const normalized = String(value).trim();
+        return normalized !== "" && normalized !== "null" && normalized !== "undefined";
+      };
+
+      return (
+        isValidValue(this.companyNameSignIn) &&
+        isValidValue(this.companyNameSignInLogo)
+      );
     },
   },
   methods: {
@@ -443,7 +449,7 @@ export default {
 }
 
 .user-card-container {
-  border-radius: 15px;
+  border-radius: 12px;
 }
 
 .user-card-picture {

@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <div v-if="expired" class="bg-negative text-white">
-      <div>
-        O uso do Simulador de Entrevista está expirado. Caso necessite contrate
-        mais dias para continuar seu uso.
-      </div>
+  <div class="q-pa-md">
+    <div
+      v-if="expired"
+      class="bg-negative text-white q-pa-sm q-mb-sm rounded-borders"
+    >
+      O uso do Simulador de Entrevista está expirado. Caso necessite contrate
+      mais dias para continuar seu uso.
     </div>
-    <div v-else-if="expiring" class="bg-prepara-me-expiring text-white">
+    <div
+      v-else-if="expiring"
+      class="bg-prepara-me-expiring text-white q-pa-sm q-mb-sm rounded-borders"
+    >
       <div v-if="daysToExpireUse > 0">
         {{
           `Faltam ${daysToExpireUse.toFixed(
@@ -22,47 +26,31 @@
         }}
       </div>
     </div>
-    <div>
-      <div class="q-ma-md">
-        <div class="external-user-most-common-questions-card-title">
-          SIMULADOR DE ENTREVISTA
+
+    <div class="home-user-tool-title">Simulador de entrevista</div>
+    <div class="row items-start">
+      <div class="col home-user-tool-body">
+        Simule uma entrevista com perguntas reais que você encontrará em suas
+        próximas entrevistas.
+        <div class="text-weight-bold q-mt-sm">
+          Perca o medo e aumente sua confiança!
         </div>
-        <div class="row col-12">
-          <div class="q-mt-sm col-9">
-            Simule uma entrevista com perguntas reais que você encontrará em
-            suas próximas entrevistas.
-            <div>
-              <b><br />Perca o medo e aumente sua confiança!</b>
-            </div>
-            <div v-if="!mobile" class="q-my-sm">
-              <q-btn
-                color="secondary"
-                label="ACESSAR SIMULADOR"
-                @click="goURL()"
-                :disable="expired"
-              />
-            </div>
-            <div v-if="mobile" class="q-my-sm">
-              <q-btn
-                color="secondary"
-                label="ACESSAR SIMULADOR"
-                @click="goURL()"
-                :disable="expired"
-              />
-            </div>
-          </div>
-          <img
-            v-if="!mobile"
-            class="external-user-most-common-questions-card-img col-3"
-            src="./../../../../assets/imgs/mentorshipGirl.png"
-          />
-          <img
-            v-if="mobile"
-            class="external-user-most-common-questions-card-img col-3"
-            src="./../../../../assets/imgs/mentorshipGirl.png"
+        <div class="q-mt-md">
+          <q-btn
+            color="secondary"
+            label="Acessar simulador"
+            no-caps
+            unelevated
+            @click="goURL()"
+            :disable="expired"
           />
         </div>
       </div>
+      <img
+        class="home-user-tool-img col-auto"
+        src="./../../../../assets/imgs/mentorshipGirl.png"
+        alt=""
+      />
     </div>
   </div>
 </template>
@@ -73,7 +61,6 @@ import { saveCrud } from "../../../../components/general/crud/utils/saveCrud";
 export default {
   data() {
     return {
-      mobile: false,
       daysToExpireUse: 0,
       daysToExpirePeriodTest: 0,
       expiring: false,
@@ -81,8 +68,6 @@ export default {
     };
   },
   mounted() {
-    this.mobile = window.mobileAndTabletCheck();
-
     this.daysToExpirePeriodTest =
       ((new Date() - new Date(localStorage.getItem("periodTest"))) /
         1000 /
@@ -90,8 +75,6 @@ export default {
         60 /
         24) *
       -1;
-
-    console.log(this.daysToExpirePeriodTest);
 
     this.daysToExpireUse =
       ((new Date() - new Date(localStorage.getItem("expiresDate"))) /
@@ -101,7 +84,6 @@ export default {
         24) *
       -1;
 
-    console.log(this.daysToExpireUse);
     if (this.daysToExpireUse > 0) {
       this.expiring = this.daysToExpireUse < 7;
     } else if (this.daysToExpirePeriodTest > 0) {
@@ -120,21 +102,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.external-user-interview-simulator-card-title {
-  font-weight: 700;
-  font-size: 1.5rem;
-  font-family: "Nunito";
-  font-style: normal;
-  background: linear-gradient(90deg, #1a27b7 0%, #ff4690 40%);
-  opacity: 1;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.external-user-interview-simulator-card-img {
-  height: 100px;
-}
-</style>

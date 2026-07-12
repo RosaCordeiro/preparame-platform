@@ -1,7 +1,7 @@
 <template>
-  <div class="row external-user-welcome-card">
-    <q-card class="row col-12 external-user-welcome-card-container">
-      <q-card-section class="col-12 row external-user-welcome-card-header">
+  <div class="external-user-welcome-card">
+    <q-card class="external-user-welcome-card-container q-pa-md">
+      <q-card-section class="external-user-welcome-card-header">
         <div class="external-user-welcome-card-first-msg">
           Olá, {{ userName }}, aqui no Prepara.me, orientação de carreira é pra
           todo mundo!
@@ -102,14 +102,12 @@ export default {
 
 <style lang="scss">
 .external-user-welcome-card {
-  width: 98vw;
-  padding: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .external-user-welcome-card-container {
-  border-radius: 15px;
+  border-radius: 12px;
 }
 
 .external-user-welcome-card-container {

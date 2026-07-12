@@ -1,14 +1,22 @@
 <template>
-  <div class="schedule justify-around" style="position: relative">
-    <q-card
-      :class="{
-        'schedule-container': true,
-        'q-ma-md': true,
-      }"
-    >
-      <q-card-section>
-        <div class="row no-wrap items-center">
-          <div class="col q-ml-md q-mt-md text-h5 ellipsis">Minha Agenda</div>
+  <div
+    :class="[
+      'schedule',
+      'justify-around',
+      { 'schedule--compact': compactLayout },
+    ]"
+    style="position: relative"
+  >
+    <q-card class="schedule-container home-user-card">
+      <q-card-section :class="compactLayout ? 'q-pa-md' : ''">
+        <div
+          :class="
+            compactLayout
+              ? 'text-h6 text-weight-bold'
+              : 'col q-ml-md q-mt-md text-h5 ellipsis'
+          "
+        >
+          Minha Agenda
         </div>
       </q-card-section>
       <q-separator />
@@ -66,7 +74,16 @@ export default {
       return component;
     },
   },
-  props: ["homeType"],
+  props: {
+    homeType: {
+      type: String,
+      default: "",
+    },
+    compactLayout: {
+      type: Boolean,
+      default: false,
+    },
+  },
   methods: {
     async init() {
       const dateBegin = new Date();
@@ -189,14 +206,22 @@ export default {
   position: relative;
 }
 
+.schedule--compact {
+  margin-top: 0;
+}
+
 @media screen and (max-width: 768px) {
   .schedule {
     margin-top: 15px;
   }
+
+  .schedule--compact {
+    margin-top: 0;
+  }
 }
 
 .schedule-container {
-  border-radius: 15px;
+  border-radius: 12px;
   width: 100%;
   margin: 0 auto;
 }
