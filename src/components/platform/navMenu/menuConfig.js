@@ -155,7 +155,7 @@ export const menuByUserType = {
       {
         icon: "mdi-account-check-outline",
         label: "Ver Pessoas do Programa",
-        url: "companies/employees",
+        url: "program-people",
       },
       {
         icon: "mdi-account-plus-outline",
