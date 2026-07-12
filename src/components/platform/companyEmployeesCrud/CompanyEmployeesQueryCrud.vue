@@ -270,6 +270,19 @@ export default {
           visible: true,
         },
         {
+          name: "linkedinUrl",
+          label: "Página do LinkedIn",
+          align: "left",
+          field: "linkedinUrl",
+          sortable: true,
+          visible: true,
+          format: (val) => {
+            if (!val) return "N/A";
+
+            return val;
+          },
+        },
+        {
           name: "userName",
           align: "left",
           label: "Usuário",

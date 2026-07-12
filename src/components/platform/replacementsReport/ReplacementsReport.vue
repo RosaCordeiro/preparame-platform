@@ -125,6 +125,41 @@
             </q-card-section>
           </q-card>
         </div>
+
+        <q-card class="filter-card q-mt-xl">
+          <q-card-section class="row justify-center title-card">
+            <b>Profissionais Open to Work</b>
+          </q-card-section>
+          <q-card-section>
+            <p class="text-body2 text-grey-8 q-mb-md">
+              Colaboradores que autorizaram exibir o LinkedIn no programa de
+              recolocação.
+            </p>
+            <q-table
+              :data="openToWorkCandidates"
+              :columns="openToWorkColumns"
+              row-key="id"
+              flat
+              bordered
+              :loading="loadingOpenToWork"
+              no-data-label="Nenhum profissional disponível no momento."
+            >
+              <template v-slot:body-cell-linkedinUrl="props">
+                <q-td :props="props">
+                  <a
+                    v-if="props.row.linkedinUrl"
+                    :href="props.row.linkedinUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver perfil
+                  </a>
+                  <span v-else>N/A</span>
+                </q-td>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -155,6 +190,17 @@ export default {
         { name: 'mes', label: 'Mês', align: 'left' },
         { name: 'total_recolocados_mes', label: 'Total Recolocados no Mês', align: 'center' },
         { name: 'percentual_recolocados_mes', label: '% de Recolocados no Mês', align: 'center' }
+      ],
+      openToWorkCandidates: [],
+      loadingOpenToWork: false,
+      openToWorkColumns: [
+        { name: 'name', label: 'Nome', align: 'left', field: 'name' },
+        { name: 'position', label: 'Cargo', align: 'left', field: 'position' },
+        { name: 'department', label: 'Área', align: 'left', field: 'department' },
+        { name: 'companyName', label: 'Empresa', align: 'left', field: (row) => row.company && row.company.name },
+        { name: 'city', label: 'Cidade', align: 'left', field: 'city' },
+        { name: 'state', label: 'Estado', align: 'left', field: 'state' },
+        { name: 'linkedinUrl', label: 'LinkedIn', align: 'center', field: 'linkedinUrl' },
       ]
     };
   },
@@ -168,6 +214,11 @@ export default {
     monthlyRows() {
       return this.reportData?.detalhamento_mensal || [];
     }
+  },
+  watch: {
+    "filters.companyId"() {
+      this.loadOpenToWorkCandidates();
+    },
   },
   filters: {
     formatMonth(value) {
@@ -241,10 +292,37 @@ export default {
       this.filters.companyId = null;
       this.reportData = null;
 
+    },
+    async loadOpenToWorkCandidates() {
+      this.loadingOpenToWork = true;
+
+      try {
+        const params = {};
+        if (this.filters.companyId) {
+          params.companyId = this.filters.companyId;
+        }
+
+        const response = await axios.get(
+          `${baseApiUrl}/companies/employees/open-to-work`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            params,
+          }
+        );
+
+        this.openToWorkCandidates = response.data || [];
+      } catch (error) {
+        showError(error);
+      } finally {
+        this.loadingOpenToWork = false;
+      }
     }
   },
   mounted() {
     this.loadCompanies();
+    this.loadOpenToWorkCandidates();
   }
 };
 </script>
