@@ -69,6 +69,59 @@
         <a @click="resetPasswordDialog = true">Clique aqui!</a>
       </div>
 
+      <div v-if="quickLoginEnabled" class="quick-login-panel">
+        <div class="quick-login-panel__header">
+          <q-chip dense color="amber-9" text-color="white" icon="mdi-flash">
+            Login rápido
+          </q-chip>
+          <span class="quick-login-panel__env">{{ quickLoginEnvLabel }}</span>
+        </div>
+
+        <p class="quick-login-panel__description">
+          Selecione um perfil de teste para entrar sem digitar senha.
+        </p>
+
+        <q-select
+          v-model="quickLoginEmail"
+          :options="quickLoginOptions"
+          label="Perfil de acesso"
+          outlined
+          dense
+          emit-value
+          map-options
+          use-input
+          input-debounce="0"
+          class="quick-login-panel__select"
+          @filter="filterQuickLoginProfiles"
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ scope.opt.label }}</q-item-label>
+                <q-item-label caption>{{ scope.opt.hint }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-badge :color="quickLoginTypeColor(scope.opt.type)">
+                  {{ scope.opt.type }}
+                </q-badge>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <q-btn
+          unelevated
+          no-caps
+          color="amber-9"
+          icon="mdi-login"
+          label="Entrar com perfil selecionado"
+          class="quick-login-panel__button"
+          :disable="!quickLoginEmail"
+          :loading="quickLoginLoading"
+          @click="quickLogin()"
+        />
+      </div>
+
       <!-- <div class="login-others-links">
         Ainda não tem cadastro?
         <a @click="loggingIn = false">Clique aqui!</a>
@@ -196,6 +249,11 @@ import { emailValidation } from "../../../utils/emailValidation.js";
 import { passwordValidation } from "../../../utils/passwordValidation.js";
 import { refreshToken } from "src/utils/refreshToken";
 import { loginControl } from "src/utils/controls/loginControl";
+import { isQuickLoginEnabled } from "src/utils/isQuickLoginEnabled";
+import {
+  QUICK_LOGIN_PASSWORD,
+  quickLoginProfileGroups,
+} from "src/utils/quickLoginProfiles";
 
 export default {
   data() {
@@ -211,12 +269,28 @@ export default {
       forcePassword: "Fraca",
       acceptTerms: false,
       needLogin: false,
+      quickLoginEnabled: isQuickLoginEnabled(),
+      quickLoginEmail: null,
+      quickLoginLoading: false,
+      quickLoginOptions: [],
     };
+  },
+  computed: {
+    quickLoginEnvLabel() {
+      if (process.env.NODE_ENV === "development") {
+        return "Desenvolvimento local";
+      }
+
+      return "Homologação / ambiente de testes";
+    },
+  },
+  created() {
+    this.resetQuickLoginOptions();
   },
   async beforeCreate() {
     try {
       const loggedUser = await refreshToken().then((token) => {
-        return token && token.status === 200;
+        return token.status === 200;
       });
 
       loginControl.isLogged = loggedUser;
@@ -287,9 +361,27 @@ export default {
         return;
       }
 
+      await this.performLogin(this.user.email, this.user.password);
+      this.user = {};
+    },
+    quickLogin: async function () {
+      if (!this.quickLoginEmail) {
+        showError("Selecione um perfil para o login rápido.");
+        return;
+      }
+
+      this.quickLoginLoading = true;
+
+      try {
+        await this.performLogin(this.quickLoginEmail, QUICK_LOGIN_PASSWORD);
+      } finally {
+        this.quickLoginLoading = false;
+      }
+    },
+    performLogin: async function (email, password) {
       const userData = {
-        email: this.user.email,
-        password: this.user.password,
+        email,
+        password,
       };
 
       await axios
@@ -305,8 +397,54 @@ export default {
           loginControl.isLogged = true;
         })
         .catch(showError);
+    },
+    resetQuickLoginOptions() {
+      this.quickLoginOptions = quickLoginProfileGroups.reduce((items, group) => {
+        return items.concat(
+          group.options.map((option) => ({
+            ...option,
+            group: group.label,
+          }))
+        );
+      }, []);
+    },
+    filterQuickLoginProfiles(val, update) {
+      update(() => {
+        const needle = (val || "").toLowerCase();
 
-      this.user = {};
+        if (!needle) {
+          this.resetQuickLoginOptions();
+          return;
+        }
+
+        this.quickLoginOptions = quickLoginProfileGroups.reduce((items, group) => {
+          const matches = group.options
+            .filter((option) => {
+              return (
+                option.label.toLowerCase().includes(needle) ||
+                option.value.toLowerCase().includes(needle) ||
+                option.type.toLowerCase().includes(needle) ||
+                option.hint.toLowerCase().includes(needle)
+              );
+            })
+            .map((option) => ({
+              ...option,
+              group: group.label,
+            }));
+
+          return items.concat(matches);
+        }, []);
+      });
+    },
+    quickLoginTypeColor(type) {
+      const colors = {
+        ADMIN: "deep-purple-8",
+        SPECIALIST: "teal-7",
+        COMPANY_ADMIN: "indigo-8",
+        USER: "pink-7",
+      };
+
+      return colors[type] || "grey-7";
     },
     signUp: async function () {
       if (!this.acceptTerms) {
@@ -604,5 +742,43 @@ export default {
 .login-form-register {
   background-color: #1a27b7;
   color: #fff;
+}
+
+.quick-login-panel {
+  width: 80%;
+  margin: 24px auto 0;
+  padding: 16px;
+  border: 1px dashed #f59e0b;
+  border-radius: 8px;
+  background: #fffbeb;
+}
+
+.quick-login-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.quick-login-panel__env {
+  font-size: 12px;
+  color: #92400e;
+  font-weight: 600;
+}
+
+.quick-login-panel__description {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.4;
+}
+
+.quick-login-panel__select {
+  margin-bottom: 12px;
+}
+
+.quick-login-panel__button {
+  width: 100%;
 }
 </style>
