@@ -69,6 +69,10 @@
                   :class="{ 'col-12': true }"
                   v-if="!surveyAnswered && !isRetirementPlan"
                 />
+                <UserLinkedinSettings
+                  :class="{ 'col-12': true }"
+                  v-if="!isRetirementPlan"
+                />
                 <div class="justify-around q-mb-sm">
                   <q-card class="row external-user-card-container q-pa-sm">
                     <ExternalUserInterviewSimulatorCard
@@ -147,6 +151,7 @@ import ExternalUserMostCommonQuestions from "./externalUser/ExternalUserMostComm
 import ExternalUserLinkedinCover from "./externalUser/ExternalUserLinkedinCover.vue";
 import ExternalUserMentoringSchedule from "./externalUser/ExternalUserMentoringSchedule.vue";
 import ExternalSurvey from "./externalUser/ExternalSurvey.vue";
+import UserLinkedinSettings from "./UserLinkedinSettings.vue";
 
 import Schedule from "./templates/Schedule.vue";
 import UserCard from "./user/UserCard.vue";
@@ -188,6 +193,7 @@ export default {
     ExternalUserLinkedinCover,
     ExternalUserMentoringSchedule,
     ExternalSurvey,
+    UserLinkedinSettings,
     UserCard,
     Schedule,
   },

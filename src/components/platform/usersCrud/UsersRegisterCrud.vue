@@ -13,7 +13,10 @@
 import CrudRegister from "./../../general/crud/CrudRegister.vue";
 import { openEditCrud } from "./../../general/crud/utils/openEditCrud.js";
 import { saveCrud } from "./../../general/crud/utils/saveCrud.js";
+import { filterCrud } from "./../../general/crud/utils/filterCrud.js";
 import { showError } from "../../../global.js";
+import axios from "axios";
+import { baseApiUrl } from "../../../global.js";
 
 export default {
   components: {
@@ -23,6 +26,7 @@ export default {
     return {
       registerType: "unique",
       editUrl: "/users",
+      companyEmployeeId: null,
       tables: {
         mainTable: {
           id: null,
@@ -171,6 +175,16 @@ export default {
               type: "Date",
               visible: true,
             },
+            linkedinUrl: {
+              label: "Página do LinkedIn",
+              name: "linkedinUrl",
+              size: "12",
+              row: 4,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
           },
         },
       },
@@ -187,22 +201,53 @@ export default {
       title: "Cadastro de Usuários",
     };
   },
-  created() {
+  async created() {
     this.id = this.$router.history.current.params.id;
 
-    openEditCrud(this.id, this.editUrl, this.tables);
+    await openEditCrud(this.id, this.editUrl, this.tables);
+    await this.loadCompanyEmployeeLinkedin();
   },
   methods: {
-    save: async function (data) {
+    async loadCompanyEmployeeLinkedin() {
+      if (!this.id) return;
+
       try {
-        const url = this.tables.mainTable.apiUrl.replace(
-          ":userId",
-          data.mainTable.userId
+        const employees = await filterCrud(
+          [{ name: "userId", model: this.id }],
+          "companies/employees"
         );
 
-        console.log(url);
+        if (employees && employees.length > 0) {
+          this.companyEmployeeId = employees[0].id;
+          this.tables.mainTable.registerColumns.linkedinUrl.model =
+            employees[0].linkedinUrl || "";
+        }
+      } catch (error) {
+        showError(error);
+      }
+    },
+    save: async function (data) {
+      try {
+        const linkedinUrl = data.mainTable.linkedinUrl;
+        const userData = { ...data.mainTable };
+        delete userData.linkedinUrl;
 
-        const userCreated = await saveCrud(url, data.mainTable);
+        const userCreated = await saveCrud(
+          this.tables.mainTable.apiUrl,
+          userData
+        );
+
+        if (this.companyEmployeeId) {
+          await axios.patch(
+            `${baseApiUrl}/companies/employees/${this.companyEmployeeId}/linkedin`,
+            { linkedinUrl: linkedinUrl || "" },
+            {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+        }
 
         return userCreated;
       } catch (err) {
