@@ -98,7 +98,7 @@ export default {
 }
 
 .external-user-talent-bank-card-container {
-  border-radius: 15px;
+  border-radius: 12px;
   background: linear-gradient(
     90deg,
     rgba(180, 184, 231, 1) 12%,

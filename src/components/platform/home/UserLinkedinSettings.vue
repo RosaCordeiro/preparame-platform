@@ -1,7 +1,9 @@
 <template>
-  <q-card class="user-linkedin-settings q-mb-md">
+  <q-card class="user-linkedin-settings home-user-card">
     <q-card-section>
-      <div class="text-h6 q-mb-sm">LinkedIn e programa de recolocação</div>
+      <div class="text-h6 text-weight-bold q-mb-sm">
+        LinkedIn e programa de recolocação
+      </div>
       <p class="text-body2 text-grey-8 q-mb-md">
         Informe seu perfil do LinkedIn e escolha se deseja aparecer no programa
         de recolocação do Prepara.me. Por padrão, a exibição está autorizada
@@ -31,6 +33,7 @@
           label="Salvar"
           icon="mdi-content-save"
           no-caps
+          unelevated
           :loading="saving"
           :disable="loading"
           @click="save"
@@ -118,6 +121,6 @@ export default {
 
 <style lang="scss" scoped>
 .user-linkedin-settings {
-  border-radius: 8px;
+  border-radius: 12px;
 }
 </style>
