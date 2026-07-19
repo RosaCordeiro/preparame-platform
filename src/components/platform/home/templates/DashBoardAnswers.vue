@@ -11,10 +11,8 @@
       <div v-if="isRhVariant" class="rh-page-header">
         <div class="rh-page-header__content">
           <span class="rh-page-header__eyebrow">Programa de Demissão Responsável</span>
-          <h1 class="rh-page-title">Indicadores de Riscos</h1>
-          <p class="rh-page-subtitle">
-            Monitoramento completo com comparativo de mercado
-          </p>
+          <h1 class="rh-page-title">{{ rhPageTitle }}</h1>
+          <p class="rh-page-subtitle">{{ rhPageSubtitle }}</p>
         </div>
         <span class="rh-badge-info">
           <q-icon name="mdi-chart-bar" size="14px" />
@@ -441,7 +439,7 @@
       </template>
 
       <DashBoardRhMetrics
-        v-if="isRhVariant"
+        v-if="showRhMetrics"
         :compare-results="compareResults"
         :compare-filter-sets="compareFilterSets"
         :summarize-filter-set="summarizeFilterSet"
@@ -460,7 +458,7 @@
         @metric-toggle="toggleMetricExpand"
       />
 
-      <div v-else class="box__three-columns">
+      <div v-else-if="!isRhVariant" class="box__three-columns">
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
 
@@ -530,17 +528,23 @@
       </div>
 
       <DashBoardRhSurveys
-        v-if="isRhVariant"
-        :show-shutdown-survey="showShutdownSurvey"
-        :show-feeling-map-survey="showFeelingMapSurvey"
+        v-if="showRhSurveys"
+        :show-quantitative-cards="showRhQuantitative"
+        :show-shutdown-survey="showShutdownSurvey && showRhQuantitative"
+        :show-feeling-map-survey="showFeelingMapSurvey && showRhQuantitative"
+        :show-company-questions="showRhQualitative"
         :shutdown-compare-groups="shutdownCompareGroups"
         :feeling-survey-columns="feelingSurveyColumnsRh"
         :feeling-map-charts="feelingMapCharts"
         :company-questions="companyQuestions"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
+        :realocateds-general="realocatedsGeneral"
         @metric-info="openMetricInfo"
       />
 
-      <template v-else>
+      <template v-if="!isRhVariant">
       <div class="box__two-columns">
         <div class="box__two-columns-item">
           <IconInfo label="Realocados" />
@@ -901,10 +905,53 @@ export default {
       type: String,
       default: "legacy",
     },
+    rhSection: {
+      type: String,
+      default: "metrics",
+    },
   },
   computed: {
     isRhVariant() {
       return this.variant === "rh";
+    },
+    showRhMetrics() {
+      return this.isRhVariant && this.rhSection === "metrics";
+    },
+    showRhSurveys() {
+      return (
+        this.isRhVariant &&
+        (this.rhSection === "quantitative" || this.rhSection === "qualitative")
+      );
+    },
+    showRhQuantitative() {
+      return this.isRhVariant && this.rhSection === "quantitative";
+    },
+    showRhQualitative() {
+      return this.isRhVariant && this.rhSection === "qualitative";
+    },
+    rhPageTitle() {
+      if (this.rhSection === "metrics") {
+        return "Painel de riscos e impactos";
+      }
+      if (this.rhSection === "quantitative") {
+        return "Pesquisa quantitativa";
+      }
+      if (this.rhSection === "qualitative") {
+        return "Pesquisa qualitativa";
+      }
+      return "Indicadores de Riscos";
+    },
+    rhPageSubtitle() {
+      if (this.rhSection === "metrics") {
+        return "Visão de KPIs de risco e impacto com comparativo de mercado";
+      }
+      if (this.rhSection === "quantitative") {
+        return "Avaliação pós-demissão e mapa de sentimentos";
+      }
+      if (this.rhSection === "qualitative") {
+        return "Respostas textuais das pesquisas da empresa";
+      }
+      return "Monitoramento completo com comparativo de mercado";
     },
     isVoluntaryOnly() {
       const dismissalFilter = this.isRhVariant

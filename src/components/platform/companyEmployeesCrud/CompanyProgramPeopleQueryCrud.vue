@@ -125,6 +125,7 @@ export default {
           model: localStorage.getItem("companyId") || "",
           type: "Input",
           visible: false,
+          locked: true,
         },
       },
       columns: [
@@ -311,6 +312,9 @@ export default {
 
       this.$q.loading.hide();
     },
+  },
+  created() {
+    this.filters.companyId.model = localStorage.getItem("companyId") || "";
   },
 };
 </script>

@@ -30,6 +30,11 @@ export const menuByUserType = {
             url: "specialists",
           },
           { icon: "mdi-briefcase", label: "Produtos", url: "products" },
+          {
+            icon: "mdi-comment-question-outline",
+            label: "Perguntas Qualitativas",
+            url: "surveyQuestions",
+          },
         ],
       },
       {
@@ -124,13 +129,24 @@ export const menuByUserType = {
     items: [
       {
         icon: "mdi-view-dashboard-outline",
-        label: "Painel Riscos e Impactos",
+        label: "Painel de riscos e impactos",
         url: "platform",
       },
       {
         icon: "mdi-alert-outline",
-        label: "Indicadores de Riscos",
-        comingSoon: true,
+        label: "Indicadores de riscos",
+        children: [
+          {
+            icon: "mdi-chart-bar",
+            label: "Pesquisa quantitativa",
+            url: "rh/indicadores/quantitativa",
+          },
+          {
+            icon: "mdi-comment-text-outline",
+            label: "Pesquisa qualitativa",
+            url: "rh/indicadores/qualitativa",
+          },
+        ],
       },
       {
         icon: "mdi-file-document-outline",
@@ -161,11 +177,6 @@ export const menuByUserType = {
         icon: "mdi-account-plus-outline",
         label: "Adicionar Pessoas ao Programa",
         comingSoon: true,
-      },
-      {
-        icon: "mdi-comment-question-outline",
-        label: "Perguntas Qualitativas",
-        url: "surveyQuestions",
       },
     ],
   },

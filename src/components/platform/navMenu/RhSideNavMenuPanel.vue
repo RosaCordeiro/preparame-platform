@@ -11,28 +11,62 @@
     <div class="rh-sidebar-label">Menu</div>
 
     <q-list>
-      <q-item
-        v-for="(menuItem, index) in menuList"
-        :key="'item-' + index"
-        clickable
-        v-ripple="!menuItem.comingSoon"
-        class="rh-side-nav-menu-item"
-        :class="{
-          'rh-side-nav-menu-item--active': isActive(menuItem),
-          'rh-side-nav-menu-item--soon': menuItem.comingSoon,
-        }"
-        @click="$emit('item-click', menuItem)"
-      >
-        <q-item-section avatar>
-          <q-icon :name="menuItem.icon"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ menuItem.label }}</q-item-label>
-        </q-item-section>
-        <q-item-section v-if="menuItem.comingSoon" side>
-          <span class="rh-badge-soon">em breve</span>
-        </q-item-section>
-      </q-item>
+      <template v-for="(menuItem, index) in menuList">
+        <q-expansion-item
+          v-if="menuItem.children && menuItem.children.length"
+          :key="'exp-' + index"
+          :icon="menuItem.icon"
+          :label="menuItem.label"
+          :default-opened="isParentActive(menuItem)"
+          class="rh-side-nav-menu-item rh-side-nav-menu-item--expansion"
+          :class="{
+            'rh-side-nav-menu-item--active': isParentActive(menuItem),
+          }"
+          expand-separator
+        >
+          <q-item
+            v-for="(child, childIndex) in menuItem.children"
+            :key="'child-' + index + '-' + childIndex"
+            clickable
+            v-ripple
+            class="rh-side-nav-menu-item rh-side-nav-menu-item--child"
+            :class="{
+              'rh-side-nav-menu-item--active': isActive(child),
+            }"
+            @click="$emit('item-click', child)"
+          >
+            <q-item-section avatar>
+              <q-icon :name="child.icon || 'mdi-circle-small'"></q-icon>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ child.label }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
+
+        <q-item
+          v-else
+          :key="'item-' + index"
+          clickable
+          v-ripple="!menuItem.comingSoon"
+          class="rh-side-nav-menu-item"
+          :class="{
+            'rh-side-nav-menu-item--active': isActive(menuItem),
+            'rh-side-nav-menu-item--soon': menuItem.comingSoon,
+          }"
+          @click="$emit('item-click', menuItem)"
+        >
+          <q-item-section avatar>
+            <q-icon :name="menuItem.icon"></q-icon>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ menuItem.label }}</q-item-label>
+          </q-item-section>
+          <q-item-section v-if="menuItem.comingSoon" side>
+            <span class="rh-badge-soon">em breve</span>
+          </q-item-section>
+        </q-item>
+      </template>
     </q-list>
   </q-scroll-area>
 </template>
@@ -49,9 +83,9 @@ export default {
       default: "Usuário",
     },
   },
-  watch: {
-    "$route.path"() {
-      this.$forceUpdate();
+  computed: {
+    currentPath() {
+      return this.$route.path;
     },
   },
   methods: {
@@ -60,13 +94,19 @@ export default {
         return false;
       }
 
-      const currentPath = this.$router.history.current.path;
       const targetPath = `/${menuItem.url}`;
 
       return (
-        currentPath === targetPath ||
-        currentPath.startsWith(`${targetPath}/`)
+        this.currentPath === targetPath ||
+        this.currentPath.startsWith(`${targetPath}/`)
       );
+    },
+    isParentActive(menuItem) {
+      if (!menuItem.children) {
+        return false;
+      }
+
+      return menuItem.children.some((child) => this.isActive(child));
     },
   },
 };

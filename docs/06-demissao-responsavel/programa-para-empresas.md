@@ -21,7 +21,7 @@ O **programa para empresas** é a oferta B2B da Prepara.me. Vai além de uma lan
 | Pacote de serviços | Mentorias, simulador, revisão de CV — conforme contrato |
 | Dashboard de RH | Indicadores e-NPS, sentimentos, riscos |
 | Pesquisa pós-demissão | Feedback estruturado dos ex-colaboradores |
-| Perguntas qualitativas | Customização da pesquisa pelo RH |
+| Perguntas qualitativas | Customização da pesquisa pelo Admin da plataforma |
 | Treinamentos | Capacitação para RH e lideranças |
 | Manual/e-book | Material sobre condução de desligamentos |
 | Curso de demissão | Programa educativo para gestores |

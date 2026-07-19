@@ -11,7 +11,7 @@ O perfil **administrador da plataforma** tem acesso completo às ferramentas de 
 ## Onde encontrar
 
 - **Painel inicial:** após login, em `/platform`
-- **Menu lateral:** Empresas, Usuários, Funcionários, Planos, Especialistas, Produtos, Simulador, Mentorias, Materiais e mais
+- **Menu lateral:** Empresas, Usuários, Funcionários, Planos, Especialistas, Produtos, Perguntas Qualitativas, Simulador, Mentorias, Materiais e mais
 
 ## Como funciona
 
@@ -34,6 +34,7 @@ O administrador vê um painel operacional com:
 | Funcionários | Vincular ex-colaboradores às empresas |
 | Especialistas | Cadastrar consultores de RH |
 | Produtos | Manter catálogo de serviços (preço, tipo, status) |
+| Perguntas qualitativas | Cadastrar perguntas personalizadas da pesquisa por empresa |
 | Planos de assinatura | Configurar planos disponíveis |
 | Simulador | Gerenciar grupos e vídeos do simulador de entrevistas |
 | Mentorias coletivas | Criar e editar sessões em grupo |
@@ -50,6 +51,7 @@ O administrador vê um painel operacional com:
 | Gerenciar todos os usuários | Menu → Usuários |
 | Importar funcionários em lote | Menu → Funcionários |
 | Manter catálogo de produtos | Menu → Produtos |
+| Cadastrar perguntas qualitativas por empresa | Menu → Perguntas Qualitativas |
 | Atribuir serviços manualmente | Menu → Adicionar Produto para Usuário |
 | Acompanhar entregas de especialistas | Menu → Ver Produtos do Usuário |
 | Ver métricas de recolocação | Relatório de Recolocados |

@@ -63,9 +63,11 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 
 | Área | Caminho | Descrição |
 |---|---|---|
-| Painel inicial | `/platform` | Dashboard de indicadores e sentimentos |
-| Perguntas qualitativas | `/surveyQuestions` | Gestão de perguntas da pesquisa |
-| Funcionários | `/companies/employees` | Lista de ex-colaboradores vinculados |
+| Painel de riscos e impactos | `/platform` | KPIs (e-NPS, riscos, impacto) |
+| Pesquisa quantitativa | `/rh/indicadores/quantitativa` | Pós-demissão + mapa de sentimentos |
+| Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta) |
+| Funcionários / programa | `/program-people` | Pessoas do programa de recolocação |
+| Contrate Open to Work | `/replacementsReport` | Relatório de recolocação |
 
 ### Administrador da plataforma
 
@@ -78,6 +80,7 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 | Planos de assinatura | `/subscriptionPlans` | Planos disponíveis na plataforma |
 | Especialistas | `/specialists` | Cadastro de consultores de RH |
 | Produtos | `/products` | Catálogo de serviços |
+| Perguntas qualitativas | `/surveyQuestions` | Gestão de perguntas da pesquisa por empresa |
 | Grupos de vídeos do simulador | `/simulatorVideosGroups` | Organização de conteúdo do simulador |
 | Vídeos do simulador | `/simulatorVideos` | Vídeos usados no simulador |
 | Adicionar produto para usuário | `/addProductToUser` | Atribuição manual de serviços |

@@ -6,25 +6,37 @@ Gestores de RH das empresas parceiras (perfil administrador da empresa).
 
 ## O que é
 
-O painel do RH é a **tela inicial** do administrador da empresa após login (`/platform`). Apresenta um **dashboard analítico** com indicadores sobre como os ex-colaboradores estão vivenciando o processo pós-demissão.
+O painel do RH é a área analítica do administrador da empresa após login. O menu separa **KPIs de risco/impacto** (Painel) dos **indicadores de pesquisa** (quantitativa e qualitativa).
 
 ## Onde encontrar
 
-Após login → Painel inicial (`/platform`)
+Após login → Painel de riscos e impactos (`/platform`)
 
 Menu lateral:
-- Perguntas Qualitativas
+- Painel de riscos e impactos (`/platform`)
+- Indicadores de riscos
+  - Pesquisa quantitativa (`/rh/indicadores/quantitativa`)
+  - Pesquisa qualitativa (`/rh/indicadores/qualitativa`)
+- Contrate Open to Work
+- Ver Pessoas do Programa
 
-## Componentes do dashboard
+## Componentes por visão
 
-### Indicadores principais
+### Painel de riscos e impactos
 - **e-NPS** — satisfação dos ex-colaboradores com o processo
-- **Mapa de sentimentos** — como se sentem após a demissão
 - **Risco de marca empregadora** — potencial impacto na reputação da empresa
 - **Risco trabalhista** — sinais de insatisfação que podem gerar conflitos
+- Outros KPIs de impacto (recolocação, acolhimento, etc., conforme disponível)
+
+### Pesquisa quantitativa
+- **Avaliação pós-demissão** — notas atribuídas pelos ex-colaboradores
+- **Mapa de sentimentos** — distribuição emocional e comparativos
+
+### Pesquisa qualitativa
+- **Perguntas da empresa** — respostas textuais (somente consulta; cadastro pelo Admin da plataforma)
 
 ### Filtros
-O dashboard permite filtrar dados por:
+As três visões permitem filtrar por:
 - **Período** — intervalo de datas
 - **Unidade** — filial ou área da empresa
 - Outros parâmetros configurados para a empresa
@@ -36,34 +48,34 @@ Gráficos e tabelas que consolidam respostas da pesquisa pós-demissão dos ex-c
 
 ## Como funciona
 
-1. RH da empresa faz login e acessa o dashboard
+1. RH da empresa faz login e abre o Painel (KPIs) ou Indicadores
 2. Seleciona filtros (período, unidade) para refinar a visão
 3. Analisa indicadores e identifica pontos de atenção
-4. Pode configurar perguntas qualitativas adicionais na pesquisa
-5. Usa insights para ações de melhoria no processo de demissão
+4. Usa insights para ações de melhoria no processo de demissão
 
 ## O que o usuário vê e pode fazer
 
 | Ação | Onde |
 |---|---|
-| Ver indicadores consolidados | Painel inicial |
-| Filtrar por período e unidade | Painel → filtros |
-| Analisar mapa de sentimentos | Painel → gráficos |
+| Ver indicadores consolidados (KPIs) | Menu → Painel de riscos e impactos |
+| Ver avaliação pós-demissão e sentimentos | Menu → Indicadores → Pesquisa quantitativa |
+| Ver respostas qualitativas | Menu → Indicadores → Pesquisa qualitativa |
+| Filtrar por período e unidade | Painel / Indicadores → filtros |
+| Analisar mapa de sentimentos | Indicadores → Pesquisa quantitativa |
 | Identificar riscos | Painel → indicadores de risco |
-| Criar perguntas da pesquisa | Menu → Perguntas Qualitativas |
 | Consultar funcionários vinculados | Gestão de funcionários |
 
 ## O que o RH NÃO vê
 
 - Dados de **outras empresas**
 - Informações pessoais além do necessário para indicadores agregados
-- Ferramentas de gestão da plataforma (produtos, especialistas, etc.)
+- Ferramentas de gestão da plataforma (produtos, especialistas, perguntas qualitativas, etc.)
 
 ## Regras importantes
 
 - Dados filtrados **automaticamente** pela empresa do login
 - Indicadores dependem de ex-colaboradores **terem respondido** a pesquisa
-- Perguntas qualitativas criadas aparecem na **terceira etapa** da pesquisa
+- Perguntas qualitativas (cadastradas pelo Admin da plataforma) aparecem na **terceira etapa** da pesquisa
 - Quanto mais respostas, mais confiáveis os indicadores
 
 ## Relacionado com

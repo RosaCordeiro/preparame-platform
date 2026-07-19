@@ -112,6 +112,9 @@ export default {
 
       return this.isMobileUA || narrowViewport;
     },
+    currentPath() {
+      return this.$route.path;
+    },
   },
   watch: {
     isOverlayMode: {
@@ -127,9 +130,6 @@ export default {
         this.expanded = false;
       },
     },
-    "$route.path"() {
-      this.$forceUpdate();
-    },
   },
   methods: {
     onDrawerHide() {
@@ -138,16 +138,19 @@ export default {
       }
     },
     isActive(menuItem) {
+      if (menuItem.children && menuItem.children.length) {
+        return menuItem.children.some((child) => this.isActive(child));
+      }
+
       if (menuItem.comingSoon || !menuItem.url) {
         return false;
       }
 
-      const currentPath = this.$router.history.current.path;
       const targetPath = `/${menuItem.url}`;
 
       return (
-        currentPath === targetPath ||
-        currentPath.startsWith(`${targetPath}/`)
+        this.currentPath === targetPath ||
+        this.currentPath.startsWith(`${targetPath}/`)
       );
     },
     onMenuClick(menuItem) {
@@ -157,6 +160,15 @@ export default {
           message: "Em breve",
           timeout: 2000,
         });
+        return;
+      }
+
+      if (menuItem.children && menuItem.children.length) {
+        if (this.isOverlayMode) {
+          this.drawerOpen = true;
+        } else {
+          this.expanded = true;
+        }
         return;
       }
 
