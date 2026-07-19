@@ -15,13 +15,14 @@
         <component
           :is="metric.component"
           v-bind="metric.props"
-          :clickable="true"
-          :expanded="expandedMetricKey === metric.key"
+          :coming-soon="metric.comingSoon"
+          :clickable="!metric.comingSoon"
+          :expanded="!metric.comingSoon && expandedMetricKey === metric.key"
           @toggle="$emit('metric-toggle', metric.key)"
           @info="$emit('metric-info', metric.infoLabel || metric.props.title)"
         >
           <UiMetricTimeline
-            v-if="expandedMetricKey === metric.key"
+            v-if="!metric.comingSoon && expandedMetricKey === metric.key"
             :categories="timelineCategories"
             :series="timelineSeriesFor(metric.key)"
             :loading="timelineLoading"
@@ -43,6 +44,49 @@ import {
   buildCompareRowsRaw,
   parseMetricValue,
 } from "../../../../utils/rhMetricDisplay";
+
+const COMING_SOON_CARDS = [
+  {
+    key: "newConflictManagement",
+    title: "Gestão de novos conflitos",
+    subtitle: "Acompanhamento de conflitos emergentes",
+  },
+  {
+    key: "newWhistleblowingChannel",
+    title: "Canal de denúncias novos",
+    subtitle: "Indicadores do canal de denúncias",
+  },
+  {
+    key: "laborRiskReduction",
+    title: "Redução de riscos trabalhistas",
+    subtitle: "Evolução da exposição trabalhista",
+  },
+  {
+    key: "reputationalImpactReduction",
+    title: "Redução de impacto reputacional",
+    subtitle: "Evolução do impacto na reputação",
+  },
+  {
+    key: "psychosocialImpactReduction",
+    title: "Redução de impacto psicossocial",
+    subtitle: "Evolução do impacto psicossocial",
+  },
+  {
+    key: "socialImpactReduction",
+    title: "Redução de impacto social",
+    subtitle: "Evolução do impacto social",
+  },
+  {
+    key: "resolvedDoubts",
+    title: "Dúvidas resolvidas",
+    subtitle: "Percentual de dúvidas solucionadas",
+  },
+  {
+    key: "exEmployeeEvaluation",
+    title: "Avaliação dos ex-colaboradores",
+    subtitle: "Avaliação geral dos ex-colaboradores",
+  },
+];
 
 export default {
   components: {
@@ -103,7 +147,7 @@ export default {
       return timeline && timeline.categories ? timeline.categories : [];
     },
     metricCards() {
-      return [
+      const cards = [
         {
           key: "nps",
           component: "RhMetricCard",
@@ -240,6 +284,21 @@ export default {
           },
         },
       ];
+
+      COMING_SOON_CARDS.forEach((card) => {
+        cards.push({
+          key: card.key,
+          component: "RhMetricCard",
+          comingSoon: true,
+          infoLabel: card.title,
+          props: {
+            title: card.title,
+            subtitle: card.subtitle,
+          },
+        });
+      });
+
+      return cards;
     },
   },
   methods: {

@@ -9,7 +9,7 @@
           :blockRemove="blockRemove"
         />
         <slot name="title"> </slot>
-        <CrudQueryFilter :rows="rows" v-if="this.filters.length > 0 && this.filters.some((filter) => filter.visible)" />
+        <CrudQueryFilter :rows="rows" v-if="hasVisibleFilters" />
         <CrudQueryTable
           ref="table"
           :result="{ columns, data }"
@@ -55,6 +55,15 @@ export default {
       rows: [],
       data: [],
     };
+  },
+  computed: {
+    hasVisibleFilters() {
+      const filterList = Array.isArray(this.filters)
+        ? this.filters
+        : Object.values(this.filters || {});
+
+      return filterList.some((filter) => filter && filter.visible);
+    },
   },
   methods: {
     removeSelected: async function (row) {
@@ -113,7 +122,11 @@ export default {
     },
   },
   created() {
-    this.filter(this.filters);
+    const filterList = Array.isArray(this.filters)
+      ? this.filters
+      : Object.values(this.filters || {});
+
+    this.filter(filterList);
 
     adjustColumnsAndRowsRegister(this.filters, this.rows);
   }

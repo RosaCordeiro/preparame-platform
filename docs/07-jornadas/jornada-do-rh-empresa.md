@@ -12,13 +12,12 @@ A **jornada do RH da empresa** descreve como o gestor de RH utiliza a plataforma
 
 ```mermaid
 flowchart TD
-  Contrato[Empresa contrata Prepara.me] --> Config[Admin configura empresa]
+  Contrato[Empresa contrata Prepara.me] --> Config[Admin configura empresa e perguntas]
   Config --> Acesso[RH recebe acesso]
   Acesso --> Dashboard[Dashboard de indicadores]
   Dashboard --> Filtros[Aplicar filtros]
   Filtros --> Analise[Analisar e-NPS e sentimentos]
-  Analise --> Perguntas[Criar perguntas qualitativas]
-  Perguntas --> Convite[Ex-colaboradores respondem pesquisa]
+  Analise --> Convite[Ex-colaboradores respondem pesquisa]
   Convite --> Dashboard
   Analise --> Acoes[Ações de melhoria no processo]
 ```
@@ -28,28 +27,26 @@ flowchart TD
 ### 1. Contratação e configuração
 - Empresa contrata programa via contato comercial
 - Administrador Prepara.me configura empresa (logo, cores, serviços)
+- Administrador da plataforma cadastra perguntas qualitativas da empresa, se necessário
 - RH recebe credenciais de acesso (perfil administrador da empresa)
 
 ### 2. Primeiro acesso
-- RH faz login e acessa dashboard
-- Vê indicadores iniciais (podem estar vazios até haver respostas)
+- RH faz login e acessa o **Painel de riscos e impactos** (`/platform`)
+- Vê KPIs iniciais (podem estar vazios até haver respostas)
+- No menu, **Indicadores de riscos** abre submenu com pesquisa quantitativa e qualitativa
 
-### 3. Configuração da pesquisa
-- Acessa **Perguntas Qualitativas**
-- Cria perguntas personalizadas para ex-colaboradores
-- Perguntas aparecem na terceira etapa da pesquisa pós-demissão
-
-### 4. Acompanhamento
-- Ex-colaboradores respondem pesquisa após demissão
-- Dashboard é atualizado com novos dados
+### 3. Acompanhamento
+- Ex-colaboradores respondem pesquisa após demissão (incluindo perguntas qualitativas, se houver)
+- Dados atualizam as três visões (Painel / quantitativa / qualitativa)
 - RH aplica filtros (período, unidade) para análise segmentada
 
-### 5. Análise e ação
-- Identifica padrões no mapa de sentimentos
-- Monitora e-NPS e riscos (marca, trabalhista)
+### 4. Análise e ação
+- No Painel: monitora e-NPS e riscos (marca, trabalhista)
+- Em Indicadores → Quantitativa: identifica padrões no mapa de sentimentos e notas pós-demissão
+- Em Indicadores → Qualitativa: lê respostas textuais (sem cadastrar perguntas)
 - Toma ações: ajuste no processo de demissão, comunicação, treinamentos
 
-### 6. Gestão de funcionários
+### 5. Gestão de funcionários
 - Consulta lista de ex-colaboradores vinculados
 - Verifica quem respondeu pesquisa e quem utilizou serviços
 
@@ -67,7 +64,7 @@ flowchart TD
 - RH vê dados **apenas da própria empresa**
 - Indicadores dependem de **respostas dos ex-colaboradores**
 - Quanto mais respostas, mais confiável a análise
-- Perguntas qualitativas são opcionais mas recomendadas
+- Perguntas qualitativas são cadastradas pelo **administrador da plataforma**, não pelo RH
 
 ## Relacionado com
 

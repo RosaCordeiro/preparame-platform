@@ -24,7 +24,7 @@ src/router/platform/companies.route.js (/surveyQuestions)
 - Mapa de sentimentos e perguntas qualitativas
 - Dashboard RH (filtros período/unidade)
 - Relatório de recolocação
-- CRUD perguntas qualitativas (COMPANY_ADMIN)
+- CRUD perguntas qualitativas (ADMIN)
 - Export/import Excel de respostas (ADMIN)
 
 ## Padrões

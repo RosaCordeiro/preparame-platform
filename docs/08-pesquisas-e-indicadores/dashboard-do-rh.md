@@ -10,21 +10,27 @@ O **dashboard do RH** é o painel analítico que consolida indicadores sobre a e
 
 ## Onde encontrar
 
-Plataforma logada → Painel inicial (`/platform`) — perfil administrador da empresa
+Plataforma logada — perfil administrador da empresa:
+
+| Visão | Rota / menu |
+|---|---|
+| KPIs (riscos e impactos) | `/platform` — Menu → Painel de riscos e impactos |
+| Quantitativa | `/rh/indicadores/quantitativa` — Indicadores → Pesquisa quantitativa |
+| Qualitativa | `/rh/indicadores/qualitativa` — Indicadores → Pesquisa qualitativa |
 
 ## Indicadores principais
 
-### e-NPS
-Mede a satisfação dos ex-colaboradores com o processo de demissão e apoio recebido. Quanto maior, melhor a percepção.
+### No Painel (KPIs)
+- **e-NPS** — satisfação com o processo
+- **Risco de marca empregadora** / **Risco trabalhista** — sinais derivados das respostas
+- Demais KPIs de impacto disponíveis no card de métricas
 
-### Mapa de sentimentos
-Visualização de como os ex-colaboradores se sentem — distribuição entre alívio, surpresa, injustiça, raiva, urgência, insegurança, tristeza e indiferença.
+### Na Pesquisa quantitativa
+- **Avaliação pós-demissão** — notas dos ex-colaboradores
+- **Mapa de sentimentos** — distribuição entre alívio, surpresa, injustiça, raiva, urgência, insegurança, tristeza e indiferença
 
-### Risco de marca empregadora
-Indicador que sinaliza potencial impacto negativo na reputação da empresa como empregadora, derivado dos sentimentos expressos.
-
-### Risco trabalhista
-Indicador baseado em sentimentos de injustiça e raiva — sinaliza possível insatisfação que pode evoluir para conflitos trabalhistas.
+### Na Pesquisa qualitativa
+- Respostas textuais às perguntas customizadas da empresa (somente leitura)
 
 ## Filtros disponíveis
 
@@ -38,9 +44,9 @@ Alguns filtros só ficam ativos após seleção de parâmetros obrigatórios.
 
 ## Como funciona
 
-1. RH faz login e acessa dashboard
+1. RH faz login e escolhe Painel ou Indicadores no menu
 2. Seleciona filtros desejados (período, unidade)
-3. Visualiza gráficos e indicadores consolidados
+3. Visualiza gráficos e indicadores da visão escolhida
 4. Identifica pontos de atenção (ex.: alto índice de injustiça)
 5. Toma ações: revisão de processo, treinamento de gestores, comunicação
 
@@ -57,10 +63,11 @@ Pesquisa Prepara.me 2023 indica que empresas que demitem **sem** apoio estrutura
 
 | Ação | Disponível |
 |---|---|
-| Ver indicadores consolidados | Sim |
+| Ver KPIs no Painel | Sim |
+| Ver pós-demissão e sentimentos (quantitativa) | Sim |
+| Ver respostas qualitativas | Sim (consulta) |
 | Filtrar por período e unidade | Sim |
-| Analisar mapa de sentimentos | Sim |
-| Identificar riscos | Sim |
+| Cadastrar perguntas qualitativas | Não (Admin da plataforma) |
 | Ver dados de outras empresas | Não |
 | Exportar dados | Não (função do administrador Prepara.me) |
 
@@ -69,7 +76,7 @@ Pesquisa Prepara.me 2023 indica que empresas que demitem **sem** apoio estrutura
 - Dados filtrados **automaticamente** pela empresa do login
 - Indicadores dependem de ex-colaboradores **terem respondido** a pesquisa
 - Dashboard vazio indica que ainda não há respostas suficientes
-- Perguntas qualitativas customizadas enriquecem a análise qualitativa
+- Perguntas qualitativas customizadas (cadastradas pelo Admin) enriquecem a análise qualitativa
 
 ## Relacionado com
 

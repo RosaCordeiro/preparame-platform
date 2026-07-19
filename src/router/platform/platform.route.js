@@ -10,6 +10,8 @@ const interviewSimulator = () =>
   import("../../components/platform/interviewSimulator/InterviewSimulator.vue");
 const ReplacementsReport = () =>
   import("../../components/platform/replacementsReport/ReplacementsReport.vue");
+const HomeCompany = () =>
+  import("../../components/platform/home/HomeCompany.vue");
 
 const platformRoutes = [
   {
@@ -23,8 +25,51 @@ const platformRoutes = [
         components: {
           content: HomeDynamicTemplate,
         },
+        meta: {
+          rhSection: "metrics",
+        },
       },
     ],
+  },
+  {
+    path: "/rh/indicadores/quantitativa",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: HomeCompany,
+        },
+        meta: {
+          rhSection: "quantitative",
+        },
+      },
+    ],
+    props: {
+      userTypes: ["COMPANY_ADMIN"],
+    },
+  },
+  {
+    path: "/rh/indicadores/qualitativa",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: HomeCompany,
+        },
+        meta: {
+          rhSection: "qualitative",
+        },
+      },
+    ],
+    props: {
+      userTypes: ["COMPANY_ADMIN"],
+    },
   },
   {
     path: "/survey",

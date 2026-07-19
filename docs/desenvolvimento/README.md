@@ -10,6 +10,7 @@ Documentação técnica e catálogo de **agentes de desenvolvimento** para quem 
 | Documento | Conteúdo |
 |---|---|
 | [Arquitetura frontend](arquitetura-frontend.md) | Stack, pastas `src/`, padrões globais |
+| [Especificações](especificacoes/) | SPEC + design de features (feat/fix) |
 | [Agentes](agents/README.md) | Personas — orquestrador, novas demandas, especialistas |
 | [Demandas](demandas/README.md) | Registro de features em andamento |
 | [Futuro](futuro/README.md) | Planos guardados para implementação posterior |

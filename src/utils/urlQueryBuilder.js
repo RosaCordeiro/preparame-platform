@@ -3,9 +3,15 @@ function urlQueryBuilder(url, cols) {
 
     url = `/${url}`;
 
-    if (cols && cols.length > 0) {
-        cols.forEach((filter) => {
-            if (filter.model) {
+    const filters = Array.isArray(cols)
+        ? cols
+        : cols
+          ? Object.values(cols)
+          : [];
+
+    if (filters.length > 0) {
+        filters.forEach((filter) => {
+            if (filter && filter.model !== undefined && filter.model !== null && filter.model !== "") {
                 if (queryString) {
                     queryString += "&";
                 }

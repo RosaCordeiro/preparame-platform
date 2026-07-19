@@ -31,7 +31,7 @@ Ex-colaborador seleciona sentimentos que descrevem como se sente após a demiss�
 Veja lista completa em [Mapa de sentimentos](mapa-de-sentimentos.md).
 
 ### Etapa 3 — Perguntas da empresa (opcional)
-Se o RH da empresa configurou perguntas qualitativas, elas aparecem nesta etapa. Exemplos:
+Se o administrador da plataforma configurou perguntas qualitativas para a empresa, elas aparecem nesta etapa. Exemplos:
 - Como foi a comunicação da demissão?
 - Você se sentiu apoiado pelo gestor?
 - O que poderia ter sido diferente?

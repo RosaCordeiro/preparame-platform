@@ -148,7 +148,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -165,7 +165,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -182,7 +182,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },

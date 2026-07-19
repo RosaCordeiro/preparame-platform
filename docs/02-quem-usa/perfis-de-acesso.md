@@ -14,8 +14,8 @@ A plataforma possui **quatro perfis de acesso**, cada um com permissões e menus
 |---|---|---|---|
 | **Ex-colaborador** | Pessoa demitida ou em recolocação | Agenda, pesquisa, simulador, mentorias | Simulador, Meus Pedidos |
 | **Especialista de RH** | Consultor que presta serviços na plataforma | Agenda de atendimentos | Horários, Produtos do usuário |
-| **Administrador da empresa** | Gestor de RH da empresa parceira | Dashboard de indicadores | Perguntas qualitativas |
-| **Administrador da plataforma** | Equipe interna da Prepara.me | Relatórios e métricas | Gestão completa |
+| **Administrador da empresa** | Gestor de RH da empresa parceira | Dashboard de indicadores | Painel, Indicadores (quantitativa/qualitativa), programa |
+| **Administrador da plataforma** | Equipe interna da Prepara.me | Relatórios e métricas | Gestão completa (inclui Perguntas Qualitativas) |
 
 ## Como funciona
 
