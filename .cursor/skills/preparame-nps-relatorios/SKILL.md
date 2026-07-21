@@ -34,8 +34,9 @@ Lista em `NPSSurvey.vue` data `feelings`. Alguns têm `laborRiskCheck: true` (in
 
 ## Perguntas qualitativas
 
-CRUD em `surveyQuestionsCrud/` — perfil COMPANY_ADMIN
+CRUD em `surveyQuestionsCrud/` — perfil ADMIN
 Rotas: `/surveyQuestions`
+Filtro/cadastro por empresa (`DialogSelect` de companies)
 
 ## Relatório recolocação
 

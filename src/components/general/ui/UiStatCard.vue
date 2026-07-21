@@ -162,16 +162,18 @@ export default {
   methods: {
     formatValue(row) {
       if (row.insufficient) {
-        return "Insuficiente";
+        return "Sem informações";
       }
 
       if (
         row.value === "" ||
         row.value === null ||
         row.value === undefined ||
+        row.value === "N/A" ||
+        row.value === "Sem informações" ||
         (typeof row.value === "number" && Number.isNaN(row.value))
       ) {
-        return "N/A";
+        return "Sem informações";
       }
 
       return `${row.value}${this.suffix}`;

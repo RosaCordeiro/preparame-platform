@@ -74,7 +74,8 @@ Gráficos e tabelas que consolidam respostas da pesquisa pós-demissão dos ex-c
 ## Regras importantes
 
 - Dados filtrados **automaticamente** pela empresa do login
-- Indicadores dependem de ex-colaboradores **terem respondido** a pesquisa
+- Indicadores e respostas dependem de ex-colaboradores **terem respondido** a pesquisa
+- **Anonimato:** filtros com poucos respondentes (≤ limiar no backend, default 5) não exibem dados daquele recorte ao RH
 - Perguntas qualitativas (cadastradas pelo Admin da plataforma) aparecem na **terceira etapa** da pesquisa
 - Quanto mais respostas, mais confiáveis os indicadores
 

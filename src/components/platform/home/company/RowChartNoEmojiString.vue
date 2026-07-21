@@ -9,7 +9,12 @@
           :style="`background: linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);`"
         ></div>
 
-        <p :style="`fontSize: 16px`" v-if="data === 'N/A'">0</p>
+        <p
+          :style="`fontSize: 16px`"
+          v-if="insufficientSample || data === 'N/A' || data === 'Sem informações'"
+        >
+          Sem informações
+        </p>
         <p v-else>{{ data }}</p>
       </div>
     </div>
@@ -33,7 +38,7 @@ export default {
       type: String,
       required: true,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
     },

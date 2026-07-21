@@ -18,6 +18,8 @@ npm run dev
 
 A API e o banco ficam no backend (Compose em `preparame-backend`, tipicamente API `:3334`). Ajuste o `.env` do frontend para apontar ao host da API.
 
+Anonimato dos filtros RH é enforcement na API (`insufficientSample` / `Sem informações`). Ver backend `SURVEY_ANONYMITY_MIN_RESPONDENTS`.
+
 ### Lint e build
 
 ```bash
@@ -31,7 +33,7 @@ npm run build
 npm test
 ```
 
-Hoje o script é placeholder (`No test specified`). Validação de features segue os cenários `VAL-*` nas specs em `docs/desenvolvimento/especificacoes/`.
+Hoje o script é placeholder (`No test specified`). Validação de features segue os cenários `VAL-*` nas specs. Testes do limiar de anonimato ficam no backend (`NPSSurveyAnswersUseCase.spec.ts`).
 
 ## UI — menu do RH (COMPANY_ADMIN)
 
@@ -50,6 +52,7 @@ Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empres
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| Anonimato (backend) | [`../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md`](../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md) |
 | SPEC cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md) |
 | Design cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md) |
 | SPEC menu RH | [`docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md`](docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md) |

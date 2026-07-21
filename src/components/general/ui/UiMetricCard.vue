@@ -112,7 +112,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
     },
@@ -150,7 +150,7 @@ export default {
         rows.push({
           label: this.companyLabel,
           value: this.companyValue,
-          insufficient: this.lessThanFive,
+          insufficient: this.insufficientSample,
         });
       }
 

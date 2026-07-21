@@ -200,7 +200,7 @@ export default {
       return this.compareResults[0] || {};
     },
     primaryInsufficient() {
-      return Boolean(this.primaryResult.lessThanFive);
+      return Boolean(this.primaryResult.insufficientSample);
     },
     timelineCategories() {
       const timeline = this.metricTimelines[this.expandedMetricKey];
@@ -223,7 +223,7 @@ export default {
             minValue: -100,
             maxValue: 100,
             intersectionValue: 0,
-            lessThanFive: this.primaryInsufficient,
+            insufficientSample: this.primaryInsufficient,
           },
         },
         {
@@ -241,7 +241,7 @@ export default {
             maxValue: 10,
             intersectionValue: 4,
             invertedColors: true,
-            lessThanFive: this.primaryInsufficient,
+            insufficientSample: this.primaryInsufficient,
           },
         },
         {
@@ -259,7 +259,7 @@ export default {
             maxValue: 10,
             intersectionValue: 4,
             invertedColors: true,
-            lessThanFive: this.primaryInsufficient,
+            insufficientSample: this.primaryInsufficient,
           },
         },
         {
@@ -321,7 +321,7 @@ export default {
             compareRows: this.compareRowsFor("termination"),
             suffix: "%",
             intersectionValue: 50,
-            lessThanFive: this.primaryInsufficient,
+            insufficientSample: this.primaryInsufficient,
           },
         },
         {
@@ -341,7 +341,7 @@ export default {
             maxValue: 10,
             intersectionValue: 3,
             invertedColors: true,
-            lessThanFive: this.primaryInsufficient,
+            insufficientSample: this.primaryInsufficient,
           },
         },
       ];

@@ -490,7 +490,7 @@
             :maxValue="100"
             :data="removePercent(this.nps)"
             :intersectionValue="0"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -512,7 +512,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -535,7 +535,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -573,7 +573,7 @@
           <RowChartOneEmojiWithoutIntersection
             :title="'Sua Empresa'"
             :data="removePercent(realocateds)"
-            :lessThanFive="false"
+            :insufficientSample="false"
           />
         </div>
 
@@ -583,7 +583,7 @@
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
             :data="welcomed.toString()"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
         </div>
       </div>
@@ -595,7 +595,7 @@
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
             :data="realocatedCount.toString()"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
         </div>
       </div>
@@ -607,7 +607,7 @@
           <RowChartOneEmojiExpanded
             :title="'Sua Empresa'"
             :data="removePercent(termination)"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -623,7 +623,7 @@
             :data="removePercent(laborIssues)"
             :intersectionValue="3"
             :invertedColors="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -898,7 +898,7 @@ export default {
       state: [],
       city: [],
       userType: localStorage.getItem("userType"),
-      lessThanFive: false,
+      insufficientSample: false,
       selectAllPeriods: false,
       selectAllUnity: false,
       selectAllArea: false,
@@ -1592,7 +1592,7 @@ export default {
         nps === "0%" ||
         nps === "Sem informações";
 
-      return Boolean(report.lessThanFive || report.noData || noMetricData);
+      return Boolean(report.insufficientSample || report.noData || noMetricData);
     },
     normalizeFilterValues(values) {
       if (!this.hasFilterValue(values)) {
@@ -1691,7 +1691,7 @@ export default {
         termination: report.termination,
         laborIssues: report.laborIssues,
         realocatedCount: report.realocatedCount,
-        lessThanFive: report.lessThanFive,
+        insufficientSample: report.insufficientSample,
         shutDown: report.shutDown || [],
         feelingMap: report.feelingMap || [],
       };
@@ -1717,10 +1717,6 @@ export default {
       this.voluntaryReasonsMap = npsSurveyReport.voluntaryReasonsMap || [];
       this.realocatedCount = npsSurveyReport.realocatedCount;
 
-      if (npsSurveyReport.lessThanFive) {
-        this.nps = "Sem informações";
-      }
-
       this.npsGeneral = npsSurveyReport.general.nps;
       this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
       this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
@@ -1732,7 +1728,7 @@ export default {
       this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
       this.voluntaryReasonsMapGeneral =
         npsSurveyReport.general.voluntaryReasonsMap || [];
-      this.lessThanFive = npsSurveyReport.lessThanFive;
+      this.insufficientSample = npsSurveyReport.insufficientSample;
       this.companyQuestions =
         npsSurveyReport.companyQuestions == null
           ? []
@@ -2093,7 +2089,7 @@ export default {
         this.$refs.infoWidget.close();
         if (
           !this.isRhVariant &&
-          npsSurveyReport.lessThanFive &&
+          npsSurveyReport.insufficientSample &&
           this.shouldWarnInsufficientFilterData(npsSurveyReport)
         ) {
           this.$refs.infoWidget.open();
