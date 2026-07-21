@@ -20,12 +20,13 @@ Plataforma logada — perfil administrador da empresa:
 
 ## Indicadores principais
 
-### No Painel (KPIs)
-- **e-NPS** — satisfação com o processo
-- **Risco de marca empregadora** / **Risco trabalhista** — sinais derivados das respostas
-- Demais KPIs de impacto disponíveis no card de métricas
+### No Painel
+- Demais cards de impacto / placeholders “em breve” (sem os 8 KPIs principais)
 
 ### Na Pesquisa quantitativa
+- **e-NPS** — satisfação com o processo
+- **Risco de marca** / **Risco trabalhista** — sinais derivados das respostas
+- **Realocados**, **Acolhidos**, **Pessoas realocadas**, **Cálculos da rescisão**, **Pendências trabalhistas**
 - **Avaliação pós-demissão** — notas dos ex-colaboradores
 - **Mapa de sentimentos** — distribuição entre alívio, surpresa, injustiça, raiva, urgência, insegurança, tristeza e indiferença
 
@@ -63,7 +64,8 @@ Pesquisa Prepara.me 2023 indica que empresas que demitem **sem** apoio estrutura
 
 | Ação | Disponível |
 |---|---|
-| Ver KPIs no Painel | Sim |
+| Ver demais cards no Painel | Sim |
+| Ver KPIs (e-NPS, riscos, etc.) na quantitativa | Sim |
 | Ver pós-demissão e sentimentos (quantitativa) | Sim |
 | Ver respostas qualitativas | Sim (consulta) |
 | Filtrar por período e unidade | Sim |

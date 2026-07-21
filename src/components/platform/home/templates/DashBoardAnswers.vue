@@ -440,6 +440,7 @@
 
       <DashBoardRhMetrics
         v-if="showRhMetrics"
+        card-catalog="panelRemainder"
         :compare-results="compareResults"
         :compare-filter-sets="compareFilterSets"
         :summarize-filter-set="summarizeFilterSet"
@@ -458,7 +459,28 @@
         @metric-toggle="toggleMetricExpand"
       />
 
-      <div v-else-if="!isRhVariant" class="box__three-columns">
+      <DashBoardRhMetrics
+        v-if="showRhQuantitative"
+        card-catalog="kpi"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
+        :nps-general="npsGeneral"
+        :brand-risk-general="brandRiskGeneral"
+        :labor-risk-general="laborRiskGeneral"
+        :realocateds-general="realocatedsGeneral"
+        :welcomed-general="welcomedGeneral"
+        :termination-general="terminationGeneral"
+        :labor-issues-general="laborIssuesGeneral"
+        :remove-percent="removePercent"
+        :expanded-metric-key="expandedMetricKey"
+        :metric-timelines="metricTimelines"
+        :timeline-loading="timelineLoading"
+        @metric-info="openMetricInfo"
+        @metric-toggle="toggleMetricExpand"
+      />
+
+      <div v-if="!isRhVariant" class="box__three-columns">
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
 
@@ -529,7 +551,6 @@
 
       <DashBoardRhSurveys
         v-if="showRhSurveys"
-        :show-quantitative-cards="showRhQuantitative"
         :show-shutdown-survey="showShutdownSurvey && showRhQuantitative"
         :show-feeling-map-survey="showFeelingMapSurvey && showRhQuantitative"
         :show-company-questions="showRhQualitative"

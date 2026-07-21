@@ -1,14 +1,5 @@
 <template>
   <div>
-    <DashBoardRhQuantitativeCards
-      v-if="showQuantitativeCards"
-      :compare-results="compareResults"
-      :compare-filter-sets="compareFilterSets"
-      :summarize-filter-set="summarizeFilterSet"
-      :realocateds-general="realocatedsGeneral"
-      @metric-info="$emit('metric-info', $event)"
-    />
-
     <RhSurveyComparePanel
       v-if="showShutdownSurvey"
       title="Avaliação pós demissão"
@@ -67,22 +58,16 @@ import RhFeelingMapCompare from "../company/RhFeelingMapCompare.vue";
 import RhFeelingSurveyPanel from "../company/RhFeelingSurveyPanel.vue";
 import RhSectionCard from "../company/RhSectionCard.vue";
 import RhSurveyComparePanel from "../company/RhSurveyComparePanel.vue";
-import DashBoardRhQuantitativeCards from "./DashBoardRhQuantitativeCards.vue";
 
 export default {
   components: {
     CompanyQuestionsCard,
-    DashBoardRhQuantitativeCards,
     RhFeelingMapCompare,
     RhFeelingSurveyPanel,
     RhSectionCard,
     RhSurveyComparePanel,
   },
   props: {
-    showQuantitativeCards: {
-      type: Boolean,
-      default: false,
-    },
     showShutdownSurvey: Boolean,
     showFeelingMapSurvey: Boolean,
     showCompanyQuestions: {

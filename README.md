@@ -3,7 +3,8 @@
 Frontend Quasar/Vue 2 da plataforma **Prepara.me | Demissão Responsável** (`prepara-me-platform`).
 
 Documentação de produto: [`docs/`](docs/README.md).  
-Desenvolvimento / agentes: [`docs/desenvolvimento/`](docs/desenvolvimento/README.md) e [`AGENTS.md`](AGENTS.md).
+Desenvolvimento / agentes: [`docs/desenvolvimento/`](docs/desenvolvimento/README.md) e [`AGENTS.md`](AGENTS.md).  
+Histórico de mudanças: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Subir em desenvolvimento
 
@@ -36,8 +37,8 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 
 | Menu | Rota | Conteúdo |
 |------|------|----------|
-| Painel de riscos e impactos | `/platform` | KPIs (e-NPS, riscos, recolocação, etc.) |
-| Indicadores → Pesquisa quantitativa | `/rh/indicadores/quantitativa` | Avaliação pós-demissão + mapa de sentimentos |
+| Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
+| Indicadores → Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Indicadores → Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta; cadastro só no Admin) |
 
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
@@ -48,8 +49,10 @@ Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empres
 
 | Doc | Path |
 |-----|------|
-| SPEC | [`docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md`](docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md) |
-| Design | [`docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas-design.md`](docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas-design.md) |
+| CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| SPEC cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md) |
+| Design cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md) |
+| SPEC menu RH | [`docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md`](docs/desenvolvimento/especificacoes/2026-07-19-rh-menu-indicadores-pesquisas.md) |
 
 ## Configuração Quasar
 

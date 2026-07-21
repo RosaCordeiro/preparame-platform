@@ -63,8 +63,8 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 
 | Área | Caminho | Descrição |
 |---|---|---|
-| Painel de riscos e impactos | `/platform` | KPIs (e-NPS, riscos, impacto) |
-| Pesquisa quantitativa | `/rh/indicadores/quantitativa` | Pós-demissão + mapa de sentimentos |
+| Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
+| Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta) |
 | Funcionários / programa | `/program-people` | Pessoas do programa de recolocação |
 | Contrate Open to Work | `/replacementsReport` | Relatório de recolocação |
