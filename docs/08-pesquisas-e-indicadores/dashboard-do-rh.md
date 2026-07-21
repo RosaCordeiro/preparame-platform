@@ -77,7 +77,8 @@ Pesquisa Prepara.me 2023 indica que empresas que demitem **sem** apoio estrutura
 
 - Dados filtrados **automaticamente** pela empresa do login
 - Indicadores dependem de ex-colaboradores **terem respondido** a pesquisa
-- Dashboard vazio indica que ainda não há respostas suficientes
+- **Anonimato:** se o filtro resultar em poucos respondentes (≤ limiar configurável no backend, default 5), o RH **não** vê métricas/respostas daquele filtro (`insufficientSample`)
+- Dashboard vazio / N/A também pode indicar amostra insuficiente para anonimato
 - Perguntas qualitativas customizadas (cadastradas pelo Admin) enriquecem a análise qualitativa
 
 ## Relacionado com

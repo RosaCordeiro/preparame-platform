@@ -56,18 +56,18 @@ export default {
       type: Boolean,
       default: true,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
     },
   },
   computed: {
     displayValue() {
-      if (this.lessThanFive) {
+      if (this.insufficientSample) {
         return "Informação insuficiente";
       }
 
-      return isNaN(this.data) ? "N/A" : this.data;
+      return isNaN(this.data) ? "Sem informações" : this.data;
     },
   },
 };

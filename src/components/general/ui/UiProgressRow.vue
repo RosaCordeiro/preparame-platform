@@ -141,11 +141,11 @@ export default {
     },
     formattedValue() {
       if (this.insufficient) {
-        return "Informação insuficiente";
+        return "Sem informações";
       }
 
       if (isNaN(this.numericValue)) {
-        return "N/A";
+        return "Sem informações";
       }
 
       return `${this.numericValue}${this.suffix}`;

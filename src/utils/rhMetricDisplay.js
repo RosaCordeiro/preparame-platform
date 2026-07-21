@@ -230,7 +230,7 @@ export function buildCompareRows({
       ? summarizeFilterSet(compareFilterSets[index])
       : "",
     value: parseValue(result[field]),
-    insufficient: Boolean(result.lessThanFive),
+    insufficient: Boolean(result.insufficientSample),
   }));
 }
 
@@ -250,7 +250,7 @@ export function buildCompareRowsRaw({
       ? summarizeFilterSet(compareFilterSets[index])
       : "",
     value: result[field],
-    insufficient: Boolean(result.lessThanFive),
+    insufficient: Boolean(result.insufficientSample),
   }));
 }
 
@@ -286,7 +286,7 @@ export function buildQuestionCompareGroups({
           valueKey,
           parseValue
         ),
-        insufficient: Boolean(primary.lessThanFive),
+        insufficient: Boolean(primary.insufficientSample),
       });
     } else {
       resultList.forEach((result, index) => {
@@ -302,7 +302,7 @@ export function buildQuestionCompareGroups({
             valueKey,
             parseValue
           ),
-          insufficient: Boolean(result.lessThanFive),
+          insufficient: Boolean(result.insufficientSample),
         });
       });
     }
@@ -356,7 +356,7 @@ export function buildFeelingSurveyColumns({
           valueKey,
           parseValue
         ),
-        insufficient: Boolean(primary.lessThanFive),
+        insufficient: Boolean(primary.insufficientSample),
       })),
     });
   } else {
@@ -376,7 +376,7 @@ export function buildFeelingSurveyColumns({
             valueKey,
             parseValue
           ),
-          insufficient: Boolean(result.lessThanFive),
+          insufficient: Boolean(result.insufficientSample),
         })),
       });
     });

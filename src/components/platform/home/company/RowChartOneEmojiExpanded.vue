@@ -45,7 +45,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
     },
@@ -69,11 +69,11 @@ export default {
       return this.invertedColors ? positive : negative;
     },
     displayValue() {
-      if (this.lessThanFive) {
+      if (this.insufficientSample) {
         return "Informação insuficiente";
       }
 
-      return isNaN(this.data) ? "N/A" : `${this.data}%`;
+      return isNaN(this.data) ? "Sem informações" : `${this.data}%`;
     },
   },
 };

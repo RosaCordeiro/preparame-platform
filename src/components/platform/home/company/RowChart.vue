@@ -12,8 +12,8 @@
           }; background: ${barGradient}`"
         ></div>
 
-        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data }}</p>
-        <p v-else>Informação insuficiente.</p>
+        <p v-if="!insufficientSample">{{ isNaN(data) ? "Sem informações" : data }}</p>
+        <p v-else>Sem informações</p>
       </div>
 
       <div class="chart__row-scale">
@@ -57,7 +57,7 @@ export default {
       type: Number,
       required: true,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
     },
