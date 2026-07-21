@@ -32,8 +32,8 @@ flowchart TD
 
 ### 2. Primeiro acesso
 - RH faz login e acessa o **Painel de riscos e impactos** (`/platform`)
-- Vê KPIs iniciais (podem estar vazios até haver respostas)
-- No menu, **Indicadores de riscos** abre submenu com pesquisa quantitativa e qualitativa
+- Vê demais cards do Painel (placeholders / indicadores complementares)
+- No menu, **Indicadores de riscos** → **Pesquisa quantitativa** concentra os KPIs (e-NPS, riscos, realocação, etc.) além de pós-demissão e sentimentos
 
 ### 3. Acompanhamento
 - Ex-colaboradores respondem pesquisa após demissão (incluindo perguntas qualitativas, se houver)
@@ -41,9 +41,9 @@ flowchart TD
 - RH aplica filtros (período, unidade) para análise segmentada
 
 ### 4. Análise e ação
-- No Painel: monitora e-NPS e riscos (marca, trabalhista)
-- Em Indicadores → Quantitativa: identifica padrões no mapa de sentimentos e notas pós-demissão
+- Em Indicadores → Quantitativa: monitora e-NPS e riscos (marca, trabalhista), realocação, rescisão e pendências; identifica padrões no mapa de sentimentos e notas pós-demissão
 - Em Indicadores → Qualitativa: lê respostas textuais (sem cadastrar perguntas)
+- No Painel: acompanha demais cards complementares / placeholders
 - Toma ações: ajuste no processo de demissão, comunicação, treinamentos
 
 ### 5. Gestão de funcionários

@@ -10,7 +10,7 @@ O perfil **administrador da empresa** representa o RH da organização parceira.
 
 ## Onde encontrar
 
-- **Painel inicial:** após login, em `/platform` (KPIs de riscos e impactos)
+- **Painel inicial:** após login, em `/platform` (demais cards de impacto / placeholders)
 - **Menu lateral:**
   - Painel de riscos e impactos
   - Indicadores de riscos → Pesquisa quantitativa / Pesquisa qualitativa
@@ -25,15 +25,16 @@ O RH navega por três visões (mesmos filtros de período/unidade):
 
 | Visão | Onde | Conteúdo |
 |---|---|---|
-| Painel | `/platform` | KPIs: e-NPS, risco de marca, risco trabalhista, recolocação, etc. |
-| Pesquisa quantitativa | Menu → Indicadores → Pesquisa quantitativa | Avaliação pós-demissão + mapa/comparativo de sentimentos |
+| Painel | `/platform` | Demais cards do grid (placeholders / indicadores complementares) |
+| Pesquisa quantitativa | Menu → Indicadores → Pesquisa quantitativa | KPIs (e-NPS, risco de marca, risco trabalhista, realocados, acolhidos, pessoas realocadas, rescisão, pendências) + avaliação pós-demissão + mapa de sentimentos |
 | Pesquisa qualitativa | Menu → Indicadores → Pesquisa qualitativa | Respostas textuais às perguntas da empresa (somente leitura) |
 
 ## O que o usuário vê e pode fazer
 
 | Ação | Onde |
 |---|---|
-| Ver KPIs de risco e impacto | Menu → Painel de riscos e impactos |
+| Ver demais cards do Painel | Menu → Painel de riscos e impactos |
+| Ver KPIs de risco e impacto | Menu → Indicadores → Pesquisa quantitativa |
 | Ver avaliação pós-demissão e sentimentos | Menu → Indicadores → Pesquisa quantitativa |
 | Ver respostas qualitativas | Menu → Indicadores → Pesquisa qualitativa |
 | Filtrar dados por período e unidade | Filtros em qualquer uma das visões |

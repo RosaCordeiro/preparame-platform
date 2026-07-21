@@ -88,6 +88,58 @@ const COMING_SOON_CARDS = [
   },
 ];
 
+/** Placeholders que antes ficavam em DashBoardRhQuantitativeCards (mesmo grid dos KPIs). */
+const QUANTITATIVE_COMING_SOON_CARDS = [
+  {
+    key: "criticalRisks",
+    title: "Riscos críticos",
+    subtitle: "Monitoramento de riscos críticos do processo",
+  },
+  {
+    key: "resolutionRate",
+    title: "Taxa de resolução",
+    subtitle: "Percentual de casos resolvidos",
+  },
+  {
+    key: "legalRiskReduction",
+    title: "Redução de risco jurídico",
+    subtitle: "Evolução da exposição jurídica",
+  },
+  {
+    key: "psychosocialReduction",
+    title: "Redução psicossocial",
+    subtitle: "Indicador de impacto psicossocial",
+  },
+  {
+    key: "employerBrand",
+    title: "Marca empregadora",
+    subtitle: "Percepção da marca empregadora",
+  },
+  {
+    key: "segmentIndex",
+    title: "Índice segmento",
+    subtitle: "Comparativo com o segmento de mercado",
+  },
+  {
+    key: "doubtRate",
+    title: "Taxa de dúvidas",
+    subtitle: "Incidência de dúvidas reportadas",
+  },
+];
+
+function mapComingSoonCards(list) {
+  return list.map((card) => ({
+    key: card.key,
+    component: "RhMetricCard",
+    comingSoon: true,
+    infoLabel: card.title,
+    props: {
+      title: card.title,
+      subtitle: card.subtitle,
+    },
+  }));
+}
+
 export default {
   components: {
     RhMetricCard,
@@ -130,9 +182,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    cardCatalog: {
+      type: String,
+      default: "kpi",
+      validator: (value) => ["kpi", "panelRemainder"].includes(value),
+    },
   },
   computed: {
     hasMetricsData() {
+      if (this.cardCatalog === "panelRemainder") {
+        return true;
+      }
+
       return this.compareResults.length > 0;
     },
     primaryResult() {
@@ -146,8 +207,8 @@ export default {
 
       return timeline && timeline.categories ? timeline.categories : [];
     },
-    metricCards() {
-      const cards = [
+    kpiCards() {
+      return [
         {
           key: "nps",
           component: "RhMetricCard",
@@ -186,10 +247,10 @@ export default {
         {
           key: "brandRisk",
           component: "RhMetricCard",
-          infoLabel: "Marca",
-          timelineSubtitle: "Percepção de marca por período",
+          infoLabel: "Risco de marca",
+          timelineSubtitle: "Risco de marca por período",
           props: {
-            title: "Marca",
+            title: "Risco de marca",
             subtitle: "Percepção da marca empregadora",
             companyValue: this.metricValue("brandRisk"),
             generalValue: this.parseGeneralValue(this.brandRiskGeneral),
@@ -236,10 +297,10 @@ export default {
         {
           key: "realocatedCount",
           component: "RhStatCard",
-          infoLabel: "Quantidade de pessoas recolocadas",
-          timelineSubtitle: "Quantidade recolocada por período",
+          infoLabel: "Pessoas realocadas",
+          timelineSubtitle: "Quantidade realocada por período",
           props: {
-            title: "Pessoas recolocadas",
+            title: "Pessoas realocadas",
             subtitle: "Quantidade absoluta no período",
             companyValue: this.primaryResult.realocatedCount,
             compareRows: this.compareRowsForRaw("realocatedCount"),
@@ -284,21 +345,19 @@ export default {
           },
         },
       ];
+    },
+    panelRemainderCards() {
+      return mapComingSoonCards(COMING_SOON_CARDS);
+    },
+    quantitativeComingSoonCards() {
+      return mapComingSoonCards(QUANTITATIVE_COMING_SOON_CARDS);
+    },
+    metricCards() {
+      if (this.cardCatalog === "panelRemainder") {
+        return this.panelRemainderCards;
+      }
 
-      COMING_SOON_CARDS.forEach((card) => {
-        cards.push({
-          key: card.key,
-          component: "RhMetricCard",
-          comingSoon: true,
-          infoLabel: card.title,
-          props: {
-            title: card.title,
-            subtitle: card.subtitle,
-          },
-        });
-      });
-
-      return cards;
+      return this.kpiCards.concat(this.quantitativeComingSoonCards);
     },
   },
   methods: {

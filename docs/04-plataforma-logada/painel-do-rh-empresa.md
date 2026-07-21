@@ -23,12 +23,11 @@ Menu lateral:
 ## Componentes por visão
 
 ### Painel de riscos e impactos
-- **e-NPS** — satisfação dos ex-colaboradores com o processo
-- **Risco de marca empregadora** — potencial impacto na reputação da empresa
-- **Risco trabalhista** — sinais de insatisfação que podem gerar conflitos
-- Outros KPIs de impacto (recolocação, acolhimento, etc., conforme disponível)
+- Cards complementares de impacto / placeholders “em breve” (demais indicadores do grid)
+- **Não** exibe os KPIs de e-NPS, riscos, realocação, rescisão e pendências (estes estão na Pesquisa quantitativa)
 
 ### Pesquisa quantitativa
+- **e-NPS**, **Risco trabalhista**, **Risco de marca**, **Realocados**, **Acolhidos**, **Pessoas realocadas**, **Cálculos da rescisão**, **Pendências trabalhistas**
 - **Avaliação pós-demissão** — notas atribuídas pelos ex-colaboradores
 - **Mapa de sentimentos** — distribuição emocional e comparativos
 
@@ -48,7 +47,7 @@ Gráficos e tabelas que consolidam respostas da pesquisa pós-demissão dos ex-c
 
 ## Como funciona
 
-1. RH da empresa faz login e abre o Painel (KPIs) ou Indicadores
+1. RH da empresa faz login e abre o Painel ou Indicadores
 2. Seleciona filtros (período, unidade) para refinar a visão
 3. Analisa indicadores e identifica pontos de atenção
 4. Usa insights para ações de melhoria no processo de demissão
@@ -57,12 +56,13 @@ Gráficos e tabelas que consolidam respostas da pesquisa pós-demissão dos ex-c
 
 | Ação | Onde |
 |---|---|
-| Ver indicadores consolidados (KPIs) | Menu → Painel de riscos e impactos |
+| Ver demais cards do Painel | Menu → Painel de riscos e impactos |
+| Ver KPIs (e-NPS, riscos, realocação, etc.) | Menu → Indicadores → Pesquisa quantitativa |
 | Ver avaliação pós-demissão e sentimentos | Menu → Indicadores → Pesquisa quantitativa |
 | Ver respostas qualitativas | Menu → Indicadores → Pesquisa qualitativa |
 | Filtrar por período e unidade | Painel / Indicadores → filtros |
 | Analisar mapa de sentimentos | Indicadores → Pesquisa quantitativa |
-| Identificar riscos | Painel → indicadores de risco |
+| Identificar riscos (KPIs) | Indicadores → Pesquisa quantitativa |
 | Consultar funcionários vinculados | Gestão de funcionários |
 
 ## O que o RH NÃO vê
