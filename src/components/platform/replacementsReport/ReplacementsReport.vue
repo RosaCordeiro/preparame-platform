@@ -44,13 +44,41 @@
               class="col-12 col-md-3"
             />
 
+            <q-select
+              outlined
+              dense
+              clearable
+              label="Segmento"
+              v-model="filters.segmentId"
+              :options="segmentOptions"
+              option-value="id"
+              option-label="name"
+              emit-value
+              map-options
+              class="col-12 col-md-3"
+            />
+
+            <q-select
+              outlined
+              dense
+              clearable
+              label="Subsegmento"
+              v-model="filters.subsegmentId"
+              :options="filteredSubsegmentOptions"
+              option-value="id"
+              option-label="name"
+              emit-value
+              map-options
+              class="col-12 col-md-3"
+            />
+
             <div class="row justify-center col-12 q-mt-md">
               <q-btn
                 label="Gerar"
                 color="primary"
                 class="btn-generate q-mr-md"
-                @click="loadReplacementsData"
-                :loading="loading"
+                @click="applyFilters"
+                :loading="loading || loadingOpenToWork"
               />
               <q-btn
                 label="Limpar Filtros"
@@ -181,10 +209,14 @@ export default {
       loading: false,
       reportData: null,
       companies: [],
+      segments: [],
+      subsegments: [],
       filters: {
         startDate: '',
         endDate: '',
-        companyId: null
+        companyId: null,
+        segmentId: null,
+        subsegmentId: null,
       },
       monthlyColumns: [
         { name: 'mes', label: 'Mês', align: 'left' },
@@ -197,7 +229,8 @@ export default {
         { name: 'name', label: 'Nome', align: 'left', field: 'name' },
         { name: 'position', label: 'Cargo', align: 'left', field: 'position' },
         { name: 'department', label: 'Área', align: 'left', field: 'department' },
-        { name: 'companyName', label: 'Empresa', align: 'left', field: (row) => row.company && row.company.name },
+        { name: 'segmentName', label: 'Segmento', align: 'left', field: 'segmentName' },
+        { name: 'subsegmentName', label: 'Subsegmento', align: 'left', field: 'subsegmentName' },
         { name: 'city', label: 'Cidade', align: 'left', field: 'city' },
         { name: 'state', label: 'Estado', align: 'left', field: 'state' },
         { name: 'linkedinUrl', label: 'LinkedIn', align: 'center', field: 'linkedinUrl' },
@@ -211,12 +244,34 @@ export default {
         ...this.companies
       ];
     },
+    segmentOptions() {
+      return this.segments;
+    },
+    filteredSubsegmentOptions() {
+      if (!this.filters.segmentId) {
+        return this.subsegments;
+      }
+      return this.subsegments.filter(
+        (s) => s.segmentId === this.filters.segmentId
+      );
+    },
     monthlyRows() {
       return this.reportData?.detalhamento_mensal || [];
     }
   },
   watch: {
-    "filters.companyId"() {
+    "filters.segmentId"() {
+      if (
+        this.filters.subsegmentId &&
+        !this.filteredSubsegmentOptions.some(
+          (s) => s.id === this.filters.subsegmentId
+        )
+      ) {
+        this.filters.subsegmentId = null;
+      }
+      this.loadOpenToWorkCandidates();
+    },
+    "filters.subsegmentId"() {
       this.loadOpenToWorkCandidates();
     },
   },
@@ -240,6 +295,21 @@ export default {
           }
         });
         this.companies = response.data;
+      } catch (error) {
+        showError(error);
+      }
+    },
+    async loadSegmentsAndSubsegments() {
+      try {
+        const headers = {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+        const [segmentsRes, subsegmentsRes] = await Promise.all([
+          axios.get(`${baseApiUrl}/segments`, { headers }),
+          axios.get(`${baseApiUrl}/subsegments`, { headers }),
+        ]);
+        this.segments = segmentsRes.data || [];
+        this.subsegments = subsegmentsRes.data || [];
       } catch (error) {
         showError(error);
       }
@@ -279,6 +349,10 @@ export default {
         this.loading = false;
       }
     },
+    applyFilters() {
+      this.loadReplacementsData();
+      this.loadOpenToWorkCandidates();
+    },
     setDefaultDates() {
       const today = new Date();
       const sixMonthsAgo = new Date();
@@ -290,16 +364,21 @@ export default {
       this.filters.startDate = '';
       this.filters.endDate = '';
       this.filters.companyId = null;
+      this.filters.segmentId = null;
+      this.filters.subsegmentId = null;
       this.reportData = null;
-
+      this.loadOpenToWorkCandidates();
     },
     async loadOpenToWorkCandidates() {
       this.loadingOpenToWork = true;
 
       try {
         const params = {};
-        if (this.filters.companyId) {
-          params.companyId = this.filters.companyId;
+        if (this.filters.segmentId) {
+          params.segmentId = this.filters.segmentId;
+        }
+        if (this.filters.subsegmentId) {
+          params.subsegmentId = this.filters.subsegmentId;
         }
 
         const response = await axios.get(
@@ -322,6 +401,7 @@ export default {
   },
   mounted() {
     this.loadCompanies();
+    this.loadSegmentsAndSubsegments();
     this.loadOpenToWorkCandidates();
   }
 };

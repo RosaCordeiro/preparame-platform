@@ -10,6 +10,16 @@ export const menuByUserType = {
         items: [
           { icon: "mdi-domain", label: "Empresas", url: "companies" },
           {
+            icon: "mdi-file-tree",
+            label: "Segmentos",
+            url: "segments",
+          },
+          {
+            icon: "mdi-sitemap",
+            label: "Subsegmentos",
+            url: "subsegments",
+          },
+          {
             icon: "mdi-account-multiple-plus-outline",
             label: "Usuários",
             url: "users",

@@ -120,11 +120,12 @@ const companyRoutes = [
     },
     {
         path: "/companies/:id",
+        name: "companies-edit",
         components: {
             site: Platform
         },
         children: [{
-            path: "/",
+            path: "",
             components: {
                 content: CompaniesRegisterCrud
             }

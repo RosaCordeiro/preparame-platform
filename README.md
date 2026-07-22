@@ -45,6 +45,19 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
 
+### Admin — Segmento / Subsegmento
+
+| Menu | Rota |
+|------|------|
+| Cadastros → Segmentos | `/segments` |
+| Cadastros → Subsegmentos | `/subsegments` |
+
+Na **Empresa** (`/companies/:id`): Segmento e Subsegmento são **opcionais**.
+
+### RH — Open to Work / Recolocações
+
+Rota típica: `/replacementsReport`. Filtros de **Segmento** e **Subsegmento** (dropdown) no mesmo card de filtros; a lista mostra essas colunas a partir da empresa do candidato e **não** exibe a empresa.
+
 Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empresa.md).
 
 ## Specs desta entrega
@@ -52,6 +65,7 @@ Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empres
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| Segmento / Subsegmento | [`docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md`](docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md) |
 | Anonimato (backend) | [`../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md`](../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md) |
 | SPEC cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md) |
 | Design cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md) |
