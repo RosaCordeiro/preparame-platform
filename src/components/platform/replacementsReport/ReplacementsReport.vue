@@ -3,138 +3,65 @@
     <Breadcrumbs :breadcrumbs="breadcrumbs" />
     <div class="crud-filter-content">
       <div class="q-mt-lg">
-        <h4 class="dashboard-title q-mb-lg">Dashboard de Recolocações</h4>
-        <q-card class="filter-card q-mb-lg">
-          <q-card-section class="row justify-center title-card">
-            <b>Filtros do Relatório</b>
-          </q-card-section>
+        <h4 class="dashboard-title q-mb-lg">Contrate Open to Work</h4>
 
-          <q-card-section class="row q-gutter-md justify-center items-end">
-            <q-input
-              outlined
-              dense
-              label="Data Inicial"
-              type="date"
-              v-model="filters.startDate"
-              stack-label
-              class="col-12 col-md-3"
-            />
-
-            <q-input
-              outlined
-              dense
-              label="Data Final"
-              type="date"
-              v-model="filters.endDate"
-              stack-label
-              class="col-12 col-md-3"
-            />
-
-            <q-select
-              outlined
-              dense
-              label="Empresa"
-              v-model="filters.companyId"
-              :options="companyOptions"
-              option-value="id"
-              option-label="name"
-              emit-value
-              map-options
-              clearable
-              class="col-12 col-md-3"
-            />
-
-            <div class="row justify-center col-12 q-mt-md">
-              <q-btn
-                label="Gerar"
-                color="primary"
-                class="btn-generate q-mr-md"
-                @click="loadReplacementsData"
-                :loading="loading"
-              />
-              <q-btn
-                label="Limpar Filtros"
-                class="btn-clear-filters"
-                @click="clearFilters"
-              />
-            </div>
-          </q-card-section>
-        </q-card>
-
-
-        <div class="row q-gutter-md q-mb-lg" v-if="reportData && reportData.total_entrada">
-          <q-card class="metric-card col-12 col-md">
-            <q-card-section class="text-center">
-              <div class="metric-number">{{ reportData.total_entrada }}</div>
-              <div class="metric-label">Total de Entradas</div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="metric-card col-12 col-md">
-            <q-card-section class="text-center">
-              <div class="metric-number">{{ reportData.total_recolocados }}</div>
-              <div class="metric-label">Total Recolocados</div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="metric-card col-12 col-md">
-            <q-card-section class="text-center">
-              <div class="metric-number">{{ reportData.percentual_recolocados }}%</div>
-              <div class="metric-label">Percentual de Recolocação</div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="metric-card col-12 col-md">
-            <q-card-section class="text-center">
-              <div class="metric-number">{{ reportData.tempo_medio_recolocacao }}</div>
-              <div class="metric-label">Tempo Médio (dias)</div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div v-if="monthlyRows.length > 0">
-          <q-card class="filter-card q-mt-xl">
-            <q-card-section class="row justify-center title-card">
-              <b>Detalhamento Mensal</b>
-            </q-card-section>
-
-            <q-card-section>
-              <div class="q-table__container q-table--flat">
-                <table class="manual-table">
-                  <thead>
-                    <tr>
-                      <th
-                        v-for="col in monthlyColumns"
-                        :key="col.name"
-                        :class="'text-' + col.align"
-                      >
-                        {{ col.label }}
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr v-for="row in monthlyRows" :key="row.mes">
-                      <td class="text-left">{{ row.mes | formatMonth }}</td>
-                      <td class="text-center">{{ row.total_recolocados_mes }}</td>
-                      <td class="text-center">{{ row.percentual_recolocados_mes | formatPercent }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <q-card class="filter-card q-mt-xl">
+        <q-card class="filter-card">
           <q-card-section class="row justify-center title-card">
             <b>Profissionais Open to Work</b>
           </q-card-section>
           <q-card-section>
             <p class="text-body2 text-grey-8 q-mb-md">
-              Colaboradores que autorizaram exibir o LinkedIn no programa de
-              recolocação.
+              Profissionais de outras empresas que autorizaram aparecer no
+              programa de recolocação (LinkedIn opcional).
             </p>
+            <div class="row q-gutter-md q-mb-md items-end">
+              <q-input
+                outlined
+                dense
+                label="Cargo"
+                v-model="openToWorkFilters.position"
+                clearable
+                class="col-12 col-md-3"
+              />
+              <q-input
+                outlined
+                dense
+                label="Área"
+                v-model="openToWorkFilters.department"
+                clearable
+                class="col-12 col-md-3"
+              />
+              <q-input
+                outlined
+                dense
+                label="Cidade"
+                v-model="openToWorkFilters.city"
+                clearable
+                class="col-12 col-md-2"
+              />
+              <q-input
+                outlined
+                dense
+                label="Estado"
+                v-model="openToWorkFilters.state"
+                clearable
+                class="col-12 col-md-2"
+              />
+              <div class="col-12 col-md-auto row q-gutter-sm">
+                <q-btn
+                  label="Filtrar"
+                  color="primary"
+                  class="btn-generate"
+                  @click="loadOpenToWorkCandidates"
+                  :loading="loadingOpenToWork"
+                />
+                <q-btn
+                  label="Limpar"
+                  class="btn-clear-filters"
+                  @click="clearOpenToWorkFilters"
+                />
+              </div>
+            </div>
             <q-table
               :data="openToWorkCandidates"
               :columns="openToWorkColumns"
@@ -154,7 +81,14 @@
                   >
                     Ver perfil
                   </a>
-                  <span v-else>N/A</span>
+                  <a
+                    v-else
+                    href="#"
+                    class="linkedin-missing"
+                    @click.prevent="notifyMissingLinkedin"
+                  >
+                    Ver perfil
+                  </a>
                 </q-td>
               </template>
             </q-table>
@@ -177,130 +111,53 @@ export default {
   },
   data() {
     return {
-      breadcrumbs: [{ title: "Recolocações", to: "" }],
-      loading: false,
-      reportData: null,
-      companies: [],
-      filters: {
-        startDate: '',
-        endDate: '',
-        companyId: null
+      breadcrumbs: [{ title: "Open to Work", to: "" }],
+      openToWorkFilters: {
+        position: '',
+        department: '',
+        city: '',
+        state: '',
       },
-      monthlyColumns: [
-        { name: 'mes', label: 'Mês', align: 'left' },
-        { name: 'total_recolocados_mes', label: 'Total Recolocados no Mês', align: 'center' },
-        { name: 'percentual_recolocados_mes', label: '% de Recolocados no Mês', align: 'center' }
-      ],
       openToWorkCandidates: [],
       loadingOpenToWork: false,
       openToWorkColumns: [
         { name: 'name', label: 'Nome', align: 'left', field: 'name' },
         { name: 'position', label: 'Cargo', align: 'left', field: 'position' },
         { name: 'department', label: 'Área', align: 'left', field: 'department' },
-        { name: 'companyName', label: 'Empresa', align: 'left', field: (row) => row.company && row.company.name },
         { name: 'city', label: 'Cidade', align: 'left', field: 'city' },
         { name: 'state', label: 'Estado', align: 'left', field: 'state' },
         { name: 'linkedinUrl', label: 'LinkedIn', align: 'center', field: 'linkedinUrl' },
       ]
     };
   },
-  computed: {
-    companyOptions() {
-      return [
-        { id: null, name: 'Todas as empresas' },
-        ...this.companies
-      ];
-    },
-    monthlyRows() {
-      return this.reportData?.detalhamento_mensal || [];
-    }
-  },
-  watch: {
-    "filters.companyId"() {
+  methods: {
+    clearOpenToWorkFilters() {
+      this.openToWorkFilters = {
+        position: '',
+        department: '',
+        city: '',
+        state: '',
+      };
       this.loadOpenToWorkCandidates();
     },
-  },
-  filters: {
-    formatMonth(value) {
-      if (!value || typeof value !== 'string') return '';
-      const [year, month] = value.split('-');
-      return `${month}/${year}`;
-    },
-    formatPercent(value) {
-      const num = parseFloat(value);
-      return isNaN(num) ? '0.00%' : `${num.toFixed(2)}%`;
-    }
-  },
-  methods: {
-    async loadCompanies() {
-      try {
-        const response = await axios.get(`${baseApiUrl}/companies`, {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        });
-        this.companies = response.data;
-      } catch (error) {
-        showError(error);
-      }
-    },
-    async loadReplacementsData() {
-      if (!this.filters.startDate || !this.filters.endDate) {
-        this.$q.notify({
-          type: 'negative',
-          message: 'Por favor, selecione as datas inicial e final'
-        });
-        return;
-      }
-
-      this.loading = true;
-      this.reportData = null;
-
-      try {
-        const params = {
-          start_date: this.filters.startDate,
-          end_date: this.filters.endDate
-        };
-        if (this.filters.companyId) {
-          params.companyId = this.filters.companyId;
-        }
-
-        const response = await axios.get(`${baseApiUrl}/reports/replacements`, {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("token")}`
-          },
-          params
-        });
-
-        this.reportData = response.data;
-      } catch (error) {
-        showError(error);
-      } finally {
-        this.loading = false;
-      }
-    },
-    setDefaultDates() {
-      const today = new Date();
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(today.getMonth() - 6);
-      this.filters.endDate = today.toISOString().split('T')[0];
-      this.filters.startDate = sixMonthsAgo.toISOString().split('T')[0];
-    },
-    clearFilters() {
-      this.filters.startDate = '';
-      this.filters.endDate = '';
-      this.filters.companyId = null;
-      this.reportData = null;
-
+    notifyMissingLinkedin() {
+      this.$q.notify({
+        type: 'warning',
+        message:
+          'LinkedIn não informado. Atualize o perfil do colaborador para visualizar o link.',
+        timeout: 4000,
+      });
     },
     async loadOpenToWorkCandidates() {
       this.loadingOpenToWork = true;
 
       try {
         const params = {};
-        if (this.filters.companyId) {
-          params.companyId = this.filters.companyId;
-        }
+        const { position, department, city, state } = this.openToWorkFilters;
+        if (position) params.position = position;
+        if (department) params.department = department;
+        if (city) params.city = city;
+        if (state) params.state = state;
 
         const response = await axios.get(
           `${baseApiUrl}/companies/employees/open-to-work`,
@@ -321,7 +178,6 @@ export default {
     }
   },
   mounted() {
-    this.loadCompanies();
     this.loadOpenToWorkCandidates();
   }
 };
@@ -338,28 +194,6 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.metric-card {
-  min-height: 120px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  flex-grow: 1;
-}
-
-.metric-number {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: rgba(26, 39, 183, 1);
-  font-family: "Montserrat", sans-serif;
-}
-
-.metric-label {
-  font-size: 0.9rem;
-  color: rgba(91, 91, 91, 1);
-  font-family: "Montserrat", sans-serif;
-  margin-top: 8px;
-}
-
 .btn-generate {
   border-radius: 5px;
   background-color: rgba(26, 39, 183, 1) !important;
@@ -367,7 +201,6 @@ export default {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
 }
-
 
 .btn-clear-filters {
   border-radius: 5px;
@@ -384,24 +217,6 @@ export default {
   color: rgba(26, 39, 183, 1);
 }
 
-.manual-table {
-  width: 100%;
-  border-spacing: 0;
-  border-collapse: separate;
-}
-
-.manual-table th,
-.manual-table td {
-  padding: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.manual-table th {
-  font-weight: 500;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
 .dashboard-title {
   background-color: rgba(26, 39, 183, 1);
   color: white;
@@ -412,13 +227,15 @@ export default {
   text-align: center;
 }
 
+.linkedin-missing {
+  color: rgba(26, 39, 183, 1);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .crud-filter-content {
     padding: 20px 15px;
-  }
-
-  .metric-number {
-    font-size: 2rem;
   }
 }
 </style>
