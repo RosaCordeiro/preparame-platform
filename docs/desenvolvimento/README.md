@@ -22,6 +22,7 @@ Documentação técnica e catálogo de **agentes de desenvolvimento** para quem 
 | Feature | Docs |
 |---|---|
 | Segmento / Subsegmento + OTW | [SPEC](especificacoes/2026-07-22-rh-segmento-subsegmento.md) · [design](especificacoes/2026-07-22-rh-segmento-subsegmento-design.md) |
+| Open to Work melhorias | [SPEC](especificacoes/2026-07-21-rh-open-to-work-melhorias.md) · [design](especificacoes/2026-07-21-rh-open-to-work-melhorias-design.md) |
 | Cards pesquisa quantitativa | [SPEC](especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md) · [design](especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md) |
 
 ## Agentes disponíveis

@@ -17,10 +17,15 @@ Menu lateral:
 - Indicadores de riscos
   - Pesquisa quantitativa (`/rh/indicadores/quantitativa`)
   - Pesquisa qualitativa (`/rh/indicadores/qualitativa`)
-- Contrate Open to Work
+- Contrate Open to Work (`/replacementsReport`) — profissionais de **outras** empresas; LinkedIn opcional; filtros cargo/área/cidade/estado
 - Ver Pessoas do Programa
 
 ## Componentes por visão
+
+### Contrate Open to Work
+- Listagem de profissionais elegíveis (permissão OTW, não realocados, outras empresas)
+- Sem coluna/filtro de empresa; LinkedIn ausente exibe aviso ao clicar
+- **Não** inclui mais o dashboard de métricas de recolocação nesta tela
 
 ### Painel de riscos e impactos
 - Cards complementares de impacto / placeholders “em breve” (demais indicadores do grid)

@@ -67,7 +67,7 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 | Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta) |
 | Funcionários / programa | `/program-people` | Pessoas do programa de recolocação |
-| Contrate Open to Work | `/replacementsReport` | Relatório de recolocação |
+| Contrate Open to Work | `/replacementsReport` | Lista de profissionais OTW (outras empresas); filtros cargo/área/cidade/estado |
 
 ### Administrador da plataforma
 
@@ -87,7 +87,7 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 | Mentorias coletivas | `/mentoring` | Gestão de sessões em grupo |
 | Materiais gratuitos | `/materials` | Gestão de conteúdos educativos |
 | Ver produtos do usuário | `/viewProductsUser` | Acompanhamento de entregas |
-| Relatório de recolocação | `/replacementsReport` | Métricas de recolocados |
+| Relatório de recolocação / Open to Work | `/replacementsReport` | COMPANY_ADMIN: consulta OTW; ADMIN: mesma rota (pool completo) |
 | Meu perfil | `/profile` | Dados pessoais |
 
 ---
