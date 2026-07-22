@@ -42,6 +42,7 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 | Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
 | Indicadores → Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Indicadores → Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta; cadastro só no Admin) |
+| Contrate Open to Work | `/replacementsReport` | Lista OTW (outras empresas); filtros cargo/área/cidade/estado |
 
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
 
@@ -52,6 +53,8 @@ Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empres
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| SPEC Open to Work | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md) |
+| Design Open to Work | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias-design.md) |
 | Anonimato (backend) | [`../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md`](../prepara-me-backend/docs/desenvolvimento/especificacoes/2026-07-21-rh-anonimato-limite-amostra.md) |
 | SPEC cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa.md) |
 | Design cards quantitativa | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-cards-pesquisa-quantitativa-design.md) |
