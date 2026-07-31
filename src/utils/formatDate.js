@@ -68,46 +68,38 @@ export const dateToString = (date) => {
 function formatDateToStringWithHour(date) {
   console.log("Function formatDateToStringWithHour");
   try {
-    const [datee, time] = date.split("T");
-    const [year, month, day] = datee.split("-");
-    const [hour, minute] = time.split(":");
-
-    return `${day}/${month}/${year}, ${hour}:${minute}`;
-  } catch (error) {
     const newDate = new Date(date);
 
-    const formatedDate = new Date(
-      newDate.setMinutes(newDate.getMinutes() + newDate.getTimezoneOffset())
-    );
-
-    const day = formatedDate.getDate().toString().padStart(2, "0");
-    const month = (formatedDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = formatedDate.getFullYear().toString().padStart(4, "0");
-    const hour = formatedDate.getHours().toString().padStart(2, "0");
-    const minute = formatedDate.getMinutes().toString().padStart(2, "0");
-
-    return `${day}/${month}/${year}, ${hour}:${minute}`;
+    return newDate.toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch (error) {
+    return date;
   }
 }
 
 function formatDateToStringMentoringWithHour(date) {
   console.log("Function formatDateToStringMentoringWithHour");
   try {
-    const [datee, time] = date.split("T");
-    const [year, month, day] = datee.split("-");
-    const [hour, minute] = time.split(":");
-
-    return `${day}/${month}/${year}, ${hour}:${minute}`;
-  } catch (error) {
     const newDate = new Date(date);
 
-    const day = newDate.getDate().toString().padStart(2, "0");
-    const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = newDate.getFullYear().toString().padStart(4, "0");
-    const hour = newDate.getHours().toString().padStart(2, "0");
-    const minute = newDate.getMinutes().toString().padStart(2, "0");
+    const formatted = newDate.toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
-    return `${day}/${month}/${year}, ${hour}:${minute}`;
+    return formatted;
+  } catch (error) {
+    return date;
   }
 }
 

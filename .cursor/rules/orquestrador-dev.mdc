@@ -1,0 +1,31 @@
+---
+description: Agente principal Prepara.me — roteia automaticamente para skills especializadas conforme a tarefa.
+alwaysApply: true
+---
+
+# Orquestrador automático
+
+Este repositório usa **agentes especializados**. O usuário **não precisa** especificar qual agente usar.
+
+## Comportamento padrão
+
+1. Leia `AGENTS.md` e classifique a tarefa
+2. **Nova demanda / nova feature / planejar do zero** → skill **`preparame-novas-demandas`** (não codar até Aprovação 1)
+3. **Tarefa já especificada** → skill **`preparame-orquestrador`** → skills especializadas
+4. Consulte `docs/` (produto) se a tarefa envolver regra de negócio
+
+## Não peça ao usuário
+
+- Qual agente escolher (para tarefas normais)
+- Qual skill invocar
+
+**Exceção:** gates de aprovação do fluxo de novas demandas — sempre perguntar antes de codar.
+
+Faça o roteamento você mesmo e informe em uma linha qual agente/skills está usando.
+
+## Entrada
+
+| Pedido | Skill |
+|---|---|
+| Nova demanda, nova feature, planejar, brainstorm | `preparame-novas-demandas` |
+| Demais tarefas de dev | `preparame-orquestrador` |

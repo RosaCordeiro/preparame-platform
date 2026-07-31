@@ -3,6 +3,7 @@
     <div class="text-h6 crud-title">{{ title }}</div>
     <q-space></q-space>
     <q-btn
+      v-if="!blockRemove"
       color="negative"
       flat
       label="Excluir Selecionados"
@@ -10,16 +11,15 @@
       class="crud-new-button q-mr-sm"
       no-caps
       @click="removeSelected()"
-      :disable="blockRemove"
     ></q-btn>
     <q-btn
+      v-if="!blockCreateNew"
       color="primary"
       label="Novo"
       icon="mdi-plus-circle"
       class="crud-new-button"
       no-caps
       @click="createNew()"
-      :disable="blockCreateNew"
     ></q-btn>
   </div>
 </template>

@@ -61,8 +61,8 @@
 
           <p>Riscos acima de 4, também devem ter atenção maior.</p>
         </div>
-        <div v-else-if="id === 'Marca'">
-          <span>Risco de Marca Empregadora</span>
+        <div v-else-if="id === 'Marca' || id === 'Risco de marca'">
+          <span>Risco de marca</span>
 
           <p>
             Temos nossa própria metodologia de cálculo para este indicador, que

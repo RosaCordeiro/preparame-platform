@@ -9,53 +9,11 @@
           :style="`width: ${
             isNaN(data) ? 0 : ((data - minValue) * 100) / (maxValue - minValue)
           }%;
-          }; background: ${
-            data >= intersectionValue
-              ? invertedColors
-                ? 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-                : 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : invertedColors
-              ? 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-          }`"
+          }; background: ${barGradient}`"
         ></div>
 
-        <p v-if="!lessThanFive">{{ isNaN(data) ? "N/A" : data }}</p>
-        <p v-else>Informação insuficiente.</p>
-
-        <div class="first-emoji">
-          <img
-            v-if="invertedIcons"
-            src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-          <img
-            v-else
-            src="../../../../assets/icons/triste.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-        </div>
-
-        <div class="last-emoji">
-          <img
-            v-if="invertedIcons"
-            src="../../../../assets/icons/triste.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-          <img
-            v-else
-            src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-        </div>
+        <p v-if="!insufficientSample">{{ isNaN(data) ? "Sem informações" : data }}</p>
+        <p v-else>Sem informações</p>
       </div>
 
       <div class="chart__row-scale">
@@ -70,12 +28,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      beforeIcon: "../../../../assets/icons/triste.png",
-      afterIcon: "../../../../assets/icons/alegre.png",
-    };
-  },
   props: {
     title: {
       type: String,
@@ -89,7 +41,6 @@ export default {
       type: Number,
       default: 10,
     },
-
     invertedIcons: {
       type: Boolean,
       default: false,
@@ -106,9 +57,24 @@ export default {
       type: Number,
       required: true,
     },
-    lessThanFive: {
+    insufficientSample: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    isPositive() {
+      return this.data >= this.intersectionValue;
+    },
+    barGradient() {
+      const positive = "linear-gradient(90deg, #b8e8d8 0%, #8fd9c0 100%)";
+      const negative = "linear-gradient(90deg, #f8caca 0%, #f4a5a5 100%)";
+
+      if (this.isPositive) {
+        return this.invertedColors ? negative : positive;
+      }
+
+      return this.invertedColors ? positive : negative;
     },
   },
 };
@@ -122,7 +88,7 @@ export default {
 }
 
 .chart-row h1 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 20px;
@@ -131,15 +97,15 @@ export default {
 
 .chart__row {
   height: 19px;
-  width: 70%;
+  width: 100%;
   border-radius: 71px;
-  background-color: rgba(120, 120, 120, 1);
+  background-color: #eef1f5;
   position: relative;
 }
 
 .chart__row-scale {
   height: 19px;
-  width: 70%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 3px;
@@ -157,35 +123,18 @@ export default {
 }
 
 .chart__row p {
-  color: #fff;
+  color: #1a2744;
   margin: 0;
-  font-size: 14px;
-  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-family: "Nunito", sans-serif;
   font-weight: 700;
   position: absolute;
   top: 0;
-  width: 100%;
+  right: 8px;
+  width: auto;
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.first-emoji,
-.last-emoji {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(0%, -10%);
-}
-
-.first-emoji {
-  left: 0;
-  top: 0;
-}
-
-.last-emoji {
-  right: 0;
-  top: 0;
+  justify-content: flex-end;
 }
 </style>

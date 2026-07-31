@@ -23,7 +23,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: ["axios", "notification", "apex"],
+    boot: ["axios", "notification", "apex", "gtag-ads"],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -49,9 +49,11 @@ module.exports = function (ctx) {
       env: ctx.dev
         ? {
             API: "http://localhost:3334",
+            ENABLE_QUICK_LOGIN: "true",
           }
         : {
             API: process.env.API_PROD_URL,
+            ENABLE_QUICK_LOGIN: process.env.ENABLE_QUICK_LOGIN || "false",
           },
 
       // transpile: false,

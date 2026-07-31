@@ -113,14 +113,14 @@ export default {
   created() {
     this.specialistScheduleData = this.specialistSchedule;
 
+    let userType = localStorage.getItem("userType");
+
     this.specialistScheduleData.forEach((specialistSchedule) => {
       specialistSchedule.hours.forEach((hour) => {
         if (hour.dateSchedule) {
           const diffHours = Math.abs(new Date() - hour.dateSchedule) / 36e5;
 
-          console.log(diffHours);
-
-          if (diffHours < 3) {
+          if (diffHours < 3 && userType.toUpperCase() !== "ADMIN") {
             hour.available = false;
           }
         }
@@ -213,7 +213,9 @@ export default {
       let userType = localStorage.getItem("userType");
       const specialistsSchedule = await filterCrud(
         filtersSpecialistSchedule,
-        userType.toUpperCase() === 'ADMIN' ? `specialists/schedule` : `specialists/schedule-to-user`
+        userType.toUpperCase() === "ADMIN"
+          ? `specialists/schedule`
+          : `specialists/schedule-to-user`
       );
 
       this.specialistScheduleData = organizeSpecialistScheduleData(
