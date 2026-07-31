@@ -1,6 +1,9 @@
-import MaterialsQueryCrud from "../../components/platform/materials/MaterialsQueryCrud.vue";
-import MaterialsRegisterCrud from "../../components/platform/materials/MaterialsRegisterCrud.vue";
 import Platform from "../../layouts/Platform.vue";
+
+const MaterialsQueryCrud = () =>
+  import("../../components/platform/materials/MaterialsQueryCrud.vue");
+const MaterialsRegisterCrud = () =>
+  import("../../components/platform/materials/MaterialsRegisterCrud.vue");
 
 const materialsRoutes = [
   {

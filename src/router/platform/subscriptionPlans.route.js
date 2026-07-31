@@ -1,6 +1,9 @@
-import SubscriptionPlansQueryCrud from "../../components/platform/subscriptionPlansCrud/SubscriptionPlansQueryCrud.vue"
-import SubscriptionPlansRegisterCrud from "../../components/platform/subscriptionPlansCrud/SubscriptionPlansRegisterCrud.vue"
-import Platform from "../../layouts/Platform.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const SubscriptionPlansQueryCrud = () =>
+  import("../../components/platform/subscriptionPlansCrud/SubscriptionPlansQueryCrud.vue");
+const SubscriptionPlansRegisterCrud = () =>
+  import("../../components/platform/subscriptionPlansCrud/SubscriptionPlansRegisterCrud.vue");
 
 const subscriptionPlanRoutes = [
     {

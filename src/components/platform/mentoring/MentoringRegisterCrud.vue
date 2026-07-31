@@ -168,6 +168,7 @@ export default {
   },
   methods: {
     save: async function (data) {
+      this.$q.loading.show();
       try {
         if (typeof data.mainTable.image === "string") {
           delete data.mainTable.image;
@@ -183,7 +184,7 @@ export default {
           this.tables.mainTable.apiUrl,
           formData
         );
-
+        this.$q.loading.hide();
         return mentoringCreated;
       } catch (err) {
         showError(err);

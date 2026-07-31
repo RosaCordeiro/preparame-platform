@@ -1,12 +1,38 @@
-import CompaniesQueryCrud from "../../components/platform/companiesCrud/CompaniesQueryCrud.vue"
-import CompanyEmployeesQueryCrud from "../../components/platform/companyEmployeesCrud/CompanyEmployeesQueryCrud.vue"
-import CompanyEmployeesRegisterCrud from "../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue"
-import CompaniesRegisterCrud from "../../components/platform/companiesCrud/CompaniesRegisterCrud.vue"
-import Platform from "../../layouts/Platform.vue"
-import SurveyQuestionsRegisterCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsRegisterCrud.vue"
-import SurveyQuestionsQueryCrud from "../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const CompaniesQueryCrud = () =>
+  import("../../components/platform/companiesCrud/CompaniesQueryCrud.vue");
+const CompanyEmployeesQueryCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyEmployeesQueryCrud.vue");
+const CompanyProgramPeopleQueryCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyProgramPeopleQueryCrud.vue");
+const CompanyEmployeesRegisterCrud = () =>
+  import("../../components/platform/companyEmployeesCrud/CompanyEmployeesRegisterCrud.vue");
+const CompaniesRegisterCrud = () =>
+  import("../../components/platform/companiesCrud/CompaniesRegisterCrud.vue");
+const SurveyQuestionsRegisterCrud = () =>
+  import("../../components/platform/surveyQuestionsCrud/SurveyQuestionsRegisterCrud.vue");
+const SurveyQuestionsQueryCrud = () =>
+  import("../../components/platform/surveyQuestionsCrud/SurveyQuestionsQueryCrud.vue");
 
 const companyRoutes = [
+    {
+        path: "/program-people",
+        components: {
+            site: Platform
+        },
+        children: [{
+            path: "/",
+            components: {
+                content: CompanyProgramPeopleQueryCrud
+            }
+        }],
+        props: {
+            userTypes: [
+                'COMPANY_ADMIN'
+            ]
+        }
+    },
     {
         path: "/companies/employees",
         components: {
@@ -20,8 +46,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -38,8 +63,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -56,8 +80,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'ADMIN',
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -97,11 +120,12 @@ const companyRoutes = [
     },
     {
         path: "/companies/:id",
+        name: "companies-edit",
         components: {
             site: Platform
         },
         children: [{
-            path: "/",
+            path: "",
             components: {
                 content: CompaniesRegisterCrud
             }
@@ -125,7 +149,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -142,7 +166,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },
@@ -159,7 +183,7 @@ const companyRoutes = [
         }],
         props: {
             userTypes: [
-                'COMPANY_ADMIN'
+                'ADMIN'
             ]
         }
     },

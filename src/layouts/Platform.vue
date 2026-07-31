@@ -1,18 +1,28 @@
 <template>
-  <div class="platform">
+  <div class="platform" :class="{ 'platform--rh': isCompanyAdmin }">
     <q-layout
       view="hHh Lpr lff"
       container
       style="height: 100vh"
       class="shadow-2 rounded-borders"
     >
-      <Toolbar class="platform-toolbar" />
-      <SideNavMenu
+      <component
+        :is="toolbarComponent"
+        class="platform-toolbar"
+      />
+      <component
+        :is="sideNavComponent"
         class="platform-side-nav-menu"
         :sideNavMenuComponent="sideNavMenuComponent"
       />
-      <q-page-container>
-        <router-view name="content" class="platform-content" />
+      <q-page-container :class="{ 'rh-page-container': isCompanyAdmin }">
+        <router-view
+          name="content"
+          :class="[
+            'platform-content',
+            { 'rh-page-content': isCompanyAdmin },
+          ]"
+        />
       </q-page-container>
     </q-layout>
   </div>
@@ -20,6 +30,8 @@
 
 <script>
 import SideNavMenu from "../components/platform/navMenu/SideNavMenu.vue";
+import RhSideNavMenu from "../components/platform/navMenu/RhSideNavMenu.vue";
+import RhToolbar from "../components/platform/toolbar/RhToolbar.vue";
 import Vue from "vue";
 
 export default {
@@ -28,10 +40,27 @@ export default {
       sideNavMenuComponent: new Vue(),
     };
   },
+  computed: {
+    isCompanyAdmin() {
+      return localStorage.getItem("userType") === "COMPANY_ADMIN";
+    },
+    toolbarComponent() {
+      if (this.isCompanyAdmin) {
+        return RhToolbar;
+      }
+
+      return window.mobileAndTabletCheck()
+        ? () => import("../components/platform/toolbar/ToolbarMobile.vue")
+        : () => import("../components/platform/toolbar/Toolbar.vue");
+    },
+    sideNavComponent() {
+      return this.isCompanyAdmin ? RhSideNavMenu : SideNavMenu;
+    },
+  },
   async beforeCreate() {
     try {
       const loggedUser = await refreshToken().then((token) => {
-        return token.status === 200;
+        return token && token.status === 200;
       });
 
       if (!loggedUser) {
@@ -46,12 +75,8 @@ export default {
   },
   components: {
     SideNavMenu,
-    Toolbar: () => {
-      const component = window.mobileAndTabletCheck()
-        ? import("../components/platform/toolbar/ToolbarMobile.vue")
-        : import("../components/platform/toolbar/Toolbar.vue");
-      return component;
-    },
+    RhSideNavMenu,
+    RhToolbar,
   },
 };
 </script>
@@ -62,5 +87,4 @@ export default {
   font-family: "Nunito";
   font-style: normal;
 }
-
 </style>

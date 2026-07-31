@@ -38,14 +38,26 @@ export default {
               type: "Input",
               visible: false,
             },
-            /*
-               "title": "Baixe essa imagem 2",
-    "backgroundColor": "#598677",
-    "file": "a4cf4dc972edb93664b48509eb850b43-download.png",
-    "slug": "teste2",
-    "id": "22629f97-2729-4027-afb2-2876483009b5",
-    "created_at": "2023-11-22T11:29:39.834Z"
-            */
+            title: {
+              label: "Título",
+              name: "title",
+              size: "12",
+              row: 2,
+              col: 1,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
+            slug: {
+              label: "Slug",
+              name: "slug",
+              size: "12",
+              row: 2,
+              col: 2,
+              model: "",
+              type: "Input",
+              visible: true,
+            },
             link: {
               label: "Link",
               name: "link",

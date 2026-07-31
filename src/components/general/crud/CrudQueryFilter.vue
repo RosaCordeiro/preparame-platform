@@ -77,6 +77,10 @@ export default {
     onReset: function () {
       this.rows.forEach((row) => {
         row.cols.forEach((col) => {
+          if (col.locked) {
+            return;
+          }
+
           col.model = null;
         });
       });

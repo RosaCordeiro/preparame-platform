@@ -1,9 +1,19 @@
 import Platform from "../../layouts/Platform.vue";
-import HomeDynamicTemplate from "../../components/platform/home/HomeDynamicTemplate.vue";
-import NPSSurvey from "../../components/platform/NPSSurvey/NPSSurvey.vue";
-import interviewSimulatorPresentation from "../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue";
-import interviewSimulator from "../../components/platform/interviewSimulator/InterviewSimulator.vue";
-import ReplacementsReport from "../../components/platform/replacementsReport/ReplacementsReport.vue";
+
+const HomeDynamicTemplate = () =>
+  import("../../components/platform/home/HomeDynamicTemplate.vue");
+const NPSSurvey = () =>
+  import("../../components/platform/NPSSurvey/NPSSurvey.vue");
+const interviewSimulatorPresentation = () =>
+  import("../../components/platform/interviewSimulator/InterviewSimulatorPresentation.vue");
+const interviewSimulator = () =>
+  import("../../components/platform/interviewSimulator/InterviewSimulator.vue");
+const ReplacementsReport = () =>
+  import("../../components/platform/replacementsReport/ReplacementsReport.vue");
+const OpenToWorkReport = () =>
+  import("../../components/platform/openToWork/OpenToWorkReport.vue");
+const HomeCompany = () =>
+  import("../../components/platform/home/HomeCompany.vue");
 
 const platformRoutes = [
   {
@@ -17,8 +27,51 @@ const platformRoutes = [
         components: {
           content: HomeDynamicTemplate,
         },
+        meta: {
+          rhSection: "metrics",
+        },
       },
     ],
+  },
+  {
+    path: "/rh/indicadores/quantitativa",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: HomeCompany,
+        },
+        meta: {
+          rhSection: "quantitative",
+        },
+      },
+    ],
+    props: {
+      userTypes: ["COMPANY_ADMIN"],
+    },
+  },
+  {
+    path: "/rh/indicadores/qualitativa",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        components: {
+          content: HomeCompany,
+        },
+        meta: {
+          rhSection: "qualitative",
+        },
+      },
+    ],
+    props: {
+      userTypes: ["COMPANY_ADMIN"],
+    },
   },
   {
     path: "/survey",
@@ -73,6 +126,21 @@ const platformRoutes = [
         name: "replacementsReport",
         components: {
           content: ReplacementsReport,
+        },
+      },
+    ],
+  },
+  {
+    path: "/open-to-work",
+    components: {
+      site: Platform,
+    },
+    children: [
+      {
+        path: "/",
+        name: "openToWork",
+        components: {
+          content: OpenToWorkReport,
         },
       },
     ],

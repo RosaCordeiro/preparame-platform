@@ -1,7 +1,11 @@
-import UsersQueryCrud from "../../components/platform/usersCrud/UsersQueryCrud.vue"
-import UsersRegisterCrud from "../../components/platform/usersCrud/UsersRegisterCrud.vue"
-import UserProfile from "../../components/platform/userProfile/UserProfile.vue"
-import Platform from "../../layouts/Platform.vue"
+import Platform from "../../layouts/Platform.vue";
+
+const UsersQueryCrud = () =>
+  import("../../components/platform/usersCrud/UsersQueryCrud.vue");
+const UsersRegisterCrud = () =>
+  import("../../components/platform/usersCrud/UsersRegisterCrud.vue");
+const UserProfile = () =>
+  import("../../components/platform/userProfile/UserProfile.vue");
 
 const userRoutes = [
     {
