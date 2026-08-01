@@ -1,7 +1,11 @@
-import Mentoring from "../../components/platform/mentoring/Mentoring.vue";
-import UpdateMentoring from "../../components/platform/updateProduct/UpdateMentoring.vue"
-import MentoringRegisterCrud from "../../components/platform/mentoring/MentoringRegisterCrud.vue";
 import Platform from "../../layouts/Platform.vue";
+
+const Mentoring = () =>
+  import("../../components/platform/mentoring/Mentoring.vue");
+const UpdateMentoring = () =>
+  import("../../components/platform/updateProduct/UpdateMentoring.vue");
+const MentoringRegisterCrud = () =>
+  import("../../components/platform/mentoring/MentoringRegisterCrud.vue");
 
 const mentoringRoutes = [
   {

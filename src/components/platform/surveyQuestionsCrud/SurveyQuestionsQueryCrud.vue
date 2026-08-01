@@ -1,11 +1,12 @@
 <template>
   <div class="survey-questions-crud">
-    <CrudQuery 
-    :title="title" 
-    :breadcrumbs="breadcrumbs" 
-    :filters="filters" 
-    :columns="columns" 
-    :url="url" />
+    <CrudQuery
+      :title="title"
+      :breadcrumbs="breadcrumbs"
+      :filters="filters"
+      :columns="columns"
+      :url="url"
+    />
   </div>
 </template>
 
@@ -28,14 +29,19 @@ export default {
       ],
       filters: [
         {
-          label: "ID da empresa",
+          label: "Empresa",
           name: "companyId",
-          size: "12",
+          size: "6",
           row: 1,
           col: 1,
-          model: localStorage.getItem("companyId"),
-          type: "Input",
-          visible: false
+          model: "",
+          type: "DialogSelect",
+          visible: true,
+          options: {
+            table: "companies",
+            value: "id",
+            label: "name",
+          },
         },
       ],
       columns: [
@@ -45,7 +51,7 @@ export default {
           align: "left",
           field: "questionText",
           sortable: true,
-          visible: true
+          visible: true,
         },
         {
           name: "actions",
@@ -54,10 +60,10 @@ export default {
           field: "actions",
           sortable: false,
           style: "width: 10px;",
-          visible: true
+          visible: true,
         },
-      ]
-    }
-  }
-}
+      ],
+    };
+  },
+};
 </script>

@@ -1,8 +1,13 @@
-import SimulatorVideosGroupsQueryCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupQueryCrud.vue";
-import SimulatorVideosGroupsRegisterCrud from "../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupRegisterCrud.vue";
-import SimulatorVideoQueryCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoQueryCrud.vue";
-import SimulatorVideoRegisterCrud from "../../components/platform/simulatorVideoCrud/SimulatorVideoRegisterCrud.vue";
 import Platform from "../../layouts/Platform.vue";
+
+const SimulatorVideosGroupsQueryCrud = () =>
+  import("../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupQueryCrud.vue");
+const SimulatorVideosGroupsRegisterCrud = () =>
+  import("../../components/platform/simulatorVideosGroupCrud/SimulatorVideosGroupRegisterCrud.vue");
+const SimulatorVideoQueryCrud = () =>
+  import("../../components/platform/simulatorVideoCrud/SimulatorVideoQueryCrud.vue");
+const SimulatorVideoRegisterCrud = () =>
+  import("../../components/platform/simulatorVideoCrud/SimulatorVideoRegisterCrud.vue");
 
 const simulatorVideosGroupRoutes = [
   {

@@ -49,9 +49,11 @@ module.exports = function (ctx) {
       env: ctx.dev
         ? {
             API: "http://localhost:3334",
+            ENABLE_QUICK_LOGIN: "true",
           }
         : {
             API: process.env.API_PROD_URL,
+            ENABLE_QUICK_LOGIN: process.env.ENABLE_QUICK_LOGIN || "false",
           },
 
       // transpile: false,

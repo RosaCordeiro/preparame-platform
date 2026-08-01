@@ -20,44 +20,10 @@
           :style="`width: ${
             isNaN(data) ? 0 : ((data - minValue) * 100) / (maxValue - minValue)
           }%;
-          }; background: ${
-            data >= intersectionValue
-              ? invertedColors
-                ? 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-                : 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : invertedColors
-              ? 'linear-gradient(180deg, #5C31AC 0%, #16AB7D 100%);'
-              : 'linear-gradient(180deg, #5C31AC 0%, #B73D9D 100%);'
-          }`"
+          }; background: ${barGradient}`"
         ></div>
 
-        <p>{{ isNaN(data) ? "N/A" : data }}</p>
-
-        <div class="emoji">
-          <img
-            v-if="icon"
-            :src="getIcon(icon)"
-            alt="before"
-            width="24"
-            height="24"
-          />
-
-          <img
-            v-else-if="data >= intersectionValue"
-            src="../../../../assets/icons/alegre.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-
-          <img
-            v-else
-            src="../../../../assets/icons/triste.png"
-            alt="before"
-            width="24"
-            height="24"
-          />
-        </div>
+        <p>{{ displayValue }}</p>
       </div>
     </div>
   </div>
@@ -65,12 +31,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      beforeIcon: "../../../../assets/icons/triste.png",
-      afterIcon: "../../../../assets/icons/alegre.png",
-    };
-  },
   props: {
     title: {
       type: String,
@@ -78,23 +38,11 @@ export default {
     },
     width: {
       type: String,
-      default: "50%",
+      default: "100%",
     },
     data: {
       type: Number,
       required: true,
-    },
-    invertedIcons: {
-      type: Boolean,
-      default: false,
-    },
-    intersectionValue: {
-      type: Number,
-      default: 5,
-    },
-    invertedColors: {
-      type: Boolean,
-      default: false,
     },
     minValue: {
       type: Number,
@@ -104,6 +52,10 @@ export default {
       type: Number,
       default: 100,
     },
+    intersectionValue: {
+      type: Number,
+      default: 5,
+    },
     icon: {
       type: String,
       default: "",
@@ -112,10 +64,35 @@ export default {
       type: Boolean,
       default: true,
     },
+    insufficientSample: {
+      type: Boolean,
+      default: false,
+    },
+    invertedColors: {
+      type: Boolean,
+      default: false,
+    },
   },
-  methods: {
-    getIcon(icon) {
-      return require(`../../../../assets/icons/${icon}.png`);
+  computed: {
+    isPositive() {
+      return this.data >= this.intersectionValue;
+    },
+    barGradient() {
+      const positive = "linear-gradient(90deg, #b8e8d8 0%, #8fd9c0 100%)";
+      const negative = "linear-gradient(90deg, #f8caca 0%, #f4a5a5 100%)";
+
+      if (this.isPositive) {
+        return this.invertedColors ? negative : positive;
+      }
+
+      return this.invertedColors ? positive : negative;
+    },
+    displayValue() {
+      if (this.insufficientSample) {
+        return "Informação insuficiente";
+      }
+
+      return isNaN(this.data) ? "Sem informações" : this.data;
     },
   },
 };
@@ -129,55 +106,29 @@ export default {
 }
 
 .chart-row-one-emoji h1 {
-  font-family: "Montserrat", sans-serif;
-
-  font-size: 20px;
-  line-height: 20px;
-  color: rgba(91, 91, 91, 1);
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  color: #1a2744;
 }
 
 .chart__row-one-emoji {
-  height: 19px;
-  border-radius: 71px;
-  background-color: rgba(120, 120, 120, 1);
+  height: 14px;
+  border-radius: 999px;
+  background-color: #eef1f5;
   position: relative;
-}
-
-.chart__row-one-emoji-scale {
-  height: 19px;
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 2px;
-  margin-top: 3px;
 }
 
 .chart__row-one-emoji__value {
   height: 100%;
-  border-radius: 10px;
+  border-radius: 999px;
 }
 
 .chart__row-one-emoji p {
-  color: #fff;
-  margin: 0;
-  font-size: 14px;
-  font-family: "Montserrat", sans-serif;
+  color: #667998;
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+  font-family: "Nunito", sans-serif;
   font-weight: 700;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chart__row-one-emoji .emoji {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(45%, -8%);
 }
 </style>

@@ -4,11 +4,14 @@ import { platformRoutes } from "./platform.route";
 import { productRoutes } from "./products.route";
 import { specialistRoutes } from "./specialists.route";
 import { subscriptionPlanRoutes } from "./subscriptionPlans.route";
+import { segmentRoutes } from "./segments.route";
+import { subsegmentRoutes } from "./subsegments.route";
 import { userRoutes } from "./users.route";
 import { simulatorVideosGroupRoutes } from "./simulatorVideos.route";
 import { resumeRoutes } from "./resume.route";
 import { mentoringRoutes } from "./mentoring.route";
 import { materialsRoutes } from "./materials.route";
+import { adminBackupRoutes } from "./adminBackup.route";
 
 const platformRoutesGroup = [
   ...loginRoutes,
@@ -18,11 +21,14 @@ const platformRoutesGroup = [
     ...productRoutes,
     ...specialistRoutes,
     ...subscriptionPlanRoutes,
+    ...segmentRoutes,
+    ...subsegmentRoutes,
     ...userRoutes,
     ...simulatorVideosGroupRoutes,
     ...resumeRoutes,
     ...mentoringRoutes,
     ...materialsRoutes,
+    ...adminBackupRoutes,
   ].map((route) => {
     route.beforeEnter = (to, from, next) => {
       console.log("beforeEnter");

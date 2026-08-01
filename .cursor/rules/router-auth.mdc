@@ -1,0 +1,40 @@
+---
+description: Rotas, autenticação e controle de perfil Prepara.me.
+globs: "src/router/**"
+alwaysApply: false
+---
+
+# Router e Auth
+
+## Dois grupos de rotas
+
+- `siteRoutesGroup` — público, sem token
+- `platformRoutesGroup` — exige token (`router/platform/index.js` beforeEnter)
+
+## Guards
+
+1. **Login guard** (`platform/index.js`): sem `localStorage.token` → `/login` + `sessionStorage.redirect`
+2. **Perfil guard** (`router/index.js`): `to.matched[0].props.userTypes` deve incluir `localStorage.userType`
+
+## Nova rota platform
+
+```javascript
+{
+  path: "/minha-rota",
+  components: { site: Platform },
+  children: [{ path: "/", components: { content: MeuComponente } }],
+  props: { userTypes: ["ADMIN"] }  // opcional
+}
+```
+
+## Menu lateral
+
+Atualizar objeto `menu` em `SideNavMenu.vue` para perfis que acessam a rota.
+
+## localStorage relevante
+
+`token`, `refresh_token`, `userType`, `userId`, `companyId`, `companyNameSignIn`
+
+## Axios
+
+Interceptors em `boot/axios.js` — 401 com refresh_token chama `refreshToken()`.

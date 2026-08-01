@@ -1,12 +1,40 @@
 <template>
   <div
     id="q-app"
-    class="home-company"
-    :style="{
-      padding: this.userType === 'ADMIN' ? '0' : '20px',
-    }"
+    :class="[
+      'home-company',
+      isRhVariant ? 'home-company--rh' : 'home-company--legacy',
+    ]"
+    :style="legacyPaddingStyle"
   >
     <q-page>
+      <div v-if="isRhVariant" class="rh-page-header">
+        <div class="rh-page-header__content">
+          <span class="rh-page-header__eyebrow">Programa de Demissão Responsável</span>
+          <h1 class="rh-page-title">{{ rhPageTitle }}</h1>
+          <p class="rh-page-subtitle">{{ rhPageSubtitle }}</p>
+        </div>
+        <span class="rh-badge-info">
+          <q-icon name="mdi-chart-bar" size="14px" />
+          Dados comparados ao benchmark de mercado
+        </span>
+      </div>
+
+      <RhCompareFilters
+        v-if="isRhVariant"
+        :compare-filter-sets.sync="compareFilterSets"
+        :disable-filters="disableFilters"
+        :parameters="parameters"
+        :dismissal-type-options="dismissalTypeOptions"
+        :gender-options="genderOptions"
+        :etnia-options="etniaOptions"
+        :get-option-label="getOptionLabel"
+        @change="loadNpsSurveyAnswers"
+        @add-set="addCompareFilterSet"
+        @remove-set="removeCompareFilterSet"
+      />
+
+      <template v-else>
       <div class="box__button-actions">
         <q-tooltip
           anchor="top middle"
@@ -408,8 +436,51 @@
         </div>
         <div v-else class="nofilter">Nenhum filtro selecionado</div>
       </div>
+      </template>
 
-      <div class="box__three-columns">
+      <DashBoardRhMetrics
+        v-if="showRhMetrics"
+        card-catalog="panelRemainder"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
+        :nps-general="npsGeneral"
+        :brand-risk-general="brandRiskGeneral"
+        :labor-risk-general="laborRiskGeneral"
+        :realocateds-general="realocatedsGeneral"
+        :welcomed-general="welcomedGeneral"
+        :termination-general="terminationGeneral"
+        :labor-issues-general="laborIssuesGeneral"
+        :remove-percent="removePercent"
+        :expanded-metric-key="expandedMetricKey"
+        :metric-timelines="metricTimelines"
+        :timeline-loading="timelineLoading"
+        @metric-info="openMetricInfo"
+        @metric-toggle="toggleMetricExpand"
+      />
+
+      <DashBoardRhMetrics
+        v-if="showRhQuantitative"
+        card-catalog="kpi"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
+        :nps-general="npsGeneral"
+        :brand-risk-general="brandRiskGeneral"
+        :labor-risk-general="laborRiskGeneral"
+        :realocateds-general="realocatedsGeneral"
+        :welcomed-general="welcomedGeneral"
+        :termination-general="terminationGeneral"
+        :labor-issues-general="laborIssuesGeneral"
+        :remove-percent="removePercent"
+        :expanded-metric-key="expandedMetricKey"
+        :metric-timelines="metricTimelines"
+        :timeline-loading="timelineLoading"
+        @metric-info="openMetricInfo"
+        @metric-toggle="toggleMetricExpand"
+      />
+
+      <div v-if="!isRhVariant" class="box__three-columns">
         <div class="box__three-columns-item">
           <IconInfo label="e-NPS" />
 
@@ -419,7 +490,7 @@
             :maxValue="100"
             :data="removePercent(this.nps)"
             :intersectionValue="0"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -441,7 +512,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -464,7 +535,7 @@
             :intersectionValue="4"
             :invertedColors="true"
             :invertedIcons="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChart
             :title="'Média Geral'"
@@ -478,6 +549,23 @@
         </div>
       </div>
 
+      <DashBoardRhSurveys
+        v-if="showRhSurveys"
+        :show-shutdown-survey="showShutdownSurvey && showRhQuantitative"
+        :show-feeling-map-survey="showFeelingMapSurvey && showRhQuantitative"
+        :show-company-questions="showRhQualitative"
+        :shutdown-compare-groups="shutdownCompareGroups"
+        :feeling-survey-columns="feelingSurveyColumnsRh"
+        :feeling-map-charts="feelingMapCharts"
+        :company-questions="companyQuestions"
+        :compare-results="compareResults"
+        :compare-filter-sets="compareFilterSets"
+        :summarize-filter-set="summarizeFilterSet"
+        :realocateds-general="realocatedsGeneral"
+        @metric-info="openMetricInfo"
+      />
+
+      <template v-if="!isRhVariant">
       <div class="box__two-columns">
         <div class="box__two-columns-item">
           <IconInfo label="Realocados" />
@@ -485,7 +573,7 @@
           <RowChartOneEmojiWithoutIntersection
             :title="'Sua Empresa'"
             :data="removePercent(realocateds)"
-            :lessThanFive="false"
+            :insufficientSample="false"
           />
         </div>
 
@@ -495,7 +583,7 @@
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
             :data="welcomed.toString()"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
         </div>
       </div>
@@ -507,7 +595,7 @@
           <RowChartNoEmojiString
             :title="'Sua Empresa'"
             :data="realocatedCount.toString()"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
         </div>
       </div>
@@ -519,7 +607,7 @@
           <RowChartOneEmojiExpanded
             :title="'Sua Empresa'"
             :data="removePercent(termination)"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -535,7 +623,7 @@
             :data="removePercent(laborIssues)"
             :intersectionValue="3"
             :invertedColors="true"
-            :lessThanFive="lessThanFive"
+            :insufficientSample="insufficientSample"
           />
           <RowChartOneEmojiExpanded
             :title="'Média Geral'"
@@ -591,104 +679,41 @@
       </div>
 
       <template v-if="!isVoluntaryOnly">
-        <div class="card mapa" v-if="feelingMap.length > 0">
-          <div class="card-top">
-            <IconInfo label="Mapa de sentimentos" />
-
-            <div class="tag">Sua empresa</div>
-          </div>
-
-          <apexchart
-            type="polarArea"
-            height="400px"
-            style="width: 100%; height: 100%"
-            :options="chartOptions"
-            :series="feelingMap.map((c) => c.count)"
-          />
-        </div>
-
-        <div class="card">
-          <h2>Comparativo mapa de sentimentos</h2>
-
-          <div class="row">
-            <div class="card-col" v-if="feelingMap.length > 0">
-              <div class="row">
-                <h3 class="your-company">Sua empresa</h3>
-
-                <p class="score-description">notas de 1 a 100</p>
-              </div>
-
-              <div v-for="(i, number) in feelingMap" :key="number">
-                <RowChartOneEmoji
-                  :minValue="1"
-                  :maxValue="100"
-                  :title="i.feeling"
-                  :width="'100%'"
-                  :data="removePercent(i.count)"
-                  :icon="formatFeeling(i.feeling)"
-                  :textBold="false"
-                />
-              </div>
-            </div>
-
-            <div class="card-col">
-              <div class="row">
-                <h3 class="your-company">Geral</h3>
-
-                <p class="score-description">notas de 1 a 100</p>
-              </div>
-
-              <div v-for="(i, number) in feelingMapGeneral" :key="number">
-                <RowChartOneEmoji
-                  :minValue="1"
-                  :maxValue="100"
-                  :title="i.feeling"
-                  :width="'100%'"
-                  :data="removePercent(i.count)"
-                  :icon="formatFeeling(i.feeling)"
-                  :textBold="false"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-
-      <div
-        class="card mapa"
-        v-if="isVoluntaryOnly && voluntaryReasonsMap.length > 0"
-      >
+      <div class="card mapa" v-if="feelingMap.length > 0">
         <div class="card-top">
-          <IconInfo label="Mapa de motivos de pedido de demissão" />
+          <IconInfo label="Mapa de sentimentos" />
+
           <div class="tag">Sua empresa</div>
         </div>
-        <apexchart
+
+        <ChartApex
           type="polarArea"
           height="400px"
           style="width: 100%; height: 100%"
-          :options="reasonsChartOptions"
-          :series="voluntaryReasonsMap.map((c) => removePercent(c.count))"
+          :options="chartOptions"
+          :series="feelingMap.map((c) => c.count)"
         />
       </div>
 
-      <div class="card" v-if="isVoluntaryOnly">
-        <h2>Comparativo mapa de motivos de pedido de demissão</h2>
+      <div class="card">
+        <h2>Comparativo mapa de sentimentos</h2>
 
         <div class="row">
-          <div class="card-col" v-if="voluntaryReasonsMap.length > 0">
+          <div class="card-col" v-if="feelingMap.length > 0">
             <div class="row">
               <h3 class="your-company">Sua empresa</h3>
 
               <p class="score-description">notas de 1 a 100</p>
             </div>
 
-            <div v-for="(i, number) in voluntaryReasonsMap" :key="number">
+            <div v-for="(i, number) in feelingMap" :key="number">
               <RowChartOneEmoji
-                :minValue="0"
+                :minValue="1"
                 :maxValue="100"
-                :title="i.reason"
+                :title="i.feeling"
                 :width="'100%'"
                 :data="removePercent(i.count)"
+                :icon="formatFeeling(i.feeling)"
                 :textBold="false"
               />
             </div>
@@ -701,30 +726,95 @@
               <p class="score-description">notas de 1 a 100</p>
             </div>
 
-            <div
-              v-for="(i, number) in voluntaryReasonsMapGeneral"
-              :key="number"
-            >
+            <div v-for="(i, number) in feelingMapGeneral" :key="number">
               <RowChartOneEmoji
-                :minValue="0"
+                :minValue="1"
                 :maxValue="100"
-                :title="i.reason"
+                :title="i.feeling"
                 :width="'100%'"
                 :data="removePercent(i.count)"
+                :icon="formatFeeling(i.feeling)"
                 :textBold="false"
               />
             </div>
           </div>
         </div>
       </div>
+      </template>
 
       <div v-if="companyQuestions.length > 0" class="card">
         <h2>Perguntas da Empresa</h2>
         <CompanyQuestionsCard :companyQuestions="companyQuestions" />
       </div>
+      </template>
+
+      <template v-if="isVoluntaryOnly">
+        <div
+          class="card mapa"
+          v-if="voluntaryReasonsMap.length > 0"
+        >
+          <div class="card-top">
+            <IconInfo label="Mapa de motivos de pedido de demissão" />
+            <div class="tag">Sua empresa</div>
+          </div>
+          <ChartApex
+            type="polarArea"
+            height="400px"
+            style="width: 100%; height: 100%"
+            :options="reasonsChartOptions"
+            :series="voluntaryReasonsMap.map((c) => removePercent(c.count))"
+          />
+        </div>
+
+        <div class="card">
+          <h2>Comparativo mapa de motivos de pedido de demissão</h2>
+
+          <div class="row">
+            <div class="card-col" v-if="voluntaryReasonsMap.length > 0">
+              <div class="row">
+                <h3 class="your-company">Sua empresa</h3>
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div v-for="(i, number) in voluntaryReasonsMap" :key="number">
+                <RowChartOneEmoji
+                  :minValue="0"
+                  :maxValue="100"
+                  :title="i.reason"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+
+            <div class="card-col">
+              <div class="row">
+                <h3 class="your-company">Geral</h3>
+                <p class="score-description">notas de 1 a 100</p>
+              </div>
+
+              <div
+                v-for="(i, number) in voluntaryReasonsMapGeneral"
+                :key="number"
+              >
+                <RowChartOneEmoji
+                  :minValue="0"
+                  :maxValue="100"
+                  :title="i.reason"
+                  :width="'100%'"
+                  :data="removePercent(i.count)"
+                  :textBold="false"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
     </q-page>
 
     <TextDialogWidget ref="infoWidget" />
+    <InformationDialogWidget ref="metricInfoWidget" />
   </div>
 </template>
 
@@ -735,16 +825,36 @@ import RowChartNoEmojiString from "../company/RowChartNoEmojiString.vue";
 import RowChartOneEmoji from "../company/RowChartOneEmoji.vue";
 import RowChartOneEmojiExpanded from "../company/RowChartOneEmojiExpanded.vue";
 import IconInfo from "src/components/general/IconInfo.vue";
+import InformationDialogWidget from "src/components/general/InformationDialogWidget.vue";
 import RowChartOneEmojiWithoutIntersection from "../company/RowChartOneEmojiWithoutIntersection.vue";
 import TextDialogWidget from "src/components/general/TextDialogWidget.vue";
 import CompanyQuestionsCard from "../company/CompanyQuestionsCard.vue";
+import ChartApex from "../../../general/charts/ChartApex.vue";
+import RhCompareFilters from "../company/RhCompareFilters.vue";
+import DashBoardRhMetrics from "./DashBoardRhMetrics.vue";
+import DashBoardRhSurveys from "./DashBoardRhSurveys.vue";
+import {
+  buildFeelingMapCharts,
+  buildFeelingSurveyColumns,
+  buildQuestionCompareGroups,
+  applyTimelineSeriesFill,
+  formatPeriodAxisLabel,
+  getTimelineSeriesLabel,
+  omitPeriod,
+  summarizeActiveFilters,
+} from "../../../../utils/rhMetricDisplay";
 
 export default {
   components: {
+    ChartApex,
+    DashBoardRhMetrics,
+    DashBoardRhSurveys,
+    RhCompareFilters,
     RowChart,
     TextDialogWidget,
     RowChartOneEmoji,
     IconInfo,
+    InformationDialogWidget,
     RowChartNoEmojiString,
     RowChartOneEmojiExpanded,
     RowChartOneEmojiWithoutIntersection,
@@ -788,7 +898,7 @@ export default {
       state: [],
       city: [],
       userType: localStorage.getItem("userType"),
-      lessThanFive: false,
+      insufficientSample: false,
       selectAllPeriods: false,
       selectAllUnity: false,
       selectAllArea: false,
@@ -802,14 +912,85 @@ export default {
       realocatedCount: 0,
       companyQuestions: [],
       isLoading: false,
+      compareFilterSets: [],
+      compareResults: [],
+      expandedMetricKey: null,
+      metricTimelines: {},
+      timelineLoading: false,
+      loadRequestId: 0,
     };
   },
-  props: ["companyId"],
+  props: {
+    companyId: [String, Number],
+    variant: {
+      type: String,
+      default: "legacy",
+    },
+    rhSection: {
+      type: String,
+      default: "metrics",
+    },
+  },
   computed: {
-    isVoluntaryOnly() {
+    isRhVariant() {
+      return this.variant === "rh";
+    },
+    showRhMetrics() {
+      return this.isRhVariant && this.rhSection === "metrics";
+    },
+    showRhSurveys() {
       return (
-        this.dismissalType.length === 1 && this.dismissalType[0] === "voluntary"
+        this.isRhVariant &&
+        (this.rhSection === "quantitative" || this.rhSection === "qualitative")
       );
+    },
+    showRhQuantitative() {
+      return this.isRhVariant && this.rhSection === "quantitative";
+    },
+    showRhQualitative() {
+      return this.isRhVariant && this.rhSection === "qualitative";
+    },
+    rhPageTitle() {
+      if (this.rhSection === "metrics") {
+        return "Painel de riscos e impactos";
+      }
+      if (this.rhSection === "quantitative") {
+        return "Pesquisa quantitativa";
+      }
+      if (this.rhSection === "qualitative") {
+        return "Pesquisa qualitativa";
+      }
+      return "Indicadores de Riscos";
+    },
+    rhPageSubtitle() {
+      if (this.rhSection === "metrics") {
+        return "Visão de KPIs de risco e impacto com comparativo de mercado";
+      }
+      if (this.rhSection === "quantitative") {
+        return "Avaliação pós-demissão e mapa de sentimentos";
+      }
+      if (this.rhSection === "qualitative") {
+        return "Respostas textuais das pesquisas da empresa";
+      }
+      return "Monitoramento completo com comparativo de mercado";
+    },
+    isVoluntaryOnly() {
+      const dismissalFilter = this.isRhVariant
+        ? (this.compareFilterSets[0] && this.compareFilterSets[0].dismissalType) || []
+        : this.dismissalType;
+
+      return (
+        dismissalFilter.length === 1 && dismissalFilter[0] === "voluntary"
+      );
+    },
+    legacyPaddingStyle() {
+      if (this.isRhVariant) {
+        return {};
+      }
+
+      return {
+        padding: this.userType === "ADMIN" ? "0" : "20px",
+      };
     },
     disableFilters() {
       return (
@@ -817,6 +998,109 @@ export default {
         this.companyId === "B2B" ||
         this.companyId === "B2C"
       );
+    },
+    shutdownCompareGroups() {
+      return buildQuestionCompareGroups({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.shutDownGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+        parseValue: (value) => this.removePercent(value),
+      });
+    },
+    feelingSurveyColumnsRh() {
+      return buildFeelingSurveyColumns({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.feelingMapGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+        parseValue: (value) => this.removePercent(value),
+      });
+    },
+    feelingMapCharts() {
+      return buildFeelingMapCharts({
+        compareResults: this.compareResults,
+        compareFilterSets: this.compareFilterSets,
+        generalItems: this.feelingMapGeneral,
+        summarizeFilterSet: this.summarizeFilterSet,
+      });
+    },
+    shutdownSurveyColumns() {
+      const merged = this.buildSurveyItems(
+        this.shutDown,
+        this.shutDownGeneral,
+        "question"
+      );
+
+      return [
+        {
+          key: "company",
+          title: "Sua empresa",
+          hint: "Notas de 1 a 10",
+          items: merged.companyItems,
+        },
+        {
+          key: "general",
+          title: "Média geral",
+          hint: "Notas de 1 a 10",
+          items: merged.generalItems,
+        },
+      ];
+    },
+    feelingSurveyColumns() {
+      const merged = this.buildSurveyItems(
+        this.feelingMap,
+        this.feelingMapGeneral,
+        "feeling"
+      );
+
+      return [
+        {
+          key: "company",
+          title: "Sua empresa",
+          hint: "Notas de 1 a 100",
+          items: merged.companyItems,
+        },
+        {
+          key: "general",
+          title: "Média geral",
+          hint: "Notas de 1 a 100",
+          items: merged.generalItems,
+        },
+      ];
+    },
+    displayFeelingMapChart() {
+      return this.buildSurveyItems(
+        this.feelingMap,
+        this.feelingMapGeneral,
+        "feeling"
+      ).companyItems.map((item) => ({
+        feeling: item.label,
+        count: item.value,
+      }));
+    },
+    showShutdownSurvey() {
+      if (this.isRhVariant) {
+        return this.shutdownCompareGroups.length > 0;
+      }
+
+      return this.shutdownSurveyColumns.some(
+        (column) => column.items.length > 0
+      );
+    },
+    showFeelingMapSurvey() {
+      if (this.isVoluntaryOnly) {
+        return false;
+      }
+
+      if (this.isRhVariant) {
+        return (
+          this.feelingSurveyColumnsRh.some((column) => column.items.length > 0) ||
+          this.feelingMapCharts.length > 0
+        );
+      }
+
+      return this.feelingSurveyColumns.some((column) => column.items.length > 0);
     },
     selectedFilters() {
       const filters = [];
@@ -913,46 +1197,74 @@ export default {
       this.state = [];
       this.city = [];
 
+      if (this.isRhVariant) {
+        this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        this.expandedMetricKey = null;
+        this.metricTimelines = {};
+      }
+
       this.loadNpsSurveyAnswers();
-    },
-    voluntaryReasonsMap() {
-      this.setReasonsChartOptions();
     },
     feelingMap() {
       this.setChartOptions();
     },
+    feelingMapGeneral() {
+      this.setChartOptions();
+    },
+    voluntaryReasonsMap() {
+      this.setReasonsChartOptions();
+    },
     area(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     role(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     period(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     unity(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     dismissalType(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     gender(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     etnia(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     pcd(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     state(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     city(f) {
-      this.loadNpsSurveyAnswers();
+      if (!this.isRhVariant) {
+        this.loadNpsSurveyAnswers();
+      }
     },
     selectAllPeriods(value) {
-      console.log("teste");
       if (value) {
         this.period = this.parameters.period
           ? this.parameters.period.slice()
@@ -1083,12 +1395,61 @@ export default {
 
       return feeling.toString().split(".")[0].toLowerCase().split("(")[0];
     },
+    openMetricInfo(label) {
+      if (this.$refs.metricInfoWidget) {
+        this.$refs.metricInfoWidget.open(label);
+      }
+    },
+    buildSurveyItems(companyItems, generalItems, labelKey) {
+      const company = companyItems || [];
+      const general = generalItems || [];
+
+      const companyMap = {};
+      company.forEach((item) => {
+        companyMap[item[labelKey]] = item;
+      });
+
+      const generalMap = {};
+      general.forEach((item) => {
+        generalMap[item[labelKey]] = item;
+      });
+
+      const labels = [];
+      const seen = new Set();
+
+      [...general, ...company].forEach((item) => {
+        const label = item[labelKey];
+
+        if (!seen.has(label)) {
+          seen.add(label);
+          labels.push(label);
+        }
+      });
+
+      return {
+        labels,
+        companyItems: labels.map((label) => ({
+          label,
+          value: companyMap[label]
+            ? this.removePercent(companyMap[label].count)
+            : 0,
+          insufficient: false,
+        })),
+        generalItems: labels.map((label) => ({
+          label,
+          value: generalMap[label]
+            ? this.removePercent(generalMap[label].count)
+            : 0,
+          insufficient: false,
+        })),
+      };
+    },
     setChartOptions() {
       this.chartOptions = {
         chart: {
           type: "polarArea",
         },
-        labels: this.feelingMap.map((c) => c.feeling.toString()),
+        labels: this.displayFeelingMapChart.map((item) => item.feeling.toString()),
         stroke: {
           colors: ["#fff"],
         },
@@ -1172,72 +1533,459 @@ export default {
       };
     },
     removePercent(value) {
-      return value.toString().replace("%", "") * 1;
+      if (value === null || value === undefined || value === "") {
+        return NaN;
+      }
+
+      const raw = String(value).replace("%", "").replace(",", ".").trim();
+
+      if (raw === "N/A" || raw === "Sem informações") {
+        return NaN;
+      }
+
+      const parsed = Number(raw);
+
+      return Number.isFinite(parsed) ? parsed : NaN;
+    },
+    createCompareFilterSet(label) {
+      return {
+        id: `filter-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        label,
+        period: null,
+        unity: null,
+        area: null,
+        role: null,
+        dismissalType: null,
+        gender: null,
+        etnia: null,
+        pcd: null,
+        state: null,
+        city: null,
+      };
+    },
+    hasFilterValue(value) {
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+
+      return value !== null && value !== undefined && value !== "";
+    },
+    shouldWarnInsufficientFilterData(report) {
+      if (!report) {
+        return false;
+      }
+
+      const hasFilters = this.isRhVariant
+        ? this.hasAnyCompareFilterSelected()
+        : this.selectedFilters.length > 0;
+
+      if (!hasFilters) {
+        return false;
+      }
+
+      const nps = report.nps;
+      const noMetricData =
+        nps === undefined ||
+        nps === null ||
+        nps === "" ||
+        nps === "N/A" ||
+        nps === "0%" ||
+        nps === "Sem informações";
+
+      return Boolean(report.insufficientSample || report.noData || noMetricData);
+    },
+    normalizeFilterValues(values) {
+      if (!this.hasFilterValue(values)) {
+        return [];
+      }
+
+      if (Array.isArray(values)) {
+        return values;
+      }
+
+      return [values];
+    },
+    getLegacyFilterSet() {
+      return {
+        period: this.period,
+        unity: this.unity,
+        area: this.area,
+        role: this.role,
+        dismissalType: this.dismissalType,
+        gender: this.gender,
+        etnia: this.etnia,
+        pcd: this.pcd,
+        state: this.state,
+        city: this.city,
+      };
+    },
+    getPrimaryFilterSet() {
+      if (this.isRhVariant) {
+        if (!this.compareFilterSets.length) {
+          this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        }
+
+        return this.compareFilterSets[0];
+      }
+
+      return this.getLegacyFilterSet();
+    },
+    getReportFilterSets() {
+      if (this.isRhVariant) {
+        if (!this.compareFilterSets.length) {
+          this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+        }
+
+        return this.compareFilterSets;
+      }
+
+      return [
+        {
+          label: "Sua Empresa",
+          ...this.getLegacyFilterSet(),
+        },
+      ];
+    },
+    buildReportFilters(filterSet) {
+      const filters = [
+        {
+          name: "companyId",
+          model: this.companyId,
+        },
+      ];
+
+      const fields = [
+        ["area", filterSet.area],
+        ["role", filterSet.role],
+        ["period", filterSet.period],
+        ["unity", filterSet.unity],
+        ["dismissalType", filterSet.dismissalType],
+        ["gender", filterSet.gender],
+        ["etnia", filterSet.etnia],
+        ["pcd", filterSet.pcd],
+        ["state", filterSet.state],
+        ["city", filterSet.city],
+      ];
+
+      fields.forEach(([name, values]) => {
+        const normalizedValues = this.normalizeFilterValues(values);
+
+        if (normalizedValues.length > 0) {
+          filters.push({
+            name,
+            model: JSON.stringify(normalizedValues),
+          });
+        }
+      });
+
+      return filters;
+    },
+    extractCompareResult(report, label) {
+      return {
+        label,
+        nps: report.nps,
+        brandRisk: report.brandRisk,
+        laborRisk: report.laborRisk,
+        realocateds: report.realocateds,
+        welcomed: report.welcomed,
+        termination: report.termination,
+        laborIssues: report.laborIssues,
+        realocatedCount: report.realocatedCount,
+        insufficientSample: report.insufficientSample,
+        shutDown: report.shutDown || [],
+        feelingMap: report.feelingMap || [],
+      };
+    },
+    summarizeFilterSet(filterSet) {
+      return summarizeActiveFilters(filterSet, {
+        dismissalType: (value) =>
+          this.getOptionLabel(this.dismissalTypeOptions, value),
+        gender: (value) => this.getOptionLabel(this.genderOptions, value),
+        etnia: (value) => this.getOptionLabel(this.etniaOptions, value),
+      });
+    },
+    assignPrimaryReport(npsSurveyReport) {
+      this.nps = npsSurveyReport.nps;
+      this.brandRisk = npsSurveyReport.brandRisk;
+      this.laborRisk = npsSurveyReport.laborRisk;
+      this.realocateds = npsSurveyReport.realocateds;
+      this.welcomed = npsSurveyReport.welcomed;
+      this.termination = npsSurveyReport.termination;
+      this.laborIssues = npsSurveyReport.laborIssues;
+      this.shutDown = npsSurveyReport.shutDown;
+      this.feelingMap = npsSurveyReport.feelingMap;
+      this.voluntaryReasonsMap = npsSurveyReport.voluntaryReasonsMap || [];
+      this.realocatedCount = npsSurveyReport.realocatedCount;
+
+      this.npsGeneral = npsSurveyReport.general.nps;
+      this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
+      this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
+      this.realocatedsGeneral = npsSurveyReport.general.realocateds;
+      this.welcomedGeneral = npsSurveyReport.general.welcomed;
+      this.terminationGeneral = npsSurveyReport.general.termination;
+      this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
+      this.shutDownGeneral = npsSurveyReport.general.shutDown;
+      this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
+      this.voluntaryReasonsMapGeneral =
+        npsSurveyReport.general.voluntaryReasonsMap || [];
+      this.insufficientSample = npsSurveyReport.insufficientSample;
+      this.companyQuestions =
+        npsSurveyReport.companyQuestions == null
+          ? []
+          : npsSurveyReport.companyQuestions;
+    },
+    addCompareFilterSet() {
+      if (this.compareFilterSets.length >= 3) {
+        return;
+      }
+
+      this.compareFilterSets.push(
+        this.createCompareFilterSet(`Filtro ${this.compareFilterSets.length + 1}`)
+      );
+      this.loadNpsSurveyAnswers();
+    },
+    removeCompareFilterSet(index) {
+      if (index === 0) {
+        return;
+      }
+
+      this.compareFilterSets.splice(index, 1);
+      this.compareFilterSets.forEach((set, setIndex) => {
+        set.label = `Filtro ${setIndex + 1}`;
+      });
+      this.loadNpsSurveyAnswers();
+    },
+    extractTimelineValue(report, metricKey, useGeneral) {
+      if (!report) {
+        return null;
+      }
+
+      const source = useGeneral ? report.general : report;
+      const rawMap = {
+        nps: source.nps,
+        laborRisk: source.laborRisk,
+        brandRisk: source.brandRisk,
+        realocateds: source.realocateds,
+        welcomed: source.welcomed,
+        realocatedCount: source.realocatedCount,
+        termination: source.termination,
+        laborIssues: source.laborIssues,
+      };
+      const raw = rawMap[metricKey];
+
+      if (
+        raw === undefined ||
+        raw === null ||
+        raw === "" ||
+        raw === "N/A" ||
+        raw === "Sem informações"
+      ) {
+        return null;
+      }
+
+      if (metricKey === "welcomed") {
+        if (String(raw).includes("/")) {
+          return parseInt(String(raw).split("/")[0], 10);
+        }
+      }
+
+      if (metricKey === "realocatedCount") {
+        return Number(raw);
+      }
+
+      return this.removePercent(raw);
+    },
+    async loadMetricTimeline(metricKey) {
+      const periods = (this.parameters.period || []).slice();
+
+      if (!periods.length) {
+        this.$set(this.metricTimelines, metricKey, {
+          categories: [],
+          series: [],
+        });
+        return;
+      }
+
+      this.timelineLoading = true;
+      const filterSets = this.getReportFilterSets();
+
+      try {
+        const reportsByPeriod = await Promise.all(
+          periods.map(async (period) => {
+            const reports = await Promise.all(
+              filterSets.map((set) =>
+                filterCrud(
+                  this.buildReportFilters({
+                    ...omitPeriod(set),
+                    period,
+                  }),
+                  "reports/NPSSurveyAnswers"
+                )
+              )
+            );
+
+            return {
+              period,
+              reports,
+            };
+          })
+        );
+
+        const series = filterSets.map((set, setIndex) => ({
+          name: getTimelineSeriesLabel(set, setIndex, this.compareFilterSets),
+          data: applyTimelineSeriesFill(
+            metricKey,
+            reportsByPeriod.map(({ reports }) =>
+              this.extractTimelineValue(reports[setIndex], metricKey, false)
+            )
+          ),
+        }));
+
+        series.push({
+          name: "Média Geral",
+          data: applyTimelineSeriesFill(
+            metricKey,
+            reportsByPeriod.map(({ reports }) =>
+              this.extractTimelineValue(reports[0], metricKey, true)
+            )
+          ),
+        });
+
+        this.$set(this.metricTimelines, metricKey, {
+          categories: periods.map((period) => formatPeriodAxisLabel(period)),
+          rawPeriods: periods,
+          series,
+        });
+      } finally {
+        this.timelineLoading = false;
+      }
+    },
+    async toggleMetricExpand(metricKey) {
+      if (this.expandedMetricKey === metricKey) {
+        this.expandedMetricKey = null;
+        return;
+      }
+
+      this.expandedMetricKey = metricKey;
+      await this.loadMetricTimeline(metricKey);
+    },
+    hasAnyCompareFilterSelected() {
+      if (!this.isRhVariant) {
+        return this.selectedFilters.length > 0;
+      }
+
+      return this.compareFilterSets.some((set) => {
+        return [
+          set.period,
+          set.unity,
+          set.area,
+          set.role,
+          set.dismissalType,
+          set.gender,
+          set.etnia,
+          set.pcd,
+          set.state,
+          set.city,
+        ].some((value) => this.hasFilterValue(value));
+      });
+    },
+    pruneScalarFilter(set, field, options) {
+      const value = set[field];
+
+      if (!this.hasFilterValue(value) || !options || options.length === 0) {
+        set[field] = Array.isArray(value) ? [] : null;
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        set[field] = value.filter((item) => options.includes(item));
+        return;
+      }
+
+      if (!options.includes(value)) {
+        set[field] = null;
+      }
+    },
+    pruneFilterSet(set) {
+      this.pruneScalarFilter(set, "period", this.parameters.period);
+      this.pruneScalarFilter(set, "unity", this.parameters.unity);
+      this.pruneScalarFilter(set, "area", this.parameters.area);
+      this.pruneScalarFilter(set, "role", this.parameters.role);
+      this.pruneScalarFilter(set, "dismissalType", this.parameters.dismissalType);
+      this.pruneScalarFilter(set, "gender", this.parameters.gender);
+      this.pruneScalarFilter(set, "etnia", this.parameters.etnia);
+      this.pruneScalarFilter(set, "pcd", this.parameters.pcd);
+      this.pruneScalarFilter(set, "state", this.parameters.state);
+      this.pruneScalarFilter(set, "city", this.parameters.city);
     },
     loadParameters: async function () {
       let filters = [];
 
-      if (this.period.length > 0) {
-        filters.push({
-          name: "period",
-          model: JSON.stringify(this.period),
-        });
-      }
+      if (!this.isRhVariant) {
+        const activeSet = this.getPrimaryFilterSet();
 
-      if (this.unity.length > 0) {
-        filters.push({
-          name: "unity",
-          model: JSON.stringify(this.unity),
-        });
-      }
+        if (activeSet.period && activeSet.period.length > 0) {
+          filters.push({
+            name: "period",
+            model: JSON.stringify(activeSet.period),
+          });
+        }
 
-      if (this.area.length > 0) {
-        filters.push({
-          name: "area",
-          model: JSON.stringify(this.area),
-        });
-      }
+        if (activeSet.unity && activeSet.unity.length > 0) {
+          filters.push({
+            name: "unity",
+            model: JSON.stringify(activeSet.unity),
+          });
+        }
 
-      if (this.dismissalType.length > 0) {
-        filters.push({
-          name: "dismissalType",
-          model: JSON.stringify(this.dismissalType),
-        });
-      }
+        if (activeSet.area && activeSet.area.length > 0) {
+          filters.push({
+            name: "area",
+            model: JSON.stringify(activeSet.area),
+          });
+        }
 
-      if (this.gender.length > 0) {
-        filters.push({
-          name: "gender",
-          model: JSON.stringify(this.gender),
-        });
-      }
+        if (activeSet.dismissalType && activeSet.dismissalType.length > 0) {
+          filters.push({
+            name: "dismissalType",
+            model: JSON.stringify(activeSet.dismissalType),
+          });
+        }
 
-      if (this.etnia.length > 0) {
-        filters.push({
-          name: "etnia",
-          model: JSON.stringify(this.etnia),
-        });
-      }
+        if (activeSet.gender && activeSet.gender.length > 0) {
+          filters.push({
+            name: "gender",
+            model: JSON.stringify(activeSet.gender),
+          });
+        }
 
-      if (this.pcd.length > 0) {
-        filters.push({
-          name: "pcd",
-          model: JSON.stringify(this.pcd),
-        });
-      }
+        if (activeSet.etnia && activeSet.etnia.length > 0) {
+          filters.push({
+            name: "etnia",
+            model: JSON.stringify(activeSet.etnia),
+          });
+        }
 
-      if (this.state.length > 0) {
-        filters.push({
-          name: "state",
-          model: JSON.stringify(this.state),
-        });
-      }
+        if (activeSet.pcd && activeSet.pcd.length > 0) {
+          filters.push({
+            name: "pcd",
+            model: JSON.stringify(activeSet.pcd),
+          });
+        }
 
-      if (this.city.length > 0) {
-        filters.push({
-          name: "city",
-          model: JSON.stringify(this.city),
-        });
+        if (activeSet.state && activeSet.state.length > 0) {
+          filters.push({
+            name: "state",
+            model: JSON.stringify(activeSet.state),
+          });
+        }
+
+        if (activeSet.city && activeSet.city.length > 0) {
+          filters.push({
+            name: "city",
+            model: JSON.stringify(activeSet.city),
+          });
+        }
       }
 
       const data = await filterCrud(
@@ -1259,244 +2007,99 @@ export default {
       if (!this.parameters.state) this.parameters.state = [];
       if (!this.parameters.city) this.parameters.city = [];
 
-      // Filtrar roles baseado nos parâmetros recebidos
-      if (this.parameters.role && this.parameters.role.length > 0) {
-        for (let i = 0; i < this.role.length; i++) {
-          if (!this.parameters.role.includes(this.role[i])) {
-            this.role = this.role.filter((role) => role !== this.role[i]);
-          }
-        }
-      }
-
-      // Filtrar dismissalType baseado nos parâmetros recebidos
-      for (let i = this.dismissalType.length - 1; i >= 0; i--) {
-        if (!this.parameters.dismissalType.includes(this.dismissalType[i])) {
-          this.dismissalType.splice(i, 1);
-        }
-      }
-
-      // Filtrar gender baseado nos parâmetros recebidos
-      for (let i = this.gender.length - 1; i >= 0; i--) {
-        if (!this.parameters.gender.includes(this.gender[i])) {
-          this.gender.splice(i, 1);
-        }
-      }
-
-      // Filtrar etnia baseado nos parâmetros recebidos
-      for (let i = this.etnia.length - 1; i >= 0; i--) {
-        if (!this.parameters.etnia.includes(this.etnia[i])) {
-          this.etnia.splice(i, 1);
-        }
-      }
-
-      // Filtrar pcd baseado nos parâmetros recebidos
-      for (let i = this.pcd.length - 1; i >= 0; i--) {
-        if (!this.parameters.pcd.includes(this.pcd[i])) {
-          this.pcd.splice(i, 1);
-        }
-      }
-
-      // Filtrar state baseado nos parâmetros recebidos
-      for (let i = this.state.length - 1; i >= 0; i--) {
-        if (!this.parameters.state.includes(this.state[i])) {
-          this.state.splice(i, 1);
-        }
-      }
-
-      // Filtrar city baseado nos parâmetros recebidos
-      for (let i = this.city.length - 1; i >= 0; i--) {
-        if (!this.parameters.city.includes(this.city[i])) {
-          this.city.splice(i, 1);
-        }
+      if (this.isRhVariant) {
+        this.compareFilterSets.forEach((set) => this.pruneFilterSet(set));
+      } else {
+        this.pruneFilterSet(this.getPrimaryFilterSet());
       }
     },
     loadNpsSurveyAnswers: async function () {
-      if (this.isLoading) return;
+      const requestId = ++this.loadRequestId;
       this.isLoading = true;
 
-      this.loadParameters();
+      try {
+        await this.loadParameters();
 
-      if (this.companyId === "null") {
-        this.$q.notify({
-          type: "error",
-          message: "Nenhuma empresa selecionada para o usuário.",
-        });
-        this.isLoading = false;
-        return;
-      }
-
-      const filters = [
-        {
-          name: "companyId",
-          model: this.companyId,
-        },
-      ];
-
-      if (this.area.length > 0) {
-        filters.push({
-          name: "area",
-          model: JSON.stringify(this.area),
-        });
-      }
-
-      if (this.role.length > 0) {
-        filters.push({
-          name: "role",
-          model: JSON.stringify(this.role),
-        });
-      }
-
-      if (this.period.length > 0) {
-        filters.push({
-          name: "period",
-          model: JSON.stringify(this.period),
-        });
-      }
-
-      if (this.unity.length > 0) {
-        filters.push({
-          name: "unity",
-          model: JSON.stringify(this.unity),
-        });
-      }
-
-      if (this.dismissalType.length > 0) {
-        filters.push({
-          name: "dismissalType",
-          model: JSON.stringify(this.dismissalType),
-        });
-      }
-
-      if (this.gender.length > 0) {
-        filters.push({
-          name: "gender",
-          model: JSON.stringify(this.gender),
-        });
-      }
-
-      if (this.etnia.length > 0) {
-        filters.push({
-          name: "etnia",
-          model: JSON.stringify(this.etnia),
-        });
-      }
-
-      if (this.pcd.length > 0) {
-        filters.push({
-          name: "pcd",
-          model: JSON.stringify(this.pcd),
-        });
-      }
-
-      if (this.state.length > 0) {
-        filters.push({
-          name: "state",
-          model: JSON.stringify(this.state),
-        });
-      }
-
-      if (this.city.length > 0) {
-        filters.push({
-          name: "city",
-          model: JSON.stringify(this.city),
-        });
-      }
-
-      this.$q.loading.show();
-
-      const npsSurveyReport = await filterCrud(
-        filters,
-        "reports/NPSSurveyAnswers"
-      );
-
-      this.$q.loading.hide();
-
-      this.nps = npsSurveyReport.nps;
-      this.brandRisk = npsSurveyReport.brandRisk;
-      this.laborRisk = npsSurveyReport.laborRisk;
-      this.realocateds = npsSurveyReport.realocateds;
-      this.welcomed = npsSurveyReport.welcomed;
-      this.termination = npsSurveyReport.termination;
-      this.laborIssues = npsSurveyReport.laborIssues;
-      this.shutDown = npsSurveyReport.shutDown;
-      this.feelingMap = npsSurveyReport.feelingMap;
-      this.realocatedCount = npsSurveyReport.realocatedCount;
-      this.voluntaryReasonsMap = npsSurveyReport.voluntaryReasonsMap || [];
-      console.log(
-        "[voluntaryReasonsMap]",
-        JSON.stringify(this.voluntaryReasonsMap)
-      );
-      console.log(
-        "[voluntaryReasonsMapGeneral]",
-        JSON.stringify(this.voluntaryReasonsMapGeneral)
-      );
-
-      if (npsSurveyReport.lessThanFive) {
-        this.nps = "Sem informações";
-      }
-
-      this.npsGeneral = npsSurveyReport.general.nps;
-      this.brandRiskGeneral = npsSurveyReport.general.brandRisk;
-      this.laborRiskGeneral = npsSurveyReport.general.laborRisk;
-      this.realocatedsGeneral = npsSurveyReport.general.realocateds;
-      this.welcomedGeneral = npsSurveyReport.general.welcomed;
-      this.terminationGeneral = npsSurveyReport.general.termination;
-      this.laborIssuesGeneral = npsSurveyReport.general.laborIssues;
-      this.shutDownGeneral = npsSurveyReport.general.shutDown;
-      this.feelingMapGeneral = npsSurveyReport.general.feelingMap;
-      this.voluntaryReasonsMapGeneral =
-        npsSurveyReport.general.voluntaryReasonsMap || [];
-
-      this.lessThanFive = npsSurveyReport.lessThanFive;
-      this.companyQuestions =
-        npsSurveyReport.companyQuestions == null
-          ? []
-          : npsSurveyReport.companyQuestions;
-
-      // Verificar se não há dados suficientes para os filtros aplicados
-      const hasNewFilters =
-        this.dismissalType.length > 0 ||
-        this.gender.length > 0 ||
-        this.etnia.length > 0 ||
-        this.pcd.length > 0;
-      const hasNoData =
-        !npsSurveyReport.nps ||
-        npsSurveyReport.nps === "" ||
-        npsSurveyReport.nps === "0%" ||
-        npsSurveyReport.nps === "Sem informações";
-
-      if (
-        npsSurveyReport.noData ||
-        (hasNewFilters && hasNoData) ||
-        (this.selectedFilters.length > 0 && hasNoData)
-      ) {
-        this.$q.notify({
-          type: "warning",
-          message: "Atenção\nNão há dados suficientes para este filtro.",
-          html: true,
-          timeout: 3000,
-        });
-      }
-
-      function compareFeelings(a, b) {
-        if (a.feeling < b.feeling) {
-          return -1;
+        if (requestId !== this.loadRequestId) {
+          return;
         }
-        if (a.feeling > b.feeling) {
-          return 1;
+
+        if (this.companyId === "null") {
+          this.$q.notify({
+            type: "error",
+            message: "Nenhuma empresa selecionada para o usuário.",
+          });
+          return;
         }
-        return 0;
+
+        const filterSets = this.getReportFilterSets();
+
+        this.$q.loading.show();
+
+        const reports = await Promise.all(
+          filterSets.map((set) =>
+            filterCrud(this.buildReportFilters(set), "reports/NPSSurveyAnswers")
+          )
+        );
+
+        if (requestId !== this.loadRequestId) {
+          return;
+        }
+
+        const npsSurveyReport = reports[0];
+
+        if (!npsSurveyReport) {
+          return;
+        }
+
+        this.assignPrimaryReport(npsSurveyReport);
+        this.compareResults = reports.map((report, index) =>
+          this.extractCompareResult(report, filterSets[index].label)
+        );
+
+        if (this.expandedMetricKey) {
+          await this.loadMetricTimeline(this.expandedMetricKey);
+        }
+
+        // Avisar somente quando há filtro ativo e o relatório não retorna métricas
+        if (this.shouldWarnInsufficientFilterData(npsSurveyReport)) {
+          this.$q.notify({
+            type: "warning",
+            message: "Atenção\nNão há dados suficientes para este filtro.",
+            html: true,
+            timeout: 3000,
+          });
+        }
+
+        function compareFeelings(a, b) {
+          if (a.feeling < b.feeling) {
+            return -1;
+          }
+          if (a.feeling > b.feeling) {
+            return 1;
+          }
+          return 0;
+        }
+
+        this.feelingMap.sort(compareFeelings);
+        this.feelingMapGeneral.sort(compareFeelings);
+
+        this.dashboardsLoaded = true;
+
+        this.$refs.infoWidget.close();
+        if (
+          !this.isRhVariant &&
+          npsSurveyReport.insufficientSample &&
+          this.shouldWarnInsufficientFilterData(npsSurveyReport)
+        ) {
+          this.$refs.infoWidget.open();
+        }
+      } finally {
+        if (requestId === this.loadRequestId) {
+          this.$q.loading.hide();
+          this.isLoading = false;
+        }
       }
-
-      this.feelingMap.sort(compareFeelings);
-      this.feelingMapGeneral.sort(compareFeelings);
-
-      this.dashboardsLoaded = true;
-
-      this.$refs.infoWidget.close();
-      if (npsSurveyReport.lessThanFive) this.$refs.infoWidget.open();
-
-      this.isLoading = false;
     },
     async downloadExcel() {
       this.downloadLoading = true;
@@ -1725,6 +2328,10 @@ export default {
   async mounted() {
     this.mobile = window.mobileAndTabletCheck();
 
+    if (this.isRhVariant) {
+      this.compareFilterSets = [this.createCompareFilterSet("Filtro 1")];
+    }
+
     if (this.userType !== "ADMIN") {
       this.loadParameters();
     }
@@ -1736,7 +2343,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-.home-company {
+.home-company--legacy {
   width: 100vw;
   height: 100%;
   overflow: auto;
