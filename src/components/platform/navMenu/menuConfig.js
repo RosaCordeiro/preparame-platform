@@ -82,6 +82,11 @@ export const menuByUserType = {
             label: "Materiais Gratuitos",
             url: "materials",
           },
+          {
+            icon: "mdi-database-lock",
+            label: "Backup do Banco",
+            url: "admin/db-backups",
+          },
         ],
       },
       {
