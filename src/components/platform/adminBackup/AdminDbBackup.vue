@@ -3,9 +3,8 @@
     <div class="q-mb-md">
       <div class="text-h5">Backup do banco (Postgres)</div>
       <p class="text-body2 text-grey-8">
-        Gere e baixe dumps de segurança. Disponível apenas para ADMIN. Em
-        produção exige
-        <code>ENABLE_DB_BACKUP_API=true</code> no servidor da API.
+        Clique em <b>Gerar backup</b>, aguarde terminar e depois use
+        <b>Baixar</b> na lista. Somente ADMIN.
       </p>
     </div>
 
@@ -23,7 +22,7 @@
       <q-btn
         color="primary"
         icon="mdi-database-export"
-        label="Gerar backup agora"
+        label="Gerar backup"
         :loading="creating"
         no-caps
         @click="createBackup"
@@ -34,13 +33,31 @@
         icon="refresh"
         label="Atualizar lista"
         :loading="loading"
+        :disable="creating"
         no-caps
         @click="loadList"
       />
     </div>
 
+    <q-banner
+      v-if="creating"
+      class="bg-blue-1 text-primary q-mb-md"
+      rounded
+    >
+      Gerando backup no servidor… isso pode levar alguns segundos. Não feche a
+      página.
+    </q-banner>
+
     <q-banner v-if="errorMessage" class="bg-red-1 text-negative q-mb-md" rounded>
       {{ errorMessage }}
+    </q-banner>
+
+    <q-banner
+      v-if="lastCreated"
+      class="bg-green-1 text-positive q-mb-md"
+      rounded
+    >
+      Backup pronto: <b>{{ lastCreated }}</b> — use o botão Baixar na tabela.
     </q-banner>
 
     <q-table
@@ -69,6 +86,7 @@
             label="Baixar"
             no-caps
             :loading="downloading === props.row.fileName"
+            :disable="creating"
             @click="downloadBackup(props.row.fileName)"
           />
         </q-td>
@@ -89,6 +107,7 @@ export default {
       creating: false,
       downloading: null,
       errorMessage: "",
+      lastCreated: "",
       backupToken: sessionStorage.getItem("db_backup_token") || "",
       items: [],
       columns: [
@@ -174,15 +193,25 @@ export default {
     async createBackup() {
       this.creating = true;
       this.errorMessage = "";
+      this.lastCreated = "";
       try {
-        await axios.post(
+        const { data } = await axios.post(
           `${baseApiUrl}/admin/backups`,
           {},
-          { headers: this.authHeaders(), timeout: 10 * 60 * 1000 }
+          {
+            headers: this.authHeaders(),
+            timeout: 5 * 60 * 1000,
+          }
         );
-        showSuccess("Backup gerado com sucesso.");
+        this.lastCreated = data.fileName || "";
+        showSuccess("Backup pronto. Pode baixar na lista.");
         await this.loadList();
       } catch (error) {
+        const status = error.response && error.response.status;
+        if (status === 504 || error.code === "ECONNABORTED") {
+          this.errorMessage =
+            "Timeout ao gerar backup. Tente de novo; se persistir, use o job CI backup_prod_db.";
+        }
         showError(error);
       } finally {
         this.creating = false;
@@ -196,7 +225,7 @@ export default {
           {
             headers: this.authHeaders(),
             responseType: "blob",
-            timeout: 10 * 60 * 1000,
+            timeout: 5 * 60 * 1000,
           }
         );
         const url = window.URL.createObjectURL(new Blob([data]));
