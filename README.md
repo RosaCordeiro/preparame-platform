@@ -61,11 +61,27 @@ Rota típica: `/replacementsReport`. Filtros de **cargo, área, cidade, estado, 
 
 Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empresa.md).
 
-## Specs desta entrega
+## UI — Ver Produtos do Usuário (ADMIN / SPECIALIST)
+
+Rota: `/viewProductsUser` (Consultas / menu do especialista).
+
+| Comportamento | Detalhe |
+|---------------|---------|
+| Busca | Por CPF, nome ou empresa em **colaboradores RH** (`companyEmployees`) |
+| Produtos/arquivos | Carregados pela **conta** vinculada (`userId`), não pelo CPF do RH |
+| Banner laranja | Aparece se CPF do RH ≠ CPF da conta vinculada (ou sem `userId`) — não troca a busca |
+| Lista | Não exibe produtos **cancelados**; se a foto do especialista falhar, mostra o nome |
+| LinkedIn | Pode salvar URL do colaborador na mesma tela |
+
+Correção / RCA: [`docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md`](docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md).  
+Fixture local (repro vínculo): [`docs/desenvolvimento/correcoes/repro-view-products-user.sql`](docs/desenvolvimento/correcoes/repro-view-products-user.sql).
+
+## Specs / correções desta entrega
 
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| CORR Ver Produtos (userId) | [`docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md`](docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md) |
 | Segmento / Subsegmento | [`docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md`](docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md) |
 | SPEC Open to Work | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md) |
 | Design Open to Work | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias-design.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias-design.md) |

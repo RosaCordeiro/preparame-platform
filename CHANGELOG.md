@@ -7,6 +7,11 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ## [Unreleased]
 
+### Fixed
+
+- Branch `fix/view-products-user-userid`: **Ver Produtos do Usuário** — produtos/arquivos sempre por `userId`; banner se CPF RH ≠ CPF da conta; race guard ao trocar de pessoa; oculta cancelados; fallback de nome se a foto do especialista falhar; `ViewFileDialog` com `identifier`.
+- CORR: `docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md` (+ fixture `repro-view-products-user.sql`).
+
 ### Added
 
 - Branch `feat/rh-segmento-subsegmento`: cadastros Admin **Segmentos** / **Subsegmentos**; campos opcionais na Empresa; filtros dropdown + colunas Segmento/Subsegmento no Open to Work (sem coluna Empresa).
@@ -36,9 +41,10 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Docs / validação
 
+- V-01…V-07 (Ver Produtos userId) PASS — ver CORR §8.1.
 - VAL-01…12 (segmento/subsegmento): PASS.
 - VAL-01…07 (Open to Work) PASS (código); VAL cards/anonimato anteriores PASS.
-- Suite automatizada platform: N/A (`npm test` placeholder); backend: suite geral verde nesta entrega.
+- Suite automatizada platform: N/A (`npm test` placeholder); `npm run lint` PASS nesta entrega; backend: suite geral verde nas entregas recentes.
 
 ---
 
