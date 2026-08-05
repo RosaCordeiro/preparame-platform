@@ -44,6 +44,8 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 | Indicadores → Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta; cadastro só no Admin) |
 | Contrate Open to Work | `/replacementsReport` | Lista OTW (outras empresas); filtros cargo/área/cidade/estado/segmento/subsegmento |
 
+Tipografia: no perfil **COMPANY_ADMIN**, o shell RH usa base `html.app-rh` com `font-size: 18px` (+1 nível sobre ~16px). Site público e outros perfis não mudam.
+
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
 
 ### Admin — Segmento / Subsegmento
@@ -89,6 +91,8 @@ CORR: [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](do
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| SPEC tipografia RH +1 | [`docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um.md`](docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um.md) |
+| Design tipografia RH +1 | [`docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um-design.md`](docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um-design.md) |
 | CORR remover Google trackers | [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md) |
 | Design remover Google trackers | [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers-design.md`](docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers-design.md) |
 | CORR Ver Produtos (userId) | [`docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md`](docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md) |

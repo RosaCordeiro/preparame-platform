@@ -34,6 +34,8 @@ import RhSideNavMenu from "../components/platform/navMenu/RhSideNavMenu.vue";
 import RhToolbar from "../components/platform/toolbar/RhToolbar.vue";
 import Vue from "vue";
 
+const APP_RH_CLASS = "app-rh";
+
 export default {
   data() {
     return {
@@ -68,6 +70,14 @@ export default {
       }
     } catch (err) {}
   },
+  mounted() {
+    if (this.isCompanyAdmin) {
+      document.documentElement.classList.add(APP_RH_CLASS);
+    }
+  },
+  beforeDestroy() {
+    document.documentElement.classList.remove(APP_RH_CLASS);
+  },
   methods: {
     toogleMenu: function () {
       this.sideNavMenuComponent.$emit("toogleMenu");
@@ -86,5 +96,10 @@ export default {
   background-color: #f5f6fa;
   font-family: "Nunito";
   font-style: normal;
+}
+
+/* +1 nível tipográfico só no shell RH (rem relativo ao html) */
+html.app-rh {
+  font-size: 18px;
 }
 </style>
