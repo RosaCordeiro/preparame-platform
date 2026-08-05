@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueGtag from "vue-gtag";
 
 import routes from './routes'
 import VueCompositionAPI from '@vue/composition-api'
@@ -47,10 +46,6 @@ export default function (/* { store, ssrContext } */) {
 
     return next()
   })
-
-  Vue.use(VueGtag, {
-    config: { id: "UA-151306939-1" }
-  }, Router);
 
   return Router
 }

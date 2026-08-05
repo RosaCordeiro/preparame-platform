@@ -75,12 +75,8 @@
 </template>
 
 <script>
-  import gtm from 'src/components/gtm';
-
   export default {
     created() {
-      gtm.logEvent('router', 'FAQ');
-
       window.scrollTo(0, 0);
     }
   };

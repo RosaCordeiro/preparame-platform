@@ -76,11 +76,21 @@ Rota: `/viewProductsUser` (Consultas / menu do especialista).
 Correção / RCA: [`docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md`](docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md).  
 Fixture local (repro vínculo): [`docs/desenvolvimento/correcoes/repro-view-products-user.sql`](docs/desenvolvimento/correcoes/repro-view-products-user.sql).
 
+## Analytics / rastreadores
+
+O app **não** carrega Google Analytics nem Google Ads (`UA-*` / `AW-*` / `vue-gtag` / boot `gtag-ads` removidos).  
+Mantidos: banner de cookies DPO e VLibras. `vue-google-charts` é só para gráficos.  
+Novo ID exclusivo do app: entrega futura.
+
+CORR: [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md).
+
 ## Specs / correções desta entrega
 
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| CORR remover Google trackers | [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md) |
+| Design remover Google trackers | [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers-design.md`](docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers-design.md) |
 | CORR Ver Produtos (userId) | [`docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md`](docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md) |
 | Segmento / Subsegmento | [`docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md`](docs/desenvolvimento/especificacoes/2026-07-22-rh-segmento-subsegmento.md) |
 | SPEC Open to Work | [`docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md`](docs/desenvolvimento/especificacoes/2026-07-21-rh-open-to-work-melhorias.md) |

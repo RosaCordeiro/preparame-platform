@@ -27,8 +27,7 @@
     "vue": "2.6.14",
     "vue-apexcharts": "^1.6.2",
     "vue-chartjs": "^4.0.0",
-    "vue-google-charts": "^1.1.0",
-    "vue-gtag": "^1.16.0"
+    "vue-google-charts": "^1.1.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

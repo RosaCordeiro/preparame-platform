@@ -9,6 +9,8 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Fixed
 
+- Branch `fix/remove-google-trackers`: remove Google Analytics (`UA-151306939-1`), Google Ads (`AW-304198855`), boot `gtag-ads`, `vue-gtag` e helper `gtm.js` do app.
+- CORR/design: `docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md` (+ `-design.md`).
 - Branch `fix/view-products-user-userid`: **Ver Produtos do Usuário** — produtos/arquivos sempre por `userId`; banner se CPF RH ≠ CPF da conta; race guard ao trocar de pessoa; oculta cancelados; fallback de nome se a foto do especialista falhar; `ViewFileDialog` com `identifier`.
 - CORR: `docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md` (+ fixture `repro-view-products-user.sql`).
 
@@ -35,12 +37,14 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Removed
 
+- Google trackers do app: `vue-gtag`, `src/boot/gtag-ads.js`, scripts gtag no `index.template.html`, `src/components/gtm.js`.
 - Card **Taxa de recolocação** na quantitativa (duplicata de **Realocados**).
 - Componente `DashBoardRhQuantitativeCards.vue` (conteúdo absorvido por `DashBoardRhMetrics`).
 - Métricas/filtros de datas/empresa na tela `/replacementsReport` (fluxo RH OTW).
 
 ### Docs / validação
 
+- V-01…V-04 (remover Google trackers) PASS — ver CORR §8.1.
 - V-01…V-07 (Ver Produtos userId) PASS — ver CORR §8.1.
 - VAL-01…12 (segmento/subsegmento): PASS.
 - VAL-01…07 (Open to Work) PASS (código); VAL cards/anonimato anteriores PASS.
