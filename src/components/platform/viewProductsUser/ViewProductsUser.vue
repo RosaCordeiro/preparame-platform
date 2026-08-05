@@ -90,20 +90,32 @@
           </q-card-section>
         </q-card>
 
+        <q-banner
+          v-if="linkWarning"
+          class="q-mb-md bg-orange-2 text-dark"
+          rounded
+          dense
+        >
+          <template v-slot:avatar>
+            <q-icon name="mdi-alert" color="orange-9" />
+          </template>
+          {{ linkWarning }}
+        </q-banner>
+
         <q-card v-if="selectedEmployee" class="q-mb-md">
           <q-card-section>
             <div class="text-h6 q-mb-md">Dados do colaborador</div>
             <div class="row q-col-gutter-md">
               <div class="col-12 col-md-6">
-                <div class="text-caption text-grey-7">Nome</div>
+                <div class="text-caption text-grey-7">Nome (RH)</div>
                 <div>{{ selectedEmployee.name }}</div>
               </div>
               <div class="col-12 col-md-6">
-                <div class="text-caption text-grey-7">CPF</div>
+                <div class="text-caption text-grey-7">CPF (RH)</div>
                 <div>{{ selectedEmployee.documentId }}</div>
               </div>
               <div class="col-12 col-md-6">
-                <div class="text-caption text-grey-7">E-mail</div>
+                <div class="text-caption text-grey-7">E-mail (RH)</div>
                 <div>{{ selectedEmployee.email || "N/A" }}</div>
               </div>
               <div class="col-12 col-md-6">
@@ -166,18 +178,20 @@
                 <q-tr :props="props">
                   <q-td key="product" :props="props">{{ props.row.name }}</q-td>
                   <q-td key="dateSchedule" :props="props">{{
-                    props.row.schedule === null
-                      ? "Não Agendado"
-                      : formatDateToStringWithHour(props.row.schedule.dateSchedule)
+                    formatProductScheduleDate(props.row)
                   }}</q-td>
                   <q-td key="specialist" :props="props">
                     <img
-                      v-if="props.row.specialist"
+                      v-if="showSpecialistImage(props.row)"
                       :src="props.row.specialist.image"
                       height="50"
                       width="50"
                       style="border-radius: 50%; object-fit: cover"
+                      @error="onSpecialistImageError(props.row)"
                     />
+                    <div v-else-if="props.row.specialist">
+                      {{ props.row.specialist.name || "Especialista" }}
+                    </div>
                     <div v-else>Não Atribuído</div>
                   </q-td>
                   <q-td key="fileStatus" :props="props">
@@ -186,7 +200,7 @@
                         {{ statusFiles(props.row) }}
                       </span>
                       <q-btn
-                        v-if="props.row.countfilesuser > 0"
+                        v-if="props.row.schedule && props.row.countfilesuser > 0"
                         color="primary"
                         label="Visualizar Arquivos"
                         @click="viewFileDialog(props.row)"
@@ -196,11 +210,12 @@
                   <q-td key="fileUser" :props="props">
                     <div class="row justify-center">
                       <span class="col-12" style="text-align: center">
-                        {{ props.row.countfilesuser }} arquivos do usuário +
-                        {{ props.row.countfilesspecialist }} arquivos do
+                        {{ props.row.countfilesuser || 0 }} arquivos do usuário +
+                        {{ props.row.countfilesspecialist || 0 }} arquivos do
                         especialista
                       </span>
                       <q-btn
+                        v-if="props.row.schedule"
                         color="primary"
                         label="Adicionar Arquivos"
                         @click="openSearchFileDialog(props.row)"
@@ -219,7 +234,10 @@
       ref="searchFileDialog"
       :identifier="`AddProductToUserRegisterCrudSearchFileDialog`"
     />
-    <ViewFileDialogVue ref="viewFileDialog" />
+    <ViewFileDialogVue
+      ref="viewFileDialog"
+      :identifier="`ViewProductsUserViewFileDialog`"
+    />
   </div>
 </template>
 
@@ -231,6 +249,10 @@ import { filterCrud } from "src/components/general/crud/utils/filterCrud";
 import { formatDateToStringWithHour } from "src/utils/formatDate";
 import ViewFileDialogVue from "src/components/ViewFileDialog.vue";
 import SearchFileDialog from "src/components/SearchFileDialog.vue";
+
+function normalizeDocumentId(value) {
+  return String(value || "").replace(/\D/g, "");
+}
 
 export default {
   components: {
@@ -256,6 +278,10 @@ export default {
       loadingProducts: false,
       searchResults: [],
       selectedEmployee: null,
+      linkedUser: null,
+      productsUserId: null,
+      linkWarning: "",
+      productsRequestId: 0,
       linkedinForm: {
         linkedinUrl: "",
       },
@@ -321,6 +347,36 @@ export default {
 
       return filters;
     },
+    resolveUserId(employee) {
+      if (!employee) return null;
+      if (employee.user && employee.user.id) return employee.user.id;
+      if (employee.userId) return employee.userId;
+      return null;
+    },
+    getLinkedUser(employee) {
+      if (employee && employee.user && employee.user.id) return employee.user;
+      return null;
+    },
+    buildLinkWarning(employee, userId, linkedUser) {
+      if (!userId) {
+        return "Este colaborador não tem userId. Produtos e arquivos não podem ser carregados.";
+      }
+
+      if (!linkedUser || !employee) return "";
+
+      const employeeDoc = normalizeDocumentId(employee.documentId);
+      const userDoc = normalizeDocumentId(linkedUser.documentId);
+
+      if (employeeDoc && userDoc && employeeDoc !== userDoc) {
+        return (
+          `Atenção: o CPF do cadastro RH (${employee.documentId}) é diferente do CPF da conta ` +
+          `vinculada pelo userId (${linkedUser.documentId} — ${linkedUser.name}). ` +
+          `Produtos/arquivos seguem o userId. Se os docs parecem trocados, o vínculo userId no RH está errado.`
+        );
+      }
+
+      return "";
+    },
     async searchEmployees() {
       const filters = this.buildSearchFilters();
 
@@ -335,7 +391,11 @@ export default {
       this.searching = true;
       this.searchResults = [];
       this.selectedEmployee = null;
+      this.linkedUser = null;
+      this.productsUserId = null;
+      this.linkWarning = "";
       this.products = [];
+      this.productsRequestId += 1;
 
       try {
         const results = await filterCrud(filters, "companies/employees");
@@ -350,7 +410,7 @@ export default {
         }
 
         if (this.searchResults.length === 1) {
-          this.selectEmployee(this.searchResults[0]);
+          await this.selectEmployee(this.searchResults[0]);
         }
       } catch (error) {
         showError(error);
@@ -358,10 +418,18 @@ export default {
         this.searching = false;
       }
     },
-    selectEmployee(employee) {
+    async selectEmployee(employee) {
       this.selectedEmployee = employee;
       this.linkedinForm.linkedinUrl = employee.linkedinUrl || "";
-      this.loadProducts();
+      this.linkedUser = this.getLinkedUser(employee);
+      this.productsUserId = this.resolveUserId(employee);
+      this.linkWarning = this.buildLinkWarning(
+        employee,
+        this.productsUserId,
+        this.linkedUser
+      );
+      this.products = [];
+      await this.loadProducts();
     },
     syncEmployeeData(employee) {
       const merged = {
@@ -373,6 +441,13 @@ export default {
 
       this.selectedEmployee = merged;
       this.linkedinForm.linkedinUrl = merged.linkedinUrl || "";
+      this.linkedUser = this.getLinkedUser(merged);
+      this.productsUserId = this.resolveUserId(merged);
+      this.linkWarning = this.buildLinkWarning(
+        merged,
+        this.productsUserId,
+        this.linkedUser
+      );
 
       const index = this.searchResults.findIndex((item) => item.id === merged.id);
 
@@ -410,11 +485,24 @@ export default {
       }
     },
     async loadProducts() {
-      const userId =
-        (this.selectedEmployee.user && this.selectedEmployee.user.id) ||
-        this.selectedEmployee.userId;
+      if (!this.selectedEmployee) {
+        this.products = [];
+        return;
+      }
 
-      if (!this.selectedEmployee || !userId) {
+      const requestId = ++this.productsRequestId;
+      const employeeId = this.selectedEmployee.id;
+      const userId = this.resolveUserId(this.selectedEmployee);
+
+      this.productsUserId = userId;
+      this.linkedUser = this.getLinkedUser(this.selectedEmployee);
+      this.linkWarning = this.buildLinkWarning(
+        this.selectedEmployee,
+        userId,
+        this.linkedUser
+      );
+
+      if (!userId) {
         this.products = [];
         return;
       }
@@ -427,12 +515,22 @@ export default {
           "products/listProductByUserWithSpecialist"
         );
 
-        this.products = products || [];
+        if (requestId !== this.productsRequestId) return;
+        if (!this.selectedEmployee || this.selectedEmployee.id !== employeeId) {
+          return;
+        }
+
+        this.products = (products || []).filter(
+          (row) => row.table !== "PRODUTOS CANCELADOS"
+        );
       } catch (error) {
+        if (requestId !== this.productsRequestId) return;
         showError(error);
         this.products = [];
       } finally {
-        this.loadingProducts = false;
+        if (requestId === this.productsRequestId) {
+          this.loadingProducts = false;
+        }
       }
     },
     openSearchFileDialog(data) {
@@ -443,8 +541,34 @@ export default {
     viewFileDialog(product) {
       this.$refs.viewFileDialog.show(product.id, "ALL");
     },
+    showSpecialistImage(product) {
+      return Boolean(
+        product.specialist &&
+          product.specialist.image &&
+          !product._imageFailed
+      );
+    },
+    onSpecialistImageError(product) {
+      this.$set(product, "_imageFailed", true);
+    },
+    formatProductScheduleDate(product) {
+      if (product.schedule && product.schedule.dateSchedule) {
+        return formatDateToStringWithHour(product.schedule.dateSchedule);
+      }
+      if (product.dateSchedule) {
+        return formatDateToStringWithHour(product.dateSchedule);
+      }
+      if (product.reason) {
+        return `Cancelado (${product.reason})`;
+      }
+      return "Não Agendado";
+    },
     statusFiles(product) {
-      if (product.schedule === null && product.specialist === null) {
+      // Cancelados / disponíveis: schedule vem null — não acessar schedule.dateSchedule
+      if (!product.schedule) {
+        if (product.reason) {
+          return `Cancelado (${product.reason})`;
+        }
         return "N/A";
       }
 

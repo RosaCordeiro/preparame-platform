@@ -7,6 +7,11 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ## [Unreleased]
 
+### Fixed
+
+- Branch `fix/view-products-user-userid`: **Ver Produtos do Usuário** — produtos/arquivos sempre por `userId`; banner se CPF RH ≠ CPF da conta; race guard ao trocar de pessoa; oculta cancelados; fallback de nome se a foto do especialista falhar; `ViewFileDialog` com `identifier`.
+- CORR: `docs/desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md` (+ fixture `repro-view-products-user.sql`).
+
 ### Added
 
 - Branch `feat/rh-open-to-work-melhorias`: tela **Contrate Open to Work** só com listagem + filtros cargo/área/cidade/estado; aviso ao clicar LinkedIn ausente.
@@ -34,8 +39,9 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Docs / validação
 
+- V-01…V-07 (Ver Produtos userId) PASS — ver CORR §8.1.
 - VAL-01…07 (Open to Work) PASS (código); VAL cards/anonimato anteriores PASS.
-- Suite automatizada platform: N/A (`npm test` placeholder); regressão OTW no backend (`ListCompanyEmployeeUseCase.spec`).
+- Suite automatizada platform: N/A (`npm test` placeholder); `npm run lint` PASS nesta entrega; regressão OTW no backend (`ListCompanyEmployeeUseCase.spec`).
 
 ---
 
