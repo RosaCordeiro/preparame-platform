@@ -7,11 +7,10 @@ Comunicação com API externa, pagamentos, analytics e utilitários transversais
 ## Escopo
 
 ```
-src/boot/axios.js, notification.js, gtag-ads.js, apex.js
+src/boot/axios.js, notification.js, apex.js
 src/global.js
 src/tools/
 src/utils/downloadFile.js, refreshToken.js
-src/components/gtm.js
 ```
 
 ## Quando acionar
@@ -19,7 +18,6 @@ src/components/gtm.js
 - Novos endpoints axios
 - Tratamento de erro/sucesso global
 - Pagamento (carrinho, orders, Pagar.me)
-- Google Analytics / Ads
 - Upload/download de arquivos
 - Refresh token em 401
 
@@ -37,9 +35,10 @@ src/components/gtm.js
 - Formas: boleto e cartão (visão usuário)
 
 ### Analytics
-- `vue-gtag` UA-151306939-1 no router
-- `gtag-ads.js` boot — AW-304198855
-- Eventos via `src/components/gtm.js`
+
+- Removido do app (2026-08): `vue-gtag` / `UA-151306939-1`, boot `gtag-ads` / `AW-304198855`, e helper `src/components/gtm.js` (dataLayer).
+- Novo rastreador exclusivo do app: feat futura (não reutilizar IDs do site).
+- `vue-google-charts` permanece (renderização de gráficos, não é analytics).
 
 ## Checklist
 
