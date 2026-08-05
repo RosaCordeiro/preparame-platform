@@ -143,10 +143,10 @@ Nota: `vue-google-charts` permanece (graficos). Banner DPO / VLibras fora do esc
 
 | Campo | Valor |
 |-------|-------|
-| Commit(s) | |
+| Commit(s) | `98dc6b5` |
 | O que mudou de fato | Removidos UA/AW/vue-gtag/gtag-ads/gtm.js; FAQ sem dataLayer; docs agente/README/CHANGELOG |
 | Verificacoes executadas (V-xx) | V-01…V-04 PASS (§8.1); suite: `npm test` N/A; `npm run lint` PASS |
-| Status final | DoD em revisao com usuario |
+| Status final | DoD ok — push origin + gitlab |
 
 ## 10. Licoes / prevencao (opcional)
 
