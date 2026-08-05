@@ -42,9 +42,22 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 | Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
 | Indicadores → Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Indicadores → Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta; cadastro só no Admin) |
-| Contrate Open to Work | `/replacementsReport` | Lista OTW (outras empresas); filtros cargo/área/cidade/estado |
+| Contrate Open to Work | `/replacementsReport` | Lista OTW (outras empresas); filtros cargo/área/cidade/estado/segmento/subsegmento |
 
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
+
+### Admin — Segmento / Subsegmento
+
+| Menu | Rota |
+|------|------|
+| Cadastros → Segmentos | `/segments` |
+| Cadastros → Subsegmentos | `/subsegments` |
+
+Na **Empresa** (`/companies/:id`): Segmento e Subsegmento são **opcionais**.
+
+### RH — Open to Work / Recolocações
+
+Rota típica: `/replacementsReport`. Filtros de **cargo, área, cidade, estado, Segmento e Subsegmento** no mesmo card; a lista mostra colunas de segmento a partir da empresa do candidato e **não** exibe a empresa.
 
 Detalhe de produto: [Painel do RH](docs/04-plataforma-logada/painel-do-rh-empresa.md).
 

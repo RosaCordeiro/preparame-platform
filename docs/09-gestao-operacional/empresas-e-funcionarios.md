@@ -12,6 +12,7 @@ A gestão de **empresas e funcionários** permite cadastrar empresas parceiras, 
 
 - **Empresas:** Menu admin → Empresas (`/companies`)
 - **Funcionários:** Menu admin → Funcionários (`/companies/employees`)
+- **Segmentos / Subsegmentos:** Menu admin → Cadastros → Segmentos (`/segments`) e Subsegmentos (`/subsegments`)
 
 ## Gestão de empresas
 
@@ -20,6 +21,8 @@ A gestão de **empresas e funcionários** permite cadastrar empresas parceiras, 
 | Campo | Descrição |
 |---|---|
 | Nome | Razão social ou nome fantasia |
+| Segmento | Classificação macro de mercado (**opcional**) |
+| Subsegmento | Classificação específica dentro do segmento (**opcional**; deve pertencer ao segmento) |
 | Logo | Imagem exibida na página de patrocínio |
 | Cores | Personalização visual (fundo, texto) |
 | Token de patrocínio | Identificador para vincular cadastros |

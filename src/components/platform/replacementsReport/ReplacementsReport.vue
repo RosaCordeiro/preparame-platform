@@ -47,6 +47,32 @@
                 clearable
                 class="col-12 col-md-2"
               />
+              <q-select
+                outlined
+                dense
+                clearable
+                label="Segmento"
+                v-model="openToWorkFilters.segmentId"
+                :options="segmentOptions"
+                option-value="id"
+                option-label="name"
+                emit-value
+                map-options
+                class="col-12 col-md-3"
+              />
+              <q-select
+                outlined
+                dense
+                clearable
+                label="Subsegmento"
+                v-model="openToWorkFilters.subsegmentId"
+                :options="filteredSubsegmentOptions"
+                option-value="id"
+                option-label="name"
+                emit-value
+                map-options
+                class="col-12 col-md-3"
+              />
               <div class="col-12 col-md-auto row q-gutter-sm">
                 <q-btn
                   label="Filtrar"
@@ -112,11 +138,15 @@ export default {
   data() {
     return {
       breadcrumbs: [{ title: "Open to Work", to: "" }],
+      segments: [],
+      subsegments: [],
       openToWorkFilters: {
         position: '',
         department: '',
         city: '',
         state: '',
+        segmentId: null,
+        subsegmentId: null,
       },
       openToWorkCandidates: [],
       loadingOpenToWork: false,
@@ -124,11 +154,38 @@ export default {
         { name: 'name', label: 'Nome', align: 'left', field: 'name' },
         { name: 'position', label: 'Cargo', align: 'left', field: 'position' },
         { name: 'department', label: 'Área', align: 'left', field: 'department' },
+        { name: 'segmentName', label: 'Segmento', align: 'left', field: 'segmentName' },
+        { name: 'subsegmentName', label: 'Subsegmento', align: 'left', field: 'subsegmentName' },
         { name: 'city', label: 'Cidade', align: 'left', field: 'city' },
         { name: 'state', label: 'Estado', align: 'left', field: 'state' },
         { name: 'linkedinUrl', label: 'LinkedIn', align: 'center', field: 'linkedinUrl' },
       ]
     };
+  },
+  computed: {
+    segmentOptions() {
+      return this.segments;
+    },
+    filteredSubsegmentOptions() {
+      if (!this.openToWorkFilters.segmentId) {
+        return this.subsegments;
+      }
+      return this.subsegments.filter(
+        (s) => s.segmentId === this.openToWorkFilters.segmentId
+      );
+    },
+  },
+  watch: {
+    "openToWorkFilters.segmentId"() {
+      if (
+        this.openToWorkFilters.subsegmentId &&
+        !this.filteredSubsegmentOptions.some(
+          (s) => s.id === this.openToWorkFilters.subsegmentId
+        )
+      ) {
+        this.openToWorkFilters.subsegmentId = null;
+      }
+    },
   },
   methods: {
     clearOpenToWorkFilters() {
@@ -137,6 +194,8 @@ export default {
         department: '',
         city: '',
         state: '',
+        segmentId: null,
+        subsegmentId: null,
       };
       this.loadOpenToWorkCandidates();
     },
@@ -148,16 +207,40 @@ export default {
         timeout: 4000,
       });
     },
+    async loadSegmentsAndSubsegments() {
+      try {
+        const headers = {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+        const [segmentsRes, subsegmentsRes] = await Promise.all([
+          axios.get(`${baseApiUrl}/segments`, { headers }),
+          axios.get(`${baseApiUrl}/subsegments`, { headers }),
+        ]);
+        this.segments = segmentsRes.data || [];
+        this.subsegments = subsegmentsRes.data || [];
+      } catch (error) {
+        showError(error);
+      }
+    },
     async loadOpenToWorkCandidates() {
       this.loadingOpenToWork = true;
 
       try {
         const params = {};
-        const { position, department, city, state } = this.openToWorkFilters;
+        const {
+          position,
+          department,
+          city,
+          state,
+          segmentId,
+          subsegmentId,
+        } = this.openToWorkFilters;
         if (position) params.position = position;
         if (department) params.department = department;
         if (city) params.city = city;
         if (state) params.state = state;
+        if (segmentId) params.segmentId = segmentId;
+        if (subsegmentId) params.subsegmentId = subsegmentId;
 
         const response = await axios.get(
           `${baseApiUrl}/companies/employees/open-to-work`,
@@ -178,6 +261,7 @@ export default {
     }
   },
   mounted() {
+    this.loadSegmentsAndSubsegments();
     this.loadOpenToWorkCandidates();
   }
 };

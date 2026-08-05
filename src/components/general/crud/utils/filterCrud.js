@@ -18,6 +18,10 @@ async function filterCrud(filters, url, columns, headers = {}) {
 
   if (columns && columns.length > 0) {
     columns.forEach((column) => {
+      if (typeof column.field !== "string") {
+        return;
+      }
+
       if (column.field.indexOf(".") > 0) {
         const key = column.field.substr(0, column.field.indexOf("."));
         const value = column.field.substr(column.field.indexOf(".") + 1);
