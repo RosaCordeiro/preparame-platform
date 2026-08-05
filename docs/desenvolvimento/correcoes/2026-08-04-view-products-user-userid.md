@@ -231,10 +231,10 @@ Nota UX pos-CORR: bloco “Conta do usuario (userId)” removido a pedido; banne
 
 | Campo | Valor |
 |-------|-------|
-| Commit(s) | `fde95f8` — fix: Ver Produtos do Usuário por userId com alerta e race guard |
+| Commit(s) | `fde95f8` fix + `3efde5c` docs CORR; branch em `origin/fix/view-products-user-userid` |
 | O que mudou de fato | `ViewProductsUser.vue`: produtos por `userId`; banner se CPF RH ≠ conta; race guard; `identifier` no dialog; ocultar cancelados; fallback nome se foto falhar; sem bloco de conta na ficha |
 | Verificacoes executadas (V-xx) | V-01…V-07 PASS (ver §8.1); suite: `npm test` N/A placeholder exit 0; `npm run lint` PASS (incl. ViewProductsUser) |
-| Status final | DoD ok — entregue na branch `fix/view-products-user-userid` |
+| Status final | DoD ok — push feito; entrega Pro encerrada |
 
 ## 10. Licoes / prevencao (opcional)
 
