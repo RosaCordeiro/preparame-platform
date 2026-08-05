@@ -47,14 +47,24 @@ flowchart LR
 
 ## Ver Produtos do Usuário
 
-Tela central para acompanhamento de serviços:
+Tela central para acompanhamento de serviços (`/viewProductsUser` — admin e especialista).
+
+Busca colaboradores no **cadastro RH**; produtos e arquivos vêm da **conta** (`userId`) vinculada a esse colaborador.
 
 | Informação | Descrição |
 |---|---|
-| Cliente | Ex-colaborador atendido |
+| Cliente (RH) | Nome/CPF/empresa do colaborador |
 | Serviço | Tipo de produto (mentoria, revisão, etc.) |
-| Status | Pendente, em andamento, concluído |
-| Arquivos | Uploads do cliente e do especialista |
+| Status arquivo | Pendências de currículo/relatório quando há agendamento |
+| Arquivos | Uploads do cliente e do especialista (só em linhas com agendamento) |
+
+### Comportamentos operacionais (fix 2026-08)
+
+- Se o CPF do RH for diferente do CPF da conta vinculada, a tela mostra um **aviso** — produtos continuam sendo os da conta (`userId`). Corrigir o vínculo no cadastro RH.
+- Produtos **cancelados** não aparecem na lista.
+- Se a foto do especialista não carregar, a tela mostra o **nome**.
+
+Detalhe técnico: [CORR Ver Produtos userId](../desenvolvimento/correcoes/2026-08-04-view-products-user-userid.md).
 
 ### Fluxo de arquivos
 - **Ex-colaborador** envia currículo ou link do LinkedIn
