@@ -24,6 +24,7 @@
           <UiMetricTimeline
             v-if="!metric.comingSoon && expandedMetricKey === metric.key"
             :categories="timelineCategories"
+            :raw-periods="timelineRawPeriods"
             :series="timelineSeriesFor(metric.key)"
             :loading="timelineLoading"
             :value-suffix="metric.timelineSuffix || ''"
@@ -48,8 +49,8 @@ import {
 const COMING_SOON_CARDS = [
   {
     key: "newConflictManagement",
-    title: "Gestão de novos conflitos",
-    subtitle: "Acompanhamento de conflitos emergentes",
+    title: "Gestão de Conflitos e Dúvidas em Andamento",
+    subtitle: "Acompanhamento de conflitos e dúvidas em andamento",
   },
   {
     key: "newWhistleblowingChannel",
@@ -58,8 +59,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "laborRiskReduction",
-    title: "Redução de riscos trabalhistas",
-    subtitle: "Evolução da exposição trabalhista",
+    title: "Redução de Conflitos Críticos e Dúvidas com o PDR",
+    subtitle: "Evolução de conflitos críticos e dúvidas no PDR",
   },
   {
     key: "reputationalImpactReduction",
@@ -68,23 +69,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "psychosocialImpactReduction",
-    title: "Redução de impacto psicossocial",
-    subtitle: "Evolução do impacto psicossocial",
-  },
-  {
-    key: "socialImpactReduction",
-    title: "Redução de impacto social",
-    subtitle: "Evolução do impacto social",
-  },
-  {
-    key: "resolvedDoubts",
-    title: "Dúvidas resolvidas",
-    subtitle: "Percentual de dúvidas solucionadas",
-  },
-  {
-    key: "exEmployeeEvaluation",
-    title: "Avaliação dos ex-colaboradores",
-    subtitle: "Avaliação geral dos ex-colaboradores",
+    title: "Redução de Impacto Negativo na Saúde Mental com o PDR",
+    subtitle: "Evolução do impacto negativo na saúde mental no PDR",
   },
 ];
 
@@ -170,6 +156,14 @@ export default {
       type: Function,
       required: true,
     },
+    exEmployeeEvaluationCompany: {
+      type: [Number, String],
+      default: NaN,
+    },
+    exEmployeeEvaluationGeneral: {
+      type: [Number, String],
+      default: NaN,
+    },
     expandedMetricKey: {
       type: String,
       default: null,
@@ -206,6 +200,11 @@ export default {
       const timeline = this.metricTimelines[this.expandedMetricKey];
 
       return timeline && timeline.categories ? timeline.categories : [];
+    },
+    timelineRawPeriods() {
+      const timeline = this.metricTimelines[this.expandedMetricKey];
+
+      return timeline && timeline.rawPeriods ? timeline.rawPeriods : [];
     },
     kpiCards() {
       return [
@@ -266,7 +265,7 @@ export default {
           key: "realocateds",
           component: "RhMetricCard",
           infoLabel: "Realocados",
-          timelineSubtitle: "Percentual de recolocados por período",
+          timelineSubtitle: "Taxa acumulada de recolocação por mês (data da recolocação)",
           timelineSuffix: "%",
           props: {
             title: "Realocados",
@@ -347,7 +346,66 @@ export default {
       ];
     },
     panelRemainderCards() {
-      return mapComingSoonCards(COMING_SOON_CARDS);
+      const comingSoon = mapComingSoonCards(COMING_SOON_CARDS);
+      const socialImpactCard = {
+        key: "socialImpactReduction",
+        component: "RhMetricCard",
+        comingSoon: false,
+        infoLabel: "Redução de impacto negativo social",
+        timelineSubtitle:
+          "Taxa acumulada de recolocação por mês (data da recolocação)",
+        timelineSuffix: "%",
+        props: {
+          title: "Redução de impacto negativo social",
+          subtitle:
+            "Taxa de recolocação das pessoas do programa (impacto negativo social)",
+          companyValue: this.metricValue("realocateds"),
+          generalValue: this.parseGeneralValue(this.realocatedsGeneral),
+          compareRows: this.compareRowsFor("realocateds"),
+          minValue: 0,
+          maxValue: 100,
+          intersectionValue: 50,
+          suffix: "%",
+          insufficientSample: this.primaryInsufficient,
+        },
+      };
+      const evaluationCard = {
+        key: "exEmployeeEvaluation",
+        component: "RhMetricCard",
+        comingSoon: false,
+        infoLabel: "Avaliação dos ex-colaboradores do PDR",
+        timelineSubtitle:
+          "Nota média das conversas por mês (data do atendimento)",
+        props: {
+          title: "Avaliação dos ex-colaboradores do PDR",
+          subtitle: "Nota média das conversas do programa",
+          companyValue: this.parseGeneralValue(
+            this.exEmployeeEvaluationCompany
+          ),
+          generalValue: this.parseGeneralValue(
+            this.exEmployeeEvaluationGeneral
+          ),
+          minValue: 0,
+          maxValue: 5,
+          intersectionValue: 4,
+        },
+      };
+
+      // Ordem: ... saúde mental → impacto social → avaliação
+      const psychosocialIdx = comingSoon.findIndex(
+        (card) => card.key === "psychosocialImpactReduction"
+      );
+
+      if (psychosocialIdx === -1) {
+        return [socialImpactCard, ...comingSoon, evaluationCard];
+      }
+
+      return [
+        ...comingSoon.slice(0, psychosocialIdx + 1),
+        socialImpactCard,
+        ...comingSoon.slice(psychosocialIdx + 1),
+        evaluationCard,
+      ];
     },
     quantitativeComingSoonCards() {
       return mapComingSoonCards(QUANTITATIVE_COMING_SOON_CARDS);

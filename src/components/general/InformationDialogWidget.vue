@@ -218,6 +218,107 @@
             </li>
           </ul>
         </div>
+
+        <div
+          v-else-if="
+            id === 'Gestão de novos conflitos' ||
+            id === 'Gestão de Conflitos e Dúvidas em Andamento'
+          "
+        >
+          <span>Gestão de Conflitos e Dúvidas em Andamento</span>
+          <p>
+            Acompanha conflitos e dúvidas em andamento relacionados ao processo
+            de demissão responsável, para apoiar ações preventivas e de
+            mediação.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Canal de denúncias novos'">
+          <span>Canal de denúncias novos</span>
+          <p>
+            Indicadores do canal de denúncias vinculados ao programa, ajudando a
+            identificar novos registros e tendências relevantes para o RH.
+          </p>
+        </div>
+
+        <div
+          v-else-if="
+            id === 'Redução de riscos trabalhistas' ||
+            id === 'Redução de Conflitos Críticos e Dúvidas com o PDR'
+          "
+        >
+          <span>Redução de Conflitos Críticos e Dúvidas com o PDR</span>
+          <p>
+            Acompanha a evolução de conflitos críticos e dúvidas relacionadas ao
+            Programa de Demissão Responsável (PDR), apoiando ações preventivas e
+            de mediação.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Redução de impacto reputacional'">
+          <span>Redução de impacto reputacional</span>
+          <p>
+            Acompanha a evolução do impacto na reputação da marca empregadora
+            após o processo de demissão, com foco em reduzir efeitos negativos.
+          </p>
+        </div>
+
+        <div
+          v-else-if="
+            id === 'Redução de impacto psicossocial' ||
+            id ===
+              'Redução de Impacto Negativo na Saúde Mental com o PDR'
+          "
+        >
+          <span>Redução de Impacto Negativo na Saúde Mental com o PDR</span>
+          <p>
+            Indica a evolução do impacto negativo na saúde mental no contexto do
+            Programa de Demissão Responsável (PDR), apoiando o monitoramento de
+            bem-estar no processo.
+          </p>
+        </div>
+
+        <div
+          v-else-if="
+            id === 'Redução de impacto negativo social' ||
+            id === 'Redução de impacto social'
+          "
+        >
+          <span>Redução de impacto negativo social</span>
+          <p>
+            Usa a taxa de recolocação das pessoas do programa da empresa como
+            indicador de redução do impacto negativo social gerado pela
+            demissão.
+          </p>
+          <p>
+            Exemplo: 60% na taxa de recolocação é igual a −60% de impacto
+            negativo social.
+          </p>
+        </div>
+
+        <div
+          v-else-if="
+            id === 'Avaliação dos ex-colaboradores' ||
+            id === 'Avaliação dos ex-colaboradores do PDR'
+          "
+        >
+          <span>Avaliação dos ex-colaboradores do PDR</span>
+          <p>
+            Avaliação geral dos ex-colaboradores sobre a experiência no
+            Programa de Demissão Responsável (PDR), com base na nota média das
+            conversas (mentorias individuais e coletivas).
+          </p>
+          <p>
+            O card compara a média da empresa com a média geral de todas as
+            empresas. O gráfico mostra a evolução mensal pela data do
+            atendimento.
+          </p>
+        </div>
+
+        <div v-else-if="id">
+          <span>{{ id }}</span>
+          <p>Em breve: explicação detalhada deste indicador.</p>
+        </div>
       </div>
 
       <img

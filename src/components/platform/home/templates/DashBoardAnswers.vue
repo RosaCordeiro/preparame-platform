@@ -453,6 +453,8 @@
         :welcomed-general="welcomedGeneral"
         :termination-general="terminationGeneral"
         :labor-issues-general="laborIssuesGeneral"
+        :ex-employee-evaluation-company="exEmployeeEvaluationCompany"
+        :ex-employee-evaluation-general="exEmployeeEvaluationGeneral"
         :remove-percent="removePercent"
         :expanded-metric-key="expandedMetricKey"
         :metric-timelines="metricTimelines"
@@ -474,6 +476,8 @@
         :welcomed-general="welcomedGeneral"
         :termination-general="terminationGeneral"
         :labor-issues-general="laborIssuesGeneral"
+        :ex-employee-evaluation-company="exEmployeeEvaluationCompany"
+        :ex-employee-evaluation-general="exEmployeeEvaluationGeneral"
         :remove-percent="removePercent"
         :expanded-metric-key="expandedMetricKey"
         :metric-timelines="metricTimelines"
@@ -844,6 +848,8 @@ import {
   getTimelineSeriesLabel,
   omitPeriod,
   summarizeActiveFilters,
+  comparePeriods,
+  normalizeTimelineAxis,
 } from "../../../../utils/rhMetricDisplay";
 
 export default {
@@ -920,6 +926,8 @@ export default {
       metricTimelines: {},
       timelineLoading: false,
       loadRequestId: 0,
+      exEmployeeEvaluationCompany: NaN,
+      exEmployeeEvaluationGeneral: NaN,
     };
   },
   props: {
@@ -1768,6 +1776,7 @@ export default {
         laborRisk: source.laborRisk,
         brandRisk: source.brandRisk,
         realocateds: source.realocateds,
+        socialImpactReduction: source.realocateds,
         welcomed: source.welcomed,
         realocatedCount: source.realocatedCount,
         termination: source.termination,
@@ -1797,12 +1806,115 @@ export default {
 
       return this.removePercent(raw);
     },
+    async loadExEmployeeEvaluation() {
+      if (!this.companyId || this.companyId === "null") {
+        return;
+      }
+
+      try {
+        const data = await filterCrud(
+          [
+            {
+              name: "companyId",
+              model: this.companyId,
+            },
+          ],
+          "reports/exEmployeeEvaluation"
+        );
+
+        this.exEmployeeEvaluationCompany =
+          data && data.company != null ? data.company : NaN;
+        this.exEmployeeEvaluationGeneral =
+          data && data.general != null ? data.general : NaN;
+
+        const normalized = normalizeTimelineAxis({
+          rawPeriods: (data && data.rawPeriods) || [],
+          categories: (data && data.categories) || [],
+          series: [
+            {
+              name: "Sua Empresa",
+              data: applyTimelineSeriesFill(
+                "exEmployeeEvaluation",
+                (data && data.companySeries) || []
+              ),
+            },
+            {
+              name: "Média Geral",
+              data: applyTimelineSeriesFill(
+                "exEmployeeEvaluation",
+                (data && data.generalSeries) || []
+              ),
+            },
+          ],
+        });
+
+        this.$set(this.metricTimelines, "exEmployeeEvaluation", normalized);
+      } catch (error) {
+        this.exEmployeeEvaluationCompany = NaN;
+        this.exEmployeeEvaluationGeneral = NaN;
+      }
+    },
+    async loadRealocationTimeline(metricKey) {
+      this.timelineLoading = true;
+
+      try {
+        const data = await filterCrud(
+          [
+            {
+              name: "companyId",
+              model: this.companyId,
+            },
+          ],
+          "reports/realocationTimeline"
+        );
+
+        const normalized = normalizeTimelineAxis({
+          rawPeriods: (data && data.rawPeriods) || [],
+          categories: (data && data.categories) || [],
+          series: [
+            {
+              name: "Sua Empresa",
+              data: (data && data.company) || [],
+            },
+            {
+              name: "Média Geral",
+              data: (data && data.general) || [],
+            },
+          ],
+        });
+
+        this.$set(this.metricTimelines, metricKey, normalized);
+      } finally {
+        this.timelineLoading = false;
+      }
+    },
     async loadMetricTimeline(metricKey) {
-      const periods = (this.parameters.period || []).slice();
+      if (
+        metricKey === "socialImpactReduction" ||
+        metricKey === "realocateds"
+      ) {
+        await this.loadRealocationTimeline(metricKey);
+        return;
+      }
+
+      if (metricKey === "exEmployeeEvaluation") {
+        this.timelineLoading = true;
+        try {
+          await this.loadExEmployeeEvaluation();
+        } finally {
+          this.timelineLoading = false;
+        }
+        return;
+      }
+
+      const periods = (this.parameters.period || [])
+        .slice()
+        .sort(comparePeriods);
 
       if (!periods.length) {
         this.$set(this.metricTimelines, metricKey, {
           categories: [],
+          rawPeriods: [],
           series: [],
         });
         return;
@@ -1853,11 +1965,13 @@ export default {
           ),
         });
 
-        this.$set(this.metricTimelines, metricKey, {
+        const normalized = normalizeTimelineAxis({
+          rawPeriods: periods.map((period) => period),
           categories: periods.map((period) => formatPeriodAxisLabel(period)),
-          rawPeriods: periods,
           series,
         });
+
+        this.$set(this.metricTimelines, metricKey, normalized);
       } finally {
         this.timelineLoading = false;
       }
@@ -2058,6 +2172,10 @@ export default {
         this.compareResults = reports.map((report, index) =>
           this.extractCompareResult(report, filterSets[index].label)
         );
+
+        if (this.isRhVariant) {
+          await this.loadExEmployeeEvaluation();
+        }
 
         if (this.expandedMetricKey) {
           await this.loadMetricTimeline(this.expandedMetricKey);

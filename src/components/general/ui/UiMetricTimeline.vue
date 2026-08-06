@@ -14,14 +14,14 @@
     </div>
 
     <div v-else-if="!hasData" class="rh-metric-timeline__empty">
-      Selecione períodos disponíveis nos filtros para visualizar a linha do tempo.
+      {{ emptyMessage }}
     </div>
 
     <ChartApex
       v-else
       type="line"
       height="280"
-      :series="series"
+      :series="normalized.series"
       :options="chartOptions"
     />
   </div>
@@ -29,6 +29,7 @@
 
 <script>
 import ChartApex from "../charts/ChartApex.vue";
+import { normalizeTimelineAxis } from "../../../utils/rhMetricDisplay";
 
 export default {
   components: {
@@ -36,6 +37,10 @@ export default {
   },
   props: {
     categories: {
+      type: Array,
+      default: () => [],
+    },
+    rawPeriods: {
       type: Array,
       default: () => [],
     },
@@ -59,18 +64,35 @@ export default {
       type: Number,
       default: 2,
     },
+    emptyMessage: {
+      type: String,
+      default:
+        "Não há períodos suficientes para montar a evolução deste indicador.",
+    },
   },
   computed: {
+    normalized() {
+      return normalizeTimelineAxis({
+        rawPeriods: this.rawPeriods,
+        categories: this.categories,
+        series: this.series,
+      });
+    },
     insufficientPeriods() {
-      return this.categories.length > 0 && this.categories.length < this.minPeriods;
+      return (
+        this.normalized.categories.length > 0 &&
+        this.normalized.categories.length < this.minPeriods
+      );
     },
     insufficientPeriodsMessage() {
-      return `São necessários pelo menos ${this.minPeriods} meses de demissão cadastrados para exibir a evolução. O filtro de período do painel não limita este gráfico — ele mostra todos os meses disponíveis.`;
+      return `São necessários pelo menos ${this.minPeriods} meses para exibir a evolução. O eixo segue ordem cronológica (YYYY-MM).`;
     },
     hasData() {
       return (
-        this.categories.length >= this.minPeriods &&
-        this.series.some((item) => item.data.length > 0)
+        this.normalized.categories.length >= this.minPeriods &&
+        this.normalized.series.some(
+          (item) => item.data && item.data.length > 0
+        )
       );
     },
     chartOptions() {
@@ -91,8 +113,12 @@ export default {
           enabled: false,
         },
         xaxis: {
-          categories: this.categories,
+          type: "category",
+          categories: this.normalized.categories,
           labels: {
+            rotate: -45,
+            rotateAlways: this.normalized.categories.length > 6,
+            hideOverlappingLabels: true,
             style: {
               colors: "#667998",
               fontSize: "11px",
