@@ -1562,6 +1562,8 @@ export default {
         id: `filter-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         label,
         period: null,
+        periodStart: null,
+        periodEnd: null,
         unity: null,
         area: null,
         role: null,
@@ -1664,6 +1666,20 @@ export default {
         },
       ];
 
+      if (this.hasFilterValue(filterSet.periodStart)) {
+        filters.push({
+          name: "periodStart",
+          model: filterSet.periodStart,
+        });
+      }
+
+      if (this.hasFilterValue(filterSet.periodEnd)) {
+        filters.push({
+          name: "periodEnd",
+          model: filterSet.periodEnd,
+        });
+      }
+
       const fields = [
         ["area", filterSet.area],
         ["role", filterSet.role],
@@ -1676,6 +1692,17 @@ export default {
         ["state", filterSet.state],
         ["city", filterSet.city],
       ];
+
+      // Se há intervalo de datas, não envia a lista antiga de meses.
+      if (
+        this.hasFilterValue(filterSet.periodStart) ||
+        this.hasFilterValue(filterSet.periodEnd)
+      ) {
+        const periodIndex = fields.findIndex(([name]) => name === "period");
+        if (periodIndex >= 0) {
+          fields.splice(periodIndex, 1);
+        }
+      }
 
       fields.forEach(([name, values]) => {
         const normalizedValues = this.normalizeFilterValues(values);
@@ -1868,19 +1895,25 @@ export default {
           "reports/realocationTimeline"
         );
 
+        const series = [
+          {
+            name: "Sua Empresa",
+            data: (data && data.company) || [],
+          },
+        ];
+
+        // Impacto social: evolução só da empresa logada (sem média geral).
+        if (metricKey !== "socialImpactReduction") {
+          series.push({
+            name: "Média Geral",
+            data: (data && data.general) || [],
+          });
+        }
+
         const normalized = normalizeTimelineAxis({
           rawPeriods: (data && data.rawPeriods) || [],
           categories: (data && data.categories) || [],
-          series: [
-            {
-              name: "Sua Empresa",
-              data: (data && data.company) || [],
-            },
-            {
-              name: "Média Geral",
-              data: (data && data.general) || [],
-            },
-          ],
+          series,
         });
 
         this.$set(this.metricTimelines, metricKey, normalized);
@@ -1993,6 +2026,8 @@ export default {
       return this.compareFilterSets.some((set) => {
         return [
           set.period,
+          set.periodStart,
+          set.periodEnd,
           set.unity,
           set.area,
           set.role,
@@ -2023,6 +2058,7 @@ export default {
       }
     },
     pruneFilterSet(set) {
+      // Datas livres (datepickers) não são podadas contra a lista de meses.
       this.pruneScalarFilter(set, "period", this.parameters.period);
       this.pruneScalarFilter(set, "unity", this.parameters.unity);
       this.pruneScalarFilter(set, "area", this.parameters.area);
