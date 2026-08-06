@@ -16,6 +16,8 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Added
 
+- Branch `feat/painel-executivo-riscos-impactos`: renomeia o painel RH para **Painel Executivo de Riscos e Impactos** (menu + título da página).
+- Spec/design: `docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos.md` (+ `-design.md`).
 - Branch `feat/boas-vindas-primeiro-nome`: saudações “Olá” com só o primeiro nome (RH sidebar + cards USER); util `firstNameFromFullName`.
 - Spec/design: `docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md` (+ `-design.md`).
 - Branch `feat/rh-tipografia-mais-um`: tipografia +1 nos painéis RH (`html.app-rh` / 18px) só para `COMPANY_ADMIN`.
@@ -33,11 +35,12 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Changed
 
+- Label do menu e título da rota `/platform` (COMPANY_ADMIN): **Painel de riscos e impactos** → **Painel Executivo de Riscos e Impactos**.
 - Saudações de boas-vindas (RH e ex-colaborador) exibem apenas o primeiro nome; `localStorage.userName` permanece completo.
 - Tipografia shell RH (`COMPANY_ADMIN`): base do `html` 18px via classe `app-rh` (textos em `rem` sobem um nível).
 - Open to Work: remove dashboard/filtros de relatório de recolocação da mesma rota; remove coluna Empresa; LinkedIn opcional na lista.
 - Flag de amostra insuficiente: `lessThanFive` → **`insufficientSample`**; texto de omissão unificado em **`Sem informações`** (sem `N/A` nesses fluxos).
-- **Painel de riscos e impactos** (`/platform`): deixa de exibir os 8 KPIs acima; mantém apenas os demais cards (placeholders do Painel).
+- **Painel Executivo de Riscos e Impactos** (`/platform`): deixa de exibir os 8 KPIs acima; mantém apenas os demais cards (placeholders do Painel).
 - Rótulos: **Marca** → **Risco de marca**; **Pessoas recolocadas** → **Pessoas realocadas**.
 - Docs de produto RH e `README` alinhados à nova localização dos KPIs / anonimato / OTW / segmento.
 
@@ -50,6 +53,7 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Docs / validação
 
+- VAL-01…02 (Painel Executivo de Riscos e Impactos) PASS — ver SPEC §9; `npm run lint` PASS.
 - VAL-01…03 (boas-vindas primeiro nome) PASS — ver SPEC §9.1; `npm run lint` PASS.
 - VAL-01…03 (tipografia RH +1) PASS — ver SPEC §9.1; `npm run lint` PASS.
 - V-01…V-04 (remover Google trackers) PASS — ver CORR §8.1.

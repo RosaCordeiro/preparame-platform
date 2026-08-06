@@ -10,10 +10,10 @@ O painel do RH é a área analítica do administrador da empresa após login. O 
 
 ## Onde encontrar
 
-Após login → Painel de riscos e impactos (`/platform`)
+Após login → Painel Executivo de Riscos e Impactos (`/platform`)
 
 Menu lateral:
-- Painel de riscos e impactos (`/platform`)
+- Painel Executivo de Riscos e Impactos (`/platform`)
 - Indicadores de riscos
   - Pesquisa quantitativa (`/rh/indicadores/quantitativa`)
   - Pesquisa qualitativa (`/rh/indicadores/qualitativa`)
@@ -27,7 +27,7 @@ Menu lateral:
 - Sem coluna/filtro de empresa; LinkedIn ausente exibe aviso ao clicar
 - **Não** inclui mais o dashboard de métricas de recolocação nesta tela
 
-### Painel de riscos e impactos
+### Painel Executivo de Riscos e Impactos
 - Cards complementares de impacto / placeholders “em breve” (demais indicadores do grid)
 - **Não** exibe os KPIs de e-NPS, riscos, realocação, rescisão e pendências (estes estão na Pesquisa quantitativa)
 
@@ -61,7 +61,7 @@ Gráficos e tabelas que consolidam respostas da pesquisa pós-demissão dos ex-c
 
 | Ação | Onde |
 |---|---|
-| Ver demais cards do Painel | Menu → Painel de riscos e impactos |
+| Ver demais cards do Painel | Menu → Painel Executivo de Riscos e Impactos |
 | Ver KPIs (e-NPS, riscos, realocação, etc.) | Menu → Indicadores → Pesquisa quantitativa |
 | Ver avaliação pós-demissão e sentimentos | Menu → Indicadores → Pesquisa quantitativa |
 | Ver respostas qualitativas | Menu → Indicadores → Pesquisa qualitativa |

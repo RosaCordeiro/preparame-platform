@@ -952,7 +952,7 @@ export default {
     },
     rhPageTitle() {
       if (this.rhSection === "metrics") {
-        return "Painel de riscos e impactos";
+        return "Painel Executivo de Riscos e Impactos";
       }
       if (this.rhSection === "quantitative") {
         return "Pesquisa quantitativa";

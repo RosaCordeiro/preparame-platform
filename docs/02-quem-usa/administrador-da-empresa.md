@@ -12,7 +12,7 @@ O perfil **administrador da empresa** representa o RH da organização parceira.
 
 - **Painel inicial:** após login, em `/platform` (demais cards de impacto / placeholders)
 - **Menu lateral:**
-  - Painel de riscos e impactos
+  - Painel Executivo de Riscos e Impactos
   - Indicadores de riscos → Pesquisa quantitativa / Pesquisa qualitativa
   - Contrate Open to Work, Ver Pessoas do Programa (e itens futuros)
 - **Funcionários:** acessível via gestão de ex-colaboradores vinculados
@@ -33,7 +33,7 @@ O RH navega por três visões (mesmos filtros de período/unidade):
 
 | Ação | Onde |
 |---|---|
-| Ver demais cards do Painel | Menu → Painel de riscos e impactos |
+| Ver demais cards do Painel | Menu → Painel Executivo de Riscos e Impactos |
 | Ver KPIs de risco e impacto | Menu → Indicadores → Pesquisa quantitativa |
 | Ver avaliação pós-demissão e sentimentos | Menu → Indicadores → Pesquisa quantitativa |
 | Ver respostas qualitativas | Menu → Indicadores → Pesquisa qualitativa |

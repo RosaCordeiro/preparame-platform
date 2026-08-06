@@ -31,7 +31,7 @@ flowchart TD
 - RH recebe credenciais de acesso (perfil administrador da empresa)
 
 ### 2. Primeiro acesso
-- RH faz login e acessa o **Painel de riscos e impactos** (`/platform`)
+- RH faz login e acessa o **Painel Executivo de Riscos e Impactos** (`/platform`)
 - Vê demais cards do Painel (placeholders / indicadores complementares)
 - No menu, **Indicadores de riscos** → **Pesquisa quantitativa** concentra os KPIs (e-NPS, riscos, realocação, etc.) além de pós-demissão e sentimentos
 

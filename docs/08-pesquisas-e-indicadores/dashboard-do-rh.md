@@ -14,7 +14,7 @@ Plataforma logada — perfil administrador da empresa:
 
 | Visão | Rota / menu |
 |---|---|
-| KPIs (riscos e impactos) | `/platform` — Menu → Painel de riscos e impactos |
+| KPIs (riscos e impactos) | `/platform` — Menu → Painel Executivo de Riscos e Impactos |
 | Quantitativa | `/rh/indicadores/quantitativa` — Indicadores → Pesquisa quantitativa |
 | Qualitativa | `/rh/indicadores/qualitativa` — Indicadores → Pesquisa qualitativa |
 
