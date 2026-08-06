@@ -3,7 +3,7 @@
     <q-card class="row col-12 external-user-welcome-card-container">
       <q-card-section class="col-12 row external-user-welcome-card-header">
         <div class="external-user-welcome-card-first-msg">
-          Olá, {{ userName }}, aqui no Prepara.me, orientação de carreira é pra
+          Olá, {{ firstName }}, aqui no Prepara.me, orientação de carreira é pra
           todo mundo!
         </div>
 
@@ -36,6 +36,7 @@
 
 <script>
 import { saveCrud } from "../../../general/crud/utils/saveCrud.js";
+import { firstNameFromFullName } from "src/utils/firstName";
 
 export default {
   props: ["products", "interviewSimulator", "isRetirementPlan"],
@@ -48,6 +49,11 @@ export default {
       laborRiskAlert: false,
       simulator: false,
     };
+  },
+  computed: {
+    firstName() {
+      return firstNameFromFullName(this.userName);
+    },
   },
   created() {
     this.userAvatarUrl = localStorage.getItem("userAvatarUrl");
