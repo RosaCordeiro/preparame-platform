@@ -844,6 +844,8 @@ import {
   getTimelineSeriesLabel,
   omitPeriod,
   summarizeActiveFilters,
+  comparePeriods,
+  normalizeTimelineAxis,
 } from "../../../../utils/rhMetricDisplay";
 
 export default {
@@ -1812,24 +1814,22 @@ export default {
           "reports/realocationTimeline"
         );
 
-        const categories = (data && data.categories) || [];
-        const companySeries = (data && data.company) || [];
-        const generalSeries = (data && data.general) || [];
-
-        this.$set(this.metricTimelines, metricKey, {
-          categories,
+        const normalized = normalizeTimelineAxis({
           rawPeriods: (data && data.rawPeriods) || [],
+          categories: (data && data.categories) || [],
           series: [
             {
               name: "Sua Empresa",
-              data: companySeries,
+              data: (data && data.company) || [],
             },
             {
               name: "Média Geral",
-              data: generalSeries,
+              data: (data && data.general) || [],
             },
           ],
         });
+
+        this.$set(this.metricTimelines, metricKey, normalized);
       } finally {
         this.timelineLoading = false;
       }
@@ -1845,11 +1845,12 @@ export default {
 
       const periods = (this.parameters.period || [])
         .slice()
-        .sort((a, b) => String(a).localeCompare(String(b)));
+        .sort(comparePeriods);
 
       if (!periods.length) {
         this.$set(this.metricTimelines, metricKey, {
           categories: [],
+          rawPeriods: [],
           series: [],
         });
         return;
@@ -1900,11 +1901,13 @@ export default {
           ),
         });
 
-        this.$set(this.metricTimelines, metricKey, {
+        const normalized = normalizeTimelineAxis({
+          rawPeriods: periods.map((period) => period),
           categories: periods.map((period) => formatPeriodAxisLabel(period)),
-          rawPeriods: periods,
           series,
         });
+
+        this.$set(this.metricTimelines, metricKey, normalized);
       } finally {
         this.timelineLoading = false;
       }

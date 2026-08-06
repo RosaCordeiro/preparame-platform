@@ -24,6 +24,7 @@
           <UiMetricTimeline
             v-if="!metric.comingSoon && expandedMetricKey === metric.key"
             :categories="timelineCategories"
+            :raw-periods="timelineRawPeriods"
             :series="timelineSeriesFor(metric.key)"
             :loading="timelineLoading"
             :value-suffix="metric.timelineSuffix || ''"
@@ -201,6 +202,11 @@ export default {
       const timeline = this.metricTimelines[this.expandedMetricKey];
 
       return timeline && timeline.categories ? timeline.categories : [];
+    },
+    timelineRawPeriods() {
+      const timeline = this.metricTimelines[this.expandedMetricKey];
+
+      return timeline && timeline.rawPeriods ? timeline.rawPeriods : [];
     },
     kpiCards() {
       return [

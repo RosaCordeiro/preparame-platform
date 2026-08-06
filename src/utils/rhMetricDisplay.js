@@ -66,21 +66,187 @@ const MONTH_SHORT = {
   dezembro: "Dez",
 };
 
+const MONTH_NUMBER = {
+  janeiro: 1,
+  fevereiro: 2,
+  março: 3,
+  marco: 3,
+  abril: 4,
+  maio: 5,
+  junho: 6,
+  julho: 7,
+  agosto: 8,
+  setembro: 9,
+  outubro: 10,
+  novembro: 11,
+  dezembro: 12,
+  jan: 1,
+  fev: 2,
+  mar: 3,
+  abr: 4,
+  mai: 5,
+  jun: 6,
+  jul: 7,
+  ago: 8,
+  set: 9,
+  out: 10,
+  nov: 11,
+  dez: 12,
+};
+
+const MONTH_LABELS = [
+  "Jan",
+  "Fev",
+  "Mar",
+  "Abr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Set",
+  "Out",
+  "Nov",
+  "Dez",
+];
+
+/**
+ * Chave canônica YYYY-MM para ordenação cronológica de períodos de timeline.
+ * Aceita: "2026-07", "julho de 2026", "Jul/26".
+ */
+export function periodSortKey(periodText) {
+  if (periodText === null || periodText === undefined || periodText === "") {
+    return "";
+  }
+
+  const raw = String(periodText).trim();
+  const iso = raw.match(/^(\d{4})-(\d{2})$/);
+
+  if (iso) {
+    return `${iso[1]}-${iso[2]}`;
+  }
+
+  const longPt = raw.match(/^([A-Za-zÀ-ÿ]+)\s+de\s+(\d{4})$/i);
+
+  if (longPt) {
+    const month = MONTH_NUMBER[longPt[1].toLowerCase()];
+    if (month) {
+      return `${longPt[2]}-${String(month).padStart(2, "0")}`;
+    }
+  }
+
+  const short = raw.match(/^([A-Za-zÀ-ÿ]{3})\/(\d{2}|\d{4})$/i);
+
+  if (short) {
+    const month = MONTH_NUMBER[short[1].toLowerCase()];
+    if (month) {
+      const year =
+        short[2].length === 2 ? `20${short[2]}` : short[2];
+      return `${year}-${String(month).padStart(2, "0")}`;
+    }
+  }
+
+  return raw;
+}
+
+export function comparePeriods(a, b) {
+  return periodSortKey(a).localeCompare(periodSortKey(b));
+}
+
+export function formatMonthKeyLabel(monthKey) {
+  const key = periodSortKey(monthKey);
+  const match = key.match(/^(\d{4})-(\d{2})$/);
+
+  if (!match) {
+    return "";
+  }
+
+  const monthIndex = Number(match[2]) - 1;
+  const label = MONTH_LABELS[monthIndex] || match[2];
+  return `${label}/${match[1].slice(-2)}`;
+}
+
 export function formatPeriodAxisLabel(periodText) {
   if (!periodText) {
     return "";
   }
 
-  const match = String(periodText).match(/^(\w+)\s+de\s+(\d{4})$/i);
+  const fromKey = formatMonthKeyLabel(periodText);
+  if (fromKey) {
+    return fromKey;
+  }
+
+  const match = String(periodText).match(/^([A-Za-zÀ-ÿ]+)\s+de\s+(\d{4})$/i);
 
   if (!match) {
-    return periodText;
+    return String(periodText);
   }
 
   const month = MONTH_SHORT[match[1].toLowerCase()] || match[1].slice(0, 3);
   const year = match[2].slice(-2);
 
   return `${month}/${year}`;
+}
+
+/**
+ * Padroniza timeline RH: ordena cronologicamente e alinha categorias + séries.
+ * rawPeriods preferencialmente em YYYY-MM.
+ */
+export function normalizeTimelineAxis({
+  rawPeriods = [],
+  categories = [],
+  series = [],
+} = {}) {
+  const length = Math.max(
+    rawPeriods.length,
+    categories.length,
+    ...series.map((item) => (item && item.data ? item.data.length : 0)),
+    0
+  );
+
+  if (!length) {
+    return {
+      rawPeriods: [],
+      categories: [],
+      series: series.map((item) => ({
+        ...item,
+        data: [],
+      })),
+    };
+  }
+
+  const points = [];
+
+  for (let index = 0; index < length; index += 1) {
+    const raw =
+      rawPeriods[index] ||
+      categories[index] ||
+      "";
+    const sortKey = periodSortKey(raw) || String(index).padStart(4, "0");
+
+    points.push({
+      index,
+      sortKey,
+      rawPeriod: rawPeriods[index] || sortKey,
+      category:
+        categories[index] ||
+        formatMonthKeyLabel(rawPeriods[index] || sortKey) ||
+        String(raw),
+    });
+  }
+
+  points.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+
+  return {
+    rawPeriods: points.map((point) => point.rawPeriod),
+    categories: points.map((point) => point.category),
+    series: series.map((item) => ({
+      name: item.name,
+      data: points.map((point) => {
+        const value = item.data ? item.data[point.index] : null;
+        return value === undefined ? null : value;
+      }),
+    })),
+  };
 }
 
 export function getTimelineSeriesLabel(set, index, compareFilterSets) {

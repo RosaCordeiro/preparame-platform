@@ -40,6 +40,16 @@ Diga: *"Nova demanda: [descrição]"* — conduz brainstorm → plan → design 
 - Axios → API externa (`process.env.API` / `baseApiUrl`)
 - ESLint, SCSS, Webpack via Quasar CLI v1
 
+## Padrão — timelines / gráficos de evolução (RH)
+
+Para **qualquer** gráfico de evolução mensal no painel RH:
+
+1. Sempre enviar `rawPeriods` em **`YYYY-MM`** (chave canônica) + `categories` legíveis (`Jul/26`)
+2. Montar/ordenar com `normalizeTimelineAxis` / `comparePeriods` / `periodSortKey` em `src/utils/rhMetricDisplay.js` — **nunca** `localeCompare` direto em “julho de 2026”
+3. Renderizar via `UiMetricTimeline` (ele reordena no cliente como rede de segurança)
+4. Séries alinhadas ao mesmo índice de `rawPeriods` (empresa + média geral)
+5. Preferir endpoint dedicado quando a métrica não for NPS por mês de demissão (ex.: `reports/realocationTimeline` por data de recolocação)
+
 ## Agentes especializados (referência — roteados automaticamente)
 
 O orquestrador escolhe um destes conforme a tarefa. Só consulte manualmente se quiser entender o escopo.
