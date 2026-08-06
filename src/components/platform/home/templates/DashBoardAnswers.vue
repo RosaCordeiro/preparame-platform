@@ -20,19 +20,21 @@
         </span>
       </div>
 
-      <RhCompareFilters
-        v-if="isRhVariant"
-        :compare-filter-sets.sync="compareFilterSets"
-        :disable-filters="disableFilters"
-        :parameters="parameters"
-        :dismissal-type-options="dismissalTypeOptions"
-        :gender-options="genderOptions"
-        :etnia-options="etniaOptions"
-        :get-option-label="getOptionLabel"
-        @change="loadNpsSurveyAnswers"
-        @add-set="addCompareFilterSet"
-        @remove-set="removeCompareFilterSet"
-      />
+      <template v-if="isRhVariant">
+        <RhCompareFilters
+          v-if="!showRhMetrics"
+          :compare-filter-sets.sync="compareFilterSets"
+          :disable-filters="disableFilters"
+          :parameters="parameters"
+          :dismissal-type-options="dismissalTypeOptions"
+          :gender-options="genderOptions"
+          :etnia-options="etniaOptions"
+          :get-option-label="getOptionLabel"
+          @change="loadNpsSurveyAnswers"
+          @add-set="addCompareFilterSet"
+          @remove-set="removeCompareFilterSet"
+        />
+      </template>
 
       <template v-else>
       <div class="box__button-actions">

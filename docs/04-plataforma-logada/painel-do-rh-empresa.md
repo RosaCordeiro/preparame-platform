@@ -28,6 +28,8 @@ Menu lateral:
 - **Não** inclui mais o dashboard de métricas de recolocação nesta tela
 
 ### Painel Executivo de Riscos e Impactos
+
+> **Nota (temporário):** os filtros da tela estão ocultos enquanto o painel não tiver dados.
 - Cards complementares de impacto / placeholders “em breve” (demais indicadores do grid)
 - **Não** exibe os KPIs de e-NPS, riscos, realocação, rescisão e pendências (estes estão na Pesquisa quantitativa)
 

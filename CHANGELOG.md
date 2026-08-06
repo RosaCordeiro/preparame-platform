@@ -35,6 +35,7 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Changed
 
+- **Painel Executivo de Riscos e Impactos** (`/platform`): filtros comparativos (`RhCompareFilters`) ocultos temporariamente (sem dados no painel); permanecem nas telas de Indicadores.
 - Label do menu e título da rota `/platform` (COMPANY_ADMIN): **Painel de riscos e impactos** → **Painel Executivo de Riscos e Impactos**.
 - Saudações de boas-vindas (RH e ex-colaborador) exibem apenas o primeiro nome; `localStorage.userName` permanece completo.
 - Tipografia shell RH (`COMPANY_ADMIN`): base do `html` 18px via classe `app-rh` (textos em `rem` sobem um nível).
