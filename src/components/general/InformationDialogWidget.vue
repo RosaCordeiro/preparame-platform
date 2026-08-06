@@ -219,11 +219,17 @@
           </ul>
         </div>
 
-        <div v-else-if="id === 'Gestão de novos conflitos'">
-          <span>Gestão de novos conflitos</span>
+        <div
+          v-else-if="
+            id === 'Gestão de novos conflitos' ||
+            id === 'Gestão de Conflitos e Dúvidas em Andamento'
+          "
+        >
+          <span>Gestão de Conflitos e Dúvidas em Andamento</span>
           <p>
-            Acompanha conflitos emergentes relacionados ao processo de demissão
-            responsável, para apoiar ações preventivas e de mediação.
+            Acompanha conflitos e dúvidas em andamento relacionados ao processo
+            de demissão responsável, para apoiar ações preventivas e de
+            mediação.
           </p>
         </div>
 
@@ -287,14 +293,6 @@
           <p>
             Exemplo: 60% na taxa de recolocação é igual a −60% de impacto
             negativo social.
-          </p>
-        </div>
-
-        <div v-else-if="id === 'Dúvidas resolvidas'">
-          <span>Dúvidas resolvidas</span>
-          <p>
-            Percentual de dúvidas reportadas pelos ex-colaboradores que foram
-            solucionadas pela equipe do programa.
           </p>
         </div>
 

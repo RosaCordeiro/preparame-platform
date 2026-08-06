@@ -49,8 +49,8 @@ import {
 const COMING_SOON_CARDS = [
   {
     key: "newConflictManagement",
-    title: "Gestão de novos conflitos",
-    subtitle: "Acompanhamento de conflitos emergentes",
+    title: "Gestão de Conflitos e Dúvidas em Andamento",
+    subtitle: "Acompanhamento de conflitos e dúvidas em andamento",
   },
   {
     key: "newWhistleblowingChannel",
@@ -71,11 +71,6 @@ const COMING_SOON_CARDS = [
     key: "psychosocialImpactReduction",
     title: "Redução de Impacto Negativo na Saúde Mental com o PDR",
     subtitle: "Evolução do impacto negativo na saúde mental no PDR",
-  },
-  {
-    key: "resolvedDoubts",
-    title: "Dúvidas resolvidas",
-    subtitle: "Percentual de dúvidas solucionadas",
   },
 ];
 
@@ -396,34 +391,20 @@ export default {
         },
       };
 
-      // Ordem: ... saúde mental → impacto social → dúvidas → avaliação
+      // Ordem: ... saúde mental → impacto social → avaliação
       const psychosocialIdx = comingSoon.findIndex(
         (card) => card.key === "psychosocialImpactReduction"
-      );
-      const resolvedIdx = comingSoon.findIndex(
-        (card) => card.key === "resolvedDoubts"
       );
 
       if (psychosocialIdx === -1) {
         return [socialImpactCard, ...comingSoon, evaluationCard];
       }
 
-      const beforeSocial = comingSoon.slice(0, psychosocialIdx + 1);
-      const afterSocial =
-        resolvedIdx > psychosocialIdx
-          ? comingSoon.slice(psychosocialIdx + 1, resolvedIdx + 1)
-          : comingSoon.slice(psychosocialIdx + 1);
-      const rest =
-        resolvedIdx > psychosocialIdx
-          ? comingSoon.slice(resolvedIdx + 1)
-          : [];
-
       return [
-        ...beforeSocial,
+        ...comingSoon.slice(0, psychosocialIdx + 1),
         socialImpactCard,
-        ...afterSocial,
+        ...comingSoon.slice(psychosocialIdx + 1),
         evaluationCard,
-        ...rest,
       ];
     },
     quantitativeComingSoonCards() {
