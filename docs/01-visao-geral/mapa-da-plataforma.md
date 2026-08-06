@@ -63,7 +63,7 @@ Um inventário completo das seções, páginas e funcionalidades visíveis ao us
 
 | Área | Caminho | Descrição |
 |---|---|---|
-| Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
+| Painel Executivo de Riscos e Impactos | `/platform` | Demais cards de impacto (placeholders) |
 | Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta) |
 | Funcionários / programa | `/program-people` | Pessoas do programa de recolocação |

@@ -39,7 +39,7 @@ Hoje o script é placeholder (`No test specified`). Validação de features segu
 
 | Menu | Rota | Conteúdo |
 |------|------|----------|
-| Painel de riscos e impactos | `/platform` | Demais cards de impacto (placeholders) |
+| Painel Executivo de Riscos e Impactos | `/platform` | Demais cards de impacto (placeholders) |
 | Indicadores → Pesquisa quantitativa | `/rh/indicadores/quantitativa` | KPIs (e-NPS, riscos, realocação, etc.) + pós-demissão / sentimentos |
 | Indicadores → Pesquisa qualitativa | `/rh/indicadores/qualitativa` | Respostas textuais (consulta; cadastro só no Admin) |
 | Contrate Open to Work | `/replacementsReport` | Lista OTW (outras empresas); filtros cargo/área/cidade/estado/segmento/subsegmento |
@@ -93,6 +93,8 @@ CORR: [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](do
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| SPEC Painel Executivo | [`docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos.md`](docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos.md) |
+| Design Painel Executivo | [`docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos-design.md`](docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos-design.md) |
 | SPEC boas-vindas primeiro nome | [`docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md`](docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md) |
 | Design boas-vindas primeiro nome | [`docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome-design.md`](docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome-design.md) |
 | SPEC tipografia RH +1 | [`docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um.md`](docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um.md) |

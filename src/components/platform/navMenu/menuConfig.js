@@ -144,7 +144,7 @@ export const menuByUserType = {
     items: [
       {
         icon: "mdi-view-dashboard-outline",
-        label: "Painel de riscos e impactos",
+        label: "Painel Executivo de Riscos e Impactos",
         url: "platform",
       },
       {
