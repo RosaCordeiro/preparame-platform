@@ -35,7 +35,7 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Changed
 
-- **Painel Executivo:** ícone de informação (i) também nos cards “Em breve”; título **Redução de impacto negativo social** com texto explicando a relação com a taxa de recolocação.
+- **Painel Executivo:** ícone de informação (i) também nos cards “Em breve”; **Redução de impacto negativo social** preenchida com a taxa de recolocação do programa; renomes PDR nos cards de conflitos/saúde mental/avaliação.
 - **Painel Executivo de Riscos e Impactos** (`/platform`): filtros comparativos (`RhCompareFilters`) ocultos temporariamente (sem dados no painel); permanecem nas telas de Indicadores.
 - Label do menu e título da rota `/platform` (COMPANY_ADMIN): **Painel de riscos e impactos** → **Painel Executivo de Riscos e Impactos**.
 - Saudações de boas-vindas (RH e ex-colaborador) exibem apenas o primeiro nome; `localStorage.userName` permanece completo.

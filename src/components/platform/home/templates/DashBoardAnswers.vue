@@ -1768,6 +1768,7 @@ export default {
         laborRisk: source.laborRisk,
         brandRisk: source.brandRisk,
         realocateds: source.realocateds,
+        socialImpactReduction: source.realocateds,
         welcomed: source.welcomed,
         realocatedCount: source.realocatedCount,
         termination: source.termination,

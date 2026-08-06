@@ -58,8 +58,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "laborRiskReduction",
-    title: "Redução de riscos trabalhistas",
-    subtitle: "Evolução da exposição trabalhista",
+    title: "Redução de Conflitos Críticos e Dúvidas com o PDR",
+    subtitle: "Evolução de conflitos críticos e dúvidas no PDR",
   },
   {
     key: "reputationalImpactReduction",
@@ -68,13 +68,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "psychosocialImpactReduction",
-    title: "Redução de impacto psicossocial",
-    subtitle: "Evolução do impacto psicossocial",
-  },
-  {
-    key: "socialImpactReduction",
-    title: "Redução de impacto negativo social",
-    subtitle: "Evolução do impacto negativo social",
+    title: "Redução de Impacto Negativo na Saúde Mental com o PDR",
+    subtitle: "Evolução do impacto negativo na saúde mental no PDR",
   },
   {
     key: "resolvedDoubts",
@@ -83,8 +78,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "exEmployeeEvaluation",
-    title: "Avaliação dos ex-colaboradores",
-    subtitle: "Avaliação geral dos ex-colaboradores",
+    title: "Avaliação dos ex-colaboradores do PDR",
+    subtitle: "Avaliação geral dos ex-colaboradores do PDR",
   },
 ];
 
@@ -347,7 +342,42 @@ export default {
       ];
     },
     panelRemainderCards() {
-      return mapComingSoonCards(COMING_SOON_CARDS);
+      const comingSoon = mapComingSoonCards(COMING_SOON_CARDS);
+      const socialImpactCard = {
+        key: "socialImpactReduction",
+        component: "RhMetricCard",
+        comingSoon: false,
+        infoLabel: "Redução de impacto negativo social",
+        timelineSubtitle: "Redução de impacto negativo social por período",
+        timelineSuffix: "%",
+        props: {
+          title: "Redução de impacto negativo social",
+          subtitle:
+            "Taxa de recolocação das pessoas do programa (impacto negativo social)",
+          companyValue: this.metricValue("realocateds"),
+          generalValue: this.parseGeneralValue(this.realocatedsGeneral),
+          compareRows: this.compareRowsFor("realocateds"),
+          minValue: 0,
+          maxValue: 100,
+          intersectionValue: 50,
+          suffix: "%",
+          insufficientSample: this.primaryInsufficient,
+        },
+      };
+
+      // Mantém a ordem visual: após saúde mental, antes de dúvidas resolvidas.
+      const psychosocialIdx = comingSoon.findIndex(
+        (card) => card.key === "psychosocialImpactReduction"
+      );
+      if (psychosocialIdx === -1) {
+        return [socialImpactCard, ...comingSoon];
+      }
+
+      return [
+        ...comingSoon.slice(0, psychosocialIdx + 1),
+        socialImpactCard,
+        ...comingSoon.slice(psychosocialIdx + 1),
+      ];
     },
     quantitativeComingSoonCards() {
       return mapComingSoonCards(QUANTITATIVE_COMING_SOON_CARDS);

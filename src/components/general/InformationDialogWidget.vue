@@ -235,12 +235,17 @@
           </p>
         </div>
 
-        <div v-else-if="id === 'Redução de riscos trabalhistas'">
-          <span>Redução de riscos trabalhistas</span>
+        <div
+          v-else-if="
+            id === 'Redução de riscos trabalhistas' ||
+            id === 'Redução de Conflitos Críticos e Dúvidas com o PDR'
+          "
+        >
+          <span>Redução de Conflitos Críticos e Dúvidas com o PDR</span>
           <p>
-            Mostra a evolução da exposição a riscos trabalhistas ao longo do
-            tempo, permitindo acompanhar se as ações do programa estão
-            diminuindo essa exposição.
+            Acompanha a evolução de conflitos críticos e dúvidas relacionadas ao
+            Programa de Demissão Responsável (PDR), apoiando ações preventivas e
+            de mediação.
           </p>
         </div>
 
@@ -252,12 +257,18 @@
           </p>
         </div>
 
-        <div v-else-if="id === 'Redução de impacto psicossocial'">
-          <span>Redução de impacto psicossocial</span>
+        <div
+          v-else-if="
+            id === 'Redução de impacto psicossocial' ||
+            id ===
+              'Redução de Impacto Negativo na Saúde Mental com o PDR'
+          "
+        >
+          <span>Redução de Impacto Negativo na Saúde Mental com o PDR</span>
           <p>
-            Indica a evolução do impacto psicossocial sobre ex-colaboradores e
-            o ambiente organizacional, apoiando o monitoramento de bem-estar e
-            saúde mental no processo.
+            Indica a evolução do impacto negativo na saúde mental no contexto do
+            Programa de Demissão Responsável (PDR), apoiando o monitoramento de
+            bem-estar no processo.
           </p>
         </div>
 
@@ -269,8 +280,9 @@
         >
           <span>Redução de impacto negativo social</span>
           <p>
-            Relaciona a taxa de recolocação à redução do impacto negativo
-            social gerado pela demissão.
+            Usa a taxa de recolocação das pessoas do programa da empresa como
+            indicador de redução do impacto negativo social gerado pela
+            demissão.
           </p>
           <p>
             Exemplo: 60% na taxa de recolocação é igual a −60% de impacto
@@ -286,11 +298,17 @@
           </p>
         </div>
 
-        <div v-else-if="id === 'Avaliação dos ex-colaboradores'">
-          <span>Avaliação dos ex-colaboradores</span>
+        <div
+          v-else-if="
+            id === 'Avaliação dos ex-colaboradores' ||
+            id === 'Avaliação dos ex-colaboradores do PDR'
+          "
+        >
+          <span>Avaliação dos ex-colaboradores do PDR</span>
           <p>
             Avaliação geral dos ex-colaboradores sobre a experiência no
-            processo de demissão responsável e no acompanhamento da Prepara.me.
+            Programa de Demissão Responsável (PDR) e no acompanhamento da
+            Prepara.me.
           </p>
         </div>
 
