@@ -1799,7 +1799,9 @@ export default {
       return this.removePercent(raw);
     },
     async loadMetricTimeline(metricKey) {
-      const periods = (this.parameters.period || []).slice();
+      const periods = (this.parameters.period || [])
+        .slice()
+        .sort((a, b) => String(a).localeCompare(String(b)));
 
       if (!periods.length) {
         this.$set(this.metricTimelines, metricKey, {
