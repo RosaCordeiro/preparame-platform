@@ -77,11 +77,6 @@ const COMING_SOON_CARDS = [
     title: "Dúvidas resolvidas",
     subtitle: "Percentual de dúvidas solucionadas",
   },
-  {
-    key: "exEmployeeEvaluation",
-    title: "Avaliação dos ex-colaboradores do PDR",
-    subtitle: "Avaliação geral dos ex-colaboradores do PDR",
-  },
 ];
 
 /** Placeholders que antes ficavam em DashBoardRhQuantitativeCards (mesmo grid dos KPIs). */
@@ -165,6 +160,14 @@ export default {
     removePercent: {
       type: Function,
       required: true,
+    },
+    exEmployeeEvaluationCompany: {
+      type: [Number, String],
+      default: NaN,
+    },
+    exEmployeeEvaluationGeneral: {
+      type: [Number, String],
+      default: NaN,
     },
     expandedMetricKey: {
       type: String,
@@ -354,7 +357,8 @@ export default {
         component: "RhMetricCard",
         comingSoon: false,
         infoLabel: "Redução de impacto negativo social",
-          timelineSubtitle: "Taxa acumulada de recolocação por mês (data da recolocação)",
+        timelineSubtitle:
+          "Taxa acumulada de recolocação por mês (data da recolocação)",
         timelineSuffix: "%",
         props: {
           title: "Redução de impacto negativo social",
@@ -370,19 +374,56 @@ export default {
           insufficientSample: this.primaryInsufficient,
         },
       };
+      const evaluationCard = {
+        key: "exEmployeeEvaluation",
+        component: "RhMetricCard",
+        comingSoon: false,
+        infoLabel: "Avaliação dos ex-colaboradores do PDR",
+        timelineSubtitle:
+          "Nota média das conversas por mês (data do atendimento)",
+        props: {
+          title: "Avaliação dos ex-colaboradores do PDR",
+          subtitle: "Nota média das conversas do programa",
+          companyValue: this.parseGeneralValue(
+            this.exEmployeeEvaluationCompany
+          ),
+          generalValue: this.parseGeneralValue(
+            this.exEmployeeEvaluationGeneral
+          ),
+          minValue: 0,
+          maxValue: 5,
+          intersectionValue: 4,
+        },
+      };
 
-      // Mantém a ordem visual: após saúde mental, antes de dúvidas resolvidas.
+      // Ordem: ... saúde mental → impacto social → dúvidas → avaliação
       const psychosocialIdx = comingSoon.findIndex(
         (card) => card.key === "psychosocialImpactReduction"
       );
+      const resolvedIdx = comingSoon.findIndex(
+        (card) => card.key === "resolvedDoubts"
+      );
+
       if (psychosocialIdx === -1) {
-        return [socialImpactCard, ...comingSoon];
+        return [socialImpactCard, ...comingSoon, evaluationCard];
       }
 
+      const beforeSocial = comingSoon.slice(0, psychosocialIdx + 1);
+      const afterSocial =
+        resolvedIdx > psychosocialIdx
+          ? comingSoon.slice(psychosocialIdx + 1, resolvedIdx + 1)
+          : comingSoon.slice(psychosocialIdx + 1);
+      const rest =
+        resolvedIdx > psychosocialIdx
+          ? comingSoon.slice(resolvedIdx + 1)
+          : [];
+
       return [
-        ...comingSoon.slice(0, psychosocialIdx + 1),
+        ...beforeSocial,
         socialImpactCard,
-        ...comingSoon.slice(psychosocialIdx + 1),
+        ...afterSocial,
+        evaluationCard,
+        ...rest,
       ];
     },
     quantitativeComingSoonCards() {

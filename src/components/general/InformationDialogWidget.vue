@@ -307,8 +307,13 @@
           <span>Avaliação dos ex-colaboradores do PDR</span>
           <p>
             Avaliação geral dos ex-colaboradores sobre a experiência no
-            Programa de Demissão Responsável (PDR) e no acompanhamento da
-            Prepara.me.
+            Programa de Demissão Responsável (PDR), com base na nota média das
+            conversas (mentorias individuais e coletivas).
+          </p>
+          <p>
+            O card compara a média da empresa com a média geral de todas as
+            empresas. O gráfico mostra a evolução mensal pela data do
+            atendimento.
           </p>
         </div>
 

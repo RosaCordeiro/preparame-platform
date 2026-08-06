@@ -453,6 +453,8 @@
         :welcomed-general="welcomedGeneral"
         :termination-general="terminationGeneral"
         :labor-issues-general="laborIssuesGeneral"
+        :ex-employee-evaluation-company="exEmployeeEvaluationCompany"
+        :ex-employee-evaluation-general="exEmployeeEvaluationGeneral"
         :remove-percent="removePercent"
         :expanded-metric-key="expandedMetricKey"
         :metric-timelines="metricTimelines"
@@ -474,6 +476,8 @@
         :welcomed-general="welcomedGeneral"
         :termination-general="terminationGeneral"
         :labor-issues-general="laborIssuesGeneral"
+        :ex-employee-evaluation-company="exEmployeeEvaluationCompany"
+        :ex-employee-evaluation-general="exEmployeeEvaluationGeneral"
         :remove-percent="removePercent"
         :expanded-metric-key="expandedMetricKey"
         :metric-timelines="metricTimelines"
@@ -922,6 +926,8 @@ export default {
       metricTimelines: {},
       timelineLoading: false,
       loadRequestId: 0,
+      exEmployeeEvaluationCompany: NaN,
+      exEmployeeEvaluationGeneral: NaN,
     };
   },
   props: {
@@ -1800,6 +1806,54 @@ export default {
 
       return this.removePercent(raw);
     },
+    async loadExEmployeeEvaluation() {
+      if (!this.companyId || this.companyId === "null") {
+        return;
+      }
+
+      try {
+        const data = await filterCrud(
+          [
+            {
+              name: "companyId",
+              model: this.companyId,
+            },
+          ],
+          "reports/exEmployeeEvaluation"
+        );
+
+        this.exEmployeeEvaluationCompany =
+          data && data.company != null ? data.company : NaN;
+        this.exEmployeeEvaluationGeneral =
+          data && data.general != null ? data.general : NaN;
+
+        const normalized = normalizeTimelineAxis({
+          rawPeriods: (data && data.rawPeriods) || [],
+          categories: (data && data.categories) || [],
+          series: [
+            {
+              name: "Sua Empresa",
+              data: applyTimelineSeriesFill(
+                "exEmployeeEvaluation",
+                (data && data.companySeries) || []
+              ),
+            },
+            {
+              name: "Média Geral",
+              data: applyTimelineSeriesFill(
+                "exEmployeeEvaluation",
+                (data && data.generalSeries) || []
+              ),
+            },
+          ],
+        });
+
+        this.$set(this.metricTimelines, "exEmployeeEvaluation", normalized);
+      } catch (error) {
+        this.exEmployeeEvaluationCompany = NaN;
+        this.exEmployeeEvaluationGeneral = NaN;
+      }
+    },
     async loadRealocationTimeline(metricKey) {
       this.timelineLoading = true;
 
@@ -1840,6 +1894,16 @@ export default {
         metricKey === "realocateds"
       ) {
         await this.loadRealocationTimeline(metricKey);
+        return;
+      }
+
+      if (metricKey === "exEmployeeEvaluation") {
+        this.timelineLoading = true;
+        try {
+          await this.loadExEmployeeEvaluation();
+        } finally {
+          this.timelineLoading = false;
+        }
         return;
       }
 
@@ -2108,6 +2172,10 @@ export default {
         this.compareResults = reports.map((report, index) =>
           this.extractCompareResult(report, filterSets[index].label)
         );
+
+        if (this.isRhVariant) {
+          await this.loadExEmployeeEvaluation();
+        }
 
         if (this.expandedMetricKey) {
           await this.loadMetricTimeline(this.expandedMetricKey);

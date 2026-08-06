@@ -263,6 +263,7 @@ const TIMELINE_FORWARD_FILL_METRICS = new Set([
   "brandRisk",
   "realocateds",
   "socialImpactReduction",
+  "exEmployeeEvaluation",
   "termination",
   "laborIssues",
   "welcomed",
