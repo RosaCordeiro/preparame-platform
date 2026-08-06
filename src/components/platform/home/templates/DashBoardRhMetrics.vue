@@ -73,8 +73,8 @@ const COMING_SOON_CARDS = [
   },
   {
     key: "socialImpactReduction",
-    title: "Redução de impacto social",
-    subtitle: "Evolução do impacto social",
+    title: "Redução de impacto negativo social",
+    subtitle: "Evolução do impacto negativo social",
   },
   {
     key: "resolvedDoubts",

@@ -23,12 +23,12 @@
           color="grey-6"
         />
         <q-btn
-          v-if="!comingSoon"
           flat
           round
           dense
           icon="mdi-information-outline"
           color="grey-6"
+          aria-label="Informação do indicador"
           @click.stop="$emit('info')"
         />
       </div>

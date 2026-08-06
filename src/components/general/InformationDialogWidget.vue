@@ -218,6 +218,86 @@
             </li>
           </ul>
         </div>
+
+        <div v-else-if="id === 'Gestão de novos conflitos'">
+          <span>Gestão de novos conflitos</span>
+          <p>
+            Acompanha conflitos emergentes relacionados ao processo de demissão
+            responsável, para apoiar ações preventivas e de mediação.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Canal de denúncias novos'">
+          <span>Canal de denúncias novos</span>
+          <p>
+            Indicadores do canal de denúncias vinculados ao programa, ajudando a
+            identificar novos registros e tendências relevantes para o RH.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Redução de riscos trabalhistas'">
+          <span>Redução de riscos trabalhistas</span>
+          <p>
+            Mostra a evolução da exposição a riscos trabalhistas ao longo do
+            tempo, permitindo acompanhar se as ações do programa estão
+            diminuindo essa exposição.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Redução de impacto reputacional'">
+          <span>Redução de impacto reputacional</span>
+          <p>
+            Acompanha a evolução do impacto na reputação da marca empregadora
+            após o processo de demissão, com foco em reduzir efeitos negativos.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Redução de impacto psicossocial'">
+          <span>Redução de impacto psicossocial</span>
+          <p>
+            Indica a evolução do impacto psicossocial sobre ex-colaboradores e
+            o ambiente organizacional, apoiando o monitoramento de bem-estar e
+            saúde mental no processo.
+          </p>
+        </div>
+
+        <div
+          v-else-if="
+            id === 'Redução de impacto negativo social' ||
+            id === 'Redução de impacto social'
+          "
+        >
+          <span>Redução de impacto negativo social</span>
+          <p>
+            Relaciona a taxa de recolocação à redução do impacto negativo
+            social gerado pela demissão.
+          </p>
+          <p>
+            Exemplo: 60% na taxa de recolocação é igual a −60% de impacto
+            negativo social.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Dúvidas resolvidas'">
+          <span>Dúvidas resolvidas</span>
+          <p>
+            Percentual de dúvidas reportadas pelos ex-colaboradores que foram
+            solucionadas pela equipe do programa.
+          </p>
+        </div>
+
+        <div v-else-if="id === 'Avaliação dos ex-colaboradores'">
+          <span>Avaliação dos ex-colaboradores</span>
+          <p>
+            Avaliação geral dos ex-colaboradores sobre a experiência no
+            processo de demissão responsável e no acompanhamento da Prepara.me.
+          </p>
+        </div>
+
+        <div v-else-if="id">
+          <span>{{ id }}</span>
+          <p>Em breve: explicação detalhada deste indicador.</p>
+        </div>
       </div>
 
       <img
