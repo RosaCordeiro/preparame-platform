@@ -132,6 +132,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideGeneral: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     displayRows() {
@@ -154,11 +158,13 @@ export default {
         });
       }
 
-      rows.push({
-        label: this.generalLabel,
-        value: this.generalValue,
-        insufficient: false,
-      });
+      if (!this.hideGeneral) {
+        rows.push({
+          label: this.generalLabel,
+          value: this.generalValue,
+          insufficient: false,
+        });
+      }
 
       return rows;
     },

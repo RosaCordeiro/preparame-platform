@@ -23,7 +23,8 @@
         single-select
         :disable-filters="disableFilters"
         :parameters="parameters"
-        :period="set.period"
+        :period-start="set.periodStart"
+        :period-end="set.periodEnd"
         :unity="set.unity"
         :area="set.area"
         :role="set.role"
@@ -38,7 +39,8 @@
         :gender-options="genderOptions"
         :etnia-options="etniaOptions"
         :get-option-label="getOptionLabel"
-        @update:period="updateSetField(index, 'period', $event)"
+        @update:periodStart="updateSetField(index, 'periodStart', $event)"
+        @update:periodEnd="updateSetField(index, 'periodEnd', $event)"
         @update:unity="updateSetField(index, 'unity', $event)"
         @update:area="updateSetField(index, 'area', $event)"
         @update:role="updateSetField(index, 'role', $event)"
@@ -115,10 +117,26 @@ export default {
     hasFilterValue(value) {
       return value !== null && value !== undefined && value !== "";
     },
+    formatChipDate(isoDate) {
+      const match = String(isoDate).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) {
+        return String(isoDate);
+      }
+
+      return `${match[3]}/${match[2]}/${match[1]}`;
+    },
     selectedFiltersForSet(set) {
       const filters = [];
 
-      if (this.hasFilterValue(set.period)) {
+      if (this.hasFilterValue(set.periodStart) || this.hasFilterValue(set.periodEnd)) {
+        const start = this.hasFilterValue(set.periodStart)
+          ? this.formatChipDate(set.periodStart)
+          : "…";
+        const end = this.hasFilterValue(set.periodEnd)
+          ? this.formatChipDate(set.periodEnd)
+          : "…";
+        filters.push(`${start} → ${end}`);
+      } else if (this.hasFilterValue(set.period)) {
         filters.push(set.period);
       }
 

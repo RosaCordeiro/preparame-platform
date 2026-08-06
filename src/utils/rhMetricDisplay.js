@@ -13,6 +13,8 @@ export function setHasActiveFilters(filterSet) {
 
   return [
     filterSet.period,
+    filterSet.periodStart,
+    filterSet.periodEnd,
     filterSet.unity,
     filterSet.area,
     filterSet.role,
@@ -44,6 +46,8 @@ export function omitPeriod(filterSet) {
 
   const nextSet = { ...filterSet };
   delete nextSet.period;
+  delete nextSet.periodStart;
+  delete nextSet.periodEnd;
   delete nextSet.id;
   delete nextSet.label;
 
@@ -323,7 +327,24 @@ export function summarizeActiveFilters(filterSet, formatters = {}) {
     );
   };
 
-  push("Período", filterSet.period);
+  if (hasFilterValue(filterSet.periodStart) || hasFilterValue(filterSet.periodEnd)) {
+    const formatIso = (iso) => {
+      const match = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) {
+        return iso;
+      }
+      return `${match[3]}/${match[2]}/${match[1]}`;
+    };
+    const start = hasFilterValue(filterSet.periodStart)
+      ? formatIso(filterSet.periodStart)
+      : "…";
+    const end = hasFilterValue(filterSet.periodEnd)
+      ? formatIso(filterSet.periodEnd)
+      : "…";
+    parts.push(`Período: ${start} → ${end}`);
+  } else {
+    push("Período", filterSet.period);
+  }
   push("Unidade", filterSet.unity);
   push("Área", filterSet.area);
   push("Cargo", filterSet.role);

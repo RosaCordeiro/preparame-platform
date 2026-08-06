@@ -16,13 +16,13 @@
           :is="metric.component"
           v-bind="metric.props"
           :coming-soon="metric.comingSoon"
-          :clickable="!metric.comingSoon"
-          :expanded="!metric.comingSoon && expandedMetricKey === metric.key"
+          :clickable="isMetricClickable(metric)"
+          :expanded="isMetricExpanded(metric)"
           @toggle="$emit('metric-toggle', metric.key)"
           @info="$emit('metric-info', metric.infoLabel || metric.props.title)"
         >
           <UiMetricTimeline
-            v-if="!metric.comingSoon && expandedMetricKey === metric.key"
+            v-if="isMetricExpanded(metric)"
             :categories="timelineCategories"
             :raw-periods="timelineRawPeriods"
             :series="timelineSeriesFor(metric.key)"
@@ -74,44 +74,8 @@ const COMING_SOON_CARDS = [
   },
 ];
 
-/** Placeholders que antes ficavam em DashBoardRhQuantitativeCards (mesmo grid dos KPIs). */
-const QUANTITATIVE_COMING_SOON_CARDS = [
-  {
-    key: "criticalRisks",
-    title: "Riscos críticos",
-    subtitle: "Monitoramento de riscos críticos do processo",
-  },
-  {
-    key: "resolutionRate",
-    title: "Taxa de resolução",
-    subtitle: "Percentual de casos resolvidos",
-  },
-  {
-    key: "legalRiskReduction",
-    title: "Redução de risco jurídico",
-    subtitle: "Evolução da exposição jurídica",
-  },
-  {
-    key: "psychosocialReduction",
-    title: "Redução psicossocial",
-    subtitle: "Indicador de impacto psicossocial",
-  },
-  {
-    key: "employerBrand",
-    title: "Marca empregadora",
-    subtitle: "Percepção da marca empregadora",
-  },
-  {
-    key: "segmentIndex",
-    title: "Índice segmento",
-    subtitle: "Comparativo com o segmento de mercado",
-  },
-  {
-    key: "doubtRate",
-    title: "Taxa de dúvidas",
-    subtitle: "Incidência de dúvidas reportadas",
-  },
-];
+/** Placeholders da quantitativa — ocultos temporariamente. */
+const QUANTITATIVE_COMING_SOON_CARDS = [];
 
 function mapComingSoonCards(list) {
   return list.map((card) => ({
@@ -213,6 +177,7 @@ export default {
           component: "RhMetricCard",
           infoLabel: "e-NPS",
           timelineSubtitle: "e-NPS por período",
+          hideTimeline: true,
           props: {
             title: "e-NPS",
             subtitle: "Recomendação da empresa pelos ex-colaboradores",
@@ -230,6 +195,7 @@ export default {
           component: "RhMetricCard",
           infoLabel: "Risco Trabalhista",
           timelineSubtitle: "Risco trabalhista por período",
+          hideTimeline: true,
           props: {
             title: "Risco Trabalhista",
             subtitle: "Exposição a riscos de ações trabalhistas",
@@ -248,6 +214,7 @@ export default {
           component: "RhMetricCard",
           infoLabel: "Risco de marca",
           timelineSubtitle: "Risco de marca por período",
+          hideTimeline: true,
           props: {
             title: "Risco de marca",
             subtitle: "Percepção da marca empregadora",
@@ -267,16 +234,17 @@ export default {
           infoLabel: "Realocados",
           timelineSubtitle: "Taxa acumulada de recolocação por mês (data da recolocação)",
           timelineSuffix: "%",
+          hideTimeline: true,
           props: {
             title: "Realocados",
             subtitle: "Percentual de ex-colaboradores recolocados",
             companyValue: this.metricValue("realocateds"),
-            generalValue: this.parseGeneralValue(this.realocatedsGeneral),
             compareRows: this.compareRowsFor("realocateds"),
             minValue: 0,
             maxValue: 100,
             intersectionValue: 50,
             suffix: "%",
+            hideGeneral: true,
           },
         },
         {
@@ -284,11 +252,11 @@ export default {
           component: "RhStatCard",
           infoLabel: "Acolhidos",
           timelineSubtitle: "Acolhidos por período",
+          hideTimeline: true,
           props: {
             title: "Acolhidos",
             subtitle: "Total de pessoas acolhidas no programa",
             companyValue: this.primaryResult.welcomed,
-            generalValue: this.welcomedGeneral,
             compareRows: this.compareRowsForRaw("welcomed"),
             insufficient: this.primaryInsufficient,
           },
@@ -298,6 +266,7 @@ export default {
           component: "RhStatCard",
           infoLabel: "Pessoas realocadas",
           timelineSubtitle: "Quantidade realocada por período",
+          hideTimeline: true,
           props: {
             title: "Pessoas realocadas",
             subtitle: "Quantidade absoluta no período",
@@ -312,6 +281,7 @@ export default {
           infoLabel: "Cálculos da rescisão estão corretos?",
           timelineSubtitle: "Rescisão correta por período",
           timelineSuffix: "%",
+          hideTimeline: true,
           props: {
             title: "Cálculos da rescisão",
             subtitle: "Ex-colaboradores que consideram os cálculos corretos",
@@ -319,7 +289,7 @@ export default {
             generalValue: this.parseGeneralValue(this.terminationGeneral),
             compareRows: this.compareRowsFor("termination"),
             suffix: "%",
-            intersectionValue: 50,
+            intersectionValue: 95,
             insufficientSample: this.primaryInsufficient,
           },
         },
@@ -329,6 +299,7 @@ export default {
           infoLabel: "Pendências trabalhistas",
           timelineSubtitle: "Pendências por período",
           timelineSuffix: "%",
+          hideTimeline: true,
           props: {
             title: "Pendências trabalhistas",
             subtitle: "Incidência de pendências reportadas",
@@ -360,12 +331,12 @@ export default {
           subtitle:
             "Taxa de recolocação das pessoas do programa (impacto negativo social)",
           companyValue: this.metricValue("realocateds"),
-          generalValue: this.parseGeneralValue(this.realocatedsGeneral),
           compareRows: this.compareRowsFor("realocateds"),
           minValue: 0,
           maxValue: 100,
           intersectionValue: 50,
           suffix: "%",
+          hideGeneral: true,
           insufficientSample: this.primaryInsufficient,
         },
       };
@@ -419,6 +390,20 @@ export default {
     },
   },
   methods: {
+    isMetricClickable(metric) {
+      if (!metric || metric.comingSoon || metric.hideTimeline) {
+        return false;
+      }
+
+      return true;
+    },
+    isMetricExpanded(metric) {
+      if (!this.isMetricClickable(metric)) {
+        return false;
+      }
+
+      return this.expandedMetricKey === metric.key;
+    },
     parseGeneralValue(value) {
       return parseMetricValue(value);
     },

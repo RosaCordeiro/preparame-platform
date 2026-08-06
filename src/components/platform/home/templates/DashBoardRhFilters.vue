@@ -2,7 +2,8 @@
   <RhFilterPanel
     :disable-filters="disableFilters"
     :parameters="parameters"
-    :period.sync="period"
+    :period-start.sync="periodStart"
+    :period-end.sync="periodEnd"
     :unity.sync="unity"
     :area.sync="area"
     :role.sync="role"
@@ -30,7 +31,12 @@ export default {
   props: {
     disableFilters: Boolean,
     parameters: Object,
-    period: Array,
+    periodStart: {
+      default: null,
+    },
+    periodEnd: {
+      default: null,
+    },
     unity: Array,
     area: Array,
     role: Array,
