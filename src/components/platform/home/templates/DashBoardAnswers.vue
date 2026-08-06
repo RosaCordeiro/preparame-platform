@@ -1798,7 +1798,51 @@ export default {
 
       return this.removePercent(raw);
     },
+    async loadRealocationTimeline(metricKey) {
+      this.timelineLoading = true;
+
+      try {
+        const data = await filterCrud(
+          [
+            {
+              name: "companyId",
+              model: this.companyId,
+            },
+          ],
+          "reports/realocationTimeline"
+        );
+
+        const categories = (data && data.categories) || [];
+        const companySeries = (data && data.company) || [];
+        const generalSeries = (data && data.general) || [];
+
+        this.$set(this.metricTimelines, metricKey, {
+          categories,
+          rawPeriods: (data && data.rawPeriods) || [],
+          series: [
+            {
+              name: "Sua Empresa",
+              data: companySeries,
+            },
+            {
+              name: "Média Geral",
+              data: generalSeries,
+            },
+          ],
+        });
+      } finally {
+        this.timelineLoading = false;
+      }
+    },
     async loadMetricTimeline(metricKey) {
+      if (
+        metricKey === "socialImpactReduction" ||
+        metricKey === "realocateds"
+      ) {
+        await this.loadRealocationTimeline(metricKey);
+        return;
+      }
+
       const periods = (this.parameters.period || [])
         .slice()
         .sort((a, b) => String(a).localeCompare(String(b)));

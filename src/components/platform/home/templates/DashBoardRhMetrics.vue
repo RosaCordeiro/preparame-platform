@@ -261,7 +261,7 @@ export default {
           key: "realocateds",
           component: "RhMetricCard",
           infoLabel: "Realocados",
-          timelineSubtitle: "Percentual de recolocados por período",
+          timelineSubtitle: "Taxa acumulada de recolocação por mês (data da recolocação)",
           timelineSuffix: "%",
           props: {
             title: "Realocados",
@@ -348,7 +348,7 @@ export default {
         component: "RhMetricCard",
         comingSoon: false,
         infoLabel: "Redução de impacto negativo social",
-        timelineSubtitle: "Redução de impacto negativo social por período",
+          timelineSubtitle: "Taxa acumulada de recolocação por mês (data da recolocação)",
         timelineSuffix: "%",
         props: {
           title: "Redução de impacto negativo social",
