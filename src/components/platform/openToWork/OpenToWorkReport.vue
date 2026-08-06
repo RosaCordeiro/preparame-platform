@@ -29,7 +29,7 @@
                 label="Área"
                 v-model="openToWorkFilters.department"
                 clearable
-                class="col-12 col-md-3"
+                class="col-12 col-md-3 otw-filter-area"
               />
               <q-input
                 outlined
@@ -97,24 +97,36 @@
               :loading="loadingOpenToWork"
               no-data-label="Nenhum profissional disponível no momento."
             >
+              <template v-slot:body-cell-name="props">
+                <q-td :props="props">
+                  {{ formatPersonName(props.row.name) }}
+                </q-td>
+              </template>
               <template v-slot:body-cell-linkedinUrl="props">
                 <q-td :props="props">
-                  <a
+                  <q-btn
                     v-if="props.row.linkedinUrl"
+                    tag="a"
                     :href="props.row.linkedinUrl"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >
-                    Ver perfil
-                  </a>
-                  <a
+                    label="Ver perfil"
+                    color="primary"
+                    dense
+                    unelevated
+                    no-caps
+                    class="otw-btn-profile"
+                  />
+                  <q-btn
                     v-else
-                    href="#"
-                    class="linkedin-missing"
-                    @click.prevent="notifyMissingLinkedin"
-                  >
-                    Ver perfil
-                  </a>
+                    label="Ver perfil"
+                    color="primary"
+                    dense
+                    unelevated
+                    no-caps
+                    class="otw-btn-profile"
+                    @click="notifyMissingLinkedin"
+                  />
                 </q-td>
               </template>
             </q-table>
@@ -129,6 +141,7 @@
 import axios from "axios";
 import { baseApiUrl, showError } from "../../../global";
 import Breadcrumbs from "../../general/Breacrumbs.vue";
+import { toTitleCasePersonName } from "../../../utils/firstName";
 
 export default {
   name: 'OpenToWorkReport',
@@ -188,6 +201,9 @@ export default {
     },
   },
   methods: {
+    formatPersonName(name) {
+      return toTitleCasePersonName(name);
+    },
     clearOpenToWorkFilters() {
       this.openToWorkFilters = {
         position: '',
@@ -315,6 +331,25 @@ export default {
   color: rgba(26, 39, 183, 1);
   text-decoration: underline;
   cursor: pointer;
+}
+
+.otw-filter-area ::v-deep .q-field__control:before {
+  border-color: #15aa7c !important;
+  border-width: 2px !important;
+}
+
+.otw-filter-area ::v-deep .q-field__control:hover:before,
+.otw-filter-area ::v-deep .q-field--focused .q-field__control:before {
+  border-color: #128564 !important;
+  border-width: 2px !important;
+}
+
+.otw-btn-profile {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 4px 14px !important;
+  min-height: 28px;
 }
 
 @media (max-width: 768px) {
