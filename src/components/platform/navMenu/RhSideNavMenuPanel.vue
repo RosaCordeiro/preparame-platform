@@ -5,7 +5,7 @@
         src="../../../assets/rh/painel-demissao.png"
         alt="Painel Demissão Responsável"
       />
-      <h2>Olá,<br />{{ userName }}!</h2>
+      <h2>Olá,<br />{{ firstName }}!</h2>
     </div>
 
     <div class="rh-sidebar-label">Menu</div>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { firstNameFromFullName } from "src/utils/firstName";
+
 export default {
   props: {
     menuList: {
@@ -84,6 +86,9 @@ export default {
     },
   },
   computed: {
+    firstName() {
+      return firstNameFromFullName(this.userName);
+    },
     currentPath() {
       return this.$route.path;
     },

@@ -16,6 +16,8 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Added
 
+- Branch `feat/boas-vindas-primeiro-nome`: saudações “Olá” com só o primeiro nome (RH sidebar + cards USER); util `firstNameFromFullName`.
+- Spec/design: `docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md` (+ `-design.md`).
 - Branch `feat/rh-tipografia-mais-um`: tipografia +1 nos painéis RH (`html.app-rh` / 18px) só para `COMPANY_ADMIN`.
 - Spec/design: `docs/desenvolvimento/especificacoes/2026-08-04-rh-tipografia-mais-um.md` (+ `-design.md`).
 - Branch `feat/rh-segmento-subsegmento`: cadastros Admin **Segmentos** / **Subsegmentos**; campos opcionais na Empresa; filtros dropdown + colunas Segmento/Subsegmento no Open to Work (sem coluna Empresa).
@@ -31,6 +33,7 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Changed
 
+- Saudações de boas-vindas (RH e ex-colaborador) exibem apenas o primeiro nome; `localStorage.userName` permanece completo.
 - Tipografia shell RH (`COMPANY_ADMIN`): base do `html` 18px via classe `app-rh` (textos em `rem` sobem um nível).
 - Open to Work: remove dashboard/filtros de relatório de recolocação da mesma rota; remove coluna Empresa; LinkedIn opcional na lista.
 - Flag de amostra insuficiente: `lessThanFive` → **`insufficientSample`**; texto de omissão unificado em **`Sem informações`** (sem `N/A` nesses fluxos).
@@ -47,6 +50,7 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Docs / validação
 
+- VAL-01…03 (boas-vindas primeiro nome) PASS — ver SPEC §9.1; `npm run lint` PASS.
 - VAL-01…03 (tipografia RH +1) PASS — ver SPEC §9.1; `npm run lint` PASS.
 - V-01…V-04 (remover Google trackers) PASS — ver CORR §8.1.
 - V-01…V-07 (Ver Produtos userId) PASS — ver CORR §8.1.

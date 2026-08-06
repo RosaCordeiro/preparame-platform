@@ -5,7 +5,7 @@
         <div class="external-user-welcome-card-info col-9">
           <div class="row">
             <div class="external-user-welcome-card-first-msg">
-              Olá, {{ userName }}, aqui no Prepara.me, orientação de carreira é
+              Olá, {{ firstName }}, aqui no Prepara.me, orientação de carreira é
               pra todo mundo!
             </div>
             <div class="text-icon">&#128522;</div>
@@ -43,6 +43,7 @@
 
 <script>
 import { saveCrud } from "../../../general/crud/utils/saveCrud.js";
+import { firstNameFromFullName } from "src/utils/firstName";
 
 export default {
   props: ["products", "interviewSimulator", "isRetirementPlan"],
@@ -55,6 +56,11 @@ export default {
       laborRiskAlert: false,
       simulator: false,
     };
+  },
+  computed: {
+    firstName() {
+      return firstNameFromFullName(this.userName);
+    },
   },
   created() {
     this.userAvatarUrl = localStorage.getItem("userAvatarUrl");
