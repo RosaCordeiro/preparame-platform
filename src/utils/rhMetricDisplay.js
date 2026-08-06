@@ -585,44 +585,111 @@ export function buildFeelingSurveyColumns({
   return columns;
 }
 
-export function buildPolarChartOptions(labels) {
+const FEELING_POINT_COLORS = [
+  "#15aa7c",
+  "#f54890",
+  "#1a27b7",
+  "#f5a623",
+  "#35a97d",
+  "#7b61ff",
+  "#e85d4c",
+  "#2bb0ed",
+  "#9b59b6",
+  "#16a085",
+  "#e67e22",
+  "#34495e",
+];
+
+export function buildRadarChartOptions(categories) {
+  const labels = (categories || []).map((label) => String(label));
+  const discreteMarkers = labels.map((_, index) => ({
+    seriesIndex: 0,
+    dataPointIndex: index,
+    fillColor: FEELING_POINT_COLORS[index % FEELING_POINT_COLORS.length],
+    strokeColor: "#ffffff",
+    size: 8,
+  }));
+
   return {
     chart: {
-      type: "polarArea",
+      type: "radar",
+      toolbar: { show: false },
+      parentHeightOffset: 0,
+      sparkline: { enabled: false },
     },
-    labels: labels.map((label) => String(label)),
-    stroke: {
-      colors: ["#fff"],
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shade: "dark",
-        type: "horizontal",
-        shadeIntensity: 0.5,
-        gradientToColors: ["#f54890", "#35a97d", "#1a27b7", "#f54890"],
-        inverseColors: false,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 70, 100],
-        colorStops: [],
+    colors: ["#15aa7c"],
+    // Categorias ficam só no tooltip — texto nos eixos encolhia o plot.
+    xaxis: {
+      categories: labels,
+      labels: {
+        show: false,
       },
     },
     yaxis: {
       show: false,
+      min: 0,
+      max: 100,
+      tickAmount: 4,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["#15aa7c"],
+    },
+    fill: {
+      opacity: 0.22,
+      colors: ["#15aa7c"],
+    },
+    markers: {
+      size: 8,
+      strokeWidth: 2,
+      strokeColors: "#ffffff",
+      hover: { size: 10 },
+      discrete: discreteMarkers,
     },
     legend: {
-      show: true,
-      position: "bottom",
+      show: false,
     },
     plotOptions: {
-      polarArea: {
-        rings: {
-          strokeWidth: 0,
+      radar: {
+        offsetY: 0,
+        polygons: {
+          strokeColors: "#e6eaf0",
+          connectorColors: "#e6eaf0",
+          fill: {
+            colors: ["#ffffff", "#f7f9fc"],
+          },
         },
       },
     },
+    dataLabels: {
+      enabled: false,
+    },
+    tooltip: {
+      custom({ series, seriesIndex, dataPointIndex }) {
+        const feeling = labels[dataPointIndex] || "";
+        const raw = series[seriesIndex][dataPointIndex];
+        const value =
+          raw === null || raw === undefined || Number.isNaN(Number(raw))
+            ? "—"
+            : `${raw}%`;
+        const color =
+          FEELING_POINT_COLORS[dataPointIndex % FEELING_POINT_COLORS.length];
+
+        return `
+          <div style="padding:8px 10px;font-family:Nunito,sans-serif;font-size:12px;font-weight:700;color:#1a2744;">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle;"></span>
+            ${feeling}: ${value}
+          </div>
+        `;
+      },
+    },
   };
+}
+
+/** @deprecated Use buildRadarChartOptions */
+export function buildPolarChartOptions(labels) {
+  return buildRadarChartOptions(labels);
 }
 
 export function buildFeelingMapCharts({
@@ -645,8 +712,20 @@ export function buildFeelingMapCharts({
     charts.push({
       label: title,
       subtitle,
-      series: feelings.map((item) => parseMetricValue(item.count)),
-      options: buildPolarChartOptions(feelings.map((item) => item.feeling)),
+      series: [
+        {
+          name: title,
+          data: feelings.map((item) => {
+            const value = parseMetricValue(item.count);
+            return Number.isFinite(value) ? value : 0;
+          }),
+        },
+      ],
+      options: buildRadarChartOptions(feelings.map((item) => item.feeling)),
+      legendItems: feelings.map((item, index) => ({
+        label: String(item.feeling),
+        color: FEELING_POINT_COLORS[index % FEELING_POINT_COLORS.length],
+      })),
     });
   };
 
