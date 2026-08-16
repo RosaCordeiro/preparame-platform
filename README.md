@@ -33,7 +33,9 @@ npm run build
 npm test
 ```
 
-Hoje o script é placeholder (`No test specified`). Validação de features segue os cenários `VAL-*` nas specs. Testes do limiar de anonimato ficam no backend (`NPSSurveyAnswersUseCase.spec.ts`).
+Roda `node --test` em `src/utils/adminImportDashboard.test.js` (guard de `companyId`, toast/refresh pós-import, política de não zerar empresa no refresh).
+
+Validação de features maiores segue os cenários `VAL-*` / `V-*` nas specs/CORR. Testes do limiar de anonimato ficam no backend (`NPSSurveyAnswersUseCase.spec.ts`).
 
 ## UI — menu do RH (COMPANY_ADMIN)
 
@@ -49,6 +51,16 @@ Tipografia: no perfil **COMPANY_ADMIN**, o shell RH usa base `html.app-rh` com `
 Saudações **“Olá”** (menu lateral RH e card de boas-vindas do ex-colaborador) usam só o **primeiro nome**; a toolbar/conta continua com o nome completo. Spec: [`2026-08-05-boas-vindas-primeiro-nome.md`](docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md).
 
 Cadastro de perguntas qualitativas: perfil **ADMIN** → Cadastros → Perguntas Qualitativas (`/surveyQuestions`).
+
+### Admin — importação de pesquisa / refresh do dash
+
+Após importar Excel de respostas NPS no Admin:
+
+- Toast positivo e refresh do dashboard **somente** se `success > 0`
+- O refresh **não** zera a empresa selecionada (evita `GET /companies/config/null` e erro UUID)
+- Util compartilhado: `src/utils/adminImportDashboard.js` (coberto por `npm test`)
+
+CORR: [`docs/desenvolvimento/correcoes/2026-08-16-admin-import-survey-uuid-null.md`](docs/desenvolvimento/correcoes/2026-08-16-admin-import-survey-uuid-null.md).
 
 ### Admin — Segmento / Subsegmento
 
@@ -93,6 +105,7 @@ CORR: [`docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md`](do
 | Doc | Path |
 |-----|------|
 | CHANGELOG | [`CHANGELOG.md`](CHANGELOG.md) |
+| CORR import Admin UUID `"null"` + dash | [`docs/desenvolvimento/correcoes/2026-08-16-admin-import-survey-uuid-null.md`](docs/desenvolvimento/correcoes/2026-08-16-admin-import-survey-uuid-null.md) |
 | SPEC Painel Executivo | [`docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos.md`](docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos.md) |
 | Design Painel Executivo | [`docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos-design.md`](docs/desenvolvimento/especificacoes/2026-08-05-painel-executivo-riscos-impactos-design.md) |
 | SPEC boas-vindas primeiro nome | [`docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md`](docs/desenvolvimento/especificacoes/2026-08-05-boas-vindas-primeiro-nome.md) |

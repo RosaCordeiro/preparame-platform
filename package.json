@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0",
+    "test": "node --test src/utils/adminImportDashboard.test.js",
     "dev": "NODE_OPTIONS='--openssl-legacy-provider' npx quasar dev",
     "build": "NODE_OPTIONS='--openssl-legacy-provider' npx quasar build"
   },

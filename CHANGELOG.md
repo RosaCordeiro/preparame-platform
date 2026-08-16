@@ -9,6 +9,8 @@ Versão do `package.json` hoje: `0.0.1` (ainda sem tags semver de release; entra
 
 ### Fixed
 
+- Branch `fix/admin-import-survey-uuid-null`: import Admin não força mais `selectedCompany = null` no refresh (evita `companies/config/null`); toast/refresh só com `success > 0`; util `adminImportDashboard.js` + `npm test`.
+- CORR: `docs/desenvolvimento/correcoes/2026-08-16-admin-import-survey-uuid-null.md`.
 - Branch `fix/remove-google-trackers`: remove Google Analytics (`UA-151306939-1`), Google Ads (`AW-304198855`), boot `gtag-ads`, `vue-gtag` e helper `gtm.js` do app.
 - CORR/design: `docs/desenvolvimento/correcoes/2026-08-04-remove-google-trackers.md` (+ `-design.md`).
 - Branch `fix/view-products-user-userid`: **Ver Produtos do Usuário** — produtos/arquivos sempre por `userId`; banner se CPF RH ≠ CPF da conta; race guard ao trocar de pessoa; oculta cancelados; fallback de nome se a foto do especialista falhar; `ViewFileDialog` com `identifier`.
