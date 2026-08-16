@@ -16,8 +16,18 @@ Status e prioridade das skills de desenvolvimento Prepara.me.
 
 | Skill | Status | Descrição |
 |---|---|---|
+| `dev-all-in-one` | ✅ | Orquestra Pro: spec → design → dev → review → RN → auto → docs → DoD |
 | `preparame-orquestrador` | ✅ | Roteamento para tarefas especificadas |
 | `preparame-novas-demandas` | ✅ | Nova feature: brainstorm → code review |
+
+## Qualidade (Pro)
+
+| Skill | Status | Descrição |
+|---|---|---|
+| `teste-regra-negocio` | ✅ | Executa VAL/V no sistema e preenche **matriz de verificação** (contrato do Jest) |
+| `teste-automatizado` | ✅ | Lê a matriz; cria/atualiza Jest **backend**; suite geral |
+| `especificacao` | ✅ | Feat + branch + modelo-feat (VAL observáveis) |
+| `correcao-erro` | ✅ | Fix + modelo-fix (V-xx → matriz na fase 5) |
 
 ## Fase 1 — Fundação
 
