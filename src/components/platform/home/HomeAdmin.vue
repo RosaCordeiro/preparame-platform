@@ -202,6 +202,9 @@
 import axios from "axios";
 import { baseApiUrl, showDeuCerto, showError } from "../../../global";
 import { downloadFile } from "src/utils/downloadFile";
+import {
+  resolveImportOutcome,
+} from "src/utils/adminImportDashboard";
 import DashBoardAnswers from "./templates/DashBoardAnswers.vue";
 import ConfirmScheduleDialog from "src/components/ConfirmScheduleDialog.vue";
 
@@ -364,12 +367,15 @@ export default {
           throw new Error(result.message || "Erro na importação");
         }
 
+        const outcome = resolveImportOutcome(result);
+        const { successCount, errorCount } = outcome;
+
         // Mostrar resumo da importação
         let message = `<div style="text-align: left;">`;
-        message += `<p><strong>${result.success} registros importados com sucesso</strong></p>`;
+        message += `<p><strong>${successCount} registros importados com sucesso</strong></p>`;
 
-        if (result.errors && result.errors.length > 0) {
-          message += `<p><strong>${result.errors.length} erros encontrados:</strong></p>`;
+        if (errorCount > 0) {
+          message += `<p><strong>${errorCount} erros encontrados:</strong></p>`;
           message += `<ul>`;
           result.errors.forEach((error) => {
             message += `<li>Linha ${error.row}: ${error.reason}</li>`;
@@ -385,21 +391,25 @@ export default {
           ok: "Fechar",
         });
 
-        // Notificar sucesso
-        this.$q.notify({
-          type: "positive",
-          message: `Importação concluída! ${result.success} registros processados.`,
-        });
+        if (outcome.shouldRefreshDashboard) {
+          this.$q.notify({
+            type: outcome.notifyType,
+            message: outcome.notifyMessage,
+          });
 
-        // Notificar que o dashboard está sendo atualizado
-        this.$q.notify({
-          type: "info",
-          message: "Atualizando dashboard...",
-          timeout: 2000,
-        });
+          this.$q.notify({
+            type: "info",
+            message: "Atualizando dashboard...",
+            timeout: 2000,
+          });
 
-        // Forçar atualização do dashboard
-        this.refreshDashboard();
+          this.refreshDashboard();
+        } else if (outcome.notifyType) {
+          this.$q.notify({
+            type: outcome.notifyType,
+            message: outcome.notifyMessage,
+          });
+        }
       } catch (error) {
         console.error("Erro na importação:", error);
         this.$q.notify({
@@ -502,24 +512,15 @@ export default {
       this.importExcel();
     },
     refreshDashboard() {
-      // Método 1: Força o re-render do componente DashBoardAnswers
+      // Nunca zerar selectedCompany aqui — shouldClearCompanyIdOnDashboardRefresh()
+      // deve permanecer false (coberto por adminImportDashboard.test.js).
       this.dashboardKey += 1;
 
-      // Método 2: Aguarda um tick e chama o método de reload diretamente
       this.$nextTick(() => {
         if (this.$refs.dashboard && this.$refs.dashboard.loadNpsSurveyAnswers) {
           this.$refs.dashboard.loadNpsSurveyAnswers();
         }
       });
-
-      // Método 3: Força o watch do companyId (fallback)
-      setTimeout(() => {
-        const currentCompany = this.selectedCompany;
-        this.selectedCompany = null;
-        this.$nextTick(() => {
-          this.selectedCompany = currentCompany;
-        });
-      }, 100);
     },
   },
   mounted() {
