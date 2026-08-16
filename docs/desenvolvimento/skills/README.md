@@ -12,6 +12,10 @@ Exemplo manual: *"Use a skill preparame-crud-usar-componentes para…"*
 
 | Skill | Fase | Agente |
 |---|---|---|
+| `dev-all-in-one` | 0 | Orquestrador Pro (fases 1–8) |
+| `teste-regra-negocio` | 5 | Matriz VAL/V → contrato do Jest |
+| `teste-automatizado` | 6 | Jest backend a partir da matriz |
+| `especificacao` / `correcao-erro` | 1 | Spec feat / CORR fix + modelos |
 | `preparame-orquestrador` | 0 | Tarefas especificadas — roteamento |
 | `preparame-novas-demandas` | 0 | **Nova feature — brainstorm → code review** |
 | `preparame-vue-quasar-base` | 1 | Orquestrador |
