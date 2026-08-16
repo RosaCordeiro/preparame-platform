@@ -851,6 +851,10 @@ import {
   comparePeriods,
   normalizeTimelineAxis,
 } from "../../../../utils/rhMetricDisplay";
+import {
+  hasValidCompanyId as isValidCompanyId,
+  resolveImportOutcome,
+} from "src/utils/adminImportDashboard";
 
 export default {
   components: {
@@ -2070,7 +2074,14 @@ export default {
       this.pruneScalarFilter(set, "state", this.parameters.state);
       this.pruneScalarFilter(set, "city", this.parameters.city);
     },
+    hasValidCompanyId() {
+      return isValidCompanyId(this.companyId);
+    },
     loadParameters: async function () {
+      if (!this.hasValidCompanyId()) {
+        return;
+      }
+
       let filters = [];
 
       if (!this.isRhVariant) {
@@ -2170,17 +2181,17 @@ export default {
       this.isLoading = true;
 
       try {
-        await this.loadParameters();
-
-        if (requestId !== this.loadRequestId) {
-          return;
-        }
-
-        if (this.companyId === "null") {
+        if (!this.hasValidCompanyId()) {
           this.$q.notify({
             type: "error",
             message: "Nenhuma empresa selecionada para o usuário.",
           });
+          return;
+        }
+
+        await this.loadParameters();
+
+        if (requestId !== this.loadRequestId) {
           return;
         }
 
@@ -2444,12 +2455,15 @@ export default {
           throw new Error(result.message || "Erro na importação");
         }
 
+        const outcome = resolveImportOutcome(result);
+        const { successCount, errorCount } = outcome;
+
         // Mostrar resumo da importação
         let message = `<div style="text-align: left;">`;
-        message += `<p><strong>${result.success} registros importados com sucesso</strong></p>`;
+        message += `<p><strong>${successCount} registros importados com sucesso</strong></p>`;
 
-        if (result.errors && result.errors.length > 0) {
-          message += `<p><strong>${result.errors.length} erros encontrados:</strong></p>`;
+        if (errorCount > 0) {
+          message += `<p><strong>${errorCount} erros encontrados:</strong></p>`;
           message += `<ul>`;
           result.errors.forEach((error) => {
             message += `<li>Linha ${error.row}: ${error.reason}</li>`;
@@ -2465,8 +2479,14 @@ export default {
           ok: "Fechar",
         });
 
-        // Recarregar os dados do dashboard
-        await this.loadNpsSurveyAnswers();
+        if (outcome.shouldRefreshDashboard) {
+          await this.loadNpsSurveyAnswers();
+        } else if (outcome.notifyType) {
+          this.$q.notify({
+            type: outcome.notifyType,
+            message: outcome.notifyMessage,
+          });
+        }
       } catch (error) {
         console.error("Erro na importação:", error);
         this.$q.notify({
